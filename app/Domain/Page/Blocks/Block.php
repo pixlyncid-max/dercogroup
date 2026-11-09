@@ -6,6 +6,8 @@ namespace App\Domain\Page\Blocks;
 
 use App\Domain\Page\Enums\BlockType;
 use App\Support\FilamentTranslatable;
+use App\Support\ImageSource;
+use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -31,6 +33,7 @@ abstract class Block
      * - translatable_textarea
      * - translatable_richtext
      * - text
+     * - link (internal "page:<key>[#fragment]" reference or absolute/relative URL; resolved per locale)
      * - number
      * - boolean
      * - select (with 'options' => array<string, string>)
@@ -85,13 +88,15 @@ abstract class Block
 
     /**
      * Resolve localized values from raw block JSON data for the active locale (with fallback to 'id').
+     * Image paths become public URLs (+ srcset) and link fields pass through $linkResolver.
      *
      * @param  array<string, mixed>  $data
+     * @param  (Closure(string): string)|null  $linkResolver
      * @return array<string, mixed>
      */
-    public static function localizeData(array $data, string $locale = 'id'): array
+    public static function localizeData(array $data, string $locale = 'id', ?Closure $linkResolver = null): array
     {
-        return self::localizeFields(static::fields(), $data, $locale);
+        return self::localizeFields(static::fields(), $data, $locale, $linkResolver);
     }
 
     /**
@@ -119,6 +124,15 @@ abstract class Block
 
                 case 'text':
                     $rules[$path] = [$required ? 'required' : 'nullable', 'string'];
+                    break;
+
+                case 'link':
+                    $rules[$path] = [
+                        $required ? 'required' : 'nullable',
+                        'string',
+                        'max:2048',
+                        'regex:/^(page:[a-z_]+(#[A-Za-z0-9_-]+)?|\/.*|https?:\/\/.+|mailto:.+|tel:.+|#.+)$/',
+                    ];
                     break;
 
                 case 'number':
@@ -220,6 +234,13 @@ abstract class Block
                         ->required($required);
                     break;
 
+                case 'link':
+                    $components[] = TextInput::make($path)
+                        ->label($label)
+                        ->helperText('Tautan internal: page:about, page:business, page:contact#form. Tautan lain: /path atau https://…')
+                        ->required($required);
+                    break;
+
                 case 'number':
                     $components[] = TextInput::make($path)
                         ->label($label)
@@ -273,9 +294,10 @@ abstract class Block
     /**
      * @param  list<array<string, mixed>>  $fields
      * @param  array<string, mixed>  $data
+     * @param  (Closure(string): string)|null  $linkResolver
      * @return array<string, mixed>
      */
-    private static function localizeFields(array $fields, array $data, string $locale): array
+    private static function localizeFields(array $fields, array $data, string $locale, ?Closure $linkResolver = null): array
     {
         $resolved = $data;
 
@@ -289,8 +311,18 @@ abstract class Block
                 continue;
             }
 
+            if ($type === 'link') {
+                $href = is_string($data[$name] ?? null) ? trim($data[$name]) : '';
+                $resolved[$name] = $href !== '' && $linkResolver !== null ? $linkResolver($href) : ($href ?: null);
+
+                continue;
+            }
+
             if ($type === 'image') {
                 $altKey = "{$name}_alt";
+                $source = ImageSource::resolve(is_string($data[$name] ?? null) ? $data[$name] : null);
+                $resolved[$name] = $source['url'];
+                $resolved["{$name}_srcset"] = $source['srcset'];
                 $resolved[$altKey] = self::extractTranslatedValue($data[$altKey] ?? null, $locale);
 
                 continue;
@@ -302,7 +334,7 @@ abstract class Block
                 $items = [];
                 foreach ($data[$name] as $item) {
                     if (is_array($item)) {
-                        $items[] = self::localizeFields($subFields, $item, $locale);
+                        $items[] = self::localizeFields($subFields, $item, $locale, $linkResolver);
                     }
                 }
                 $resolved[$name] = $items;

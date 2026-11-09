@@ -20,7 +20,7 @@ class ColorBandBlock extends Block
             ['name' => 'description', 'type' => 'translatable_textarea', 'label' => 'Kalimat Komitmen', 'required' => true],
             ['name' => 'icon_name', 'type' => 'text', 'label' => 'Nama Ikon (Lucide)', 'default' => 'shield-check'],
             ['name' => 'cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol'],
-            ['name' => 'cta_href', 'type' => 'text', 'label' => 'Tautan Tombol'],
+            ['name' => 'cta_href', 'type' => 'link', 'label' => 'Tautan Tombol'],
             ['name' => 'image', 'type' => 'image', 'label' => 'Gambar Samping'],
         ];
     }

@@ -22,7 +22,7 @@ class ProductListBlock extends Block
             ['name' => 'limit', 'type' => 'number', 'label' => 'Batas Jumlah Produk (0 = Semua)', 'default' => 0],
             ['name' => 'show_download_button', 'type' => 'boolean', 'label' => 'Tampilkan Tombol Unduh Spesifikasi', 'default' => true],
             ['name' => 'cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol Selengkapnya'],
-            ['name' => 'cta_href', 'type' => 'text', 'label' => 'Tautan Tombol Selengkapnya'],
+            ['name' => 'cta_href', 'type' => 'link', 'label' => 'Tautan Tombol Selengkapnya'],
         ];
     }
 }

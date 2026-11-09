@@ -28,7 +28,7 @@ class SplitContentBlock extends Block
                 'default' => 'left',
             ],
             ['name' => 'cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol'],
-            ['name' => 'cta_href', 'type' => 'text', 'label' => 'Tautan Tombol'],
+            ['name' => 'cta_href', 'type' => 'link', 'label' => 'Tautan Tombol'],
             ['name' => 'image', 'type' => 'image', 'label' => 'Gambar'],
         ];
     }

@@ -46,6 +46,10 @@ class HandleInertiaRequests extends Middleware
         $currentPage = $request->attributes->get('currentPage');
         $allowDraftPreview = (bool) $request->attributes->get('allowDraftPreview', false);
 
+        if ($company instanceof Company) {
+            $company->loadMissing('contacts');
+        }
+
         $companyPayload = $company instanceof Company
             ? (new CompanyResource($company))->resolve()
             : [
@@ -67,6 +71,10 @@ class HandleInertiaRequests extends Middleware
                 'holdingUrl' => "/{$locale}",
             ];
 
+        $contactSubmitUrl = $company instanceof Company && ! $company->isHolding()
+            ? rtrim((string) ($companyPayload['url'] ?? "/{$locale}"), '/').'/contact-messages'
+            : "/{$locale}/contact-messages";
+
         return [
             ...parent::share($request),
             'locale' => $locale,
@@ -75,6 +83,10 @@ class HandleInertiaRequests extends Middleware
             'isPreview' => $allowDraftPreview,
             'company' => $companyPayload,
             'navigation' => $navigationPayload,
+            'contactSubmitUrl' => $contactSubmitUrl,
+            'flash' => [
+                'contactSuccess' => (bool) $request->session()->get('contactSuccess', false),
+            ],
         ];
     }
 }

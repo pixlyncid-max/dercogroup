@@ -14,7 +14,7 @@ export function Reveal({ preset = 'fadeUp', className = '', children }: RevealPr
 
     return (
         <motion.div
-            initial="hidden"
+            initial={prefersReducedMotion ? 'visible' : 'hidden'}
             whileInView="visible"
             viewport={VIEWPORT_ONCE}
             variants={variants}

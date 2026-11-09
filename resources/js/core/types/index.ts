@@ -67,6 +67,9 @@ export interface SharedCompany {
     about_short?: string;
     logo_url?: string | null;
     logo_alt?: string;
+    featured_image_url?: string | null;
+    featured_image_srcset?: string | null;
+    featured_image_alt?: string;
     url?: string;
     stats?: CompanyStatData[];
     contacts?: CompanyContactData[];
@@ -88,6 +91,155 @@ export interface PageBlockData<TData = Record<string, unknown>> {
     type: BlockTypeValue;
     sort_order: number;
     data: TData;
+}
+
+export interface HeroBlockData {
+    eyebrow?: string;
+    title: string;
+    description: string;
+    primary_cta_label?: string;
+    primary_cta_href?: string | null;
+    secondary_cta_label?: string;
+    secondary_cta_href?: string | null;
+    image?: string | null;
+    image_srcset?: string | null;
+    image_alt?: string;
+}
+
+export interface SubsidiaryGridBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    layout_variant?: 'cards' | 'alternating' | 'structure';
+    cta_label?: string;
+    cta_href?: string | null;
+}
+
+export interface StackedImagesBlockData {
+    eyebrow?: string;
+    title: string;
+    lead: string;
+    body?: string;
+    mirrored?: boolean;
+    cta_label?: string;
+    cta_href?: string | null;
+    primary_image?: string | null;
+    primary_image_srcset?: string | null;
+    primary_image_alt?: string;
+    secondary_image?: string | null;
+    secondary_image_srcset?: string | null;
+    secondary_image_alt?: string;
+}
+
+export interface ColorBandBlockData {
+    title: string;
+    description: string;
+    icon_name?: string;
+    cta_label?: string;
+    cta_href?: string | null;
+    image?: string | null;
+    image_srcset?: string | null;
+    image_alt?: string;
+}
+
+export interface MissionListItemData {
+    title: string;
+    description?: string;
+    icon_name?: string;
+}
+
+export interface MissionListBlockData {
+    eyebrow?: string;
+    title: string;
+    vision?: string;
+    body?: string;
+    cta_label?: string;
+    cta_href?: string | null;
+    primary_image?: string | null;
+    primary_image_srcset?: string | null;
+    primary_image_alt?: string;
+    secondary_image?: string | null;
+    secondary_image_srcset?: string | null;
+    secondary_image_alt?: string;
+    items: MissionListItemData[];
+}
+
+export interface CtaBannerBlockData {
+    eyebrow?: string;
+    title: string;
+    subtitle?: string;
+    phone?: string;
+    cta_label: string;
+    cta_href: string;
+}
+
+export interface TimelineItemData {
+    period: string;
+    title: string;
+    description: string;
+    image?: string | null;
+    image_srcset?: string | null;
+    image_alt?: string;
+}
+
+export interface TimelineBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    orientation?: 'vertical' | 'horizontal';
+    items: TimelineItemData[];
+}
+
+export interface ValuesGridItemData {
+    title: string;
+    description: string;
+    icon_name?: string;
+}
+
+export interface ValuesGridBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    items: ValuesGridItemData[];
+}
+
+export interface SplitContentBlockData {
+    eyebrow?: string;
+    title: string;
+    lead?: string;
+    body: string;
+    image_position?: 'left' | 'right';
+    cta_label?: string;
+    cta_href?: string | null;
+    image?: string | null;
+    image_srcset?: string | null;
+    image_alt?: string;
+}
+
+export interface RichTextBlockData {
+    eyebrow?: string;
+    title?: string;
+    content: string;
+}
+
+export interface StatsBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+}
+
+export interface ContactInfoBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    show_map?: boolean;
+}
+
+export interface ContactFormBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    submit_label?: string;
 }
 
 export interface ProductSpecData {
@@ -162,6 +314,10 @@ export interface SharedPageProps {
     translations: TranslationTree;
     company: SharedCompany;
     navigation: SharedNavigation;
+    contactSubmitUrl?: string;
+    flash?: {
+        contactSuccess?: boolean;
+    };
     isPreview?: boolean;
     page?: PageData;
     blocks?: PageBlockData[];

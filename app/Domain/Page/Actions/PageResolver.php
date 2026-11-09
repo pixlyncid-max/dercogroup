@@ -125,6 +125,30 @@ class PageResolver
     }
 
     /**
+     * Resolve a block link for a company in a locale.
+     * "page:<key>[#fragment]" becomes the localized page URL; any other value is returned unchanged.
+     * Unknown or unpublished page keys fall back to the company's home URL.
+     */
+    public function resolveLink(Company $company, string $href, string $locale, bool $preview = false): string
+    {
+        if (preg_match('/^page:(?<key>[a-z_]+)(?<fragment>#[A-Za-z0-9_-]+)?$/', $href, $matches) !== 1) {
+            return $href;
+        }
+
+        $key = PageKey::tryFrom($matches['key']) ?? PageKey::Home;
+        $fragment = $matches['fragment'] ?? '';
+
+        try {
+            $page = $this->resolveByKey($company, $key, $preview);
+        } catch (ModelNotFoundException) {
+            $page = $this->resolveByKey($company, PageKey::Home, $preview);
+            $fragment = '';
+        }
+
+        return $this->pageUrl($company, $page, $locale, $preview).$fragment;
+    }
+
+    /**
      * Generate alternate language URLs for a given company page.
      *
      * @return array<string, string>

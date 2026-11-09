@@ -1,8 +1,13 @@
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from './Button';
 export { Container, type ContainerProps, type ContainerSize } from './Container';
+export { Counter, type CounterProps } from './Counter';
 export { Eyebrow, type EyebrowProps, type EyebrowTone } from './Eyebrow';
+export { FormField, type FormFieldProps } from './FormField';
 export { Heading, type HeadingLevel, type HeadingProps, type HeadingSize } from './Heading';
 export { Image, type ImageProps, type ImageRatio, type ResponsiveSource } from './Image';
+export { Input, type InputProps } from './Input';
 export { LanguageSwitch, type LanguageSwitchProps } from './LanguageSwitch';
+export { Prose, type ProseProps } from './Prose';
 export { Reveal, type RevealProps } from './Reveal';
 export { Section, type SectionProps, type SectionTone } from './Section';
+export { Textarea, type TextareaProps } from './Textarea';

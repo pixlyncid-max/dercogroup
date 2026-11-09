@@ -9,8 +9,12 @@ export interface ResponsiveSource {
     sizes?: string;
 }
 
-export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'> {
+export interface ImageProps extends Omit<
+    ImgHTMLAttributes<HTMLImageElement>,
+    'src' | 'srcSet' | 'alt'
+> {
     src?: string | null;
+    srcSet?: string | null;
     alt: string;
     ratio?: ImageRatio;
     sources?: ResponsiveSource[];
@@ -41,16 +45,18 @@ const ratioViewBoxMap: Record<ImageRatio, string> = {
 
 export function Image({
     src,
+    srcSet,
     alt,
     ratio = '16/9',
     sources = [],
     priority = false,
     wrapperClassName = '',
     className = '',
+    sizes = '(max-width: 768px) 100vw, 50vw',
     ...imgRest
 }: ImageProps) {
     const wrapperClasses = [
-        'relative overflow-hidden rounded-[var(--radius-card)] bg-surface border border-line',
+        'block relative overflow-hidden rounded-[var(--radius-card)] bg-surface border border-line',
         ratioClassMap[ratio],
         wrapperClassName,
     ]
@@ -108,6 +114,8 @@ export function Image({
             ))}
             <img
                 src={src}
+                srcSet={srcSet ?? undefined}
+                sizes={srcSet ? sizes : undefined}
                 alt={alt}
                 loading={priority ? 'eager' : 'lazy'}
                 fetchPriority={priority ? 'high' : 'auto'}

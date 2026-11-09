@@ -21,7 +21,7 @@ class CtaBannerBlock extends Block
             ['name' => 'subtitle', 'type' => 'translatable_textarea', 'label' => 'Subjudul / Keterangan'],
             ['name' => 'phone', 'type' => 'text', 'label' => 'Nomor Telepon Utama'],
             ['name' => 'cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol', 'required' => true],
-            ['name' => 'cta_href', 'type' => 'text', 'label' => 'Tautan Tombol', 'required' => true],
+            ['name' => 'cta_href', 'type' => 'link', 'label' => 'Tautan Tombol', 'required' => true],
         ];
     }
 }

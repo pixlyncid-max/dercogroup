@@ -21,7 +21,7 @@ class MissionListBlock extends Block
             ['name' => 'vision', 'type' => 'translatable_textarea', 'label' => 'Pernyataan Visi'],
             ['name' => 'body', 'type' => 'translatable_textarea', 'label' => 'Narasi Pendukung'],
             ['name' => 'cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol'],
-            ['name' => 'cta_href', 'type' => 'text', 'label' => 'Tautan Tombol'],
+            ['name' => 'cta_href', 'type' => 'link', 'label' => 'Tautan Tombol'],
             ['name' => 'primary_image', 'type' => 'image', 'label' => 'Gambar Utama'],
             ['name' => 'secondary_image', 'type' => 'image', 'label' => 'Gambar Kedua'],
             [

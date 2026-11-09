@@ -592,7 +592,12 @@ class DatabaseSeeder extends Seeder
                     'en' => 'Holding company overseeing coal mining operations, energy commodity trading, and port logistics across three operating subsidiaries in Indonesia. [PLACEHOLDER]',
                 ],
                 'primary_cta_label' => ['id' => 'Lihat Bisnis Kami', 'en' => 'Explore Our Business'],
-                'primary_cta_href' => '/id/bisnis-kami',
+                'primary_cta_href' => 'page:business',
+                'image' => '/images/placeholders/hero-excavator-1280.webp',
+                'image_alt' => [
+                    'id' => 'Ekskavator hidrolik di area tambang terbuka PT Derco Bara Energy [PLACEHOLDER]',
+                    'en' => 'Hydraulic mining excavator at PT Derco Bara Energy open-pit bench [PLACEHOLDER]',
+                ],
             ]);
 
             $this->createBlock($home, 2, BlockType::SubsidiaryGrid, [
@@ -604,7 +609,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 'layout_variant' => 'cards',
                 'cta_label' => ['id' => 'Lihat Seluruh Unit Bisnis', 'en' => 'See All Business Units'],
-                'cta_href' => '/id/bisnis-kami',
+                'cta_href' => 'page:business',
             ]);
 
             $this->createBlock($home, 3, BlockType::StackedImages, [
@@ -620,7 +625,17 @@ class DatabaseSeeder extends Seeder
                 ],
                 'mirrored' => false,
                 'cta_label' => ['id' => 'Pelajari Profil Grup', 'en' => 'Read Group Profile'],
-                'cta_href' => '/id/tentang-kami',
+                'cta_href' => 'page:about',
+                'primary_image' => '/images/placeholders/pit-benches-1280.webp',
+                'primary_image_alt' => [
+                    'id' => 'Teras tambang terbuka dan jalan angkut khusus di konsesi Kalimantan Timur [PLACEHOLDER]',
+                    'en' => 'Open-pit mining benches and haul roads in East Kalimantan concession [PLACEHOLDER]',
+                ],
+                'secondary_image' => '/images/placeholders/haul-trucks-1280.webp',
+                'secondary_image_alt' => [
+                    'id' => 'Armada dump truck pengangkut batu bara di koridor jalan tambang [PLACEHOLDER]',
+                    'en' => 'Heavy haul trucks operating along the dedicated mine haul road [PLACEHOLDER]',
+                ],
             ]);
 
             $this->createBlock($home, 4, BlockType::ColorBand, [
@@ -631,7 +646,12 @@ class DatabaseSeeder extends Seeder
                 ],
                 'icon_name' => 'award',
                 'cta_label' => ['id' => 'Hubungi Tim Kepatuhan', 'en' => 'Contact Compliance Team'],
-                'cta_href' => '/id/kontak',
+                'cta_href' => 'page:contact',
+                'image' => '/images/placeholders/aerial-pit-1280.webp',
+                'image_alt' => [
+                    'id' => 'Foto udara vertikal area operasional tambang terbuka grup Derco [PLACEHOLDER]',
+                    'en' => 'Top-down aerial view of Derco group open-pit mining operations [PLACEHOLDER]',
+                ],
             ]);
 
             $this->createBlock($home, 5, BlockType::MissionList, [
@@ -646,7 +666,17 @@ class DatabaseSeeder extends Seeder
                     'en' => 'We prioritize long-term supply certainty through tight integration between mining pits, crushing plants, and barge-loading terminals. [PLACEHOLDER]',
                 ],
                 'cta_label' => ['id' => 'Lihat Struktur Bisnis', 'en' => 'View Business Structure'],
-                'cta_href' => '/id/bisnis-kami',
+                'cta_href' => 'page:business',
+                'primary_image' => '/images/placeholders/excavator-loading-1280.webp',
+                'primary_image_alt' => [
+                    'id' => 'Kegiatan pemuatan batu bara di pit penambangan [PLACEHOLDER]',
+                    'en' => 'Coal loading operation at the open-pit extraction face [PLACEHOLDER]',
+                ],
+                'secondary_image' => '/images/placeholders/crushing-plant-1280.webp',
+                'secondary_image_alt' => [
+                    'id' => 'Fasilitas crushing plant dan conveyor pemuat batu bara [PLACEHOLDER]',
+                    'en' => 'Coal crushing plant and conveyor infrastructure [PLACEHOLDER]',
+                ],
                 'items' => [
                     [
                         'title' => ['id' => 'Kepastian mutu produk melalui uji sampel berlapis di stockpile dan jetty [PLACEHOLDER]', 'en' => 'Product quality assurance via multi-stage sampling at stockpile and jetty [PLACEHOLDER]'],
@@ -672,7 +702,7 @@ class DatabaseSeeder extends Seeder
                 'subtitle' => ['id' => 'Tim komersial dan kepatuhan kami siap memberikan spesifikasi teknis serta dokumen verifikasi perusahaan. [PLACEHOLDER]', 'en' => 'Our commercial and compliance teams are ready to provide technical specifications and corporate verification documents. [PLACEHOLDER]'],
                 'phone' => '+62 21 5088 7400',
                 'cta_label' => ['id' => 'Kirim Pesan', 'en' => 'Send a Message'],
-                'cta_href' => '/id/kontak',
+                'cta_href' => 'page:contact',
             ]);
         }
 
@@ -701,7 +731,47 @@ class DatabaseSeeder extends Seeder
                 ],
             ]);
 
-            $this->createBlock($about, 3, BlockType::ValuesGrid, [
+            $this->createBlock($about, 3, BlockType::MissionList, [
+                'eyebrow' => ['id' => 'VISI & MISI GRUP', 'en' => 'GROUP VISION & MISSION'],
+                'title' => ['id' => 'Arah Strategis Jangka Panjang [PLACEHOLDER]', 'en' => 'Long-Term Strategic Direction [PLACEHOLDER]'],
+                'vision' => [
+                    'id' => 'Menjadi grup pertambangan dan logistik energi yang tepercaya dalam ketepatan spesifikasi, jadwal pengapalan, dan kepatuhan regulasi di Indonesia. [PLACEHOLDER]',
+                    'en' => 'To be a trusted mining and energy logistics group recognized for specification accuracy, shipment punctuality, and regulatory compliance in Indonesia. [PLACEHOLDER]',
+                ],
+                'body' => [
+                    'id' => 'Seluruh entitas di bawah PT Derco Bara Energy menerapkan standar perencanaan operasi dan kendali mutu yang seragam. [PLACEHOLDER]',
+                    'en' => 'All entities under PT Derco Bara Energy apply uniform operational planning and quality control standards. [PLACEHOLDER]',
+                ],
+                'primary_image' => '/images/placeholders/excavator-loading-1280.webp',
+                'primary_image_alt' => [
+                    'id' => 'Operasi pemuatan batu bara di area pit grup Derco [PLACEHOLDER]',
+                    'en' => 'Coal loading operation at Derco group pit area [PLACEHOLDER]',
+                ],
+                'secondary_image' => '/images/placeholders/barge-jetty-1280.webp',
+                'secondary_image_alt' => [
+                    'id' => 'Fasilitas pemuatan tongkang di pelabuhan sungai [PLACEHOLDER]',
+                    'en' => 'River port barge loading terminal [PLACEHOLDER]',
+                ],
+                'items' => [
+                    [
+                        'title' => ['id' => 'Integrasi Hulu ke Hilir [PLACEHOLDER]', 'en' => 'Upstream-to-Downstream Integration [PLACEHOLDER]'],
+                        'description' => ['id' => 'Menyelaraskan jadwal pengupasan tambang, pengolahan, dan pengapalan tongkang. [PLACEHOLDER]', 'en' => 'Synchronizing pit extraction, crushing, and barge transshipment schedules. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                    [
+                        'title' => ['id' => 'Transparansi Mutu & Kuantitas [PLACEHOLDER]', 'en' => 'Quality & Quantity Transparency [PLACEHOLDER]'],
+                        'description' => ['id' => 'Melibatkan surveyor independen pada setiap titik serah terima kargo. [PLACEHOLDER]', 'en' => 'Engaging independent surveyors at every cargo handover point. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                    [
+                        'title' => ['id' => 'Kepatuhan K3LH Berkelanjutan [PLACEHOLDER]', 'en' => 'Continuous HSE Compliance [PLACEHOLDER]'],
+                        'description' => ['id' => 'Menjalankan program reklamasi progresif dan keselamatan kerja tambang tanpa kompromi. [PLACEHOLDER]', 'en' => 'Executing progressive reclamation and zero-compromise mine safety programs. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                ],
+            ]);
+
+            $this->createBlock($about, 4, BlockType::ValuesGrid, [
                 'eyebrow' => ['id' => 'PRINSIP KERJA', 'en' => 'OPERATING PRINCIPLES'],
                 'title' => ['id' => 'Nilai Utama Perusahaan [PLACEHOLDER]', 'en' => 'Core Corporate Values [PLACEHOLDER]'],
                 'items' => [
@@ -709,6 +779,16 @@ class DatabaseSeeder extends Seeder
                     ['title' => ['id' => 'Disiplin Operasional [PLACEHOLDER]', 'en' => 'Operational Discipline [PLACEHOLDER]'], 'description' => ['id' => 'Pengelolaan jadwal hauling, crushing, dan pemuatan tongkang dengan prosedur baku. [PLACEHOLDER]', 'en' => 'Standardized procedures across hauling, crushing, and barge loading schedules. [PLACEHOLDER]'], 'icon_name' => 'clock'],
                     ['title' => ['id' => 'Kepatuhan Hukum & K3LH [PLACEHOLDER]', 'en' => 'Legal & HSE Compliance [PLACEHOLDER]'], 'description' => ['id' => 'Menempatkan izin resmi dan keselamatan kerja sebagai syarat mutlak operasi. [PLACEHOLDER]', 'en' => 'Treating valid licensing and workplace safety as non-negotiable operational prerequisites. [PLACEHOLDER]'], 'icon_name' => 'scale'],
                 ],
+            ]);
+
+            $this->createBlock($about, 5, BlockType::SubsidiaryGrid, [
+                'eyebrow' => ['id' => 'ARSITEKTUR KORPORAT', 'en' => 'CORPORATE ARCHITECTURE'],
+                'title' => ['id' => 'Struktur Grup PT Derco Bara Energy [PLACEHOLDER]', 'en' => 'PT Derco Bara Energy Group Structure [PLACEHOLDER]'],
+                'description' => [
+                    'id' => 'Induk usaha mengoordinasikan kebijakan strategis, kepatuhan, dan alokasi modal pada entitas operasional aktif. [PLACEHOLDER]',
+                    'en' => 'The holding entity coordinates strategic policy, compliance, and capital allocation across active operating subsidiaries. [PLACEHOLDER]',
+                ],
+                'layout_variant' => 'structure',
             ]);
         }
 
@@ -774,9 +854,9 @@ class DatabaseSeeder extends Seeder
                     'en' => $company->translateField('tagline', 'en'),
                 ],
                 'primary_cta_label' => ['id' => 'Lihat Spesifikasi Produk', 'en' => 'View Product Specifications'],
-                'primary_cta_href' => 'produk',
+                'primary_cta_href' => 'page:products',
                 'secondary_cta_label' => ['id' => 'Hubungi Tim Komersial', 'en' => 'Contact Commercial Team'],
-                'secondary_cta_href' => 'kontak',
+                'secondary_cta_href' => 'page:contact',
             ]);
 
             $this->createBlock($home, 2, BlockType::Stats, [
@@ -796,7 +876,7 @@ class DatabaseSeeder extends Seeder
                 'title' => ['id' => 'Diskusikan Kebutuhan Kontrak Anda [PLACEHOLDER]', 'en' => 'Discuss Your Contract Requirements [PLACEHOLDER]'],
                 'phone' => '+62 21 5088 7400',
                 'cta_label' => ['id' => 'Hubungi Kami', 'en' => 'Contact Us'],
-                'cta_href' => 'kontak',
+                'cta_href' => 'page:contact',
             ]);
         }
 

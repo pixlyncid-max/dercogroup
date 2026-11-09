@@ -37,7 +37,11 @@ class GetCompanyPageAction
             ? $this->pageResolver->resolveByKey($company, $pageKeyOrSlug, $allowDraftPreview)
             : $this->pageResolver->resolveBySlug($company, $pageKeyOrSlug, $locale, $allowDraftPreview);
 
+        $page->setRelation('company', $company);
         $page->load('visibleBlocks');
+        foreach ($page->visibleBlocks as $block) {
+            $block->setRelation('page', $page);
+        }
 
         $company->load([
             'stats',

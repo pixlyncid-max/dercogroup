@@ -20,9 +20,9 @@ class HeroBlock extends Block
             ['name' => 'title', 'type' => 'translatable_text', 'label' => 'Judul Utama', 'required' => true],
             ['name' => 'description', 'type' => 'translatable_textarea', 'label' => 'Deskripsi Singkat', 'required' => true],
             ['name' => 'primary_cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol Utama'],
-            ['name' => 'primary_cta_href', 'type' => 'text', 'label' => 'Tautan Tombol Utama'],
+            ['name' => 'primary_cta_href', 'type' => 'link', 'label' => 'Tautan Tombol Utama'],
             ['name' => 'secondary_cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol Sekunder'],
-            ['name' => 'secondary_cta_href', 'type' => 'text', 'label' => 'Tautan Tombol Sekunder'],
+            ['name' => 'secondary_cta_href', 'type' => 'link', 'label' => 'Tautan Tombol Sekunder'],
             ['name' => 'image', 'type' => 'image', 'label' => 'Gambar Hero'],
         ];
     }
