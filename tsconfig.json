@@ -25,3 +25,4 @@
     "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx"],
     "exclude": ["node_modules", "public", "bootstrap/ssr", "vendor"]
 }
+

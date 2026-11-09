@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Domain\Company\Models\Company;
+use App\Domain\Company\Resources\CompanyResource;
+use App\Domain\Page\Actions\BuildNavigationAction;
+use App\Domain\Page\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
@@ -36,25 +40,41 @@ class HandleInertiaRequests extends Middleware
         $locale = App::getLocale();
         $translations = Lang::get('ui', [], $locale);
 
-        return [
-            ...parent::share($request),
-            'locale' => $locale,
-            'locales' => SetLocale::SUPPORTED_LOCALES,
-            'translations' => is_array($translations) ? $translations : [],
-            'company' => [
+        /** @var Company|null $company */
+        $company = $request->attributes->get('company');
+        /** @var Page|null $currentPage */
+        $currentPage = $request->attributes->get('currentPage');
+        $allowDraftPreview = (bool) $request->attributes->get('allowDraftPreview', false);
+
+        $companyPayload = $company instanceof Company
+            ? (new CompanyResource($company))->resolve()
+            : [
                 'name' => 'PT Derco Bara Energy',
                 'slug' => 'derco-bara-energy',
                 'theme' => 'holding',
                 'status' => 'published',
                 'is_holding' => true,
-            ],
-            'navigation' => [
+            ];
+
+        $navigationPayload = $company instanceof Company
+            ? app(BuildNavigationAction::class)->execute($company, $currentPage, $locale, $allowDraftPreview)
+            : [
                 'items' => [],
                 'alternateUrls' => [
                     'id' => url('/id'),
                     'en' => url('/en'),
                 ],
-            ],
+                'holdingUrl' => "/{$locale}",
+            ];
+
+        return [
+            ...parent::share($request),
+            'locale' => $locale,
+            'locales' => SetLocale::SUPPORTED_LOCALES,
+            'translations' => is_array($translations) ? $translations : [],
+            'isPreview' => $allowDraftPreview,
+            'company' => $companyPayload,
+            'navigation' => $navigationPayload,
         ];
     }
 }

@@ -16,3 +16,4 @@ export default defineConfig({
         include: ['resources/js/**/*.test.{ts,tsx}'],
     },
 });
+
