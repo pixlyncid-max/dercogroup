@@ -41,7 +41,7 @@ enum PageKey: string
             self::Business => ['id' => 'bisnis-kami', 'en' => 'our-business'],
             self::Products => ['id' => 'produk', 'en' => 'products'],
             self::Operations => ['id' => 'operasi', 'en' => 'operations'],
-            self::Compliance => ['id' => 'mutu-kepatuhan', 'en' => 'quality-compliance'],
+            self::Compliance => ['id' => 'mutu-dan-kepatuhan', 'en' => 'quality-and-compliance'],
             self::Contact => ['id' => 'kontak', 'en' => 'contact'],
         };
     }

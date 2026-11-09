@@ -1,4 +1,5 @@
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from './Button';
+export { ContactFormBody, type ContactFormBodyProps } from './ContactFormBody';
 export { Container, type ContainerProps, type ContainerSize } from './Container';
 export { Counter, type CounterProps } from './Counter';
 export { Eyebrow, type EyebrowProps, type EyebrowTone } from './Eyebrow';
@@ -11,3 +12,4 @@ export { Prose, type ProseProps } from './Prose';
 export { Reveal, type RevealProps } from './Reveal';
 export { Section, type SectionProps, type SectionTone } from './Section';
 export { Textarea, type TextareaProps } from './Textarea';
+export { ThemeIcon, type ThemeIconProps } from './ThemeIcon';

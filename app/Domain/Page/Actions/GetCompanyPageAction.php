@@ -55,6 +55,9 @@ class GetCompanyPageAction
             $productsQuery->where('is_published', true);
         }
         $products = $productsQuery->get();
+        foreach ($products as $product) {
+            $product->setRelation('company', $company);
+        }
 
         $subsidiaries = $company->isHolding()
             ? $company->publishedSubsidiaries()->with(['stats', 'contacts'])->get()

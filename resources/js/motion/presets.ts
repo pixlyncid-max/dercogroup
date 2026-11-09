@@ -9,6 +9,7 @@ export const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
 export const DURATION = {
     fast: 0.15,
+    theme: 0.25,
     base: 0.3,
     slow: 0.6,
 } as const;
@@ -79,6 +80,17 @@ export const scaleX: Variants = {
     },
 };
 
+export const themeFade: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: DURATION.theme,
+            ease: EASE_OUT,
+        },
+    },
+};
+
 export const reducedMotionFade: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -93,6 +105,7 @@ export const presets = {
     stagger,
     slideInLeft,
     scaleX,
+    themeFade,
 } as const;
 
 export type PresetName = keyof typeof presets;

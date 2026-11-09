@@ -1,4 +1,7 @@
 /* resources/css/themes/korin-berkat.css */
+@import '@fontsource-variable/source-serif-4';
+@import '@fontsource-variable/inter';
+
 [data-theme='korin-berkat'] {
     --color-bg: #ffffff;
     --color-surface: #f5f6f8;
@@ -13,8 +16,9 @@
     --color-accent-on-dark: #d4af37;
     --color-on-accent: #ffffff;
     --color-line: #e3e6ec;
-    --font-heading: 'Source Serif 4', Georgia, serif;
-    --font-body: 'Inter', system-ui, sans-serif;
+    --font-heading: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, serif;
+    --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
     --radius-card: 2px;
     --radius-button: 2px;
+    font-variant-numeric: lining-nums;
 }

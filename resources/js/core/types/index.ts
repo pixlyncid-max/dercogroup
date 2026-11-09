@@ -228,6 +228,28 @@ export interface StatsBlockData {
     description?: string;
 }
 
+export interface ProductListBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    limit?: number;
+    show_download_button?: boolean;
+}
+
+export interface OperationListBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    show_map?: boolean;
+}
+
+export interface CertificationListBlockData {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    group_by_category?: boolean;
+}
+
 export interface ContactInfoBlockData {
     eyebrow?: string;
     title: string;
@@ -260,6 +282,8 @@ export interface ProductData {
     description: string;
     image_url?: string | null;
     image_alt: string;
+    url?: string | null;
+    document_url?: string | null;
     specs: ProductSpecData[];
 }
 
@@ -321,6 +345,9 @@ export interface SharedPageProps {
     isPreview?: boolean;
     page?: PageData;
     blocks?: PageBlockData[];
+    product?: ProductData | null;
+    productsPageUrl?: string | null;
+    contactPageUrl?: string | null;
     subsidiaries?: SharedCompany[];
     stats?: CompanyStatData[];
     products?: ProductData[];

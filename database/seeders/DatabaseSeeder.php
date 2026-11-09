@@ -871,9 +871,33 @@ class DatabaseSeeder extends Seeder
                 'show_download_button' => true,
             ]);
 
-            $this->createBlock($home, 4, BlockType::CtaBanner, [
+            $this->createBlock($home, 4, BlockType::OperationList, [
+                'eyebrow' => ['id' => 'JEJAK INFRASTRUKTUR', 'en' => 'INFRASTRUCTURE FOOTPRINT'],
+                'title' => ['id' => 'Lokasi Tambang, Stockpile & Pelabuhan Muat [PLACEHOLDER]', 'en' => 'Mine Sites, Stockpiles & Loading Ports [PLACEHOLDER]'],
+                'description' => [
+                    'id' => 'Titik operasional terintegrasi dari area konsesi hingga fasilitas pemuatan tongkang di Kalimantan Timur dan Kalimantan Selatan. [PLACEHOLDER]',
+                    'en' => 'Integrated operational nodes spanning concession pits through barge loading terminals in East and South Kalimantan. [PLACEHOLDER]',
+                ],
+                'show_map' => true,
+            ]);
+
+            $this->createBlock($home, 5, BlockType::CertificationList, [
+                'eyebrow' => ['id' => 'KEPATUHAN & MUTU', 'en' => 'COMPLIANCE & QUALITY'],
+                'title' => ['id' => 'Sertifikasi, Izin Usaha & Standar K3LH [PLACEHOLDER]', 'en' => 'Certifications, Operating Permits & HSE Standards [PLACEHOLDER]'],
+                'description' => [
+                    'id' => 'Dokumen verifikasi legalitas izin operasi dan standar manajemen mutu yang dapat diunduh langsung. [PLACEHOLDER]',
+                    'en' => 'Operating license verification records and quality management certificates available for direct download. [PLACEHOLDER]',
+                ],
+                'group_by_category' => true,
+            ]);
+
+            $this->createBlock($home, 6, BlockType::CtaBanner, [
                 'eyebrow' => ['id' => 'KONSULTASI PASOKAN', 'en' => 'SUPPLY CONSULTATION'],
                 'title' => ['id' => 'Diskusikan Kebutuhan Kontrak Anda [PLACEHOLDER]', 'en' => 'Discuss Your Contract Requirements [PLACEHOLDER]'],
+                'subtitle' => [
+                    'id' => 'Hubungi tim komersial kami untuk jadwal pengapalan, lembar spesifikasi COA, dan kuota kontrak jangka panjang. [PLACEHOLDER]',
+                    'en' => 'Reach our commercial desk for shipment schedules, COA specification sheets, and term contract allocations. [PLACEHOLDER]',
+                ],
                 'phone' => '+62 21 5088 7400',
                 'cta_label' => ['id' => 'Hubungi Kami', 'en' => 'Contact Us'],
                 'cta_href' => 'page:contact',
@@ -896,6 +920,11 @@ class DatabaseSeeder extends Seeder
                     'en' => $company->translateField('about_short', 'en'),
                 ],
                 'image_position' => 'right',
+                'image' => '/images/placeholders/coal-stockpile-1280.webp',
+                'image_alt' => [
+                    'id' => "Area stockpile dan fasilitas pemuatan {$company->name} [PLACEHOLDER]",
+                    'en' => "Stockpile yard and loading infrastructure of {$company->name} [PLACEHOLDER]",
+                ],
             ]);
 
             $this->createBlock($about, 2, BlockType::Timeline, [
@@ -903,13 +932,43 @@ class DatabaseSeeder extends Seeder
                 'title' => ['id' => 'Perkembangan & Kapabilitas [PLACEHOLDER]', 'en' => 'Growth & Capabilities [PLACEHOLDER]'],
                 'orientation' => 'horizontal',
                 'items' => [
-                    ['period' => '01', 'title' => ['id' => 'Pembentukan Tim & Izin Operasi [PLACEHOLDER]', 'en' => 'Team Formation & Operational Licensing [PLACEHOLDER]'], 'description' => ['id' => 'Penyelesaian izin usaha dan perjanjian kerja sama infrastruktur pelabuhan. [PLACEHOLDER]', 'en' => 'Completion of business permits and port infrastructure agreements. [PLACEHOLDER]']],
-                    ['period' => '02', 'title' => ['id' => 'Pengapalan Komersial Perdana [PLACEHOLDER]', 'en' => 'First Commercial Shipment [PLACEHOLDER]'], 'description' => ['id' => 'Pelaksanaan kontrak pasokan perdana untuk industri domestik dengan verifikasi surveyor independen. [PLACEHOLDER]', 'en' => 'Execution of inaugural domestic industrial supply contract verified by independent surveyors. [PLACEHOLDER]']],
-                    ['period' => '03', 'title' => ['id' => 'Ekspansi Kapasitas Rantai Pasok [PLACEHOLDER]', 'en' => 'Supply Chain Capacity Expansion [PLACEHOLDER]'], 'description' => ['id' => 'Penambahan armada angkut dan peningkatan kapasitas stockpile terkelola. [PLACEHOLDER]', 'en' => 'Expansion of hauling fleet and managed stockpile capacity. [PLACEHOLDER]']],
+                    ['period' => '2018', 'title' => ['id' => 'Pembentukan Tim & Izin Operasi [PLACEHOLDER]', 'en' => 'Team Formation & Operational Licensing [PLACEHOLDER]'], 'description' => ['id' => 'Penyelesaian izin usaha dan perjanjian kerja sama infrastruktur pelabuhan. [PLACEHOLDER]', 'en' => 'Completion of business permits and port infrastructure agreements. [PLACEHOLDER]']],
+                    ['period' => '2021', 'title' => ['id' => 'Pengapalan Komersial Perdana [PLACEHOLDER]', 'en' => 'First Commercial Shipment [PLACEHOLDER]'], 'description' => ['id' => 'Pelaksanaan kontrak pasokan perdana untuk industri domestik dengan verifikasi surveyor independen. [PLACEHOLDER]', 'en' => 'Execution of inaugural domestic industrial supply contract verified by independent surveyors. [PLACEHOLDER]']],
+                    ['period' => '2024', 'title' => ['id' => 'Ekspansi Kapasitas Rantai Pasok [PLACEHOLDER]', 'en' => 'Supply Chain Capacity Expansion [PLACEHOLDER]'], 'description' => ['id' => 'Penambahan armada angkut dan peningkatan kapasitas stockpile terkelola. [PLACEHOLDER]', 'en' => 'Expansion of hauling fleet and managed stockpile capacity. [PLACEHOLDER]']],
                 ],
             ]);
 
-            $this->createBlock($about, 3, BlockType::ValuesGrid, [
+            $this->createBlock($about, 3, BlockType::MissionList, [
+                'eyebrow' => ['id' => 'VISI, MISI & KEPEMILIKAN', 'en' => 'VISION, MISSION & OWNERSHIP'],
+                'title' => ['id' => 'Mandat Strategis dalam Grup Derco Bara Energy [PLACEHOLDER]', 'en' => 'Strategic Mandate Within Derco Bara Energy Group [PLACEHOLDER]'],
+                'vision' => [
+                    'id' => 'Menjadi mitra pasokan dan operasional energi yang unggul dalam kepastian mutu spesifikasi, keandalan jadwal pengapalan, serta kepatuhan hukum. [PLACEHOLDER]',
+                    'en' => 'To be a premier energy supply and operational partner distinguished by specification certainty, shipment reliability, and legal compliance. [PLACEHOLDER]',
+                ],
+                'body' => [
+                    'id' => "Struktur Kepemilikan: {$company->name} merupakan entitas anak usaha di bawah pengendalian langsung PT Derco Bara Energy (Holding), yang menyelaraskan tata kelola risiko, audit kepatuhan, dan alokasi infrastruktur grup. [PLACEHOLDER]",
+                    'en' => "Ownership Structure: {$company->name} is a directly controlled operating subsidiary of PT Derco Bara Energy (Holding), aligning risk governance, compliance auditing, and group infrastructure allocation. [PLACEHOLDER]",
+                ],
+                'items' => [
+                    [
+                        'title' => ['id' => 'Menjaga konsistensi parameter kalori, moisture, dan kadar abu sesuai kontrak [PLACEHOLDER]', 'en' => 'Maintain strict calorific, moisture, and ash consistency against contract grades [PLACEHOLDER]'],
+                        'description' => ['id' => 'Pengawasan mutu berlapis dari pit tambang hingga sertifikasi surveyor independen di pelabuhan muat. [PLACEHOLDER]', 'en' => 'Multi-stage quality supervision from mine pit face through independent surveyor certification at loading port. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                    [
+                        'title' => ['id' => 'Mengoptimalkan waktu putar tongkang dan efisiensi rantai logistik [PLACEHOLDER]', 'en' => 'Optimize barge turnaround times and logistics chain efficiency [PLACEHOLDER]'],
+                        'description' => ['id' => 'Koordinasi terjadwal antara armada hauling, kesiapan stockpile, dan slot sandar jetty. [PLACEHOLDER]', 'en' => 'Scheduled coordination across hauling fleets, stockpile readiness, and jetty berthing slots. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                    [
+                        'title' => ['id' => 'Mematuhi seluruh ketentuan perizinan pertambangan dan keselamatan K3LH [PLACEHOLDER]', 'en' => 'Uphold all mining license obligations and occupational HSE standards [PLACEHOLDER]'],
+                        'description' => ['id' => 'Pelaksanaan operasi yang transparan, terdokumentasi, dan teraudit secara berkala. [PLACEHOLDER]', 'en' => 'Transparent, documented, and periodically audited operational execution. [PLACEHOLDER]'],
+                        'icon_name' => 'check-circle-2',
+                    ],
+                ],
+            ]);
+
+            $this->createBlock($about, 4, BlockType::ValuesGrid, [
                 'eyebrow' => ['id' => 'STANDAR KERJA', 'en' => 'OPERATING STANDARDS'],
                 'title' => ['id' => 'Prinsip Pelaksanaan Operasional [PLACEHOLDER]', 'en' => 'Operational Execution Principles [PLACEHOLDER]'],
                 'items' => [

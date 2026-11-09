@@ -7,6 +7,7 @@ namespace App\Domain\Page\Actions;
 use App\Domain\Company\Models\Company;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
+use App\Domain\Product\Models\Product;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,15 +38,21 @@ class PageResolver
             return $this->resolveByKey($company, PageKey::Home, $allowDraftPreview);
         }
 
+        $aliases = [
+            'mutu-kepatuhan' => 'mutu-dan-kepatuhan',
+            'quality-compliance' => 'quality-and-compliance',
+        ];
+        $candidateSlug = $aliases[$normalizedSlug] ?? $normalizedSlug;
+
         $query = $this->basePageQuery($company, $allowDraftPreview);
 
         $pages = $query->get();
 
         /** @var Page|null $matched */
-        $matched = $pages->first(function (Page $page) use ($normalizedSlug, $locale): bool {
+        $matched = $pages->first(function (Page $page) use ($normalizedSlug, $candidateSlug, $locale): bool {
             $localizedSlug = trim($page->translateField('slug', $locale), '/');
 
-            return $localizedSlug !== '' && $localizedSlug === $normalizedSlug;
+            return $localizedSlug !== '' && ($localizedSlug === $normalizedSlug || $localizedSlug === $candidateSlug);
         });
 
         if ($matched === null) {
@@ -101,6 +108,26 @@ class PageResolver
     }
 
     /**
+     * Resolve the localized "Products / Produk" path segment for a subsidiary company.
+     */
+    public function productsPrefix(Company $company, string $locale, bool $allowDraftPreview = false): string
+    {
+        try {
+            $productsPage = $this->resolveByKey($company, PageKey::Products, $allowDraftPreview);
+            $slug = trim($productsPage->translateField('slug', $locale), '/');
+            if ($slug !== '') {
+                return $slug;
+            }
+        } catch (ModelNotFoundException) {
+            // Fall through to default localized slug
+        }
+
+        $defaults = PageKey::Products->defaultSlugs();
+
+        return $defaults[$locale] ?? $defaults['id'];
+    }
+
+    /**
      * Build the canonical relative URL for a company page in a specific locale.
      */
     public function pageUrl(
@@ -122,6 +149,41 @@ class PageResolver
         }
 
         return $preview ? "{$path}?preview=1" : $path;
+    }
+
+    /**
+     * Build the canonical relative URL for a subsidiary product detail page in a specific locale.
+     */
+    public function productUrl(
+        Company $company,
+        Product $product,
+        string $locale,
+        bool $preview = false,
+    ): string {
+        $businessSegment = $this->businessPrefix($locale);
+        $productsSegment = $this->productsPrefix($company, $locale, $preview);
+        $path = "/{$locale}/{$businessSegment}/{$company->slug}/{$productsSegment}/{$product->slug}";
+
+        return $preview ? "{$path}?preview=1" : $path;
+    }
+
+    /**
+     * Generate alternate language URLs for a product detail page.
+     *
+     * @return array<string, string>
+     */
+    public function productAlternateUrls(
+        Company $company,
+        Product $product,
+        bool $preview = false,
+    ): array {
+        $urls = [];
+
+        foreach (SetLocale::SUPPORTED_LOCALES as $locale) {
+            $urls[$locale] = $this->productUrl($company, $product, $locale, $preview);
+        }
+
+        return $urls;
     }
 
     /**
