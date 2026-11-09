@@ -41,13 +41,14 @@ export default function ThemedPage() {
                 <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
             </Head>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence initial={false} mode="wait">
                 <motion.div
                     key={themeKey}
                     initial={prefersReducedMotion ? 'visible' : 'hidden'}
                     animate="visible"
                     exit="hidden"
                     variants={themeTransitionVariants}
+                    style={prefersReducedMotion ? { opacity: 1, transform: 'none' } : undefined}
                 >
                     <Layout>
                         {product && ProductDetail ? (

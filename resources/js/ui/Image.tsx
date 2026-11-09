@@ -56,7 +56,7 @@ export function Image({
     ...imgRest
 }: ImageProps) {
     const wrapperClasses = [
-        'block relative overflow-hidden rounded-[var(--radius-card)] bg-surface border border-line',
+        'block relative overflow-hidden rounded-[var(--radius-image,var(--radius-card))] bg-surface border border-line',
         ratioClassMap[ratio],
         wrapperClassName,
     ]

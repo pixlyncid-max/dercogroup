@@ -20,13 +20,28 @@ class PageResource extends JsonResource
     public function toArray(Request $request): array
     {
         $locale = App::getLocale();
+        $title = $this->translateField('title', $locale);
+        $rawMetaTitle = $this->translateField('meta_title', $locale);
+        $defaultTitles = $this->key->defaultTitles();
+        $defaultTitleForLocale = $defaultTitles[$locale] ?? $defaultTitles['id'];
+        $companyName = $this->relationLoaded('company') && $this->company !== null
+            ? $this->company->name
+            : '';
+
+        $autoDefaultMetaTitle = $companyName !== ''
+            ? "{$defaultTitleForLocale} — {$companyName}"
+            : $defaultTitleForLocale;
+
+        $metaTitle = ($rawMetaTitle === '' || ($title !== $defaultTitleForLocale && $rawMetaTitle === $autoDefaultMetaTitle))
+            ? ($companyName !== '' ? "{$title} — {$companyName}" : $title)
+            : $rawMetaTitle;
 
         return [
             'id' => $this->id,
             'key' => $this->key->value,
-            'title' => $this->translateField('title', $locale),
+            'title' => $title,
             'slug' => $this->translateField('slug', $locale),
-            'meta_title' => $this->translateField('meta_title', $locale) ?: $this->translateField('title', $locale),
+            'meta_title' => $metaTitle,
             'meta_description' => $this->translateField('meta_description', $locale),
             'show_in_nav' => $this->show_in_nav,
             'is_published' => $this->is_published,

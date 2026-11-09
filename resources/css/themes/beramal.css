@@ -1,4 +1,6 @@
-/* resources/css/themes/beramal.css */
+/* resources/css/themes/beramal.css — DESIGN.md 7.1, 7.2, 7.3 */
+@import '@fontsource-variable/manrope';
+
 [data-theme='beramal'] {
     --color-bg: #ffffff;
     --color-surface: #e6f3f8;
@@ -13,8 +15,15 @@
     --color-accent-on-dark: #5bb8d6;
     --color-on-accent: #ffffff;
     --color-line: #d5e6ee;
-    --font-heading: 'Manrope', system-ui, sans-serif;
-    --font-body: 'Manrope', system-ui, sans-serif;
+    --font-heading: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+    --font-body: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
     --radius-card: 24px;
+    --radius-image: 28px;
     --radius-button: 9999px;
+}
+
+[data-theme='beramal'] h1,
+[data-theme='beramal'] h2,
+[data-theme='beramal'] h3 {
+    letter-spacing: -0.01em;
 }

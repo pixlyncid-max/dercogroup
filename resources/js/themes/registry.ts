@@ -6,6 +6,7 @@ import type {
     ContactInfoBlockData,
     ProductData,
 } from '@/core';
+import { beramalTheme } from './beramal';
 import { holdingTheme } from './holding';
 import { korinBerkatTheme } from './korin-berkat';
 
@@ -37,7 +38,7 @@ export const themeRegistry: Record<CompanyThemeKey, ThemeRegistration> = {
     holding: holdingTheme,
     'korin-berkat': korinBerkatTheme,
     'korin-bara': korinBerkatTheme,
-    beramal: korinBerkatTheme,
+    beramal: beramalTheme,
 };
 
 export function isSupportedTheme(theme: string): theme is CompanyThemeKey {

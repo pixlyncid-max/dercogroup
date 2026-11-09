@@ -11,12 +11,20 @@ export default defineConfig({
         baseURL: process.env.APP_URL || 'http://127.0.0.1:8000',
         trace: 'on-first-retry',
     },
-    webServer: {
-        command: 'php artisan serve --host=127.0.0.1 --port=8000',
-        url: 'http://127.0.0.1:8000',
-        reuseExistingServer: !process.env.CI,
-        timeout: 30000,
-    },
+    webServer: [
+        {
+            command: 'node bootstrap/ssr/ssr.js',
+            port: 13714,
+            reuseExistingServer: false,
+            timeout: 15000,
+        },
+        {
+            command: 'php artisan serve --host=127.0.0.1 --port=8000',
+            url: 'http://127.0.0.1:8000',
+            reuseExistingServer: !process.env.CI,
+            timeout: 30000,
+        },
+    ],
     projects: [
         {
             name: 'chromium',

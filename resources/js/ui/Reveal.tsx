@@ -18,6 +18,7 @@ export function Reveal({ preset = 'fadeUp', className = '', children }: RevealPr
             whileInView="visible"
             viewport={VIEWPORT_ONCE}
             variants={variants}
+            style={prefersReducedMotion ? { opacity: 1, transform: 'none' } : undefined}
             className={className || undefined}
         >
             {children}

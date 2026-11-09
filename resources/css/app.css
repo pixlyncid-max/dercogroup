@@ -77,6 +77,7 @@
     --font-heading: var(--font-heading);
     --font-sans: var(--font-body);
     --radius-card: var(--radius-card);
+    --radius-image: var(--radius-image, var(--radius-card));
     --radius-button: var(--radius-button);
 }
 

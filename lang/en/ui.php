@@ -71,6 +71,30 @@ return [
                 'description' => 'Direct barge delivery to domestic buyer discharge ports or offshore export transshipment anchorages.',
             ],
         ],
+        'calm_flow_eyebrow' => 'INTEGRATED WORKFLOW',
+        'calm_flow_heading' => 'Service & Facility Coordination Stages',
+        'calm_flow_steps' => [
+            'planning' => [
+                'code' => '01',
+                'title' => 'Schedule Planning & Facility Readiness [PLACEHOLDER]',
+                'description' => 'Alignment of service schedules, facility node readiness, and technical specification requirements.',
+            ],
+            'coordination' => [
+                'code' => '02',
+                'title' => 'Operational Coordination & Field Execution [PLACEHOLDER]',
+                'description' => 'Coordinated field execution supported by real-time monitoring across every operational node.',
+            ],
+            'verification' => [
+                'code' => '03',
+                'title' => 'Quality Inspection & Safety Compliance [PLACEHOLDER]',
+                'description' => 'Verification against Service Level Agreements (SLA) and occupational HSE procedures at all facilities.',
+            ],
+            'handover' => [
+                'code' => '04',
+                'title' => 'Service Handover & Measured Reporting [PLACEHOLDER]',
+                'description' => 'Completion handover accompanied by official operational records and periodic performance reviews.',
+            ],
+        ],
     ],
     'compliance' => [
         'issuer_label' => 'Issuing Authority',
@@ -82,6 +106,7 @@ return [
         'expired_badge' => 'Expired',
         'active_badge' => 'Valid',
         'document_col' => 'Document & Registration Number',
+        'documents_count' => 'Documents',
     ],
     'contact' => [
         'address_label' => 'Address',

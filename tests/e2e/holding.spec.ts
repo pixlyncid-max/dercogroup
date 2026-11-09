@@ -65,7 +65,7 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
 
     test('passes WCAG 2.2 AA automated axe checks on the Holding home page and renders cleanly across viewports', async ({
         page,
-    }) => {
+    }, testInfo) => {
         await page.emulateMedia({ reducedMotion: 'reduce' });
         await page.setViewportSize({ width: 1280, height: 900 });
         await page.goto('/id', { waitUntil: 'networkidle' });
@@ -91,7 +91,7 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
         expect(accessibilityScanResults.violations).toEqual([]);
 
         await page.screenshot({
-            path: 'C:/Users/Ganesha Arta/.gemini/antigravity/brain/1d35f0af-7669-46ed-a244-bcb1eec82aa5/holding-home-1280.png',
+            path: testInfo.outputPath('holding-home-1280.png'),
             fullPage: true,
         });
 

@@ -1,11 +1,18 @@
 import { useLocale } from '@/core/i18n';
 
 export interface LanguageSwitchProps {
+    tone?: 'dark' | 'light';
     className?: string;
 }
 
-export function LanguageSwitch({ className = '' }: LanguageSwitchProps) {
+export function LanguageSwitch({ tone = 'dark', className = '' }: LanguageSwitchProps) {
     const { locale, locales, switchUrl, t } = useLocale();
+    const activeClasses =
+        tone === 'light'
+            ? 'text-accent-strong underline decoration-accent decoration-2 underline-offset-4'
+            : 'text-accent-on-dark underline decoration-accent decoration-2 underline-offset-4';
+    const inactiveClasses =
+        tone === 'light' ? 'text-muted hover:text-ink' : 'opacity-75 hover:opacity-100';
 
     return (
         <nav
@@ -30,9 +37,7 @@ export function LanguageSwitch({ className = '' }: LanguageSwitchProps) {
                             aria-current={isActive ? 'true' : undefined}
                             className={[
                                 'inline-flex min-h-[44px] min-w-[36px] items-center justify-center px-2 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-                                isActive
-                                    ? 'text-accent-on-dark underline decoration-accent decoration-2 underline-offset-4'
-                                    : 'opacity-75 hover:opacity-100',
+                                isActive ? activeClasses : inactiveClasses,
                             ].join(' ')}
                         >
                             {code.toUpperCase()}

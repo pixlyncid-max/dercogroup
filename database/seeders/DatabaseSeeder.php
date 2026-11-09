@@ -255,76 +255,147 @@ class DatabaseSeeder extends Seeder
     {
         Operation::query()->where('company_id', $company->id)->delete();
 
-        $operations = [
-            [
-                'type' => OperationType::Mine,
-                'name' => [
-                    'id' => "Blok Tambang Terbuka {$company->name} [PLACEHOLDER]",
-                    'en' => "{$company->name} Open-Pit Mining Block [PLACEHOLDER]",
+        $operations = $company->slug === 'beramal-sukses-sejahtera'
+            ? [
+                [
+                    'type' => OperationType::Facility,
+                    'name' => [
+                        'id' => 'Pusat Koordinasi & Fasilitas Operasional Terpadu [PLACEHOLDER]',
+                        'en' => 'Integrated Operational Facility & Coordination Hub [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Koridor Operasional Utama, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'Primary Operational Corridor, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Pusat pengendalian jadwal layanan lapangan, kesiapan peralatan pendukung, dan pemantauan standar keselamatan kerja harian. [PLACEHOLDER]',
+                        'en' => 'Centralized control hub for field service scheduling, support equipment readiness, and daily occupational safety monitoring. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.4512000,
+                    'longitude' => 117.0145000,
                 ],
-                'location_label' => [
-                    'id' => 'Kutai Kartanegara, Kalimantan Timur [PLACEHOLDER]',
-                    'en' => 'Kutai Kartanegara, East Kalimantan [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Port,
+                    'name' => [
+                        'id' => 'Fasilitas Sandar & Layanan Simpul Maritim [PLACEHOLDER]',
+                        'en' => 'Berthing Facility & Maritime Node Services [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Alur Pelayaran Sungai Mahakam, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'Mahakam River Navigation Channel, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Pengelolaan sandar armada air, pengaturan antrean dermaga, dan pencatatan waktu layanan terukur selama 24 jam. [PLACEHOLDER]',
+                        'en' => 'Berth slot management, dock queue coordination, and measured 24-hour turnaround logging for waterborne fleets. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.5689000,
+                    'longitude' => 117.2130000,
                 ],
-                'description' => [
-                    'id' => 'Operasi pengupasan lapisan penutup dan pengambilan batu bara dengan pemantauan geoteknik lereng harian serta sistem drainase kolam pengendap. [PLACEHOLDER]',
-                    'en' => 'Overburden stripping and coal extraction with daily slope geotechnical monitoring and settling-pond drainage management. [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Stockpile,
+                    'name' => [
+                        'id' => 'Area Penyangga Logistik & Penyimpanan Terkelola [PLACEHOLDER]',
+                        'en' => 'Managed Logistics Buffer & Storage Yard [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Simpul Distribusi Regional, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'Regional Distribution Node, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Fasilitas penataan material dan inventaris operasional dengan sistem pencatatan keluar-masuk terverifikasi. [PLACEHOLDER]',
+                        'en' => 'Structured material staging and operational inventory yard equipped with verified inbound-outbound logging. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.5112000,
+                    'longitude' => 117.1045000,
                 ],
-                'latitude' => -0.4218000,
-                'longitude' => 116.9824000,
-            ],
-            [
-                'type' => OperationType::Stockpile,
-                'name' => [
-                    'id' => 'Fasilitas Crushing & Stockpile ROM [PLACEHOLDER]',
-                    'en' => 'Crushing & ROM Stockpile Facility [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Fleet,
+                    'name' => [
+                        'id' => 'Unit Armada Pendukung & Mobilitas Lapangan [PLACEHOLDER]',
+                        'en' => 'Support Fleet & Field Mobility Unit [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Jaringan Layanan Kalimantan – Jawa [PLACEHOLDER]',
+                        'en' => 'Kalimantan – Java Service Network [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Pengoperasian dan pemeliharaan berkala unit armada pendukung guna menjamin ketepatan jadwal layanan mitra. [PLACEHOLDER]',
+                        'en' => 'Scheduled operation and preventive maintenance of support fleet units ensuring partner SLA punctuality. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.6010000,
+                    'longitude' => 117.3020000,
                 ],
-                'location_label' => [
-                    'id' => 'KM 28 Jalur Hauling Khusus, Kalimantan Timur [PLACEHOLDER]',
-                    'en' => 'KM 28 Dedicated Haul Road, East Kalimantan [PLACEHOLDER]',
+            ]
+            : [
+                [
+                    'type' => OperationType::Mine,
+                    'name' => [
+                        'id' => "Blok Tambang Terbuka {$company->name} [PLACEHOLDER]",
+                        'en' => "{$company->name} Open-Pit Mining Block [PLACEHOLDER]",
+                    ],
+                    'location_label' => [
+                        'id' => 'Kutai Kartanegara, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'Kutai Kartanegara, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Operasi pengupasan lapisan penutup dan pengambilan batu bara dengan pemantauan geoteknik lereng harian serta sistem drainase kolam pengendap. [PLACEHOLDER]',
+                        'en' => 'Overburden stripping and coal extraction with daily slope geotechnical monitoring and settling-pond drainage management. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.4218000,
+                    'longitude' => 116.9824000,
                 ],
-                'description' => [
-                    'id' => 'Unit peremukan batu bara kapasitas 450 ton/jam dengan pemisahan ukuran otomatis dan area timbun terpisah berdasarkan spesifikasi kalori. [PLACEHOLDER]',
-                    'en' => '450 TPH coal crushing plant with automated sizing screen and segregated stockpile pads organized by calorific grade. [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Stockpile,
+                    'name' => [
+                        'id' => 'Fasilitas Crushing & Stockpile ROM [PLACEHOLDER]',
+                        'en' => 'Crushing & ROM Stockpile Facility [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'KM 28 Jalur Hauling Khusus, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'KM 28 Dedicated Haul Road, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Unit peremukan batu bara kapasitas 450 ton/jam dengan pemisahan ukuran otomatis dan area timbun terpisah berdasarkan spesifikasi kalori. [PLACEHOLDER]',
+                        'en' => '450 TPH coal crushing plant with automated sizing screen and segregated stockpile pads organized by calorific grade. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.5112000,
+                    'longitude' => 117.1045000,
                 ],
-                'latitude' => -0.5112000,
-                'longitude' => 117.1045000,
-            ],
-            [
-                'type' => OperationType::Port,
-                'name' => [
-                    'id' => 'Terminal Khusus Muat Tongkang (Jetty) [PLACEHOLDER]',
-                    'en' => 'Dedicated Barge Loading Terminal (Jetty) [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Port,
+                    'name' => [
+                        'id' => 'Terminal Khusus Muat Tongkang (Jetty) [PLACEHOLDER]',
+                        'en' => 'Dedicated Barge Loading Terminal (Jetty) [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Alur Sungai Mahakam, Kalimantan Timur [PLACEHOLDER]',
+                        'en' => 'Mahakam River Channel, East Kalimantan [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Pelabuhan muat conveyor untuk tongkang 270–300 kaki lengkap dengan jembatan timbang terkalibrasi dan pengambilan sampel mekanis. [PLACEHOLDER]',
+                        'en' => 'Conveyor barge-loading terminal serving 270–300 ft barges, equipped with calibrated weighbridges and mechanical sampling stations. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.5689000,
+                    'longitude' => 117.2130000,
                 ],
-                'location_label' => [
-                    'id' => 'Alur Sungai Mahakam, Kalimantan Timur [PLACEHOLDER]',
-                    'en' => 'Mahakam River Channel, East Kalimantan [PLACEHOLDER]',
+                [
+                    'type' => OperationType::Fleet,
+                    'name' => [
+                        'id' => 'Armada Hauling & Koordinasi Transshipment [PLACEHOLDER]',
+                        'en' => 'Hauling Fleet & Transshipment Coordination [PLACEHOLDER]',
+                    ],
+                    'location_label' => [
+                        'id' => 'Koridor Logistik Kalimantan – Jawa [PLACEHOLDER]',
+                        'en' => 'Kalimantan – Java Logistics Corridor [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Pengendalian jadwal truk angkut dump truck dan pemantauan posisi tongkang secara berkala hingga titik bongkar pembeli. [PLACEHOLDER]',
+                        'en' => 'Dispatch control for dump-truck haulage and scheduled barge tracking through to buyer discharge ports. [PLACEHOLDER]',
+                    ],
+                    'latitude' => -0.6010000,
+                    'longitude' => 117.3020000,
                 ],
-                'description' => [
-                    'id' => 'Pelabuhan muat conveyor untuk tongkang 270–300 kaki lengkap dengan jembatan timbang terkalibrasi dan pengambilan sampel mekanis. [PLACEHOLDER]',
-                    'en' => 'Conveyor barge-loading terminal serving 270–300 ft barges, equipped with calibrated weighbridges and mechanical sampling stations. [PLACEHOLDER]',
-                ],
-                'latitude' => -0.5689000,
-                'longitude' => 117.2130000,
-            ],
-            [
-                'type' => OperationType::Fleet,
-                'name' => [
-                    'id' => 'Armada Hauling & Koordinasi Transshipment [PLACEHOLDER]',
-                    'en' => 'Hauling Fleet & Transshipment Coordination [PLACEHOLDER]',
-                ],
-                'location_label' => [
-                    'id' => 'Koridor Logistik Kalimantan – Jawa [PLACEHOLDER]',
-                    'en' => 'Kalimantan – Java Logistics Corridor [PLACEHOLDER]',
-                ],
-                'description' => [
-                    'id' => 'Pengendalian jadwal truk angkut dump truck dan pemantauan posisi tongkang secara berkala hingga titik bongkar pembeli. [PLACEHOLDER]',
-                    'en' => 'Dispatch control for dump-truck haulage and scheduled barge tracking through to buyer discharge ports. [PLACEHOLDER]',
-                ],
-                'latitude' => -0.6010000,
-                'longitude' => 117.3020000,
-            ],
-        ];
+            ];
 
         foreach ($operations as $index => $op) {
             Operation::query()->create([
@@ -469,85 +540,164 @@ class DatabaseSeeder extends Seeder
     {
         Product::query()->where('company_id', $company->id)->delete();
 
-        $catalog = [
-            [
-                'slug' => 'thermal-coal-gar-4200',
-                'name' => [
-                    'id' => 'Batu Bara Termal GAR 4.200 [PLACEHOLDER]',
-                    'en' => 'Thermal Coal GAR 4,200 [PLACEHOLDER]',
+        $catalog = $company->slug === 'beramal-sukses-sejahtera'
+            ? [
+                [
+                    'slug' => 'layanan-manajemen-fasilitas',
+                    'name' => [
+                        'id' => 'Pengelolaan Fasilitas & Simpul Logistik [PLACEHOLDER]',
+                        'en' => 'Facility & Logistics Node Management [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Layanan Fasilitas · Operasional 24 Jam',
+                        'en' => 'Facility Services · 24-Hour Operations',
+                    ],
+                    'summary' => [
+                        'id' => 'Pengoperasian fasilitas pendukung rantai pasok, area penyangga logistik, dan pengelolaan jadwal sandar terjadwal. [PLACEHOLDER]',
+                        'en' => 'Operation of supply-chain support facilities, logistics staging areas, and scheduled berthing slot management. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Layanan pengelolaan fasilitas terpadu yang mencakup penataan alur keluar-masuk armada, pencatatan tonase/volume terkalibrasi, serta pengawasan keselamatan area kerja bagi mitra grup maupun pihak ketiga. [PLACEHOLDER]',
+                        'en' => 'Integrated facility management covering fleet inbound-outbound flow control, calibrated volume logging, and workplace safety supervision for group entities and third-party partners. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'SLA', 'label' => ['id' => 'Target Ketersediaan Layanan', 'en' => 'Service Availability Target'], 'value' => '≥ 96,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'OPS', 'label' => ['id' => 'Jam Layanan Fasilitas', 'en' => 'Facility Operating Window'], 'value' => '24 / 7', 'unit' => 'Jam', 'is_highlight' => true],
+                        ['code' => 'HUB', 'label' => ['id' => 'Titik Simpul Terkelola', 'en' => 'Managed Facility Nodes'], 'value' => '4', 'unit' => 'Lokasi', 'is_highlight' => true],
+                        ['code' => 'HSE', 'label' => ['id' => 'Standar Keselamatan Kerja', 'en' => 'Occupational Safety Standard'], 'value' => 'ISO 45001', 'unit' => '', 'is_highlight' => false],
+                        ['code' => 'RPT', 'label' => ['id' => 'Siklus Rekonsiliasi Data', 'en' => 'Data Reconciliation Cycle'], 'value' => 'Harian', 'unit' => 'Laporan', 'is_highlight' => false],
+                    ],
                 ],
-                'category_label' => [
-                    'id' => 'Kalori Menengah · GAR 4.200 kcal/kg',
-                    'en' => 'Medium Calorific · GAR 4,200 kcal/kg',
+                [
+                    'slug' => 'koordinasi-operasional-terpadu',
+                    'name' => [
+                        'id' => 'Koordinasi Operasional & Pergerakan Armada [PLACEHOLDER]',
+                        'en' => 'Integrated Operational & Fleet Dispatch Coordination [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Koordinasi Lapangan · Kendali Jadwal',
+                        'en' => 'Field Coordination · Schedule Dispatch',
+                    ],
+                    'summary' => [
+                        'id' => 'Penyelarasan jadwal pergerakan unit armada, pemantauan waktu putar, dan pelaporan status operasi secara berkala. [PLACEHOLDER]',
+                        'en' => 'Synchronization of fleet movement schedules, turnaround monitoring, and periodic operational status reporting. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Mendukung kelancaran alur kerja antartitik fasilitas melalui pengaturan antrean terpusat, komunikasi lapangan berlapis, dan dokumentasi serah terima yang transparan. [PLACEHOLDER]',
+                        'en' => 'Supports seamless inter-facility workflows through centralized queue dispatch, multi-layered field communications, and transparent handover documentation. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'TAT', 'label' => ['id' => 'Rata-rata Waktu Putar', 'en' => 'Average Turnaround Window'], 'value' => '≤ 24', 'unit' => 'Jam', 'is_highlight' => true],
+                        ['code' => 'FLT', 'label' => ['id' => 'Unit Armada Terkoordinasi', 'en' => 'Coordinated Fleet Units'], 'value' => '18', 'unit' => 'Unit', 'is_highlight' => true],
+                        ['code' => 'RSP', 'label' => ['id' => 'Waktu Tanggap Koordinasi', 'en' => 'Dispatch Response Time'], 'value' => '≤ 30', 'unit' => 'Menit', 'is_highlight' => true],
+                        ['code' => 'QMS', 'label' => ['id' => 'Sistem Manajemen Mutu', 'en' => 'Quality Management System'], 'value' => 'ISO 9001', 'unit' => '', 'is_highlight' => false],
+                    ],
                 ],
-                'summary' => [
-                    'id' => 'Batu bara sub-bituminus bersulfur rendah untuk PLTU sirkulasi fluidized bed dan boiler industri. [PLACEHOLDER]',
-                    'en' => 'Low-sulfur sub-bituminous coal suited for circulating fluidized-bed power plants and industrial boilers. [PLACEHOLDER]',
+                [
+                    'slug' => 'dukungan-teknis-pemeliharaan',
+                    'name' => [
+                        'id' => 'Dukungan Teknis & Pemeliharaan Fasilitas [PLACEHOLDER]',
+                        'en' => 'Technical Support & Facility Maintenance [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Dukungan Teknis · Pemeliharaan Preventif',
+                        'en' => 'Technical Support · Preventive Maintenance',
+                    ],
+                    'summary' => [
+                        'id' => 'Inspeksi berkala, pemeliharaan preventif peralatan fasilitas, dan kesiapan tim teknis di lokasi operasi. [PLACEHOLDER]',
+                        'en' => 'Periodic inspection, preventive maintenance of facility equipment, and on-site technical team readiness. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Program pemeliharaan terencana untuk menjaga keandalan peralatan kerja, meminimalkan waktu henti tidak terjadwal, dan memastikan kepatuhan kelayakan teknis. [PLACEHOLDER]',
+                        'en' => 'Planned maintenance program designed to preserve equipment reliability, minimize unscheduled downtime, and ensure technical worthiness compliance. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'PM', 'label' => ['id' => 'Kepatuhan Jadwal Preventif', 'en' => 'Preventive Schedule Compliance'], 'value' => '98,5', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'MTTR', 'label' => ['id' => 'Target Waktu Penanganan', 'en' => 'Target Resolution Window'], 'value' => '≤ 4', 'unit' => 'Jam', 'is_highlight' => true],
+                        ['code' => 'LTI', 'label' => ['id' => 'Insiden Kecelakaan Fatal', 'en' => 'Fatal Lost-Time Incidents'], 'value' => '0', 'unit' => 'Insiden', 'is_highlight' => true],
+                        ['code' => 'AUD', 'label' => ['id' => 'Frekuensi Inspeksi Kelaikan', 'en' => 'Worthiness Inspection Cycle'], 'value' => 'Bulanan', 'unit' => 'Audit', 'is_highlight' => false],
+                    ],
                 ],
-                'description' => [
-                    'id' => 'Diproduksi melalui proses peremukan terkontrol ukuran 0–50 mm dengan uji kualitas independen (COA) pada setiap pengapalan tongkang. [PLACEHOLDER]',
-                    'en' => 'Produced via controlled 0–50 mm crushing with independent Certificate of Analysis (COA) verification on every barge shipment. [PLACEHOLDER]',
+            ]
+            : [
+                [
+                    'slug' => 'thermal-coal-gar-4200',
+                    'name' => [
+                        'id' => 'Batu Bara Termal GAR 4.200 [PLACEHOLDER]',
+                        'en' => 'Thermal Coal GAR 4,200 [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Kalori Menengah · GAR 4.200 kcal/kg',
+                        'en' => 'Medium Calorific · GAR 4,200 kcal/kg',
+                    ],
+                    'summary' => [
+                        'id' => 'Batu bara sub-bituminus bersulfur rendah untuk PLTU sirkulasi fluidized bed dan boiler industri. [PLACEHOLDER]',
+                        'en' => 'Low-sulfur sub-bituminous coal suited for circulating fluidized-bed power plants and industrial boilers. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Diproduksi melalui proses peremukan terkontrol ukuran 0–50 mm dengan uji kualitas independen (COA) pada setiap pengapalan tongkang. [PLACEHOLDER]',
+                        'en' => 'Produced via controlled 0–50 mm crushing with independent Certificate of Analysis (COA) verification on every barge shipment. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '4.200', 'unit' => 'kcal/kg', 'is_highlight' => true],
+                        ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '34,0 – 36,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '5,5 – 7,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,45', 'unit' => '%', 'is_highlight' => false],
+                        ['code' => 'SIZE', 'label' => ['id' => 'Ukuran Butir (0–50 mm)', 'en' => 'Size Distribution (0–50 mm)'], 'value' => '≥ 90', 'unit' => '%', 'is_highlight' => false],
+                    ],
                 ],
-                'specs' => [
-                    ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '4.200', 'unit' => 'kcal/kg', 'is_highlight' => true],
-                    ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '34,0 – 36,0', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '5,5 – 7,0', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,45', 'unit' => '%', 'is_highlight' => false],
-                    ['code' => 'SIZE', 'label' => ['id' => 'Ukuran Butir (0–50 mm)', 'en' => 'Size Distribution (0–50 mm)'], 'value' => '≥ 90', 'unit' => '%', 'is_highlight' => false],
+                [
+                    'slug' => 'thermal-coal-gar-4800',
+                    'name' => [
+                        'id' => 'Batu Bara Termal GAR 4.800 [PLACEHOLDER]',
+                        'en' => 'Thermal Coal GAR 4,800 [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Kalori Menengah-Tinggi · GAR 4.800 kcal/kg',
+                        'en' => 'Medium-High Calorific · GAR 4,800 kcal/kg',
+                    ],
+                    'summary' => [
+                        'id' => 'Pasokan batu bara dengan efisiensi pembakaran stabil untuk pabrik semen, tekstil, dan pengolahan kimia. [PLACEHOLDER]',
+                        'en' => 'Consistent combustion-efficiency coal supply for cement kilns, textile mills, and chemical processing plants. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Dikelola pada area stockpile terpisah guna menjaga kestabilan kelembapan dan keseragaman nilai kalori antar-pengapalan. [PLACEHOLDER]',
+                        'en' => 'Managed on dedicated stockpile pads to preserve moisture stability and calorific uniformity across shipments. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '4.800', 'unit' => 'kcal/kg', 'is_highlight' => true],
+                        ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '26,0 – 28,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '7,0 – 9,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,65', 'unit' => '%', 'is_highlight' => false],
+                        ['code' => 'HGI', 'label' => ['id' => 'Hardgrove Grindability Index', 'en' => 'Hardgrove Grindability Index'], 'value' => '48 – 52', 'unit' => 'HGI', 'is_highlight' => false],
+                    ],
                 ],
-            ],
-            [
-                'slug' => 'thermal-coal-gar-4800',
-                'name' => [
-                    'id' => 'Batu Bara Termal GAR 4.800 [PLACEHOLDER]',
-                    'en' => 'Thermal Coal GAR 4,800 [PLACEHOLDER]',
+                [
+                    'slug' => 'thermal-coal-gar-3800',
+                    'name' => [
+                        'id' => 'Batu Bara Termal GAR 3.800 [PLACEHOLDER]',
+                        'en' => 'Thermal Coal GAR 3,800 [PLACEHOLDER]',
+                    ],
+                    'category_label' => [
+                        'id' => 'Abu & Sulfur Sangat Rendah · GAR 3.800 kcal/kg',
+                        'en' => 'Ultra-Low Ash & Sulfur · GAR 3,800 kcal/kg',
+                    ],
+                    'summary' => [
+                        'id' => 'Batu bara ramah emisi dengan kadar abu dan sulfur sangat rendah untuk blending pembangkit listrik. [PLACEHOLDER]',
+                        'en' => 'Low-emission coal featuring minimal ash and sulfur content for power-generation blending programs. [PLACEHOLDER]',
+                    ],
+                    'description' => [
+                        'id' => 'Tersedia untuk pengiriman kontrak jangka panjang maupun spot dengan pengapalan tongkang 300 kaki atau transshipment mother vessel. [PLACEHOLDER]',
+                        'en' => 'Available under term or spot contracts via 300-ft barge delivery or mother-vessel transshipment anchorage. [PLACEHOLDER]',
+                    ],
+                    'specs' => [
+                        ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '3.800', 'unit' => 'kcal/kg', 'is_highlight' => true],
+                        ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '38,0 – 40,0', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '4,0 – 5,5', 'unit' => '%', 'is_highlight' => true],
+                        ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,30', 'unit' => '%', 'is_highlight' => false],
+                    ],
                 ],
-                'category_label' => [
-                    'id' => 'Kalori Menengah-Tinggi · GAR 4.800 kcal/kg',
-                    'en' => 'Medium-High Calorific · GAR 4,800 kcal/kg',
-                ],
-                'summary' => [
-                    'id' => 'Pasokan batu bara dengan efisiensi pembakaran stabil untuk pabrik semen, tekstil, dan pengolahan kimia. [PLACEHOLDER]',
-                    'en' => 'Consistent combustion-efficiency coal supply for cement kilns, textile mills, and chemical processing plants. [PLACEHOLDER]',
-                ],
-                'description' => [
-                    'id' => 'Dikelola pada area stockpile terpisah guna menjaga kestabilan kelembapan dan keseragaman nilai kalori antar-pengapalan. [PLACEHOLDER]',
-                    'en' => 'Managed on dedicated stockpile pads to preserve moisture stability and calorific uniformity across shipments. [PLACEHOLDER]',
-                ],
-                'specs' => [
-                    ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '4.800', 'unit' => 'kcal/kg', 'is_highlight' => true],
-                    ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '26,0 – 28,0', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '7,0 – 9,0', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,65', 'unit' => '%', 'is_highlight' => false],
-                    ['code' => 'HGI', 'label' => ['id' => 'Hardgrove Grindability Index', 'en' => 'Hardgrove Grindability Index'], 'value' => '48 – 52', 'unit' => 'HGI', 'is_highlight' => false],
-                ],
-            ],
-            [
-                'slug' => 'thermal-coal-gar-3800',
-                'name' => [
-                    'id' => 'Batu Bara Termal GAR 3.800 [PLACEHOLDER]',
-                    'en' => 'Thermal Coal GAR 3,800 [PLACEHOLDER]',
-                ],
-                'category_label' => [
-                    'id' => 'Abu & Sulfur Sangat Rendah · GAR 3.800 kcal/kg',
-                    'en' => 'Ultra-Low Ash & Sulfur · GAR 3,800 kcal/kg',
-                ],
-                'summary' => [
-                    'id' => 'Batu bara ramah emisi dengan kadar abu dan sulfur sangat rendah untuk blending pembangkit listrik. [PLACEHOLDER]',
-                    'en' => 'Low-emission coal featuring minimal ash and sulfur content for power-generation blending programs. [PLACEHOLDER]',
-                ],
-                'description' => [
-                    'id' => 'Tersedia untuk pengiriman kontrak jangka panjang maupun spot dengan pengapalan tongkang 300 kaki atau transshipment mother vessel. [PLACEHOLDER]',
-                    'en' => 'Available under term or spot contracts via 300-ft barge delivery or mother-vessel transshipment anchorage. [PLACEHOLDER]',
-                ],
-                'specs' => [
-                    ['code' => 'CV', 'label' => ['id' => 'Nilai Kalori (GAR)', 'en' => 'Calorific Value (GAR)'], 'value' => '3.800', 'unit' => 'kcal/kg', 'is_highlight' => true],
-                    ['code' => 'TM', 'label' => ['id' => 'Total Moisture (ARB)', 'en' => 'Total Moisture (ARB)'], 'value' => '38,0 – 40,0', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'ASH', 'label' => ['id' => 'Kadar Abu / Ash (ADB)', 'en' => 'Ash Content (ADB)'], 'value' => '4,0 – 5,5', 'unit' => '%', 'is_highlight' => true],
-                    ['code' => 'TS', 'label' => ['id' => 'Total Sulfur (ADB)', 'en' => 'Total Sulfur (ADB)'], 'value' => '≤ 0,30', 'unit' => '%', 'is_highlight' => false],
-                ],
-            ],
-        ];
+            ];
 
         foreach ($catalog as $index => $item) {
             $product = Product::query()->create([
@@ -841,6 +991,7 @@ class DatabaseSeeder extends Seeder
     private function seedSubsidiaryPageBlocks(Company $company): void
     {
         $pages = $company->pages()->get()->keyBy(fn (Page $page): string => $page->key->value);
+        $isBeramal = $company->slug === 'beramal-sukses-sejahtera';
 
         if (isset($pages[PageKey::Home->value])) {
             $home = $pages[PageKey::Home->value];
@@ -853,10 +1004,19 @@ class DatabaseSeeder extends Seeder
                     'id' => $company->translateField('tagline', 'id'),
                     'en' => $company->translateField('tagline', 'en'),
                 ],
-                'primary_cta_label' => ['id' => 'Lihat Spesifikasi Produk', 'en' => 'View Product Specifications'],
+                'primary_cta_label' => $isBeramal
+                    ? ['id' => 'Lihat Layanan & Produk', 'en' => 'Explore Services & Products']
+                    : ['id' => 'Lihat Spesifikasi Produk', 'en' => 'View Product Specifications'],
                 'primary_cta_href' => 'page:products',
                 'secondary_cta_label' => ['id' => 'Hubungi Tim Komersial', 'en' => 'Contact Commercial Team'],
                 'secondary_cta_href' => 'page:contact',
+                'image' => $isBeramal ? '/images/placeholders/barge-jetty-1280.webp' : null,
+                'image_alt' => $isBeramal
+                    ? [
+                        'id' => 'Fasilitas operasional dan koordinasi layanan PT Beramal Sukses Sejahtera [PLACEHOLDER]',
+                        'en' => 'Operational facilities and service coordination of PT Beramal Sukses Sejahtera [PLACEHOLDER]',
+                    ]
+                    : null,
             ]);
 
             $this->createBlock($home, 2, BlockType::Stats, [
@@ -865,19 +1025,30 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $this->createBlock($home, 3, BlockType::ProductList, [
-                'eyebrow' => ['id' => 'KATALOG SPESIFIKASI', 'en' => 'SPECIFICATION CATALOG'],
-                'title' => ['id' => 'Produk & Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Products & Services [PLACEHOLDER]'],
+                'eyebrow' => $isBeramal
+                    ? ['id' => 'CAKUPAN LAYANAN', 'en' => 'SERVICE SCOPE']
+                    : ['id' => 'KATALOG SPESIFIKASI', 'en' => 'SPECIFICATION CATALOG'],
+                'title' => $isBeramal
+                    ? ['id' => 'Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Services [PLACEHOLDER]']
+                    : ['id' => 'Produk & Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Products & Services [PLACEHOLDER]'],
                 'limit' => 3,
                 'show_download_button' => true,
             ]);
 
             $this->createBlock($home, 4, BlockType::OperationList, [
                 'eyebrow' => ['id' => 'JEJAK INFRASTRUKTUR', 'en' => 'INFRASTRUCTURE FOOTPRINT'],
-                'title' => ['id' => 'Lokasi Tambang, Stockpile & Pelabuhan Muat [PLACEHOLDER]', 'en' => 'Mine Sites, Stockpiles & Loading Ports [PLACEHOLDER]'],
-                'description' => [
-                    'id' => 'Titik operasional terintegrasi dari area konsesi hingga fasilitas pemuatan tongkang di Kalimantan Timur dan Kalimantan Selatan. [PLACEHOLDER]',
-                    'en' => 'Integrated operational nodes spanning concession pits through barge loading terminals in East and South Kalimantan. [PLACEHOLDER]',
-                ],
+                'title' => $isBeramal
+                    ? ['id' => 'Alur Kerja & Titik Fasilitas Operasional [PLACEHOLDER]', 'en' => 'Workflow & Operational Facility Nodes [PLACEHOLDER]']
+                    : ['id' => 'Lokasi Tambang, Stockpile & Pelabuhan Muat [PLACEHOLDER]', 'en' => 'Mine Sites, Stockpiles & Loading Ports [PLACEHOLDER]'],
+                'description' => $isBeramal
+                    ? [
+                        'id' => 'Jaringan fasilitas pendukung dan koordinasi operasional terpadu yang dikelola dengan standar layanan terukur. [PLACEHOLDER]',
+                        'en' => 'Integrated support facilities and operational coordination hubs managed under measurable service standards. [PLACEHOLDER]',
+                    ]
+                    : [
+                        'id' => 'Titik operasional terintegrasi dari area konsesi hingga fasilitas pemuatan tongkang di Kalimantan Timur dan Kalimantan Selatan. [PLACEHOLDER]',
+                        'en' => 'Integrated operational nodes spanning concession pits through barge loading terminals in East and South Kalimantan. [PLACEHOLDER]',
+                    ],
                 'show_map' => true,
             ]);
 
@@ -892,12 +1063,19 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $this->createBlock($home, 6, BlockType::CtaBanner, [
-                'eyebrow' => ['id' => 'KONSULTASI PASOKAN', 'en' => 'SUPPLY CONSULTATION'],
+                'eyebrow' => $isBeramal
+                    ? ['id' => 'KONSULTASI LAYANAN', 'en' => 'SERVICE CONSULTATION']
+                    : ['id' => 'KONSULTASI PASOKAN', 'en' => 'SUPPLY CONSULTATION'],
                 'title' => ['id' => 'Diskusikan Kebutuhan Kontrak Anda [PLACEHOLDER]', 'en' => 'Discuss Your Contract Requirements [PLACEHOLDER]'],
-                'subtitle' => [
-                    'id' => 'Hubungi tim komersial kami untuk jadwal pengapalan, lembar spesifikasi COA, dan kuota kontrak jangka panjang. [PLACEHOLDER]',
-                    'en' => 'Reach our commercial desk for shipment schedules, COA specification sheets, and term contract allocations. [PLACEHOLDER]',
-                ],
+                'subtitle' => $isBeramal
+                    ? [
+                        'id' => 'Hubungi tim operasional kami untuk koordinasi fasilitas, jadwal layanan, dan kemitraan dukungan rantai pasok. [PLACEHOLDER]',
+                        'en' => 'Reach our operational desk for facility coordination, service schedules, and supply-chain support partnerships. [PLACEHOLDER]',
+                    ]
+                    : [
+                        'id' => 'Hubungi tim komersial kami untuk jadwal pengapalan, lembar spesifikasi COA, dan kuota kontrak jangka panjang. [PLACEHOLDER]',
+                        'en' => 'Reach our commercial desk for shipment schedules, COA specification sheets, and term contract allocations. [PLACEHOLDER]',
+                    ],
                 'phone' => '+62 21 5088 7400',
                 'cta_label' => ['id' => 'Hubungi Kami', 'en' => 'Contact Us'],
                 'cta_href' => 'page:contact',
@@ -983,13 +1161,32 @@ class DatabaseSeeder extends Seeder
             $products = $pages[PageKey::Products->value];
             $products->blocks()->delete();
 
+            if ($isBeramal) {
+                $products->update([
+                    'title' => ['id' => 'Layanan & Produk', 'en' => 'Services & Products'],
+                    'meta_title' => [
+                        'id' => "Layanan & Produk — {$company->name}",
+                        'en' => "Services & Products — {$company->name}",
+                    ],
+                ]);
+            }
+
             $this->createBlock($products, 1, BlockType::ProductList, [
-                'eyebrow' => ['id' => 'SPESIFIKASI TEKNIS', 'en' => 'TECHNICAL SPECIFICATIONS'],
-                'title' => ['id' => "Katalog Produk {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Product Catalog [PLACEHOLDER]"],
-                'description' => [
-                    'id' => 'Parameter spesifikasi di bawah ini merujuk pada standar kontrak pengapalan dan diverifikasi oleh surveyor independen pada titik muat. [PLACEHOLDER]',
-                    'en' => 'The specification parameters below reflect standard shipment contract grades verified by independent surveyors at loading ports. [PLACEHOLDER]',
-                ],
+                'eyebrow' => $isBeramal
+                    ? ['id' => 'CAKUPAN LAYANAN & SPESIFIKASI', 'en' => 'SERVICE & SPECIFICATION SCOPE']
+                    : ['id' => 'SPESIFIKASI TEKNIS', 'en' => 'TECHNICAL SPECIFICATIONS'],
+                'title' => $isBeramal
+                    ? ['id' => "Layanan & Produk {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Services & Products [PLACEHOLDER]"]
+                    : ['id' => "Katalog Produk {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Product Catalog [PLACEHOLDER]"],
+                'description' => $isBeramal
+                    ? [
+                        'id' => 'Rincian layanan pengelolaan fasilitas, koordinasi operasional, dan parameter tingkat layanan (SLA) yang diterapkan bagi mitra kerja. [PLACEHOLDER]',
+                        'en' => 'Detailed facility management services, operational coordination, and Service Level Agreement (SLA) parameters applied for partner engagements. [PLACEHOLDER]',
+                    ]
+                    : [
+                        'id' => 'Parameter spesifikasi di bawah ini merujuk pada standar kontrak pengapalan dan diverifikasi oleh surveyor independen pada titik muat. [PLACEHOLDER]',
+                        'en' => 'The specification parameters below reflect standard shipment contract grades verified by independent surveyors at loading ports. [PLACEHOLDER]',
+                    ],
                 'limit' => 0,
                 'show_download_button' => true,
             ]);
@@ -1001,11 +1198,18 @@ class DatabaseSeeder extends Seeder
 
             $this->createBlock($operations, 1, BlockType::OperationList, [
                 'eyebrow' => ['id' => 'INFRASTRUKTUR LAPANGAN', 'en' => 'FIELD INFRASTRUCTURE'],
-                'title' => ['id' => "Jaringan Operasi {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Operational Network [PLACEHOLDER]"],
-                'description' => [
-                    'id' => 'Rantai operasional terpadu mulai dari area penambangan, fasilitas pengolahan, stockpile, hingga pelabuhan muat tongkang. [PLACEHOLDER]',
-                    'en' => 'Integrated operational chain spanning mining pits, crushing plants, stockpiles, and barge-loading terminals. [PLACEHOLDER]',
-                ],
+                'title' => $isBeramal
+                    ? ['id' => "Alur Kerja & Fasilitas {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Workflow & Facilities [PLACEHOLDER]"]
+                    : ['id' => "Jaringan Operasi {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Operational Network [PLACEHOLDER]"],
+                'description' => $isBeramal
+                    ? [
+                        'id' => 'Tahapan koordinasi operasional terukur beserta jaringan fasilitas pendukung di koridor layanan utama. [PLACEHOLDER]',
+                        'en' => 'Measured operational coordination workflow alongside support facility nodes across the primary service corridor. [PLACEHOLDER]',
+                    ]
+                    : [
+                        'id' => 'Rantai operasional terpadu mulai dari area penambangan, fasilitas pengolahan, stockpile, hingga pelabuhan muat tongkang. [PLACEHOLDER]',
+                        'en' => 'Integrated operational chain spanning mining pits, crushing plants, stockpiles, and barge-loading terminals. [PLACEHOLDER]',
+                    ],
                 'show_map' => true,
             ]);
         }

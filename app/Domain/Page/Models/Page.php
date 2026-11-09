@@ -40,6 +40,32 @@ class Page extends Model
         'is_published',
     ];
 
+    protected static function booted(): void
+    {
+        static::updating(function (self $page): void {
+            if (! $page->isDirty('title') || $page->isDirty('meta_title')) {
+                return;
+            }
+
+            /** @var array<string, string> $originalTitles */
+            $originalTitles = json_decode((string) $page->getRawOriginal('title'), true) ?: [];
+            /** @var array<string, string> $currentMetaTitles */
+            $currentMetaTitles = $page->getTranslations('meta_title');
+            /** @var array<string, string> $newTitles */
+            $newTitles = $page->getTranslations('title');
+
+            foreach ($newTitles as $locale => $newTitle) {
+                $oldTitle = $originalTitles[$locale] ?? '';
+                $oldMeta = $currentMetaTitles[$locale] ?? '';
+
+                if ($oldTitle !== '' && str_starts_with($oldMeta, "{$oldTitle} — ")) {
+                    $suffix = substr($oldMeta, strlen($oldTitle));
+                    $page->setTranslation('meta_title', $locale, $newTitle.$suffix);
+                }
+            }
+        });
+    }
+
     /**
      * @return array<string, string>
      */

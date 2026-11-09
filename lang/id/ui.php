@@ -71,6 +71,30 @@ return [
                 'description' => 'Pengiriman langsung ke pelabuhan bongkar pembeli domestik atau titik jangkar transshipment ekspor.',
             ],
         ],
+        'calm_flow_eyebrow' => 'ALUR KERJA TERPADU',
+        'calm_flow_heading' => 'Tahapan Koordinasi Layanan & Fasilitas',
+        'calm_flow_steps' => [
+            'planning' => [
+                'code' => '01',
+                'title' => 'Perencanaan Jadwal & Kesiapan Fasilitas [PLACEHOLDER]',
+                'description' => 'Penyelarasan jadwal layanan, kesiapan titik fasilitas, dan verifikasi kebutuhan teknis mitra.',
+            ],
+            'coordination' => [
+                'code' => '02',
+                'title' => 'Koordinasi Operasional & Eksekusi Lapangan [PLACEHOLDER]',
+                'description' => 'Pelaksanaan layanan terpadu oleh tim lapangan dengan pemantauan waktu nyata di setiap simpul operasi.',
+            ],
+            'verification' => [
+                'code' => '03',
+                'title' => 'Inspeksi Mutu & Kepatuhan Keselamatan [PLACEHOLDER]',
+                'description' => 'Pemeriksaan kesesuaian standar layanan (SLA) serta penerapan prosedur K3LH di seluruh fasilitas.',
+            ],
+            'handover' => [
+                'code' => '04',
+                'title' => 'Serah Terima Layanan & Pelaporan Terukur [PLACEHOLDER]',
+                'description' => 'Penyelesaian pekerjaan disertai dokumentasi berita acara dan evaluasi kinerja berkala.',
+            ],
+        ],
     ],
     'compliance' => [
         'issuer_label' => 'Penerbit',
@@ -82,6 +106,7 @@ return [
         'expired_badge' => 'Kedaluwarsa',
         'active_badge' => 'Berlaku',
         'document_col' => 'Dokumen & Nomor Registrasi',
+        'documents_count' => 'Dokumen',
     ],
     'contact' => [
         'address_label' => 'Alamat',
