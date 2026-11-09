@@ -1,0 +1,20 @@
+/* resources/css/themes/beramal.css */
+[data-theme='beramal'] {
+    --color-bg: #ffffff;
+    --color-surface: #e6f3f8;
+    --color-surface-dark: #0c3547;
+    --color-surface-deeper: #082532;
+    --color-ink: #0c3547;
+    --color-ink-on-dark: #ffffff;
+    --color-muted: #4a5b66;
+    --color-muted-on-dark: #cfe4ed;
+    --color-accent: #007ba7;
+    --color-accent-strong: #007ba7;
+    --color-accent-on-dark: #5bb8d6;
+    --color-on-accent: #ffffff;
+    --color-line: #d5e6ee;
+    --font-heading: 'Manrope', system-ui, sans-serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+    --radius-card: 24px;
+    --radius-button: 9999px;
+}

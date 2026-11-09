@@ -1,0 +1,57 @@
+name: CI
+
+on:
+    push:
+        branches: [main, master, develop, 'feature/**', 'fix/**', 'chore/**']
+    pull_request:
+
+jobs:
+    quality-and-tests:
+        name: Lint, Types & Tests
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.2'
+                  extensions: mbstring, intl, gd, pdo_mysql, pdo_sqlite, zip, exif
+                  coverage: none
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Install NPM dependencies
+              run: npm ci
+
+            - name: Prepare environment
+              run: |
+                  cp .env.example .env
+                  php artisan key:generate
+
+            - name: Run Laravel Pint
+              run: ./vendor/bin/pint --test
+
+            - name: Run ESLint
+              run: npm run lint
+
+            - name: Run TypeScript type check
+              run: npm run types
+
+            - name: Build client and SSR bundles
+              run: npm run build:ssr
+
+            - name: Run Backend Tests (Pest)
+              run: php artisan test
+
+            - name: Run Frontend Tests (Vitest)
+              run: npm run test

@@ -1,0 +1,20 @@
+/* resources/css/themes/korin-bara.css */
+[data-theme='korin-bara'] {
+    --color-bg: #ffffff;
+    --color-surface: #faf4e4;
+    --color-surface-dark: #13203f;
+    --color-surface-deeper: #0d162c;
+    --color-ink: #13203f;
+    --color-ink-on-dark: #ffffff;
+    --color-muted: #4f566b;
+    --color-muted-on-dark: #d7dce8;
+    --color-accent: #c9962b;
+    --color-accent-strong: #7a5a10;
+    --color-accent-on-dark: #e2b44f;
+    --color-on-accent: #13203f;
+    --color-line: #eadfc6;
+    --font-heading: 'Barlow Condensed', system-ui, sans-serif;
+    --font-body: 'Barlow', system-ui, sans-serif;
+    --radius-card: 0px;
+    --radius-button: 0px;
+}

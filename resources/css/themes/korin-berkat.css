@@ -1,0 +1,20 @@
+/* resources/css/themes/korin-berkat.css */
+[data-theme='korin-berkat'] {
+    --color-bg: #ffffff;
+    --color-surface: #f5f6f8;
+    --color-surface-dark: #0a192f;
+    --color-surface-deeper: #16294a;
+    --color-ink: #0a192f;
+    --color-ink-on-dark: #ffffff;
+    --color-muted: #51586a;
+    --color-muted-on-dark: #cbd2df;
+    --color-accent: #d4af37;
+    --color-accent-strong: #8a6d12;
+    --color-accent-on-dark: #d4af37;
+    --color-on-accent: #ffffff;
+    --color-line: #e3e6ec;
+    --font-heading: 'Source Serif 4', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --radius-card: 2px;
+    --radius-button: 2px;
+}

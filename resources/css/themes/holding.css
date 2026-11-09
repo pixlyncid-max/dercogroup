@@ -1,0 +1,20 @@
+/* resources/css/themes/holding.css */
+[data-theme='holding'] {
+    --color-bg: #ffffff;
+    --color-surface: #f5f5f4;
+    --color-surface-dark: #2a2e34;
+    --color-surface-deeper: #1c1f23;
+    --color-ink: #2a2e34;
+    --color-ink-on-dark: #ffffff;
+    --color-muted: #5e646d;
+    --color-muted-on-dark: #d2d4d7;
+    --color-accent: #c77b2e;
+    --color-accent-strong: #a8621f;
+    --color-accent-on-dark: #e3a266;
+    --color-on-accent: #ffffff;
+    --color-line: #e2e2df;
+    --font-heading: 'DM Sans', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --radius-card: 4px;
+    --radius-button: 2px;
+}
