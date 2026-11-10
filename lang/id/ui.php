@@ -45,6 +45,7 @@ return [
         'all_products' => 'Kembali ke Daftar Produk',
         'inquire_product' => 'Minta Penawaran Kargo Ini',
         'overview_heading' => 'Deskripsi & Karakteristik Teknis',
+        'parameter_value' => 'Nilai Parameter',
     ],
     'operations' => [
         'map_heading' => 'Peta Skematik & Koordinat Fasilitas',

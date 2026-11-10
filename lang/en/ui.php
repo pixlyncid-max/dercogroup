@@ -45,6 +45,7 @@ return [
         'all_products' => 'Back to Product Catalog',
         'inquire_product' => 'Request Quotation for This Grade',
         'overview_heading' => 'Technical Description & Characteristics',
+        'parameter_value' => 'Parameter Value',
     ],
     'operations' => [
         'map_heading' => 'Schematic Map & Facility Coordinates',
