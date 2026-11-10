@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Company\Resources;
 
+use App\Domain\Company\Actions\ResolveCompanyLogo;
 use App\Domain\Company\Models\Company;
 use App\Domain\Contact\Resources\CompanyContactResource;
 use App\Domain\Page\Actions\PageResolver;
@@ -51,6 +52,7 @@ class CompanyResource extends JsonResource
             'about_short' => $this->translateField('about_short', $locale),
             'logo_url' => $this->getFirstMediaUrl('logo') ?: null,
             'logo_alt' => $this->translateField('logo_alt', $locale) ?: $this->name,
+            'logo' => app(ResolveCompanyLogo::class)->execute($this->resource),
             'featured_image_url' => $featuredSource['url'],
             'featured_image_srcset' => $featuredSource['srcset'],
             'featured_image_alt' => "{$this->name} [PLACEHOLDER]",

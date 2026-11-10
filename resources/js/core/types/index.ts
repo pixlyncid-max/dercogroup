@@ -56,6 +56,15 @@ export interface CompanyContactData {
     longitude?: number | null;
 }
 
+export interface CompanyLogoData {
+    light: string;
+    dark: string;
+    compact?: string | null;
+    width: number;
+    height: number;
+    alt: string;
+}
+
 export interface SharedCompany {
     id?: number;
     name: string;
@@ -67,6 +76,7 @@ export interface SharedCompany {
     about_short?: string;
     logo_url?: string | null;
     logo_alt?: string;
+    logo?: CompanyLogoData | null;
     featured_image_url?: string | null;
     featured_image_srcset?: string | null;
     featured_image_alt?: string;
