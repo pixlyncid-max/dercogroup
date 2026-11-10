@@ -9,6 +9,7 @@ export { HeroCarousel, type HeroCarouselProps, type HeroSlide } from './HeroCaro
 export { Image, type ImageProps, type ImageRatio, type ResponsiveSource } from './Image';
 export { Input, type InputProps } from './Input';
 export { LanguageSwitch, type LanguageSwitchProps } from './LanguageSwitch';
+export { Logo, type LogoProps } from './Logo';
 export { Prose, type ProseProps } from './Prose';
 export { Reveal, type RevealProps } from './Reveal';
 export { Section, type SectionProps, type SectionTone } from './Section';
