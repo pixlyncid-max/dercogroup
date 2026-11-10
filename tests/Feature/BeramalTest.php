@@ -6,6 +6,7 @@ use App\Domain\Company\Models\Company;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
+use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -17,7 +18,7 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('renders all 6 PT Beramal Sukses Sejahtera pages in Indonesian and English with beramal theme', function (): void {
+it('renders all 5 active PT Beramal Sukses Sejahtera pages in Indonesian and English with beramal theme', function (): void {
     $this->get('/id/bisnis-kami/beramal-sukses-sejahtera')
         ->assertOk()
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -26,11 +27,10 @@ it('renders all 6 PT Beramal Sukses Sejahtera pages in Indonesian and English wi
             ->where('company.slug', 'beramal-sukses-sejahtera')
             ->where('company.theme', 'beramal')
             ->where('page.key', 'home')
-            ->has('blocks', 6)
+            ->has('blocks', 4)
             ->has('stats', 4)
             ->has('products', 3)
             ->has('operations', 4)
-            ->has('certifications', 5)
         );
 
     $this->get('/en/our-business/beramal-sukses-sejahtera')
@@ -47,8 +47,7 @@ it('renders all 6 PT Beramal Sukses Sejahtera pages in Indonesian and English wi
         'tentang-kami' => 'about',
         'produk' => 'products',
         'operasi' => 'operations',
-        'mutu-dan-kepatuhan' => 'compliance',
-        'kontak' => 'contact',
+        'hubungi-kami' => 'contact',
     ];
 
     foreach ($idSlugs as $slug => $expectedKey) {
@@ -66,8 +65,7 @@ it('renders all 6 PT Beramal Sukses Sejahtera pages in Indonesian and English wi
         'about-us' => 'about',
         'products' => 'products',
         'operations' => 'operations',
-        'quality-and-compliance' => 'compliance',
-        'contact' => 'contact',
+        'contact-us' => 'contact',
     ];
 
     foreach ($enSlugs as $slug => $expectedKey) {
@@ -80,6 +78,30 @@ it('renders all 6 PT Beramal Sukses Sejahtera pages in Indonesian and English wi
                 ->where('page.key', $expectedKey)
             );
     }
+
+    // Compliance page is unpublished: returns 404 for public access
+    $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan')->assertNotFound();
+    $this->get('/en/our-business/beramal-sukses-sejahtera/quality-and-compliance')->assertNotFound();
+
+    // With ?preview=1 for authenticated admin, compliance returns 200 with preview flag
+    $admin = User::query()->firstOrFail();
+    $this->actingAs($admin)
+        ->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan?preview=1')
+        ->assertOk()
+        ->assertInertia(fn (Assert $page): Assert => $page
+            ->component('ThemedPage')
+            ->where('page.key', 'compliance')
+            ->where('isPreview', true)
+        );
+
+    // Legacy contact URLs redirect with 301 to hubungi-kami / contact-us
+    $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/kontak')
+        ->assertStatus(301)
+        ->assertRedirect('/id/bisnis-kami/beramal-sukses-sejahtera/hubungi-kami');
+
+    $this->get('/en/our-business/beramal-sukses-sejahtera/contact')
+        ->assertStatus(301)
+        ->assertRedirect('/en/our-business/beramal-sukses-sejahtera/contact-us');
 });
 
 it('reflects CMS-updated Products page title in both navigation and page heading data', function (): void {

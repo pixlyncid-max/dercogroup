@@ -36,6 +36,10 @@ export function Layout({ children }: BeramalLayoutProps) {
     const isPreview = Boolean(props.isPreview);
 
     const homeHref = items[0]?.href ?? `/${locale}`;
+    const middleNavItems = items.filter((item) => item.key !== 'contact');
+    const contactItem = items.find((item) => item.key === 'contact');
+    const contactHref = contactItem?.href ?? contactUrl;
+    const isContactActive = Boolean(contactItem?.active);
 
     return (
         <div
@@ -92,12 +96,12 @@ export function Layout({ children }: BeramalLayoutProps) {
                             </Link>
                         </div>
 
-                        {/* Center Pill Navigation */}
+                        {/* Center Pill Navigation (Non-Contact Items) */}
                         <nav
                             aria-label={t('nav.main')}
                             className="hidden xl:flex xl:items-center xl:gap-1"
                         >
-                            {items.map((item) => (
+                            {middleNavItems.map((item) => (
                                 <Link
                                     key={item.key}
                                     href={item.href}
@@ -114,7 +118,7 @@ export function Layout({ children }: BeramalLayoutProps) {
                             ))}
                         </nav>
 
-                        {/* Right Controls: Holding link, LanguageSwitch, CTA Pill & Mobile Menu Toggle */}
+                        {/* Right Controls: Holding link, LanguageSwitch, "Hubungi Kami" Text Link & Mobile Menu Toggle */}
                         <div className="flex items-center gap-2">
                             <Link
                                 href={holdingUrl}
@@ -127,12 +131,26 @@ export function Layout({ children }: BeramalLayoutProps) {
 
                             <LanguageSwitch tone="light" className="hidden sm:inline-flex" />
 
-                            <Link
-                                href={contactUrl}
-                                className="hidden lg:inline-flex min-h-11 items-center gap-1.5 rounded-full bg-accent px-5 py-2 text-xs font-bold text-on-accent transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                            >
-                                <span>{t('contact_us')}</span>
-                            </Link>
+                            {contactItem ? (
+                                <Link
+                                    href={contactHref}
+                                    aria-current={isContactActive ? 'page' : undefined}
+                                    className={[
+                                        'relative hidden xl:inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-4 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-full',
+                                        isContactActive
+                                            ? 'text-ink font-bold'
+                                            : 'text-muted hover:text-ink',
+                                    ].join(' ')}
+                                >
+                                    <span>{contactItem.label}</span>
+                                    {isContactActive ? (
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute inset-x-3 bottom-2 h-0.5 rounded-full bg-accent"
+                                        />
+                                    ) : null}
+                                </Link>
+                            ) : null}
 
                             <button
                                 type="button"

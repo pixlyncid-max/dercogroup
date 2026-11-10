@@ -44,26 +44,23 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
     return (
         <Section tone="default">
             <Container>
-                <CalmHeader
-                    eyebrow={isFirstBlock && cmsPageTitle ? cmsPageTitle : data.eyebrow}
-                    title={resolvedTitle}
-                    description={data.description}
-                    level={isFirstBlock ? 1 : 2}
-                    action={
-                        isHomePage && productsNavHref ? (
-                            <Link
-                                href={productsNavHref}
-                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 text-xs font-bold text-ink transition-colors hover:bg-accent hover:text-on-accent"
-                            >
-                                <span>{productsNavItem?.label ?? t('see_details')}</span>
-                                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                            </Link>
-                        ) : null
-                    }
-                />
+                {isHomePage ? (
+                    <h2 className="sr-only">{resolvedTitle}</h2>
+                ) : (
+                    <CalmHeader
+                        eyebrow={isFirstBlock && cmsPageTitle ? cmsPageTitle : data.eyebrow}
+                        title={resolvedTitle}
+                        description={data.description}
+                        level={isFirstBlock ? 1 : 2}
+                    />
+                )}
 
                 {/* 3-Column Service Icon + Rounded Photo Cards */}
-                <div className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+                <div
+                    className={`${
+                        isHomePage ? '' : 'mt-12 '
+                    }grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3`}
+                >
                     {products.map((product, idx) => {
                         const highlightSpecs = product.specs
                             .filter((spec) => spec.is_highlight)
@@ -144,10 +141,17 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-surface px-5 py-2 text-xs font-bold text-ink transition-colors group-hover:bg-accent group-hover:text-on-accent"
                                         >
                                             <span>{t('products.view_specification')}</span>
-                                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                            {!isHomePage ? (
+                                                <ArrowRight
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
+                                            ) : null}
                                         </Link>
 
-                                        {data.show_download_button && product.document_url ? (
+                                        {!isHomePage &&
+                                        data.show_download_button &&
+                                        product.document_url ? (
                                             <a
                                                 href={product.document_url}
                                                 download

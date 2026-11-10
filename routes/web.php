@@ -21,6 +21,10 @@ Route::prefix('{locale}')
         // 301 Redirects for legacy contact slugs
         Route::get('/kontak', fn (string $locale) => redirect($locale === 'en' ? '/en/contact-us' : '/id/hubungi-kami', 301));
         Route::get('/contact', fn (string $locale) => redirect($locale === 'en' ? '/en/contact-us' : '/id/hubungi-kami', 301));
+        Route::get('/{businessSegment}/beramal-sukses-sejahtera/kontak', fn (string $locale, string $businessSegment) => redirect($locale === 'en' ? "/en/{$businessSegment}/beramal-sukses-sejahtera/contact-us" : "/id/{$businessSegment}/beramal-sukses-sejahtera/hubungi-kami", 301))
+            ->whereIn('businessSegment', ['bisnis-kami', 'our-business']);
+        Route::get('/{businessSegment}/beramal-sukses-sejahtera/contact', fn (string $locale, string $businessSegment) => redirect($locale === 'en' ? "/en/{$businessSegment}/beramal-sukses-sejahtera/contact-us" : "/id/{$businessSegment}/beramal-sukses-sejahtera/hubungi-kami", 301))
+            ->whereIn('businessSegment', ['bisnis-kami', 'our-business']);
 
         Route::get('/', [HoldingPageController::class, 'home'])->name('holding.home');
 

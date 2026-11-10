@@ -16,6 +16,7 @@ export function StatsBlock({ data }: StatsBlockProps) {
     const { props } = usePage<SharedPageProps>();
     const { locale } = useLocale();
     const stats = props.stats ?? props.company?.stats ?? [];
+    const isHomePage = props.page?.key === 'home';
 
     if (stats.length === 0) {
         return null;
@@ -26,14 +27,22 @@ export function StatsBlock({ data }: StatsBlockProps) {
             <WaveDivider tone="surface" />
             <Section tone="surface">
                 <Container>
-                    <CalmHeader
-                        eyebrow={data.eyebrow}
-                        title={data.title}
-                        description={data.description}
-                        pillTone="bg"
-                    />
+                    {isHomePage ? (
+                        <h2 className="sr-only">{data.title}</h2>
+                    ) : (
+                        <CalmHeader
+                            eyebrow={data.eyebrow}
+                            title={data.title}
+                            description={data.description}
+                            pillTone="bg"
+                        />
+                    )}
 
-                    <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <div
+                        className={`${
+                            isHomePage ? '' : 'mt-12 '
+                        }grid grid-cols-1 gap-5 md:grid-cols-2`}
+                    >
                         {stats.map((stat, idx) => (
                             <Reveal
                                 key={stat.id}
