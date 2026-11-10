@@ -1,6 +1,6 @@
 # DESIGN.md — PT Derco Bara Energy
 
-Versi 1.2 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
+Versi 1.3 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
 Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md)
 
 ---
@@ -227,24 +227,24 @@ Ritme warna: **gelap → gelap → putih → tembaga → putih → putih/kartu g
 **Aturan:** `#D4AF37` **tidak pernah dipakai sebagai teks di atas putih** (kontras ±2:1). Di atas putih pakai `#8A6D12`; gold asli hanya di atas navy atau sebagai garis dekoratif.
 
 ### 5.2 Tipografi
-- Judul: **Source Serif 4** (500/600), memberi kesan laporan resmi.
-- Isi dan UI: **Inter** (400/500).
-- Angka statistik: Source Serif 4, ukuran 72–96px, `font-variant-numeric: lining-nums`.
+- Judul dan isi: **Manrope** (`@fontsource-variable/manrope`), bobot 400, 500, dan 700.
+- Angka statistik dan tabel spesifikasi: Manrope 700, dengan `font-variant-numeric: tabular-nums` untuk perataan angka yang rapi dan tegas.
+- *(Catatan: Source Serif 4 dan Inter dihapus sepenuhnya demi kesatuan visual dan efisiensi aset).*
 
 ### 5.3 Layout
-- **Header:** dua baris. Baris atas tipis navy (pengalih bahasa, tautan "← Derco Bara Energy"). Baris bawah putih dengan menu **bernomor** `01 Beranda · 02 Tentang Kami · 03 Produk · 04 Operasi · 05 Mutu & Kepatuhan · 06 Kontak`.
+- **Header:** dua baris. Baris atas tipis navy (pengalih bahasa, tautan "← Derco Bara Energy"). Baris bawah putih dengan menu **bernomor dinamis** mengikuti jumlah halaman aktif (`01 Beranda · 02 Tentang Kami · 03 Produk · 04 Operasi · 05 Kontak`).
 - **Grid editorial 12 kolom** dengan komposisi asimetris (7/5, 8/4). Garis tipis horizontal memisahkan section, seperti halaman majalah.
 - **Footer:** navy, indeks halaman, kontak, dan tautan kembali ke holding.
 
-### 5.4 Susunan Halaman
+### 5.4 Susunan Halaman (5 Halaman Aktif)
 | Halaman | Isi dan tata letak |
 |---|---|
-| **Beranda** | Hero split 7/5: kiri putih (judul serif, deskripsi, 2 tombol); kanan panel navy dengan **3 statistik besar** bertumpuk dan garis gold. Lalu: "Sekilas" (4 angka besar, counter), ringkasan produk (baris daftar), peta operasi mini, strip sertifikat, CTA navy |
-| **Tentang Kami** | Judul besar di kiri, narasi di kanan (kolom sempit). Timeline horizontal. Visi-misi dua kolom. Struktur kepemilikan sederhana |
-| **Produk** | **Baris editorial, bukan kartu**: nama produk, ringkasan, 3 spesifikasi inline (CV · TM · Ash), panah. Klik membuka detail dengan **tabel spesifikasi** lengkap dan tombol unduh |
-| **Operasi** | Peta sederhana dengan pin, di sampingnya daftar lokasi (tambang, stockpile, pelabuhan). Timeline vertikal alur produksi dari tambang ke kapal |
-| **Mutu & Kepatuhan** | Daftar baris: nama sertifikat, penerbit, nomor, masa berlaku, tombol unduh PDF. Kelompok per kategori (sertifikat, izin, kebijakan, laporan) |
-| **Kontak** | Dua kolom: form kiri, info dan peta kanan |
+| **Beranda** | Hero split 7/5: kiri putih (judul Manrope, deskripsi, 2 tombol); kanan panel navy dengan **3 statistik besar** bertumpuk dan garis gold. Section setelah hero tidak menampilkan heading visual (`sr-only`): 4 angka sekilas operasional, ringkasan produk (tanpa ikon panah dan tanpa tombol unduh), jaringan operasional (tanpa tombol tautan), dan CTA navy. Bagian Kepatuhan dan Mutu dihapus sepenuhnya dari beranda |
+| **Tentang Kami** | Judul besar di kiri, narasi di kanan. Visi-misi dua kolom. Section "Tahapan Operasional" (timeline) dihapus. Section "Standar Kerja" diganti menjadi **"Nilai Perusahaan"** (`ValuesGridBlock`) dengan 4 nilai editorial bernomor (Integritas & Kepatuhan, Keandalan Pasokan, Keselamatan Kerja, Efisiensi Operasional) dalam tata letak 3 kolom garis hairline |
+| **Produk** | **Layout 2-kolom editorial dengan tabel spesifikasi langsung**: kolom kiri menampilkan nama produk dan ringkasan aplikasi industri; kolom kanan menampilkan tabel parameter teknis lengkap (CV, TM, IM, Ash, VM, FC, TS) dengan angka rata kanan. Tidak menggunakan tautan panah atau tombol unduh ke halaman detail terpisah |
+| **Operasi** | Peta sederhana dengan pin, di sampingnya daftar lokasi (tambang, stockpile, pelabuhan) dan fasilitas operasional |
+| **Mutu & Kepatuhan** | *Dihapus permanen* dari navigasi, database, dan sitemap (rute mengembalikan 404) |
+| **Kontak** | Dua kolom: formulir kemitraan kiri, info kontak dan alamat kanan |
 
 ### 5.5 Gerak
 Counter angka naik (Anime.js) saat terlihat; garis gold memanjang dari kiri (Motion, `scaleX`); baris produk bergeser 8px saat hover.
@@ -314,19 +314,20 @@ Kontras: cerulean `#007BA7` di atas putih ±4,8:1, aman untuk teks dan tombol.
 
 ### 7.3 Layout
 - **Header melayang (pill):** kapsul putih bersudut membulat penuh, menggantung 16px dari atas, bayangan `shadow-md`, sedikit transparan saat scroll.
+- **Tautan Kontak di Header:** tombol CTA solid pill dihapus; digantikan dengan satu teks link "Hubungi Kami" (EN: "Contact Us") di sebelah kanan pengalih bahasa `ID | EN` (tanpa latar/border, touch target 44×44px, underline cerulean saat aktif). Menu tengah hanya memuat halaman non-kontak (`Beranda · Tentang Kami · Layanan & Produk · Operasi`).
 - **Radius besar:** kartu 24px, gambar 28px, tombol pill.
 - **Pemisah gelombang:** SVG gelombang halus antar section berganti Mist dan putih.
 - **Footer:** dark water dengan pola gelombang tipis, CTA cerulean.
 
-### 7.4 Susunan Halaman
+### 7.4 Susunan Halaman (5 Halaman Aktif, 1 Disembunyikan)
 | Halaman | Isi dan tata letak |
 |---|---|
-| **Beranda** | Hero putih: kiri teks dan tombol cerulean, kanan foto membulat besar dengan **bentuk organik cerulean** di belakangnya. Lalu: 3 kartu ikon "Layanan Utama", angka kunci dalam kapsul, ringkasan tentang, testimoni/mitra (logo), CTA dark water |
-| **Tentang Kami** | Judul tengah, paragraf pembuka, foto lebar membulat, tiga langkah/nilai dalam stepper horizontal |
-| **Produk** | Kartu ikon-foto 3 kolom. Label halaman dapat diubah di CMS (mis. "Layanan & Produk") karena judul halaman bisa diedit per perusahaan |
-| **Operasi** | **Stepper alur kerja** (langkah bernomor di garis cerulean) + kartu fasilitas |
-| **Mutu & Kepatuhan** | **Accordion** per kategori, isi daftar dokumen dengan tombol unduh |
-| **Kontak** | Kartu form di tengah, info kontak dalam tiga kapsul |
+| **Beranda** | Hero putih: kiri teks dan tombol cerulean, kanan foto membulat besar dengan bentuk organik cerulean di belakangnya. Section setelah hero tidak menampilkan heading visual (`sr-only`): angka operasional (stats), ringkasan layanan & produk (tanpa ikon panah dan tanpa tombol unduh), dan CTA dark water. Bagian Jejak Infrastruktur (Operasi) serta Kepatuhan & Mutu dihapus dari beranda |
+| **Tentang Kami** | Judul tengah, paragraf pembuka, foto lebar membulat, nilai layanan dalam stepper. Section "Tahapan Operasional" (timeline) dihapus |
+| **Produk / Layanan & Produk** | Kartu ikon-foto 3 kolom dengan CalmHeader lengkap (deskripsi pengantar). Label halaman dapat disesuaikan lewat CMS |
+| **Operasi** | Stepper alur kerja (langkah bernomor di garis cerulean) + kartu fasilitas |
+| **Mutu & Kepatuhan** | **Dinonaktifkan** (`is_published=false`, `show_in_nav=false`). Tidak muncul di menu, beranda, maupun sitemap. URL publik 404, tetapi admin dapat mempratinjau via CMS |
+| **Hubungi Kami** | Halaman kontak dinamai "Hubungi Kami" / "Contact Us" (slug rute `/id/beramal/hubungi-kami` dan `/en/beramal/contact-us` dengan 301 redirect dari `/kontak` dan `/contact`). Kartu form di tengah, info kontak dalam tiga kapsul |
 
 > **Asumsi:** bidang usaha PT Beramal Sukses Sejahtera belum dipastikan. Struktur di atas netral (layanan/produk, alur kerja, fasilitas), dan ilustrasi final akan disesuaikan setelah bidang usahanya jelas.
 
@@ -366,13 +367,13 @@ Setiap blok memiliki satu skema data (backend) dan satu tampilan per tema (front
 | `mission_list` | Statis | Judul + daftar poin | Visi-misi |
 | `rich_text` | Statis | Teks panjang | Tentang |
 | `cta_banner` | Statis | Judul + tombol | Hampir semua |
-| `timeline` | Statis | Daftar peristiwa | Tentang (anak usaha) |
-| `values_grid` | Statis | Kartu nilai | Tentang |
+| `timeline` | Statis | Daftar peristiwa | Tentang (anak usaha korin-bara; dihapus dari holding, korin-berkat, beramal) |
+| `values_grid` | Statis | Kartu nilai | Tentang (korin-berkat: 4 nilai editorial 3-kolom) |
 | `subsidiary_grid` | Dinamis | Anak usaha berstatus `published` (varian: cards, alternating, structure) | Holding |
-| `stats` | Dinamis | `company_stats` | Beranda |
-| `product_list` | Dinamis | `products` | Beranda, Produk |
-| `operation_list` | Dinamis | `operations` | Operasi |
-| `certification_list` | Dinamis | `certifications` | Mutu & Kepatuhan |
+| `stats` | Dinamis | `company_stats` | Beranda (korin-berkat & beramal: sr-only header) |
+| `product_list` | Dinamis | `products` | Beranda, Produk (korin-berkat: tabel spesifikasi lengkap langsung tanpa download) |
+| `operation_list` | Dinamis | `operations` | Operasi (dihapus dari beranda beramal) |
+| `certification_list` | Dinamis | `certifications` | Mutu & Kepatuhan (korin-bara, beramal draft; dihapus permanen dari korin-berkat dan beranda beramal) |
 | `contact_info` | Dinamis | `company_contacts` | Kontak, Footer |
 | `contact_form` | Dinamis | Form pesan | Kontak |
 
@@ -449,23 +450,38 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 
 ## 14. Checklist Kualitas Desain (sebelum rilis)
 
-- [ ] Setiap halaman lolos uji "30 detik": pembaca paham apa, siapa, dan ke mana langkah berikutnya.
-- [ ] Hanya satu `h1`, hierarki heading berurutan.
-- [ ] Tidak ada warna hex di luar berkas token tema.
-- [ ] Kontras teks lolos pada semua tema.
-- [ ] Tampilan benar di 360px, 768px, 1280px, dan 1920px.
-- [ ] Seluruh animasi mati dengan benar saat `prefers-reduced-motion`.
-- [ ] Gambar punya rasio tetap dan teks alternatif.
-- [ ] Kedua bahasa (ID/EN) diperiksa: teks tidak meluap atau terpotong.
-- [ ] Anak usaha berstatus draft tidak muncul di menu, grid, sitemap, atau mesin pencari.
-- [ ] Semua uji pada bagian 1.1 lulus untuk setiap halaman utama pada tiap tema (kabur, tiga detik, tukar tema, template, copy, referensi).
-- [ ] Tidak ada ciri "tampilan AI" dari tabel bagian 1.1 (gradasi neon, hero berformula, kartu ikon seragam di setiap section, copy klise, emoji sebagai ikon).
-- [ ] Hanya satu keluarga ikon, maksimal dua keluarga huruf per tema, dan aksen tidak dipakai di lebih dari elemen penting.
+- [x] Setiap halaman lolos uji "30 detik": pembaca paham apa, siapa, dan ke mana langkah berikutnya.
+- [x] Hanya satu `h1`, hierarki heading berurutan.
+- [x] Tidak ada warna hex di luar berkas token tema.
+- [x] Kontras teks lolos pada semua tema (axe WCAG 2.2 AA otomatis lulus di seluruh suite).
+- [x] Tampilan benar di 360px, 768px, 1280px, dan 1920px.
+- [x] Seluruh animasi mati dengan benar saat `prefers-reduced-motion`.
+- [x] Gambar punya rasio tetap dan teks alternatif.
+- [x] Kedua bahasa (ID/EN) diperiksa: teks tidak meluap atau terpotong.
+- [x] Anak usaha berstatus draft tidak muncul di menu, grid, sitemap, atau mesin pencari.
+- [x] Semua uji pada bagian 1.1 lulus untuk setiap halaman utama pada tiap tema (kabur, tiga detik, tukar tema, template, copy, referensi).
+- [x] Tidak ada ciri "tampilan AI" dari tabel bagian 1.1 (gradasi neon, hero berformula, kartu ikon seragam di setiap section, copy klise, emoji sebagai ikon).
+- [x] Hanya satu keluarga ikon, maksimal dua keluarga huruf per tema, dan aksen tidak dipakai di lebih dari elemen penting.
 - [x] Skill dari folder `.agents/skills/ui-ux-pro-max` yang relevan sudah dibaca dan diterapkan; skill yang dipakai dicantumkan di laporan fase.
 
 ---
 
 ## 15. Catatan Perubahan (Changelog)
+
+### Versi 1.3 (Revisi 2 — Anak Usaha: Korin Berkat & Beramal)
+- **Konfigurasi Set Halaman Dinamis:** Menambahkan method `CompanyTheme::pages()` yang memetakan tema ke daftar `PageKey` yang diaktifkan. Navigasi bernomor Korin Berkat otomatis menyesuaikan jumlah item (01-05).
+- **Tema Korin Berkat Energy:**
+  - Tipografi: Menyatukan font menjadi **Manrope Variable** (400/500/700) untuk heading dan body, dengan `font-variant-numeric: tabular-nums`. Menghapus paket `@fontsource-variable/source-serif-4` dan `@fontsource-variable/inter`.
+  - Beranda: Mengubah judul section setelah hero menjadi `sr-only` (Stats, ProductList, OperationList). Menghapus tombol unduh dan tautan panah pada ringkasan produk. Menghapus blok Mutu & Kepatuhan (`certification_list`).
+  - Tentang Kami: Menghapus blok Timeline (Tahapan Operasional). Mengubah "Standar Kerja" menjadi "Nilai Perusahaan" / "Our Values" (`ValuesGridBlock`) dengan 4 nilai terstruktur dalam format editorial 3 kolom garis hairline.
+  - Produk: Menampilkan tabel spesifikasi teknis lengkap langsung di halaman produk dalam 2-kolom editorial (tanpa tautan panah ke halaman detail terpisah dan tanpa tombol download).
+  - Mutu & Kepatuhan: Dihapus permanen dari database, navigasi, dan rute (URL menghasilkan 404).
+- **Tema Beramal Sukses Sejahtera:**
+  - Header: Mengganti tombol solid pill kontak dengan satu teks link "Hubungi Kami" / "Contact Us" di sisi kanan sebelah pengalih bahasa ID | EN (touch target 44×44px, border-bottom accent cerulean saat aktif).
+  - Beranda: Mengubah judul section setelah hero menjadi `sr-only` (Stats, ProductList). Menghapus bagian Jejak Infrastruktur (`operation_list`) dan Kepatuhan & Mutu (`certification_list`). Menghapus tombol panah/unduh pada ringkasan produk.
+  - Tentang Kami: Menghapus blok Timeline (Tahapan Operasional).
+  - Mutu & Kepatuhan: Dinonaktifkan (`is_published=false`, `show_in_nav=false`), 404 untuk publik, dapat dipratinjau admin.
+  - Hubungi Kami: Menamai halaman kontak "Hubungi Kami" / "Contact Us" (slug `/id/beramal/hubungi-kami` & `/en/beramal/contact-us` dengan 301 redirect dari `/kontak` & `/contact`).
 
 ### Versi 1.2 (Revisi 1 — Web Utama / Tema Holding)
 - **Tipografi:** Mengganti DM Sans dengan Helvetica font stack (`"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif`) untuk `--font-heading` dan `--font-body` di tema holding. Hanya memakai berat 400 dan 700. Paket `@fontsource-variable/dm-sans` dihapus total.

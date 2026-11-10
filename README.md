@@ -198,10 +198,11 @@ PT Korin Bara Energy saat ini berstatus `draft`.
 ## Menambah Anak Usaha Baru
 
 1. Tambah nilai pada enum `CompanyTheme` (mis. `Contoh = 'contoh'`).
-2. Buat folder `resources/js/themes/contoh/` berisi `Layout.tsx`, `blocks/`, dan `index.ts`.
-3. Buat `resources/css/themes/contoh.css` dengan token warna dan font di dalam `[data-theme="contoh"] { ... }`.
-4. Daftarkan di `resources/js/themes/registry.ts`.
-5. Tambah baris perusahaan lewat CMS atau seeder. Enam halaman standar dibuat otomatis oleh `CreateCompanyPages`.
+2. Definisikan set halaman yang aktif untuk tema tersebut di method `CompanyTheme::pages()`, memetakan tema ke daftar `PageKey` (mis. `[PageKey::Home, PageKey::About, PageKey::Products, PageKey::Operations, PageKey::Contact]`).
+3. Buat folder `resources/js/themes/contoh/` berisi `Layout.tsx`, `blocks/`, dan `index.ts`.
+4. Buat `resources/css/themes/contoh.css` dengan token warna dan font di dalam `[data-theme="contoh"] { ... }`.
+5. Daftarkan di `resources/js/themes/registry.ts`.
+6. Tambah baris perusahaan lewat CMS atau seeder. Halaman dibuat otomatis oleh `CreateCompanyPages` sesuai set halaman yang dikonfigurasi pada tema.
 
 Tidak ada controller, rute, atau migrasi baru yang dibutuhkan.
 
@@ -441,6 +442,21 @@ Pasang di crontab server (`crontab -e`):
 ---
 
 ## Catatan Rilis & Perubahan (Changelog)
+
+### v1.3.0 (Revisi 2 — Anak Usaha: PT Korin Berkat Energy & PT Beramal Sukses Sejahtera)
+- **Arsitektur & Konfigurasi Halaman Dinamis:** Penambahan method `CompanyTheme::pages()` pada enum `CompanyTheme` untuk mendefinisikan set halaman per tema. `CreateCompanyPages` dan seeder kini sepenuhnya fleksibel tanpa conditional bercabang di kode inti.
+- **PT Korin Berkat Energy (Tema Editorial Index):**
+  - **Tipografi Manrope:** Migrasi seluruh font heading dan body ke Manrope Variable (`@fontsource-variable/manrope`, bobot 400/500/700) dengan `font-variant-numeric: tabular-nums` untuk angka statistik dan tabel spesifikasi. Paket Source Serif 4 dan Inter dicopot bersih.
+  - **Navigasi 5 Item:** Menu bernomor otomatis (01-05). Halaman Mutu & Kepatuhan dihapus permanen dari basis data dan rute (URL publik 404).
+  - **Beranda Bersih:** Judul section besar setelah hero disembunyikan visual (`sr-only`) untuk menjaga ritme desain. Tautan panah dan tombol download pada ringkasan produk dihilangkan. Blok sertifikat/kepatuhan dihapus dari beranda.
+  - **Tentang Kami:** Blok Timeline (Tahapan Operasional) dihapus; Standar Kerja diganti menjadi Nilai Perusahaan (`values_grid`) dengan 4 item editorial bernomor (Integritas & Kepatuhan, Keandalan Pasokan, Keselamatan Kerja, Efisiensi Operasional).
+  - **Produk:** Tabel spesifikasi teknis lengkap disajikan langsung dalam format editorial 2 kolom (nama & aplikasi di kiri, tabel parameter CV, TM, IM, Ash, VM, FC, TS di kanan) tanpa tautan panah ke halaman detail terpisah.
+- **PT Beramal Sukses Sejahtera (Tema Calm Flow):**
+  - **Header & Kontak:** Tombol solid CTA pill di header digantikan teks link kanan "Hubungi Kami" / "Contact Us" sejajar pengalih bahasa (touch target 44×44px, aksen underline cerulean saat aktif). Menu tengah hanya memuat halaman non-kontak. Halaman kontak dinamai "Hubungi Kami" / "Contact Us" dengan rute `/hubungi-kami` & `/contact-us` (301 redirect dari `/kontak` & `/contact`).
+  - **Halaman Mutu & Kepatuhan Nonaktif:** Status diubah menjadi `is_published=false` dan `show_in_nav=false` (URL publik 404, tidak muncul di menu/sitemap, admin dapat mempratinjau via CMS).
+  - **Beranda & Tentang Kami:** Judul section setelah hero disembunyikan visual (`sr-only`), blok Jejak Infrastruktur (`operation_list`) dan Kepatuhan & Mutu (`certification_list`) dihapus dari beranda. Blok Timeline (Tahapan Operasional) dihapus dari Tentang Kami.
+- **Migrasi & Aksi Idempoten:** Penambahan `SyncSubsidiaryPagesAction` dan migrasi database `2026_11_10_100000_apply_revision_2_subsidiary_pages.php` yang dapat dijalankan secara idempoten pada database produksi yang sudah terisi.
+- **Pengujian Lengkap:** Penambahan pengujian unit Vitest (`revision2.test.tsx`), Pest feature tests (`Revision2Test.php`, pembaruan `DataModelAndCmsTest.php`, `KorinBerkatTest.php`, `BeramalTest.php`), dan E2E Playwright tests (`korin-berkat.spec.ts`, `beramal.spec.ts`) dengan validasi aksesibilitas axe WCAG 2.2 AA di seluruh halaman.
 
 ### v1.2.0 (Revisi 1 — Tema Holding / Web Utama PT Derco Bara Energy)
 - **Tipografi:** Migrasi dari DM Sans ke Helvetica system font stack (`"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif`) bobot 400 & 700. Paket `@fontsource-variable/dm-sans` dicopot bersih.

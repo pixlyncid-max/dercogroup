@@ -1,6 +1,6 @@
 # PRD — Website PT Derco Bara Energy
 
-Versi 1.2 · Product Requirements Document
+Versi 1.3 · Product Requirements Document
 Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md)
 
 ---
@@ -53,23 +53,30 @@ Perusahaan memiliki tiga bisnis utama tetapi belum punya satu pintu masuk yang m
 
 ## 4. Ruang Lingkup
 
-### 4.1 Peta Situs (22 halaman)
+### 4.1 Peta Situs (21 halaman database, 14 halaman publik aktif)
 
 ```
-Holding — PT Derco Bara Energy
+Holding — PT Derco Bara Energy (4 halaman)
 ├── Beranda
 ├── Tentang Kami
-├── Bisnis Kami  ──┬── PT Korin Bara Energy      [draft, disembunyikan]
+├── Bisnis Kami  ──┬── PT Korin Bara Energy      [draft, disembunyikan - 6 halaman]
 │                  │     ├── Beranda · Tentang Kami · Produk
 │                  │     └── Operasi · Mutu & Kepatuhan · Kontak
-│                  ├── PT Korin Berkat Energy
-│                  │     └── (6 halaman yang sama)
-│                  └── PT Beramal Sukses Sejahtera
-│                        └── (6 halaman yang sama)
+│                  ├── PT Korin Berkat Energy    [aktif - 5 halaman]
+│                  │     ├── Beranda · Tentang Kami · Produk
+│                  │     └── Operasi · Kontak
+│                  └── PT Beramal Sukses Sejahtera [aktif - 5 halaman tayang + 1 dinonaktifkan]
+│                        ├── Beranda · Tentang Kami · Layanan & Produk
+│                        ├── Operasi · Hubungi Kami
+│                        └── [Mutu & Kepatuhan: nonaktif/unpublished, publik 404]
 └── Hubungi Kami
 ```
 
-4 halaman holding + 18 halaman anak usaha = **22 halaman**, di mana 18 halaman anak usaha berbagi satu struktur.
+- Holding: 4 halaman publik.
+- PT Korin Bara Energy: 6 halaman (berstatus `draft`).
+- PT Korin Berkat Energy: 5 halaman aktif (halaman Mutu & Kepatuhan dihapus permanen).
+- PT Beramal Sukses Sejahtera: 6 halaman tersimpan di CMS (5 halaman aktif tayang + 1 halaman Mutu & Kepatuhan nonaktif `is_published=false` dan `show_in_nav=false`, publik 404).
+- Total: **21 halaman di basis data**, dengan **14 halaman publik aktif** yang dapat diakses pengunjung biasa tanpa login.
 
 ### 4.2 URL dan Bahasa
 ```
@@ -80,8 +87,12 @@ Holding — PT Derco Bara Energy
 /id/bisnis-kami/{slug}/produk         /en/our-business/{slug}/products
 /id/hubungi-kami                      /en/contact-us
 (301 redirect: /id/kontak -> /id/hubungi-kami; /en/contact -> /en/contact-us)
+
+Rute Kontak Beramal:
+/id/bisnis-kami/beramal/hubungi-kami  /en/our-business/beramal/contact-us
+(301 redirect: /id/bisnis-kami/beramal/kontak -> hubungi-kami; /en/.../contact -> contact-us)
 ```
-Slug halaman diterjemahkan per bahasa. `/` mengarahkan ke bahasa sesuai preferensi browser, dengan cadangan `/id`. Anak usaha tetap mempertahankan slug `/kontak` dan `/contact`.
+Slug halaman diterjemahkan per bahasa. `/` mengarahkan ke bahasa sesuai preferensi browser, dengan cadangan `/id`. PT Korin Berkat dan PT Korin Bara mempertahankan slug `/kontak` dan `/contact`, sedangkan Holding dan PT Beramal Sukses Sejahtera menggunakan `/hubungi-kami` dan `/contact-us`.
 
 ### 4.3 Identitas Visual
 Lihat [DESIGN.md](./DESIGN.md). Ringkasnya:
@@ -102,13 +113,14 @@ Prioritas: **P0** wajib rilis, **P1** penting, **P2** bila waktu memungkinkan.
 ### 5.1 Navigasi dan Halaman Publik (FR-PUB)
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
-| FR-PUB-1 | Seluruh 22 halaman dapat diakses sesuai peta situs dan menampilkan konten dari CMS | P0 |
-| FR-PUB-2 | Menu navigasi dibentuk otomatis dari halaman yang `show_in_nav = true` | P0 |
+| FR-PUB-1 | Seluruh 14 halaman publik aktif dapat diakses sesuai peta situs dan menampilkan konten dari CMS | P0 |
+| FR-PUB-2 | Menu navigasi dibentuk otomatis dari halaman yang `show_in_nav = true` via `useNavigation()`; penomoran Korin Berkat dinamis sesuai item (01-05) | P0 |
 | FR-PUB-3 | Setiap anak usaha memakai Layout dan tema visualnya sendiri; berpindah dari holding ke anak usaha mengganti Layout seluruhnya | P0 |
-| FR-PUB-4 | Beranda holding mengikuti susunan referensi (hero, Bisnis Kami, Tentang ringkas, pita komitmen, visi-misi, kartu kontak, footer) | P0 |
+| FR-PUB-4 | Beranda holding mengikuti susunan referensi; beranda Korin Berkat dan Beramal menyembunyikan heading section setelah hero (`sr-only`) | P0 |
 | FR-PUB-5 | Setiap halaman anak usaha menyediakan tautan kembali ke holding | P0 |
 | FR-PUB-6 | Halaman 404 dan 500 bermerek sesuai tema terakhir yang dikunjungi | P1 |
 | FR-PUB-7 | Tombol "kembali ke atas" dan indikator halaman aktif di menu | P2 |
+| FR-PUB-8 | Konfigurasi set halaman dinamis per tema via `CompanyTheme::pages()` tanpa pengkondisian bercabang di controller/action | P0 |
 
 ### 5.2 Visibilitas Anak Usaha (FR-VIS)
 Khusus kebutuhan klien: Korin Bara dibuat tetapi belum ditampilkan.
@@ -374,6 +386,19 @@ Per perusahaan: logo, deskripsi singkat dan panjang (ID/EN), sejarah, visi-misi,
 ---
 
 ## 14. Catatan Perubahan (Changelog)
+
+### Versi 1.3 (Revisi 2 — Anak Usaha: Korin Berkat & Beramal)
+- **Konfigurasi Set Halaman Dinamis:** Model data mendukung set halaman berbeda per tema via `CompanyTheme::pages()`. `CreateCompanyPages` dan seeder menggunakan konfigurasi ini.
+- **PT Korin Berkat Energy:**
+  - Halaman Mutu & Kepatuhan dihapus permanen dari basis data dan rute (URL menghasilkan 404), menyisakan 5 halaman aktif (Beranda, Tentang Kami, Produk, Operasi, Kontak).
+  - Beranda: Judul section setelah hero disembunyikan visual (`sr-only`), tombol download dan link panah dihilangkan dari produk, blok Mutu & Kepatuhan (`certification_list`) dihapus.
+  - Tentang Kami: Blok Timeline dihapus; Standar Kerja diganti menjadi Nilai Perusahaan (`values_grid`) 4 item editorial bernomor (Integritas, Keandalan Pasokan, Keselamatan Kerja, Efisiensi Operasional).
+  - Produk: Tabel spesifikasi lengkap langsung disajikan dalam tata letak editorial 2 kolom tanpa membuka halaman detail terpisah.
+- **PT Beramal Sukses Sejahtera:**
+  - Halaman Mutu & Kepatuhan dinonaktifkan (`is_published=false`, `show_in_nav=false`), URL publik 404, pratinjau admin tetap diizinkan. 5 halaman aktif publik.
+  - Header: Tombol solid pill kontak di header digantikan teks link kanan "Hubungi Kami" / "Contact Us" sejajar pengalih bahasa.
+  - Beranda: Judul section setelah hero disembunyikan visual (`sr-only`), blok Jejak Infrastruktur (`operation_list`) dan Kepatuhan & Mutu (`certification_list`) dihapus dari beranda.
+  - Kontak: Berganti nama menjadi "Hubungi Kami" / "Contact Us" dengan rute `/hubungi-kami` & `/contact-us` (301 redirect dari `/kontak` & `/contact`).
 
 ### Versi 1.2 (Revisi 1 — Holding / Web Utama)
 - **Slug & Rute Kontak Holding:** Halaman kontak holding berganti slug menjadi `/id/hubungi-kami` dan `/en/contact-us` (title: "Hubungi Kami" / "Contact Us"). Slug `/id/kontak` dan `/en/contact` dialihkan melalui 301 Permanent Redirect. Tiga anak usaha tetap menggunakan `/kontak` dan `/contact`.
