@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Page\Enums;
 
+use App\Domain\Company\Enums\CompanyTheme;
+
 enum PageKey: string
 {
     case Home = 'home';
@@ -17,16 +19,24 @@ enum PageKey: string
     /**
      * @return array{id: string, en: string}
      */
-    public function defaultTitles(bool $isHolding = true): array
+    public function defaultTitles(CompanyTheme|bool|null $themeOrHolding = true): array
     {
+        $theme = $themeOrHolding instanceof CompanyTheme
+            ? $themeOrHolding
+            : ($themeOrHolding ? CompanyTheme::Holding : CompanyTheme::KorinBerkat);
+
+        $usesHubungiKami = $theme === CompanyTheme::Holding || $theme === CompanyTheme::Beramal;
+
         return match ($this) {
             self::Home => ['id' => 'Beranda', 'en' => 'Home'],
             self::About => ['id' => 'Tentang Kami', 'en' => 'About Us'],
             self::Business => ['id' => 'Bisnis Kami', 'en' => 'Our Business'],
-            self::Products => ['id' => 'Produk', 'en' => 'Products'],
+            self::Products => $theme === CompanyTheme::Beramal
+                ? ['id' => 'Layanan & Produk', 'en' => 'Services & Products']
+                : ['id' => 'Produk', 'en' => 'Products'],
             self::Operations => ['id' => 'Operasi', 'en' => 'Operations'],
             self::Compliance => ['id' => 'Mutu & Kepatuhan', 'en' => 'Quality & Compliance'],
-            self::Contact => $isHolding
+            self::Contact => $usesHubungiKami
                 ? ['id' => 'Hubungi Kami', 'en' => 'Contact Us']
                 : ['id' => 'Kontak', 'en' => 'Contact'],
         };
@@ -35,8 +45,14 @@ enum PageKey: string
     /**
      * @return array{id: string, en: string}
      */
-    public function defaultSlugs(bool $isHolding = true): array
+    public function defaultSlugs(CompanyTheme|bool|null $themeOrHolding = true): array
     {
+        $theme = $themeOrHolding instanceof CompanyTheme
+            ? $themeOrHolding
+            : ($themeOrHolding ? CompanyTheme::Holding : CompanyTheme::KorinBerkat);
+
+        $usesHubungiKami = $theme === CompanyTheme::Holding || $theme === CompanyTheme::Beramal;
+
         return match ($this) {
             self::Home => ['id' => '', 'en' => ''],
             self::About => ['id' => 'tentang-kami', 'en' => 'about-us'],
@@ -44,7 +60,7 @@ enum PageKey: string
             self::Products => ['id' => 'produk', 'en' => 'products'],
             self::Operations => ['id' => 'operasi', 'en' => 'operations'],
             self::Compliance => ['id' => 'mutu-dan-kepatuhan', 'en' => 'quality-and-compliance'],
-            self::Contact => $isHolding
+            self::Contact => $usesHubungiKami
                 ? ['id' => 'hubungi-kami', 'en' => 'contact-us']
                 : ['id' => 'kontak', 'en' => 'contact'],
         };

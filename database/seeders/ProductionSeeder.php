@@ -25,7 +25,7 @@ class ProductionSeeder extends Seeder
     /**
      * Run the minimal production database seeds.
      * Seeds super admin, basic settings, company structure (holding + 3 subsidiaries),
-     * and the 22 canonical pages WITHOUT placeholder copy.
+     * and the canonical pages WITHOUT placeholder copy.
      */
     public function run(): void
     {

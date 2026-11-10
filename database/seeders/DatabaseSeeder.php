@@ -1059,13 +1059,16 @@ class DatabaseSeeder extends Seeder
     {
         $pages = $company->pages()->get()->keyBy(fn (Page $page): string => $page->key->value);
         $isBeramal = $company->slug === 'beramal-sukses-sejahtera';
+        $isKorinBerkat = $company->slug === 'korin-berkat-energy';
         $isKorinBara = $company->slug === 'korin-bara-energy';
 
         if (isset($pages[PageKey::Home->value])) {
             $home = $pages[PageKey::Home->value];
             $home->blocks()->delete();
 
-            $this->createBlock($home, 1, BlockType::Hero, [
+            $sortOrder = 1;
+
+            $this->createBlock($home, $sortOrder++, BlockType::Hero, [
                 'eyebrow' => ['id' => 'ENTITAS ANAK USAHA DERCO GROUP', 'en' => 'DERCO GROUP OPERATING SUBSIDIARY'],
                 'title' => ['id' => "{$company->name} [PLACEHOLDER]", 'en' => "{$company->name} [PLACEHOLDER]"],
                 'description' => [
@@ -1094,12 +1097,12 @@ class DatabaseSeeder extends Seeder
                         : null),
             ]);
 
-            $this->createBlock($home, 2, BlockType::Stats, [
+            $this->createBlock($home, $sortOrder++, BlockType::Stats, [
                 'eyebrow' => ['id' => 'SEKILAS ANGKA OPERASIONAL', 'en' => 'OPERATIONAL FIGURES AT A GLANCE'],
                 'title' => ['id' => 'Kapasitas dan Kinerja Terukur [PLACEHOLDER]', 'en' => 'Measured Capacity and Performance [PLACEHOLDER]'],
             ]);
 
-            $this->createBlock($home, 3, BlockType::ProductList, [
+            $this->createBlock($home, $sortOrder++, BlockType::ProductList, [
                 'eyebrow' => $isBeramal
                     ? ['id' => 'CAKUPAN LAYANAN', 'en' => 'SERVICE SCOPE']
                     : ['id' => 'KATALOG SPESIFIKASI', 'en' => 'SPECIFICATION CATALOG'],
@@ -1107,37 +1110,36 @@ class DatabaseSeeder extends Seeder
                     ? ['id' => 'Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Services [PLACEHOLDER]']
                     : ['id' => 'Produk & Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Products & Services [PLACEHOLDER]'],
                 'limit' => 3,
-                'show_download_button' => true,
+                'show_download_button' => $isKorinBara,
             ]);
 
-            $this->createBlock($home, 4, BlockType::OperationList, [
-                'eyebrow' => ['id' => 'JEJAK INFRASTRUKTUR', 'en' => 'INFRASTRUCTURE FOOTPRINT'],
-                'title' => $isBeramal
-                    ? ['id' => 'Alur Kerja & Titik Fasilitas Operasional [PLACEHOLDER]', 'en' => 'Workflow & Operational Facility Nodes [PLACEHOLDER]']
-                    : ['id' => 'Lokasi Tambang, Stockpile & Pelabuhan Muat [PLACEHOLDER]', 'en' => 'Mine Sites, Stockpiles & Loading Ports [PLACEHOLDER]'],
-                'description' => $isBeramal
-                    ? [
-                        'id' => 'Jaringan fasilitas pendukung dan koordinasi operasional terpadu yang dikelola dengan standar layanan terukur. [PLACEHOLDER]',
-                        'en' => 'Integrated support facilities and operational coordination hubs managed under measurable service standards. [PLACEHOLDER]',
-                    ]
-                    : [
+            // Beramal removes OperationList from Home
+            if (! $isBeramal) {
+                $this->createBlock($home, $sortOrder++, BlockType::OperationList, [
+                    'eyebrow' => ['id' => 'JEJAK INFRASTRUKTUR', 'en' => 'INFRASTRUCTURE FOOTPRINT'],
+                    'title' => ['id' => 'Lokasi Tambang, Stockpile & Pelabuhan Muat [PLACEHOLDER]', 'en' => 'Mine Sites, Stockpiles & Loading Ports [PLACEHOLDER]'],
+                    'description' => [
                         'id' => 'Titik operasional terintegrasi dari area konsesi hingga fasilitas pemuatan tongkang di Kalimantan Timur dan Kalimantan Selatan. [PLACEHOLDER]',
                         'en' => 'Integrated operational nodes spanning concession pits through barge loading terminals in East and South Kalimantan. [PLACEHOLDER]',
                     ],
-                'show_map' => true,
-            ]);
+                    'show_map' => true,
+                ]);
+            }
 
-            $this->createBlock($home, 5, BlockType::CertificationList, [
-                'eyebrow' => ['id' => 'KEPATUHAN & MUTU', 'en' => 'COMPLIANCE & QUALITY'],
-                'title' => ['id' => 'Sertifikasi, Izin Usaha & Standar K3LH [PLACEHOLDER]', 'en' => 'Certifications, Operating Permits & HSE Standards [PLACEHOLDER]'],
-                'description' => [
-                    'id' => 'Dokumen verifikasi legalitas izin operasi dan standar manajemen mutu yang dapat diunduh langsung. [PLACEHOLDER]',
-                    'en' => 'Operating license verification records and quality management certificates available for direct download. [PLACEHOLDER]',
-                ],
-                'group_by_category' => true,
-            ]);
+            // Korin Berkat and Beramal remove CertificationList from Home
+            if ($isKorinBara) {
+                $this->createBlock($home, $sortOrder++, BlockType::CertificationList, [
+                    'eyebrow' => ['id' => 'KEPATUHAN & MUTU', 'en' => 'COMPLIANCE & QUALITY'],
+                    'title' => ['id' => 'Sertifikasi, Izin Usaha & Standar K3LH [PLACEHOLDER]', 'en' => 'Certifications, Operating Permits & HSE Standards [PLACEHOLDER]'],
+                    'description' => [
+                        'id' => 'Dokumen verifikasi legalitas izin operasi dan standar manajemen mutu yang dapat diunduh langsung. [PLACEHOLDER]',
+                        'en' => 'Operating license verification records and quality management certificates available for direct download. [PLACEHOLDER]',
+                    ],
+                    'group_by_category' => true,
+                ]);
+            }
 
-            $this->createBlock($home, 6, BlockType::CtaBanner, [
+            $this->createBlock($home, $sortOrder++, BlockType::CtaBanner, [
                 'eyebrow' => $isBeramal
                     ? ['id' => 'KONSULTASI LAYANAN', 'en' => 'SERVICE CONSULTATION']
                     : ['id' => 'KONSULTASI PASOKAN', 'en' => 'SUPPLY CONSULTATION'],
@@ -1161,7 +1163,9 @@ class DatabaseSeeder extends Seeder
             $about = $pages[PageKey::About->value];
             $about->blocks()->delete();
 
-            $this->createBlock($about, 1, BlockType::SplitContent, [
+            $sortOrder = 1;
+
+            $this->createBlock($about, $sortOrder++, BlockType::SplitContent, [
                 'eyebrow' => ['id' => 'PROFIL ENTITAS', 'en' => 'ENTITY PROFILE'],
                 'title' => ['id' => "Tentang {$company->name} [PLACEHOLDER]", 'en' => "About {$company->name} [PLACEHOLDER]"],
                 'lead' => [
@@ -1180,18 +1184,21 @@ class DatabaseSeeder extends Seeder
                 ],
             ]);
 
-            $this->createBlock($about, 2, BlockType::Timeline, [
-                'eyebrow' => ['id' => 'TAHAPAN OPERASIONAL', 'en' => 'OPERATIONAL MILESTONES'],
-                'title' => ['id' => 'Perkembangan & Kapabilitas [PLACEHOLDER]', 'en' => 'Growth & Capabilities [PLACEHOLDER]'],
-                'orientation' => 'horizontal',
-                'items' => [
-                    ['period' => '2018', 'title' => ['id' => 'Pembentukan Tim & Izin Operasi [PLACEHOLDER]', 'en' => 'Team Formation & Operational Licensing [PLACEHOLDER]'], 'description' => ['id' => 'Penyelesaian izin usaha dan perjanjian kerja sama infrastruktur pelabuhan. [PLACEHOLDER]', 'en' => 'Completion of business permits and port infrastructure agreements. [PLACEHOLDER]']],
-                    ['period' => '2021', 'title' => ['id' => 'Pengapalan Komersial Perdana [PLACEHOLDER]', 'en' => 'First Commercial Shipment [PLACEHOLDER]'], 'description' => ['id' => 'Pelaksanaan kontrak pasokan perdana untuk industri domestik dengan verifikasi surveyor independen. [PLACEHOLDER]', 'en' => 'Execution of inaugural domestic industrial supply contract verified by independent surveyors. [PLACEHOLDER]']],
-                    ['period' => '2024', 'title' => ['id' => 'Ekspansi Kapasitas Rantai Pasok [PLACEHOLDER]', 'en' => 'Supply Chain Capacity Expansion [PLACEHOLDER]'], 'description' => ['id' => 'Penambahan armada angkut dan peningkatan kapasitas stockpile terkelola. [PLACEHOLDER]', 'en' => 'Expansion of hauling fleet and managed stockpile capacity. [PLACEHOLDER]']],
-                ],
-            ]);
+            // Korin Berkat and Beramal remove Timeline from About
+            if ($isKorinBara) {
+                $this->createBlock($about, $sortOrder++, BlockType::Timeline, [
+                    'eyebrow' => ['id' => 'TAHAPAN OPERASIONAL', 'en' => 'OPERATIONAL MILESTONES'],
+                    'title' => ['id' => 'Perkembangan & Kapabilitas [PLACEHOLDER]', 'en' => 'Growth & Capabilities [PLACEHOLDER]'],
+                    'orientation' => 'horizontal',
+                    'items' => [
+                        ['period' => '2018', 'title' => ['id' => 'Pembentukan Tim & Izin Operasi [PLACEHOLDER]', 'en' => 'Team Formation & Operational Licensing [PLACEHOLDER]'], 'description' => ['id' => 'Penyelesaian izin usaha dan perjanjian kerja sama infrastruktur pelabuhan. [PLACEHOLDER]', 'en' => 'Completion of business permits and port infrastructure agreements. [PLACEHOLDER]']],
+                        ['period' => '2021', 'title' => ['id' => 'Pengapalan Komersial Perdana [PLACEHOLDER]', 'en' => 'First Commercial Shipment [PLACEHOLDER]'], 'description' => ['id' => 'Pelaksanaan kontrak pasokan perdana untuk industri domestik dengan verifikasi surveyor independen. [PLACEHOLDER]', 'en' => 'Execution of inaugural domestic industrial supply contract verified by independent surveyors. [PLACEHOLDER]']],
+                        ['period' => '2024', 'title' => ['id' => 'Ekspansi Kapasitas Rantai Pasok [PLACEHOLDER]', 'en' => 'Supply Chain Capacity Expansion [PLACEHOLDER]'], 'description' => ['id' => 'Penambahan armada angkut dan peningkatan kapasitas stockpile terkelola. [PLACEHOLDER]', 'en' => 'Expansion of hauling fleet and managed stockpile capacity. [PLACEHOLDER]']],
+                    ],
+                ]);
+            }
 
-            $this->createBlock($about, 3, BlockType::MissionList, [
+            $this->createBlock($about, $sortOrder++, BlockType::MissionList, [
                 'eyebrow' => ['id' => 'VISI, MISI & KEPEMILIKAN', 'en' => 'VISION, MISSION & OWNERSHIP'],
                 'title' => ['id' => 'Mandat Strategis dalam Grup Derco Bara Energy [PLACEHOLDER]', 'en' => 'Strategic Mandate Within Derco Bara Energy Group [PLACEHOLDER]'],
                 'vision' => [
@@ -1221,14 +1228,49 @@ class DatabaseSeeder extends Seeder
                 ],
             ]);
 
-            $this->createBlock($about, 4, BlockType::ValuesGrid, [
-                'eyebrow' => ['id' => 'STANDAR KERJA', 'en' => 'OPERATING STANDARDS'],
-                'title' => ['id' => 'Prinsip Pelaksanaan Operasional [PLACEHOLDER]', 'en' => 'Operational Execution Principles [PLACEHOLDER]'],
-                'items' => [
-                    ['title' => ['id' => 'Kontrol Kualitas Berlapis [PLACEHOLDER]', 'en' => 'Multi-Stage Quality Control [PLACEHOLDER]'], 'description' => ['id' => 'Pengambilan sampel berkala dari pit hingga pemuatan tongkang. [PLACEHOLDER]', 'en' => 'Periodic sampling from pit face through barge loading. [PLACEHOLDER]'], 'icon_name' => 'check-circle-2'],
-                    ['title' => ['id' => 'Transparansi Dokumen [PLACEHOLDER]', 'en' => 'Document Transparency [PLACEHOLDER]'], 'description' => ['id' => 'Setiap pengiriman dilengkapi LHV, SKAB, dan COA resmi. [PLACEHOLDER]', 'en' => 'Every shipment is accompanied by official LHV, SKAB, and COA records. [PLACEHOLDER]'], 'icon_name' => 'file-check'],
-                    ['title' => ['id' => 'Keselamatan Kerja (K3) [PLACEHOLDER]', 'en' => 'Occupational Safety (HSE) [PLACEHOLDER]'], 'description' => ['id' => 'Penerapan prosedur keselamatan operasional tanpa kompromi di seluruh fasilitas. [PLACEHOLDER]', 'en' => 'Uncompromising safety procedures enforced across all operational facilities. [PLACEHOLDER]'], 'icon_name' => 'shield'],
+            $valuesItems = $isKorinBerkat ? [
+                [
+                    'title' => ['id' => 'Integritas Pasokan [PLACEHOLDER]', 'en' => 'Supply Integrity [PLACEHOLDER]'],
+                    'description' => [
+                        'id' => 'Verifikasi berkala parameter kalori dan spesifikasi teknis pada setiap titik serah terima kargo bersama surveyor independen. [PLACEHOLDER]',
+                        'en' => 'Periodic verification of calorific parameters and technical specifications at each cargo handover point with independent surveyors. [PLACEHOLDER]',
+                    ],
+                    'icon_name' => 'check-circle-2',
                 ],
+                [
+                    'title' => ['id' => 'Ketepatan Spesifikasi [PLACEHOLDER]', 'en' => 'Specification Precision [PLACEHOLDER]'],
+                    'description' => [
+                        'id' => 'Pengawasan ketat kesesuaian nilai kalori, kadar abu, dan kelembapan sesuai kontrak perjanjian jual beli. [PLACEHOLDER]',
+                        'en' => 'Strict oversight of calorific value, ash content, and moisture in compliance with purchase agreement terms. [PLACEHOLDER]',
+                    ],
+                    'icon_name' => 'check-circle-2',
+                ],
+                [
+                    'title' => ['id' => 'Keandalan Pengapalan [PLACEHOLDER]', 'en' => 'Shipment Reliability [PLACEHOLDER]'],
+                    'description' => [
+                        'id' => 'Pengelolaan jadwal tongkang dan slot sandar jetty secara terukur untuk meminimalkan waktu tunggu dan demurrage. [PLACEHOLDER]',
+                        'en' => 'Measured management of barge laycan schedules and jetty berthing slots to minimize turnaround and demurrage. [PLACEHOLDER]',
+                    ],
+                    'icon_name' => 'check-circle-2',
+                ],
+                [
+                    'title' => ['id' => 'Kepatuhan Berkelanjutan [PLACEHOLDER]', 'en' => 'Sustainable Compliance [PLACEHOLDER]'],
+                    'description' => [
+                        'id' => 'Pemenuhan penuh legalitas perizinan pertambangan, dokumen angkut resmi, dan kepatuhan standar K3LH berkelanjutan. [PLACEHOLDER]',
+                        'en' => 'Full fulfillment of mining permits, formal shipping manifests, and sustainable occupational HSE standards. [PLACEHOLDER]',
+                    ],
+                    'icon_name' => 'shield',
+                ],
+            ] : [
+                ['title' => ['id' => 'Kontrol Kualitas Berlapis [PLACEHOLDER]', 'en' => 'Multi-Stage Quality Control [PLACEHOLDER]'], 'description' => ['id' => 'Pengambilan sampel berkala dari pit hingga pemuatan tongkang. [PLACEHOLDER]', 'en' => 'Periodic sampling from pit face through barge loading. [PLACEHOLDER]'], 'icon_name' => 'check-circle-2'],
+                ['title' => ['id' => 'Transparansi Dokumen [PLACEHOLDER]', 'en' => 'Document Transparency [PLACEHOLDER]'], 'description' => ['id' => 'Setiap pengiriman dilengkapi LHV, SKAB, dan COA resmi. [PLACEHOLDER]', 'en' => 'Every shipment is accompanied by official LHV, SKAB, and COA records. [PLACEHOLDER]'], 'icon_name' => 'file-check'],
+                ['title' => ['id' => 'Keselamatan Kerja (K3) [PLACEHOLDER]', 'en' => 'Occupational Safety (HSE) [PLACEHOLDER]'], 'description' => ['id' => 'Penerapan prosedur keselamatan operasional tanpa kompromi di seluruh fasilitas. [PLACEHOLDER]', 'en' => 'Uncompromising safety procedures enforced across all operational facilities. [PLACEHOLDER]'], 'icon_name' => 'shield'],
+            ];
+
+            $this->createBlock($about, $sortOrder++, BlockType::ValuesGrid, [
+                'eyebrow' => $isKorinBerkat ? ['id' => 'PRINSIP KORPORASI', 'en' => 'CORPORATE PRINCIPLES'] : ['id' => 'STANDAR KERJA', 'en' => 'OPERATING STANDARDS'],
+                'title' => $isKorinBerkat ? ['id' => 'Nilai Perusahaan [PLACEHOLDER]', 'en' => 'Our Values [PLACEHOLDER]'] : ['id' => 'Prinsip Pelaksanaan Operasional [PLACEHOLDER]', 'en' => 'Operational Execution Principles [PLACEHOLDER]'],
+                'items' => $valuesItems,
             ]);
         }
 
@@ -1263,7 +1305,7 @@ class DatabaseSeeder extends Seeder
                         'en' => 'The specification parameters below reflect standard shipment contract grades verified by independent surveyors at loading ports. [PLACEHOLDER]',
                     ],
                 'limit' => 0,
-                'show_download_button' => true,
+                'show_download_button' => $isKorinBara,
             ]);
         }
 
@@ -1310,7 +1352,9 @@ class DatabaseSeeder extends Seeder
 
             $this->createBlock($contact, 1, BlockType::ContactInfo, [
                 'eyebrow' => ['id' => 'HUBUNGI TIM KAMI', 'en' => 'REACH OUR TEAM'],
-                'title' => ['id' => "Kontak {$company->name} [PLACEHOLDER]", 'en' => "Contact {$company->name} [PLACEHOLDER]"],
+                'title' => $isBeramal
+                    ? ['id' => "Hubungi {$company->name} [PLACEHOLDER]", 'en' => "Contact {$company->name} [PLACEHOLDER]"]
+                    : ['id' => "Kontak {$company->name} [PLACEHOLDER]", 'en' => "Contact {$company->name} [PLACEHOLDER]"],
                 'description' => [
                     'id' => 'Hubungi kantor pusat atau tim operasional kami untuk permintaan penawaran spesifikasi dan jadwal pengapalan. [PLACEHOLDER]',
                     'en' => 'Contact our head office or operations team for specification quotations and shipment scheduling. [PLACEHOLDER]',

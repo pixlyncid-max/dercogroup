@@ -21,9 +21,9 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('seeds holding and 3 subsidiaries with 22 total pages and hides draft company from public queries', function (): void {
+it('seeds holding and 3 subsidiaries with 21 total pages and hides draft company from public queries', function (): void {
     expect(Company::query()->count())->toBe(4)
-        ->and(Page::query()->count())->toBe(22)
+        ->and(Page::query()->count())->toBe(21)
         ->and(Product::query()->count())->toBe(9);
 
     // Public scopes exclude PT Korin Bara Energy (draft)
@@ -32,8 +32,9 @@ it('seeds holding and 3 subsidiaries with 22 total pages and hides draft company
         ->toContain('derco-bara-energy', 'korin-berkat-energy', 'beramal-sukses-sejahtera')
         ->not->toContain('korin-bara-energy');
 
-    // Draft company's 6 pages and 3 products are excluded from Page::published() and Product::published()
-    expect(Page::query()->published()->count())->toBe(16)
+    // Draft company's 6 pages, deleted Korin Berkat compliance, and unpublished Beramal compliance
+    // leave 14 published pages (Holding: 4, Korin Berkat: 5, Beramal: 5)
+    expect(Page::query()->published()->count())->toBe(14)
         ->and(Product::query()->published()->count())->toBe(6);
 
     // ResolveCompanyAction rejects draft company for public visitors
@@ -55,8 +56,9 @@ it('immediately reflects status change of Korin Bara in public queries without c
 
     $korinBara->update(['status' => CompanyStatus::Published]);
 
+    // 14 previously published + 6 from Korin Bara = 20 published pages
     expect($holding->publishedSubsidiaries()->count())->toBe(3)
-        ->and(Page::query()->published()->count())->toBe(22)
+        ->and(Page::query()->published()->count())->toBe(20)
         ->and(Product::query()->published()->count())->toBe(9);
 });
 
