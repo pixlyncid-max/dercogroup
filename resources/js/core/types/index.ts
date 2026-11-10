@@ -93,6 +93,12 @@ export interface PageBlockData<TData = Record<string, unknown>> {
     data: TData;
 }
 
+export interface HeroSlideData {
+    image: string;
+    image_srcset?: string | null;
+    image_alt?: string;
+}
+
 export interface HeroBlockData {
     eyebrow?: string;
     title: string;
@@ -104,6 +110,7 @@ export interface HeroBlockData {
     image?: string | null;
     image_srcset?: string | null;
     image_alt?: string;
+    slides?: HeroSlideData[];
 }
 
 export interface SubsidiaryGridBlockData {

@@ -5,6 +5,7 @@ export { Counter, type CounterProps } from './Counter';
 export { Eyebrow, type EyebrowProps, type EyebrowTone } from './Eyebrow';
 export { FormField, type FormFieldProps } from './FormField';
 export { Heading, type HeadingLevel, type HeadingProps, type HeadingSize } from './Heading';
+export { HeroCarousel, type HeroCarouselProps, type HeroSlide } from './HeroCarousel';
 export { Image, type ImageProps, type ImageRatio, type ResponsiveSource } from './Image';
 export { Input, type InputProps } from './Input';
 export { LanguageSwitch, type LanguageSwitchProps } from './LanguageSwitch';

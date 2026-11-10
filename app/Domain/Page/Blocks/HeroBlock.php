@@ -23,7 +23,23 @@ class HeroBlock extends Block
             ['name' => 'primary_cta_href', 'type' => 'link', 'label' => 'Tautan Tombol Utama'],
             ['name' => 'secondary_cta_label', 'type' => 'translatable_text', 'label' => 'Label Tombol Sekunder'],
             ['name' => 'secondary_cta_href', 'type' => 'link', 'label' => 'Tautan Tombol Sekunder'],
-            ['name' => 'image', 'type' => 'image', 'label' => 'Gambar Hero'],
+            ['name' => 'image', 'type' => 'image', 'label' => 'Gambar Hero (Statis)'],
+            [
+                'name' => 'slides',
+                'type' => 'repeater',
+                'label' => 'Slides Carousel Hero (3–5 Gambar Bergantian)',
+                'min' => 3,
+                'max' => 5,
+                'fields' => [
+                    [
+                        'name' => 'image',
+                        'type' => 'image',
+                        'label' => 'Gambar Slide',
+                        'required' => true,
+                        'require_alt_both' => true,
+                    ],
+                ],
+            ],
         ];
     }
 }

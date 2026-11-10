@@ -157,21 +157,28 @@ abstract class Block
                     $altKey = "{$path}_alt";
                     $rules[$path] = [$required ? 'required' : 'nullable', 'string'];
                     $rules[$altKey] = ['nullable', 'array'];
+                    $requireAltBoth = (bool) ($field['require_alt_both'] ?? false);
                     $rules["{$altKey}.id"] = [
                         $required ? 'required' : "required_with:{$path}",
-                        'nullable',
                         'string',
                     ];
-                    $rules["{$altKey}.en"] = ['nullable', 'string'];
+                    $rules["{$altKey}.en"] = [
+                        $requireAltBoth || $required ? ($required ? 'required' : "required_with:{$path}") : 'nullable',
+                        'string',
+                    ];
                     break;
 
                 case 'repeater':
                     /** @var list<array<string, mixed>> $subFields */
                     $subFields = is_array($field['fields'] ?? null) ? $field['fields'] : [];
-                    $min = isset($field['min']) ? (int) $field['min'] : ($required ? 1 : 0);
                     $repeaterRule = [$required ? 'required' : 'nullable', 'array'];
-                    if ($min > 0 && $required) {
-                        $repeaterRule[] = "min:{$min}";
+                    if (isset($field['min'])) {
+                        $repeaterRule[] = 'min:'.(int) $field['min'];
+                    } elseif ($required) {
+                        $repeaterRule[] = 'min:1';
+                    }
+                    if (isset($field['max'])) {
+                        $repeaterRule[] = 'max:'.(int) $field['max'];
                     }
                     $rules[$path] = $repeaterRule;
                     $subRules = self::buildRulesFromFields($subFields, "{$path}.*");
@@ -280,10 +287,19 @@ abstract class Block
                 case 'repeater':
                     /** @var list<array<string, mixed>> $subFields */
                     $subFields = is_array($field['fields'] ?? null) ? $field['fields'] : [];
-                    $components[] = Repeater::make($path)
+                    $repeater = Repeater::make($path)
                         ->label($label)
                         ->schema(self::buildFilamentComponents($subFields, ''))
                         ->columnSpanFull();
+
+                    if (isset($field['min'])) {
+                        $repeater->minItems((int) $field['min']);
+                    }
+                    if (isset($field['max'])) {
+                        $repeater->maxItems((int) $field['max']);
+                    }
+
+                    $components[] = $repeater;
                     break;
             }
         }
