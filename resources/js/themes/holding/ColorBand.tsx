@@ -1,4 +1,5 @@
-import type { ColorBandBlockData } from '@/core';
+import { usePage } from '@inertiajs/react';
+import type { ColorBandBlockData, SharedPageProps } from '@/core';
 import { Button, Heading, Image, Reveal } from '@/ui';
 import { HoldingIcon } from './IconResolver';
 
@@ -12,14 +13,21 @@ export interface ColorBandProps {
  * Right: edge-to-edge aerial mine photograph without borders.
  */
 export function ColorBand({ data }: ColorBandProps) {
+    const { props } = usePage<SharedPageProps>();
+    const isHome = props.page?.key === 'home';
+
     return (
         <section className="bg-accent-strong text-on-accent overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12">
                 <div className="lg:col-span-6 flex items-center justify-end px-6 py-12 md:px-10 md:py-16 lg:py-24 lg:pr-16 xl:pl-24">
                     <Reveal preset="fadeUp" className="w-full max-w-[520px] space-y-6">
-                        <Heading level={2} size="h2" className="text-on-accent">
-                            {data.title}
-                        </Heading>
+                        {isHome ? (
+                            <h2 className="sr-only">{data.title}</h2>
+                        ) : (
+                            <Heading level={2} size="h2" className="text-on-accent">
+                                {data.title}
+                            </Heading>
+                        )}
 
                         <div className="flex items-start gap-5 pt-1">
                             <div className="mt-0.5 flex h-14 w-14 shrink-0 items-center justify-center rounded-[var(--radius-card)] border border-on-accent/35">

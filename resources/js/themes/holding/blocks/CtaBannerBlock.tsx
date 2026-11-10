@@ -1,4 +1,5 @@
-import type { CtaBannerBlockData } from '@/core';
+import { usePage } from '@inertiajs/react';
+import type { CtaBannerBlockData, SharedPageProps } from '@/core';
 import { Button, Container, Reveal } from '@/ui';
 
 export interface CtaBannerBlockProps {
@@ -10,6 +11,9 @@ export interface CtaBannerBlockProps {
  * Sits on the boundary between the white content area and the Charcoal Deep footer.
  */
 export function CtaBannerBlock({ data }: CtaBannerBlockProps) {
+    const { props } = usePage<SharedPageProps>();
+    const isHome = props.page?.key === 'home';
+
     return (
         <section className="relative bg-bg py-8 md:py-12 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-0 before:h-1/2 before:bg-surface-deeper">
             <Container>
@@ -62,9 +66,13 @@ export function CtaBannerBlock({ data }: CtaBannerBlockProps) {
                     </svg>
 
                     <div className="mx-auto max-w-[560px] text-center space-y-4">
-                        <h2 className="font-heading text-base md:text-lg font-semibold text-ink-on-dark">
-                            {data.title}
-                        </h2>
+                        {isHome ? (
+                            <h2 className="sr-only">{data.title}</h2>
+                        ) : (
+                            <h2 className="font-heading text-base md:text-lg font-bold text-ink-on-dark">
+                                {data.title}
+                            </h2>
+                        )}
 
                         {data.subtitle ? (
                             <p className="text-xs md:text-sm leading-6 text-muted-on-dark">

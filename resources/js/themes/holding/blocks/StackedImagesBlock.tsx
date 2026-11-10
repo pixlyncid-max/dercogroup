@@ -1,4 +1,5 @@
-import type { StackedImagesBlockData } from '@/core';
+import { usePage } from '@inertiajs/react';
+import type { SharedPageProps, StackedImagesBlockData } from '@/core';
 import { Button, Container, Heading, Reveal, Section } from '@/ui';
 import { EyebrowLine } from '../EyebrowLine';
 import { StackedImages } from '../StackedImages';
@@ -8,6 +9,8 @@ export interface StackedImagesBlockProps {
 }
 
 export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
+    const { props } = usePage<SharedPageProps>();
+    const isHome = props.page?.key === 'home';
     const isMirrored = Boolean(data.mirrored);
 
     return (
@@ -39,15 +42,21 @@ export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
                             .filter(Boolean)
                             .join(' ')}
                     >
-                        {data.eyebrow ? (
-                            <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
-                        ) : null}
+                        {isHome ? (
+                            <h2 className="sr-only">{data.title}</h2>
+                        ) : (
+                            <>
+                                {data.eyebrow ? (
+                                    <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
+                                ) : null}
 
-                        <Heading level={2} size="h2">
-                            {data.title}
-                        </Heading>
+                                <Heading level={2} size="h2">
+                                    {data.title}
+                                </Heading>
+                            </>
+                        )}
 
-                        <p className="max-w-[60ch] text-base font-semibold leading-7 text-ink">
+                        <p className="max-w-[60ch] text-base font-bold leading-7 text-ink">
                             {data.lead}
                         </p>
 

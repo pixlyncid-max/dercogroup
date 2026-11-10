@@ -17,7 +17,10 @@ export function LanguageSwitch({ tone = 'dark', className = '' }: LanguageSwitch
     return (
         <nav
             aria-label={t('language')}
-            className={['inline-flex items-center gap-1 text-xs font-semibold uppercase', className]
+            className={[
+                'inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.12em]',
+                className,
+            ]
                 .filter(Boolean)
                 .join(' ')}
         >

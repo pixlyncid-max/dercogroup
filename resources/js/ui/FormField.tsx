@@ -21,7 +21,7 @@ export function FormField({
 
     return (
         <div className={['flex flex-col gap-2', className].filter(Boolean).join(' ')}>
-            <label htmlFor={id} className="text-sm font-semibold text-ink">
+            <label htmlFor={id} className="text-sm font-bold text-ink">
                 {label}
                 {required ? (
                     <span aria-hidden="true" className="ml-1 text-accent-strong">
@@ -31,7 +31,7 @@ export function FormField({
             </label>
             {children}
             {error ? (
-                <p id={errorId} role="alert" className="text-xs font-medium text-accent-strong">
+                <p id={errorId} role="alert" className="text-xs font-normal text-accent-strong">
                     {error}
                 </p>
             ) : null}

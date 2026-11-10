@@ -1,4 +1,5 @@
-import type { MissionListBlockData } from '@/core';
+import { usePage } from '@inertiajs/react';
+import type { MissionListBlockData, SharedPageProps } from '@/core';
 import { Button, Container, Heading, Reveal, Section } from '@/ui';
 import { EyebrowLine } from '../EyebrowLine';
 import { HoldingIcon } from '../IconResolver';
@@ -9,6 +10,9 @@ export interface MissionListBlockProps {
 }
 
 export function MissionListBlock({ data }: MissionListBlockProps) {
+    const { props } = usePage<SharedPageProps>();
+    const isHome = props.page?.key === 'home';
+
     return (
         <Section tone="default">
             <Container>
@@ -26,13 +30,19 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                     </div>
 
                     <Reveal preset="fadeUp" className="lg:col-span-6 space-y-6 lg:pl-6">
-                        {data.eyebrow ? (
-                            <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
-                        ) : null}
+                        {isHome ? (
+                            <h2 className="sr-only">{data.title}</h2>
+                        ) : (
+                            <>
+                                {data.eyebrow ? (
+                                    <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
+                                ) : null}
 
-                        <Heading level={2} size="h2">
-                            {data.title}
-                        </Heading>
+                                <Heading level={2} size="h2">
+                                    {data.title}
+                                </Heading>
+                            </>
+                        )}
 
                         <ul className="space-y-4 pt-1">
                             {(data.items ?? []).map((item, idx) => (
@@ -44,7 +54,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                                         />
                                     </span>
                                     <div className="space-y-1">
-                                        <p className="text-sm font-semibold leading-6 text-ink">
+                                        <p className="text-sm font-bold leading-6 text-ink">
                                             {item.title}
                                         </p>
                                         {item.description ? (

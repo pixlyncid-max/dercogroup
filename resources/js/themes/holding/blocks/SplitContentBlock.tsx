@@ -42,7 +42,7 @@ export function SplitContentBlock({ data }: SplitContentBlockProps) {
                             {data.title}
                         </Heading>
                         {data.lead ? (
-                            <p className="max-w-[62ch] text-base font-semibold leading-7 text-ink">
+                            <p className="max-w-[62ch] text-base font-bold leading-7 text-ink">
                                 {data.lead}
                             </p>
                         ) : null}

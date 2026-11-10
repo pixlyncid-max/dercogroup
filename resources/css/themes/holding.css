@@ -1,5 +1,4 @@
 /* resources/css/themes/holding.css — DESIGN.md 4.1 & 4.2 */
-@import '@fontsource-variable/dm-sans';
 
 [data-theme='holding'] {
     --color-bg: #ffffff;
@@ -15,8 +14,8 @@
     --color-accent-on-dark: #e3a266;
     --color-on-accent: #ffffff;
     --color-line: #e2e2df;
-    --font-heading: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
-    --font-body: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
-    --radius-card: 4px;
-    --radius-button: 2px;
+    --font-heading: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+    --font-body: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
+    --radius-card: 12px;
+    --radius-button: 8px;
 }

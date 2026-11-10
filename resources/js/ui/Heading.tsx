@@ -13,7 +13,7 @@ const sizeMap: Record<HeadingSize, string> = {
     display: 'text-[40px] leading-[44px] lg:text-[64px] lg:leading-[68px] font-bold tracking-tight',
     h2: 'text-[30px] leading-[36px] lg:text-[40px] lg:leading-[46px] font-bold tracking-tight',
     h3: 'text-[20px] leading-[28px] lg:text-[24px] lg:leading-[32px] font-bold',
-    h4: 'text-[18px] leading-[26px] lg:text-[20px] lg:leading-[28px] font-semibold',
+    h4: 'text-[18px] leading-[26px] lg:text-[20px] lg:leading-[28px] font-bold',
 };
 
 const defaultSizeByLevel: Record<HeadingLevel, HeadingSize> = {

@@ -25,10 +25,9 @@ export function Eyebrow({
     return (
         <div className={classes} {...rest}>
             <span
-                className={[
-                    'text-xs font-semibold uppercase tracking-[0.12em]',
-                    toneMap[tone],
-                ].join(' ')}
+                className={['text-xs font-bold uppercase tracking-[0.12em]', toneMap[tone]].join(
+                    ' ',
+                )}
             >
                 {children}
             </span>

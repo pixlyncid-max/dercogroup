@@ -61,7 +61,7 @@ export function ContactInfoContent({
                                 <p className="text-xs font-bold uppercase tracking-[0.12em] text-ink">
                                     {t('contact.phone_label')}
                                 </p>
-                                <p className="text-sm font-semibold text-ink">
+                                <p className="text-sm font-bold text-ink">
                                     <a
                                         href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
                                         className="hover:underline"
@@ -84,7 +84,7 @@ export function ContactInfoContent({
                                 <p className="text-xs font-bold uppercase tracking-[0.12em] text-ink">
                                     {t('contact.email_label')}
                                 </p>
-                                <p className="text-sm font-semibold text-ink">
+                                <p className="text-sm font-bold text-ink">
                                     <a
                                         href={`mailto:${primaryContact.email}`}
                                         className="hover:underline"
@@ -127,7 +127,7 @@ export function ContactInfoContent({
                             {t('contact.map_title')}
                         </span>
                         {primaryContact.latitude && primaryContact.longitude ? (
-                            <span className="font-mono text-xs text-muted-on-dark">
+                            <span className="text-xs text-muted-on-dark">
                                 {`${primaryContact.latitude.toFixed(4)}, ${primaryContact.longitude.toFixed(4)}`}
                             </span>
                         ) : null}

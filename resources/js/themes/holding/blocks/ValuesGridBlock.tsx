@@ -45,7 +45,7 @@ export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
                                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-button)] border border-accent/40 text-accent-strong">
                                         <HoldingIcon name={item.icon_name} className="h-5 w-5" />
                                     </span>
-                                    <span className="font-mono text-xs font-semibold text-muted">
+                                    <span className="text-xs font-bold text-muted">
                                         {`0${idx + 1}`}
                                     </span>
                                 </div>
