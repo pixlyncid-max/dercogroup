@@ -6,6 +6,9 @@ Website company profile **PT Derco Bara Energy** (holding) beserta tiga situs an
 |---|---|
 | [PRD.md](./PRD.md) | Kebutuhan produk, ruang lingkup, kriteria penerimaan |
 | [DESIGN.md](./DESIGN.md) | Sistem desain, tema, dan layout |
+| [docs/erd.md](./docs/erd.md) | Diagram relasi entitas basis data (Mermaid ERD) |
+| [docs/CONTENT-CHECKLIST.md](./docs/CONTENT-CHECKLIST.md) | Daftar periksa konten & aset siap pakai untuk klien |
+| [docs/CMS-GUIDE.md](./docs/CMS-GUIDE.md) | Panduan operasional CMS Filament untuk administrator |
 
 ---
 
@@ -260,22 +263,167 @@ Skenario E2E minimum: navigasi holding → anak usaha, ganti bahasa, kirim form 
 
 ## Deploy
 
-Ringkasan untuk produksi:
+### 1. Persiapan Lingkungan Produksi (.env)
+Pastikan berkas `.env` di server produksi memiliki pengaturan berikut:
+```dotenv
+APP_NAME="PT Derco Bara Energy"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://derco-bara-energy.co.id
 
-```bash
-composer install --no-dev --optimize-autoloader
-npm ci && npm run build && npm run build:ssr
-php artisan migrate --force
-php artisan storage:link
-php artisan config:cache && php artisan route:cache && php artisan view:cache
-php artisan queue:restart
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=derco_production
+DB_USERNAME=derco_user
+DB_PASSWORD="<password-kuat>"
+
+QUEUE_CONNECTION=database
+CACHE_STORE=database
+SESSION_DRIVER=database
+
+# Akun Super Admin Otomatis (ProductionSeeder)
+ADMIN_NAME="Super Administrator"
+ADMIN_EMAIL="admin@derco-bara-energy.co.id"
+ADMIN_PASSWORD="<password-rahasia-admin>"
+
+# Konfigurasi SMTP Notifikasi Formulir Kontak
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.sendgrid.net
+MAIL_PORT=587
+MAIL_USERNAME=apikey
+MAIL_PASSWORD="<api-key>"
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="no-reply@derco-bara-energy.co.id"
+MAIL_FROM_NAME="PT Derco Bara Energy"
 ```
 
-Catatan:
-- Proses SSR (Node) perlu dijalankan sebagai layanan (mis. Supervisor/systemd): `php artisan inertia:start-ssr`.
-- Pastikan `APP_ENV=production`, `APP_DEBUG=false`, dan `APP_URL` benar.
-- Atur SMTP agar notifikasi form kontak terkirim.
-- Jadwalkan pencadangan database harian dan pencadangan folder `storage/app/public`.
+### 2. Pemasangan Awal (Fresh Setup di Server)
+Untuk instalasi pertama kali di server baru:
+```bash
+# Kloning repositori
+git clone <url-repositori> /var/www/derco-app
+cd /var/www/derco-app
+
+# Pasang dependensi
+composer install --no-dev --optimize-autoloader
+npm ci
+
+# Siapkan .env dan generate key
+cp .env.example .env
+php artisan key:generate
+
+# Build aset SSR dan Client
+npm run build:ssr
+
+# Migrasi dan Seeder Produksi Minimal (TANPA data placeholder)
+php artisan migrate --force
+php artisan db:seed --class=ProductionSeeder --force
+
+# Symlink storage publik & optimasi cache
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan icons:cache
+php artisan filament:cache-components
+
+# Set permission direktori storage dan bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+```
+
+### 3. Skrip Deploy Otomatis
+Telah disediakan skrip otomatis di `scripts/deploy.sh`:
+```bash
+chmod +x scripts/deploy.sh scripts/backup.sh
+./scripts/deploy.sh
+```
+
+Untuk menjalankan deploy manual secara berurutan:
+```bash
+# Masuk mode pemeliharaan
+php artisan down --secret="derco-deploy-bypass"
+
+# Perbarui kode & pasang dependensi
+git pull origin main
+composer install --no-dev --optimize-autoloader
+npm ci
+npm run build:ssr
+
+# Migrasi & symlink
+php artisan migrate --force
+php artisan storage:link
+
+# Optimasi cache produksi
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan icons:cache
+php artisan filament:cache-components
+
+# Muat ulang queue worker & layanan SSR
+php artisan queue:restart
+supervisorctl restart derco-ssr derco-worker
+
+# Keluar dari mode pemeliharaan
+php artisan up
+```
+
+### 4. Konfigurasi Layanan Background (SSR & Queue Worker)
+
+#### Opsi A: Supervisor (Disarankan untuk Ubuntu/Debian)
+Berkas konfigurasi siap pakai ada di `scripts/supervisor/derco.conf`. Salin ke `/etc/supervisor/conf.d/derco.conf`:
+```ini
+[program:derco-ssr]
+process_name=%(program_name)s_%(process_num)02d
+command=node /var/www/derco-app/bootstrap/ssr/ssr.js
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/derco-ssr.log
+environment=NODE_ENV="production",PORT="13714"
+stopwaitsecs=10
+stopsignal=SIGTERM
+
+[program:derco-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/derco-app/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/derco-worker.log
+stopwaitsecs=3600
+stopsignal=SIGTERM
+```
+Aktifkan Supervisor:
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start all
+```
+
+#### Opsi B: Systemd Service
+Berkas unit systemd tersedia di `scripts/systemd/`:
+- `scripts/systemd/derco-ssr.service` → `/etc/systemd/system/derco-ssr.service`
+- `scripts/systemd/derco-queue.service` → `/etc/systemd/system/derco-queue.service`
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now derco-ssr.service derco-queue.service
+```
+
+### 5. Pencadangan Harian Otomatis (Database & Storage)
+Telah disediakan skrip pencadangan otomatis di `scripts/backup.sh` yang melakukan dump MySQL terkompresi gzip, kompresi direktori `storage/app/public`, dan rotasi penghapusan otomatis arsip lebih dari 30 hari.
+
+Pasang di crontab server (`crontab -e`):
+```cron
+# Setiap pukul 02:00 pagi WIB, lakukan pencadangan harian ke /var/backups/derco
+0 2 * * * /var/www/derco-app/scripts/backup.sh /var/backups/derco >> /var/log/derco-backup.log 2>&1
+```
 
 ---
 

@@ -1,0 +1,19 @@
+[Unit]
+Description=PT Derco Bara Energy - Laravel Queue Worker
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/derco-app
+ExecStart=/usr/bin/php /var/www/derco-app/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+Restart=always
+RestartSec=5
+
+# Sandboxing & Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

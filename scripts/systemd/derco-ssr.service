@@ -1,0 +1,21 @@
+[Unit]
+Description=PT Derco Bara Energy - Inertia SSR Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/derco-app
+ExecStart=/usr/bin/node /var/www/derco-app/bootstrap/ssr/ssr.js
+Restart=always
+RestartSec=3
+Environment=NODE_ENV=production
+Environment=PORT=13714
+
+# Sandboxing & Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
