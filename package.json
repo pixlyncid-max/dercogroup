@@ -11,7 +11,8 @@
         "format:check": "prettier --check \"resources/**/*.{ts,tsx,css}\"",
         "types": "tsc --noEmit",
         "test": "vitest run",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "branding:light": "python scripts/branding/generate_light_variants.py"
     },
     "dependencies": {
         "@fontsource-variable/manrope": "^5.3.0",
