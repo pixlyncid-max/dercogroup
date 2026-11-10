@@ -18,6 +18,10 @@ Route::prefix('{locale}')
     ->whereIn('locale', SetLocale::SUPPORTED_LOCALES)
     ->middleware([SetLocale::class, ResolveCompany::class])
     ->group(function (): void {
+        // 301 Redirects for legacy contact slugs
+        Route::get('/kontak', fn (string $locale) => redirect($locale === 'en' ? '/en/contact-us' : '/id/hubungi-kami', 301));
+        Route::get('/contact', fn (string $locale) => redirect($locale === 'en' ? '/en/contact-us' : '/id/hubungi-kami', 301));
+
         Route::get('/', [HoldingPageController::class, 'home'])->name('holding.home');
 
         Route::post('/contact-messages', [ContactMessageController::class, 'store'])

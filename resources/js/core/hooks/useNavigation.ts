@@ -20,7 +20,8 @@ export function useNavigation(): UseNavigationResult {
     const holdingUrl = props.navigation?.holdingUrl ?? `/${locale}`;
 
     const contactItem = items.find((item) => item.key === 'contact');
-    const contactUrl = contactItem?.href ?? (locale === 'en' ? '/en/contact' : '/id/kontak');
+    const contactUrl =
+        contactItem?.href ?? (locale === 'en' ? '/en/contact-us' : '/id/hubungi-kami');
 
     const [isSticky, setIsSticky] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

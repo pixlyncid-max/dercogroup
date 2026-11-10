@@ -17,7 +17,7 @@ enum PageKey: string
     /**
      * @return array{id: string, en: string}
      */
-    public function defaultTitles(): array
+    public function defaultTitles(bool $isHolding = true): array
     {
         return match ($this) {
             self::Home => ['id' => 'Beranda', 'en' => 'Home'],
@@ -26,14 +26,16 @@ enum PageKey: string
             self::Products => ['id' => 'Produk', 'en' => 'Products'],
             self::Operations => ['id' => 'Operasi', 'en' => 'Operations'],
             self::Compliance => ['id' => 'Mutu & Kepatuhan', 'en' => 'Quality & Compliance'],
-            self::Contact => ['id' => 'Kontak', 'en' => 'Contact'],
+            self::Contact => $isHolding
+                ? ['id' => 'Hubungi Kami', 'en' => 'Contact Us']
+                : ['id' => 'Kontak', 'en' => 'Contact'],
         };
     }
 
     /**
      * @return array{id: string, en: string}
      */
-    public function defaultSlugs(): array
+    public function defaultSlugs(bool $isHolding = true): array
     {
         return match ($this) {
             self::Home => ['id' => '', 'en' => ''],
@@ -42,7 +44,9 @@ enum PageKey: string
             self::Products => ['id' => 'produk', 'en' => 'products'],
             self::Operations => ['id' => 'operasi', 'en' => 'operations'],
             self::Compliance => ['id' => 'mutu-dan-kepatuhan', 'en' => 'quality-and-compliance'],
-            self::Contact => ['id' => 'kontak', 'en' => 'contact'],
+            self::Contact => $isHolding
+                ? ['id' => 'hubungi-kami', 'en' => 'contact-us']
+                : ['id' => 'kontak', 'en' => 'contact'],
         };
     }
 

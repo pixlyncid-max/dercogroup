@@ -25,8 +25,8 @@ class CreateCompanyPages
         $pages = collect();
 
         foreach ($keys as $index => $pageKey) {
-            $titles = $pageKey->defaultTitles();
-            $slugs = $pageKey->defaultSlugs();
+            $titles = $pageKey->defaultTitles($company->isHolding());
+            $slugs = $pageKey->defaultSlugs($company->isHolding());
 
             $page = Page::query()->firstOrCreate(
                 [

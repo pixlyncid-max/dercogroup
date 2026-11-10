@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { usePage } from '@inertiajs/react';
-import { ChevronRight, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { DURATION, EASE_OUT } from '@/motion/presets';
-import { Button, Container, LanguageSwitch } from '@/ui';
+import { Container, LanguageSwitch } from '@/ui';
 
 export interface HoldingLayoutProps {
     children: ReactNode;
@@ -13,15 +13,8 @@ export interface HoldingLayoutProps {
 export function Layout({ children }: HoldingLayoutProps) {
     const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
-    const {
-        items,
-        holdingUrl,
-        contactUrl,
-        isSticky,
-        isMobileMenuOpen,
-        openMobileMenu,
-        closeMobileMenu,
-    } = useNavigation();
+    const { items, holdingUrl, isSticky, isMobileMenuOpen, openMobileMenu, closeMobileMenu } =
+        useNavigation();
     const prefersReducedMotion = Boolean(useReducedMotion());
 
     const company = props.company;
@@ -29,11 +22,15 @@ export function Layout({ children }: HoldingLayoutProps) {
     const primaryContact = (props.contacts ?? company?.contacts ?? [])[0];
     const currentYear = new Date().getFullYear();
 
+    const middleNavItems = items.filter((item) => item.key !== 'contact');
+    const contactNavItem = items.find((item) => item.key === 'contact');
+    const orderedMobileItems = [...middleNavItems, ...(contactNavItem ? [contactNavItem] : [])];
+
     return (
         <div data-theme="holding" className="min-h-dvh flex flex-col bg-bg text-ink">
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-[var(--radius-button)] focus:bg-surface-dark focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink-on-dark focus:shadow-lg"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-[var(--radius-button)] focus:bg-surface-dark focus:px-4 focus:py-2.5 focus:text-sm focus:font-bold focus:text-ink-on-dark focus:shadow-lg"
             >
                 {t('skip_to_content')}
             </a>
@@ -41,7 +38,7 @@ export function Layout({ children }: HoldingLayoutProps) {
             {props.isPreview ? (
                 <div
                     role="status"
-                    className="bg-accent-strong px-4 py-2 text-center text-xs font-semibold tracking-wide text-on-accent"
+                    className="bg-accent-strong px-4 py-2 text-center text-xs font-bold tracking-wide text-on-accent"
                 >
                     {t('preview_banner')}
                 </div>
@@ -76,13 +73,13 @@ export function Layout({ children }: HoldingLayoutProps) {
                     </a>
 
                     <nav aria-label={t('nav.main')} className="hidden lg:flex items-center gap-7">
-                        {items.map((item) => (
+                        {middleNavItems.map((item) => (
                             <a
                                 key={item.key}
                                 href={item.href}
                                 aria-current={item.active ? 'page' : undefined}
                                 className={[
-                                    'inline-flex min-h-[44px] items-center border-b-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                    'inline-flex min-h-[44px] items-center border-b-2 text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
                                     item.active
                                         ? 'border-accent text-accent-on-dark'
                                         : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
@@ -93,17 +90,23 @@ export function Layout({ children }: HoldingLayoutProps) {
                         ))}
                     </nav>
 
-                    <div className="hidden lg:flex items-center gap-4">
+                    <div className="hidden lg:flex items-center gap-6">
                         <LanguageSwitch />
-                        <Button
-                            variant="inverse"
-                            size="md"
-                            href={contactUrl}
-                            className="text-xs font-bold uppercase tracking-[0.1em] !px-5"
-                        >
-                            <span>{t('contact_us')}</span>
-                            <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-                        </Button>
+                        {contactNavItem ? (
+                            <a
+                                key={contactNavItem.key}
+                                href={contactNavItem.href}
+                                aria-current={contactNavItem.active ? 'page' : undefined}
+                                className={[
+                                    'inline-flex min-h-[44px] items-center border-b-2 text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                    contactNavItem.active
+                                        ? 'border-accent text-accent-on-dark'
+                                        : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
+                                ].join(' ')}
+                            >
+                                {contactNavItem.label}
+                            </a>
+                        ) : null}
                     </div>
 
                     <div className="flex items-center gap-2 lg:hidden">
@@ -166,14 +169,14 @@ export function Layout({ children }: HoldingLayoutProps) {
                                 </div>
 
                                 <nav aria-label={t('nav.main')} className="flex flex-col gap-2">
-                                    {items.map((item) => (
+                                    {orderedMobileItems.map((item) => (
                                         <a
                                             key={item.key}
                                             href={item.href}
                                             onClick={closeMobileMenu}
                                             aria-current={item.active ? 'page' : undefined}
                                             className={[
-                                                'flex min-h-[44px] items-center border-l-2 px-3 text-xs font-semibold uppercase tracking-[0.12em] transition-colors',
+                                                'flex min-h-[44px] items-center border-l-2 px-3 text-xs font-bold uppercase tracking-[0.12em] transition-colors',
                                                 item.active
                                                     ? 'border-accent text-accent-on-dark bg-ink-on-dark/5'
                                                     : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
@@ -183,18 +186,6 @@ export function Layout({ children }: HoldingLayoutProps) {
                                         </a>
                                     ))}
                                 </nav>
-                            </div>
-
-                            <div className="border-t border-ink-on-dark/10 pt-6">
-                                <Button
-                                    variant="inverse"
-                                    size="md"
-                                    href={contactUrl}
-                                    className="w-full text-xs font-bold uppercase tracking-[0.1em]"
-                                >
-                                    <span>{t('contact_us')}</span>
-                                    <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-                                </Button>
                             </div>
                         </motion.aside>
                     </div>
@@ -218,7 +209,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                         </div>
 
                         <div className="md:col-span-4 space-y-3">
-                            <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-on-dark">
+                            <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-ink-on-dark">
                                 {t('footer.address_heading')}
                             </h2>
                             {primaryContact ? (
@@ -231,7 +222,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                         </div>
 
                         <div className="md:col-span-3 space-y-3">
-                            <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-on-dark">
+                            <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-ink-on-dark">
                                 {t('footer.hours_heading')}
                             </h2>
                             {primaryContact?.operating_hours ? (

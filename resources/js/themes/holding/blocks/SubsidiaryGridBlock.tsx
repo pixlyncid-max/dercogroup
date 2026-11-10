@@ -2,7 +2,7 @@ import { usePage } from '@inertiajs/react';
 import { motion, useReducedMotion } from 'motion/react';
 import { useLocale, type SharedPageProps, type SubsidiaryGridBlockData } from '@/core';
 import { resolvePreset, VIEWPORT_ONCE } from '@/motion/presets';
-import { Button, Container, Counter, Heading, Image, Reveal, Section } from '@/ui';
+import { Button, Container, Heading, Image, Reveal, Section } from '@/ui';
 import { EyebrowLine } from '../EyebrowLine';
 
 export interface SubsidiaryGridBlockProps {
@@ -11,7 +11,7 @@ export interface SubsidiaryGridBlockProps {
 
 export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
     const { props } = usePage<SharedPageProps>();
-    const { locale, t } = useLocale();
+    const { t } = useLocale();
     const prefersReducedMotion = Boolean(useReducedMotion());
     const subsidiaries = props.subsidiaries ?? [];
     const variant = data.layout_variant ?? 'cards';
@@ -106,7 +106,6 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                     <div className="space-y-20 lg:space-y-28">
                         {subsidiaries.map((sub, index) => {
                             const isReversed = index % 2 === 1;
-                            const keyStats = (sub.stats ?? []).slice(0, 3);
 
                             return (
                                 <article
@@ -147,7 +146,7 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                                         </Heading>
 
                                         {sub.tagline ? (
-                                            <p className="text-base font-semibold leading-7 text-ink">
+                                            <p className="text-base font-bold leading-7 text-ink">
                                                 {sub.tagline}
                                             </p>
                                         ) : null}
@@ -156,30 +155,6 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                                             <p className="text-sm leading-7 text-muted">
                                                 {sub.about_short}
                                             </p>
-                                        ) : null}
-
-                                        {keyStats.length > 0 ? (
-                                            <dl className="grid grid-cols-3 gap-4 border-y border-line py-5">
-                                                {keyStats.map((stat) => (
-                                                    <div key={stat.id} className="space-y-1">
-                                                        <dt className="text-xs font-medium text-muted">
-                                                            {stat.unit}
-                                                        </dt>
-                                                        <dd className="font-heading text-xl md:text-2xl font-bold text-accent-strong">
-                                                            <Counter
-                                                                value={stat.value}
-                                                                prefix={stat.prefix}
-                                                                suffix={stat.suffix}
-                                                                locale={
-                                                                    locale === 'en'
-                                                                        ? 'en-US'
-                                                                        : 'id-ID'
-                                                                }
-                                                            />
-                                                        </dd>
-                                                    </div>
-                                                ))}
-                                            </dl>
                                         ) : null}
 
                                         {sub.url ? (
@@ -204,80 +179,97 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
         );
     }
 
+    const isHome = props.page?.key === 'home';
     const staggerVariants = resolvePreset('stagger', prefersReducedMotion);
     const itemVariants = resolvePreset('fadeUp', prefersReducedMotion);
     const gridColsClass =
         subsidiaries.length >= 3
-            ? 'grid-cols-1 md:grid-cols-3'
-            : 'grid-cols-1 md:grid-cols-2 max-w-[920px] mx-auto';
+            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            : 'grid-cols-1 md:grid-cols-2 max-w-[960px] mx-auto';
 
     return (
-        <section className="bg-surface-dark text-ink-on-dark pt-16 pb-16 md:pt-24 md:pb-24 lg:pt-32">
+        <section
+            className={[
+                'bg-surface-dark text-ink-on-dark',
+                isHome ? 'py-16 md:py-20 lg:py-24' : 'pt-16 pb-16 md:pt-24 md:pb-24 lg:pt-32',
+            ].join(' ')}
+        >
             <Container>
-                <Reveal preset="fadeUp" className="mx-auto max-w-[640px] text-center space-y-4">
-                    <Heading level={2} size="h2" className="text-accent-on-dark">
-                        {data.title}
-                    </Heading>
-                    {data.description ? (
-                        <p className="text-sm md:text-base leading-7 text-muted-on-dark">
-                            {data.description}
-                        </p>
-                    ) : null}
-                </Reveal>
+                {isHome ? (
+                    <h2 className="sr-only">{data.title}</h2>
+                ) : (
+                    <Reveal preset="fadeUp" className="mx-auto max-w-[640px] text-center space-y-4">
+                        <Heading level={2} size="h2" className="text-accent-on-dark">
+                            {data.title}
+                        </Heading>
+                        {data.description ? (
+                            <p className="text-sm md:text-base leading-7 text-muted-on-dark">
+                                {data.description}
+                            </p>
+                        ) : null}
+                    </Reveal>
+                )}
 
                 <motion.div
                     initial={prefersReducedMotion ? 'visible' : 'hidden'}
                     whileInView="visible"
                     viewport={VIEWPORT_ONCE}
                     variants={staggerVariants}
-                    className={['mt-12 grid gap-8 lg:gap-10', gridColsClass].join(' ')}
+                    className={[
+                        isHome ? 'grid gap-8 lg:gap-10' : 'mt-12 grid gap-8 lg:gap-10',
+                        gridColsClass,
+                    ].join(' ')}
                 >
                     {subsidiaries.map((sub) => (
                         <motion.article
                             key={sub.slug}
                             variants={itemVariants}
-                            className="group flex flex-col text-center"
+                            whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+                            transition={{ duration: 0.2 }}
+                            className="group flex flex-col justify-between overflow-hidden rounded-[var(--radius-card)] border border-ink-on-dark/15 bg-surface-deeper p-6 md:p-7 text-left shadow-md transition-shadow hover:shadow-xl"
                         >
-                            <a
-                                href={sub.url ?? '#'}
-                                className="block overflow-hidden rounded-[var(--radius-card)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                            >
-                                <Image
-                                    src={sub.featured_image_url}
-                                    srcSet={sub.featured_image_srcset}
-                                    alt={sub.featured_image_alt || sub.name}
-                                    ratio="4/3"
-                                    wrapperClassName="border-0 rounded-none"
-                                    className="transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03]"
-                                />
-                            </a>
+                            <div>
+                                <a
+                                    href={sub.url ?? '#'}
+                                    className="block overflow-hidden rounded-[calc(var(--radius-card)-4px)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                >
+                                    <Image
+                                        src={sub.featured_image_url}
+                                        srcSet={sub.featured_image_srcset}
+                                        alt={sub.featured_image_alt || sub.name}
+                                        ratio="4/3"
+                                        wrapperClassName="border-0 rounded-none"
+                                        className="transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03]"
+                                    />
+                                </a>
 
-                            <div className="flex flex-1 flex-col justify-between px-3 pt-6">
-                                <div className="space-y-3">
-                                    <h3 className="font-heading text-xs md:text-sm font-bold uppercase tracking-[0.14em] text-ink-on-dark">
+                                <div className="pt-5 space-y-2.5">
+                                    <h3 className="font-heading text-lg md:text-xl font-bold tracking-tight text-ink-on-dark">
                                         <a
                                             href={sub.url ?? '#'}
-                                            className="inline-flex min-h-[44px] items-center hover:text-accent-on-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                            className="inline-flex min-h-[44px] items-center hover:text-accent-on-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-[var(--radius-button)]"
                                         >
                                             {sub.name}
                                         </a>
                                     </h3>
-                                    <p className="text-xs md:text-sm leading-6 text-muted-on-dark">
-                                        {sub.tagline || sub.about_short}
+                                    <p className="line-clamp-3 text-xs md:text-sm leading-6 text-muted-on-dark">
+                                        {sub.about_short || sub.tagline}
                                     </p>
                                 </div>
-
-                                {sub.url ? (
-                                    <div className="pt-5">
-                                        <a
-                                            href={sub.url}
-                                            className="inline-flex min-h-[44px] px-4 py-2.5 items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-accent-on-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                                        >
-                                            {t('see_details')} →
-                                        </a>
-                                    </div>
-                                ) : null}
                             </div>
+
+                            {sub.url ? (
+                                <div className="pt-6">
+                                    <Button
+                                        variant="solid"
+                                        size="md"
+                                        href={sub.url}
+                                        className="w-full text-xs font-bold uppercase tracking-[0.12em]"
+                                    >
+                                        {t('see_details')}
+                                    </Button>
+                                </div>
+                            ) : null}
                         </motion.article>
                     ))}
                 </motion.div>

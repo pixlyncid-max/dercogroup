@@ -1,5 +1,5 @@
 import type { HeroBlockData } from '@/core';
-import { Button, Container, Heading, Image, Reveal } from '@/ui';
+import { Button, Container, Heading, HeroCarousel, Image, Reveal } from '@/ui';
 import { EyebrowLine } from '../EyebrowLine';
 
 export interface HeroBlockProps {
@@ -7,7 +7,63 @@ export interface HeroBlockProps {
 }
 
 export function HeroBlock({ data }: HeroBlockProps) {
+    const hasSlides = Boolean(data.slides && data.slides.length > 0);
     const hasHeroImage = Boolean(data.image);
+
+    if (hasSlides) {
+        return (
+            <section className="relative min-h-[480px] md:min-h-[560px] lg:min-h-[620px] flex items-center overflow-hidden bg-surface-dark text-ink-on-dark">
+                {/* Full-bleed background carousel with dark overlay for WCAG AA contrast */}
+                <div className="absolute inset-0 z-0">
+                    <HeroCarousel
+                        slides={data.slides!}
+                        overlayClassName="bg-gradient-to-r from-surface-deeper/95 via-surface-deeper/85 to-surface-deeper/70"
+                    />
+                </div>
+
+                <Container size="wide" className="relative z-20 py-20 md:py-28 lg:py-32">
+                    <Reveal preset="fadeUp" className="max-w-[760px] space-y-6">
+                        {data.eyebrow ? (
+                            <EyebrowLine tone="dark" withRule={false}>
+                                {data.eyebrow}
+                            </EyebrowLine>
+                        ) : null}
+
+                        <Heading level={1} size="display" className="text-ink-on-dark">
+                            {data.title}
+                        </Heading>
+
+                        <p className="max-w-[58ch] text-base md:text-lg leading-7 md:leading-8 text-muted-on-dark">
+                            {data.description}
+                        </p>
+
+                        {data.primary_cta_label && data.primary_cta_href ? (
+                            <div className="flex flex-wrap items-center gap-4 pt-3">
+                                <Button
+                                    variant="solid"
+                                    size="lg"
+                                    href={data.primary_cta_href}
+                                    className="text-xs font-bold uppercase tracking-[0.12em]"
+                                >
+                                    {data.primary_cta_label}
+                                </Button>
+                                {data.secondary_cta_label && data.secondary_cta_href ? (
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        href={data.secondary_cta_href}
+                                        className="text-xs font-bold uppercase tracking-[0.12em]"
+                                    >
+                                        {data.secondary_cta_label}
+                                    </Button>
+                                ) : null}
+                            </div>
+                        ) : null}
+                    </Reveal>
+                </Container>
+            </section>
+        );
+    }
 
     if (!hasHeroImage) {
         return (
