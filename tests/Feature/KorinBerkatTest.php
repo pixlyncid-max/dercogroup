@@ -16,7 +16,7 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('renders all 6 PT Korin Berkat Energy pages in Indonesian and English via SubsidiaryPageController', function (): void {
+it('renders all 5 active PT Korin Berkat Energy pages in Indonesian and English via SubsidiaryPageController', function (): void {
     $this->get('/id/bisnis-kami/korin-berkat-energy')
         ->assertOk()
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -25,11 +25,10 @@ it('renders all 6 PT Korin Berkat Energy pages in Indonesian and English via Sub
             ->where('company.slug', 'korin-berkat-energy')
             ->where('company.theme', 'korin-berkat')
             ->where('page.key', 'home')
-            ->has('blocks', 6)
+            ->has('blocks', 5)
             ->has('stats', 4)
             ->has('products', 3)
             ->has('operations', 4)
-            ->has('certifications', 5)
         );
 
     $this->get('/en/our-business/korin-berkat-energy')
@@ -46,7 +45,6 @@ it('renders all 6 PT Korin Berkat Energy pages in Indonesian and English via Sub
         'tentang-kami' => 'about',
         'produk' => 'products',
         'operasi' => 'operations',
-        'mutu-dan-kepatuhan' => 'compliance',
         'kontak' => 'contact',
     ];
 
@@ -64,7 +62,6 @@ it('renders all 6 PT Korin Berkat Energy pages in Indonesian and English via Sub
         'about-us' => 'about',
         'products' => 'products',
         'operations' => 'operations',
-        'quality-and-compliance' => 'compliance',
         'contact' => 'contact',
     ];
 
@@ -77,6 +74,10 @@ it('renders all 6 PT Korin Berkat Energy pages in Indonesian and English via Sub
                 ->where('page.key', $expectedKey)
             );
     }
+
+    // Compliance page has been deleted entirely for Korin Berkat
+    $this->get('/id/bisnis-kami/korin-berkat-energy/mutu-dan-kepatuhan')->assertNotFound();
+    $this->get('/en/our-business/korin-berkat-energy/quality-and-compliance')->assertNotFound();
 });
 
 it('resolves product detail page in Indonesian and English with specification table and alternate URLs', function (): void {

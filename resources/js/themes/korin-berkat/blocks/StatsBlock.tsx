@@ -15,6 +15,7 @@ export function StatsBlock({ data }: StatsBlockProps) {
     const { props } = usePage<SharedPageProps>();
     const { locale } = useLocale();
     const stats = props.stats ?? props.company?.stats ?? [];
+    const isHomePage = props.page?.key === 'home';
 
     if (stats.length === 0) {
         return null;
@@ -23,14 +24,22 @@ export function StatsBlock({ data }: StatsBlockProps) {
     return (
         <Section tone="surface" className="border-b border-line">
             <Container>
-                <EditorialHeader
-                    indexLabel="02"
-                    eyebrow={data.eyebrow}
-                    title={data.title}
-                    description={data.description}
-                />
+                {isHomePage ? (
+                    <h2 className="sr-only">{data.title}</h2>
+                ) : (
+                    <EditorialHeader
+                        indexLabel="02"
+                        eyebrow={data.eyebrow}
+                        title={data.title}
+                        description={data.description}
+                    />
+                )}
 
-                <div className="mt-12 grid grid-cols-1 divide-y divide-line border-y border-line bg-bg sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
+                <div
+                    className={`${
+                        isHomePage ? '' : 'mt-12 '
+                    }grid grid-cols-1 divide-y divide-line border-y border-line bg-bg sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x`}
+                >
                     {stats.map((stat, idx) => (
                         <Reveal key={stat.id} preset="fadeUp" className="p-7 lg:p-8 space-y-4">
                             <div className="flex items-center justify-between">

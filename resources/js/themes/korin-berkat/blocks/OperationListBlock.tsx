@@ -1,5 +1,5 @@
-import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { MapPin } from 'lucide-react';
 import {
     useLocale,
     type OperationData,
@@ -33,9 +33,6 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
     const operations: OperationData[] = props.operations ?? [];
 
     const isHomePage = props.page?.key === 'home';
-    const operationsNavHref = props.navigation?.items?.find(
-        (item) => item.key === 'operations',
-    )?.href;
 
     const flowSteps = [
         {
@@ -63,30 +60,24 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
     return (
         <Section tone="surface" className="border-b border-line">
             <Container>
-                <EditorialHeader
-                    indexLabel="04"
-                    eyebrow={data.eyebrow}
-                    title={data.title}
-                    description={data.description}
-                    level={isFirstBlock ? 1 : 2}
-                    action={
-                        isHomePage && operationsNavHref ? (
-                            <Link
-                                href={operationsNavHref}
-                                className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:text-accent-strong"
-                            >
-                                <span>{t('see_details')}</span>
-                                <ArrowRight
-                                    className="h-4 w-4 text-accent-strong"
-                                    aria-hidden="true"
-                                />
-                            </Link>
-                        ) : null
-                    }
-                />
+                {isHomePage ? (
+                    <h2 className="sr-only">{data.title}</h2>
+                ) : (
+                    <EditorialHeader
+                        indexLabel="04"
+                        eyebrow={data.eyebrow}
+                        title={data.title}
+                        description={data.description}
+                        level={isFirstBlock ? 1 : 2}
+                    />
+                )}
 
                 {/* Split: Schematic Coordinate Pin Map (5 cols) + Location Index List (7 cols) */}
-                <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
+                <div
+                    className={`${
+                        isHomePage ? '' : 'mt-12 '
+                    }grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start`}
+                >
                     {data.show_map !== false ? (
                         <Reveal
                             preset="fadeIn"
