@@ -1,6 +1,6 @@
 # PRD — Website PT Derco Bara Energy
 
-Versi 1.3 · Product Requirements Document
+Versi 1.4 · Product Requirements Document
 Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md)
 
 ---
@@ -174,6 +174,16 @@ Khusus kebutuhan klien: Korin Bara dibuat tetapi belum ditampilkan.
 | FR-SEO-3 | `sitemap.xml` dinamis (hanya konten `published`) dan `robots.txt` | P0 |
 | FR-SEO-4 | Data terstruktur `Organization` dan `LocalBusiness` (schema.org) dari `company_contacts` | P1 |
 | FR-SEO-5 | URL kanonik dan hreflang untuk setiap pasangan bahasa | P0 |
+
+### 5.7 Branding dan Logo Perusahaan (FR-BRD)
+| ID | Kebutuhan | Prioritas |
+|---|---|---|
+| FR-BRD-1 | Logo resmi holding dan setiap anak usaha tampil di header dan footer dengan rasio aspek terjaga | P0 |
+| FR-BRD-2 | Konfigurasi branding terpusat di satu sumber (`config/branding.php`) dan ditransmisikan via API `CompanyResource` | P0 |
+| FR-BRD-3 | Logo memilih varian yang tepat secara otomatis sesuai kontras permukaan (`light` untuk latar terang, `dark` untuk latar gelap, `compact` untuk rail sempit) | P0 |
+| FR-BRD-4 | Dilarang menggunakan filter CSS (brightness/invert); varian permukaan gelap dihasilkan dari skrip terprogram tanpa mengubah warna merek | P0 |
+| FR-BRD-5 | Logo di header berupa tautan beranda dengan accessible label dwibahasa; logo di footer tidak memiliki tautan untuk menghindari navigasi redundan | P0 |
+| FR-BRD-6 | Fallback wordmark semantik otomatis ditampilkan jika aset gambar logo tidak ditemukan atau gagal dimuat | P1 |
 
 ---
 
@@ -367,14 +377,14 @@ Urutan fase 3–5 dapat bertukar tanpa mengubah fondasi, karena ketiganya berbag
 
 ### 12.3 Pertanyaan Terbuka
 1. Apa bidang usaha PT Beramal Sukses Sejahtera?
-2. Apakah logo, nama merek, dan palet final sudah ada dalam format vektor?
+2. Dapatkah klien menyediakan berkas logo resmi versi terang/negatif (format SVG atau PNG master) untuk menggantikan varian turunan hasil konversi?
 3. Alamat email tujuan formulir kontak, dan apakah berbeda per perusahaan?
 4. Domain, hosting, dan layanan email (SMTP) yang akan dipakai?
 5. Kapan Korin Bara direncanakan tayang?
 6. Apakah ada kebutuhan tambahan seperti peta interaktif, unduh company profile PDF, atau Google Analytics?
 
 ### 12.4 Konten yang Dibutuhkan dari Klien
-Per perusahaan: logo, deskripsi singkat dan panjang (ID/EN), sejarah, visi-misi, nilai, foto operasi dan tim, daftar produk beserta spesifikasi, lokasi operasi, angka kunci, sertifikat dan izin (PDF), alamat, telepon, email, jam operasional.
+Per perusahaan: logo master (termasuk varian negatif/terang untuk latar gelap), deskripsi singkat dan panjang (ID/EN), sejarah, visi-misi, nilai, foto operasi dan tim, daftar produk beserta spesifikasi, lokasi operasi, angka kunci, sertifikat dan izin (PDF), alamat, telepon, email, jam operasional.
 
 ---
 
@@ -382,10 +392,17 @@ Per perusahaan: logo, deskripsi singkat dan panjang (ID/EN), sejarah, visi-misi,
 
 - Diagram alur situs dan referensi desain beranda: dari klien/tim, disimpan di repositori pada `docs/reference/`.
 - ERD (dua bagian) disepakati dalam diskusi dan dipindahkan ke `docs/erd.md` saat fase 1.
+- Lembar pratinjau matriks kontras logo di latar gelap/terang: `docs/branding/logo-preview.png`.
 
 ---
 
 ## 14. Catatan Perubahan (Changelog)
+
+### Versi 1.4 (Revisi 3 — Integrasi Logo Header dan Footer Seluruh Tema)
+- **Kebutuhan Fungsional FR-BRD:** Penambahan kelompok kebutuhan FR-BRD-1 s.d. FR-BRD-6 untuk logo header dan footer holding serta tiga anak usaha.
+- **Konfigurasi Branding Terpusat:** Penambahan `config/branding.php` dan `ResolveCompanyLogo` action. Data logo tersedia melalui `CompanyResource` ke komponen antarmuka.
+- **Generator Varian Terang:** Skrip otomatisasi Python `scripts/branding/generate_light_variants.py` menghasilkan varian logo bersih untuk permukaan gelap tanpa mengubah warna simbol/merek.
+- **Komponen Logo & Aksesibilitas:** Komponen `ui/Logo` dengan tautan beranda berlabel ARIA dwibahasa di header, footer statis tanpa tautan, dan wordmark fallback. Lolos audit axe WCAG 2.2 AA.
 
 ### Versi 1.3 (Revisi 2 — Anak Usaha: Korin Berkat & Beramal)
 - **Konfigurasi Set Halaman Dinamis:** Model data mendukung set halaman berbeda per tema via `CompanyTheme::pages()`. `CreateCompanyPages` dan seeder menggunakan konfigurasi ini.

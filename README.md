@@ -100,6 +100,7 @@ Buka:
 | `./vendor/bin/pint` | Format PHP |
 | `npm run lint` | ESLint |
 | `npm run format` | Prettier |
+| `npm run branding:light` | Hasilkan varian logo latar gelap (`*-light.png`) secara otomatis |
 | `npm run types` | Pemeriksaan tipe TypeScript (`tsc --noEmit`) |
 | `php artisan test` | Tes backend (Pest) |
 | `npm run test` | Tes frontend (Vitest) |
@@ -195,14 +196,60 @@ PT Korin Bara Energy saat ini berstatus `draft`.
 
 ---
 
+## Pengelolaan Logo & Branding
+
+Sistem branding menggunakan pendekatan **satu sumber kebenaran** (`config/branding.php`) yang memetakan tema ke metadata logo:
+
+```php
+// config/branding.php
+return [
+    'logos' => [
+        'holding' => [
+            'light' => '/images/logo/Logo-DercoBaraEnergy.png',
+            'dark' => '/images/logo/Logo-DercoBaraEnergy-light.png',
+            'width' => 676,
+            'height' => 369,
+            'alt' => 'PT Derco Bara Energy',
+        ],
+        // ... anak usaha lainnya
+    ],
+];
+```
+
+### Konvensi Berkas & Varian Terang:
+- `light`: Berkas logo asli untuk latar terang (tinta gelap di atas latar putih).
+- `dark`: Varian terang untuk latar gelap (tinta putih di atas latar charcoal/navy/dark water).
+- `compact`: Ikon/simbol ringkas untuk ruang sempit (rail Korin Bara 88px).
+
+### Menghasilkan & Memperbarui Varian Logo:
+1. Simpan berkas logo master di `public/images/logo/`.
+2. Jalankan skrip pembuat varian terang:
+   ```bash
+   npm run branding:light
+   ```
+   Skrip ini idempoten dan tidak akan menimpa berkas yang sudah ada kecuali ditambahkan argumen `--force`:
+   ```bash
+   python scripts/branding/generate_light_variants.py --force
+   ```
+3. Jika klien di kemudian hari menyediakan berkas resmi versi negatif (SVG/PNG), cukup timpa berkas `*-light.png` tersebut secara langsung tanpa mengubah kode.
+4. Lembar verifikasi matriks kontras dapat dibuat ulang kapan saja lewat:
+   ```bash
+   python scripts/branding/generate_preview_sheet.py
+   ```
+   Hasil pratinjau tersimpan di `docs/branding/logo-preview.png`.
+
+---
+
 ## Menambah Anak Usaha Baru
 
 1. Tambah nilai pada enum `CompanyTheme` (mis. `Contoh = 'contoh'`).
 2. Definisikan set halaman yang aktif untuk tema tersebut di method `CompanyTheme::pages()`, memetakan tema ke daftar `PageKey` (mis. `[PageKey::Home, PageKey::About, PageKey::Products, PageKey::Operations, PageKey::Contact]`).
-3. Buat folder `resources/js/themes/contoh/` berisi `Layout.tsx`, `blocks/`, dan `index.ts`.
-4. Buat `resources/css/themes/contoh.css` dengan token warna dan font di dalam `[data-theme="contoh"] { ... }`.
-5. Daftarkan di `resources/js/themes/registry.ts`.
-6. Tambah baris perusahaan lewat CMS atau seeder. Halaman dibuat otomatis oleh `CreateCompanyPages` sesuai set halaman yang dikonfigurasi pada tema.
+3. Daftarkan konfigurasi logo di `config/branding.php` yang memetakan tema ke path logo `{ light, dark, compact, width, height, alt }`.
+4. Letakkan logo asli di `public/images/logo/Logo-Contoh.png` dan jalankan `npm run branding:light` untuk menghasilkan varian `-light.png`.
+5. Buat folder `resources/js/themes/contoh/` berisi `Layout.tsx`, `blocks/`, dan `index.ts`.
+6. Buat `resources/css/themes/contoh.css` dengan token warna dan font di dalam `[data-theme="contoh"] { ... }`.
+7. Daftarkan di `resources/js/themes/registry.ts`.
+8. Tambah baris perusahaan lewat CMS atau seeder. Halaman dibuat otomatis oleh `CreateCompanyPages` sesuai set halaman yang dikonfigurasi pada tema.
 
 Tidak ada controller, rute, atau migrasi baru yang dibutuhkan.
 
@@ -442,6 +489,17 @@ Pasang di crontab server (`crontab -e`):
 ---
 
 ## Catatan Rilis & Perubahan (Changelog)
+
+### v1.4.0 (Revisi 3 — Logo di Header dan Footer Seluruh Tema)
+- **Komponen Bersama `Logo`:** Komponen mandiri `resources/js/ui/Logo.tsx` yang menangani render logo beresolusi tinggi, prop `on="light"|"dark"`, `size="sm"|"md"|"lg"|number`, `compact`, `plat`, `priority`, dan wordmark fallback semantik. Dilarang menggunakan filter CSS (brightness/invert).
+- **Arsitektur Konfigurasi Terpusat:** Penambahan `config/branding.php` dan `ResolveCompanyLogo` action. Objek data `logo: { light, dark, compact, width, height, alt }` disuntikkan ke frontend lewat `CompanyResource`. Tipe TypeScript didefinisikan di `CompanyLogoData`.
+- **Generator Varian Terang:** Skrip Python `scripts/branding/generate_light_variants.py` (`npm run branding:light`) yang mengonversi tinta gelap menjadi putih bersih dengan menjaga transparansi alpha dan rona simbol asli secara idempoten. Matriks kontras divisualisasikan pada `docs/branding/logo-preview.png`.
+- **Integrasi Header & Footer di Empat Tema:**
+  - `holding`: Header menggunakan varian dark-surface (tinggi 48px menyusut ke 36px saat sticky), mobile 32px; footer menggunakan varian dark-surface (tinggi 44px).
+  - `korin-berkat`: Header putih menggunakan varian asli/light-surface (tinggi 40px); footer navy menggunakan varian dark-surface (tinggi 44px).
+  - `korin-bara`: Desktop rail putih menggunakan varian compact icon (tinggi 32px / 40px expand); mobile header menggunakan compact icon (tinggi 32px); footer navy menggunakan varian dark-surface (tinggi 44px).
+  - `beramal`: Header kapsul putih menggunakan varian asli/light-surface (tinggi 36px); footer dark water menggunakan varian dark-surface (tinggi 44px).
+- **Aksesibilitas & Pengujian:** Label tautan beranda lengkap (`aria-label="{Nama Perusahaan}, Beranda"` / `"{Company Name}, Home"`), footer murni gambar tanpa tautan. Pengujian lengkap: Pest feature tests (`BrandingLogoTest.php`), Vitest unit tests (`logo.test.tsx`), dan Playwright E2E & Axe accessibility tests (`branding-logo.spec.ts`).
 
 ### v1.3.0 (Revisi 2 — Anak Usaha: PT Korin Berkat Energy & PT Beramal Sukses Sejahtera)
 - **Arsitektur & Konfigurasi Halaman Dinamis:** Penambahan method `CompanyTheme::pages()` pada enum `CompanyTheme` untuk mendefinisikan set halaman per tema. `CreateCompanyPages` dan seeder kini sepenuhnya fleksibel tanpa conditional bercabang di kode inti.

@@ -1,6 +1,6 @@
 # DESIGN.md — PT Derco Bara Energy
 
-Versi 1.3 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
+Versi 1.4 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
 Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md)
 
 ---
@@ -167,10 +167,10 @@ Tailwind membaca variabel ini lewat `theme.extend.colors` (`bg-bg`, `text-ink`, 
 | Small | 14/22 · 400 | 14/22 · 400 |
 
 ### 4.3 Layout Header dan Footer
-**Header:** latar Charcoal, logo kiri, menu tengah (`Beranda · Tentang Kami · Bisnis Kami`, huruf kapital 12px, item aktif bergaris bawah tembaga), kanan: pengalih bahasa `ID | EN` dan teks link "Hubungi Kami" (bukan tombol, tanpa border/latar, gaya tipografi identik dengan item menu lain, hover/aktif garis bawah tembaga, touch target 44×44px). Header sticky, menyusut tinggi saat scroll. Mobile: menu slide dari kanan dengan "Hubungi Kami" sebagai item terakhir.
+**Header:** latar Charcoal, logo kiri (`Logo` varian terang/dark surface, tinggi 48px menyusut ke 36px saat sticky, rasio asli terjaga, `aria-label="PT Derco Bara Energy, Beranda"` / `"... Home"`), menu tengah (`Beranda · Tentang Kami · Bisnis Kami`, huruf kapital 12px, item aktif bergaris bawah tembaga), kanan: pengalih bahasa `ID | EN` dan teks link "Hubungi Kami" (bukan tombol, tanpa border/latar, gaya tipografi identik dengan item menu lain, hover/aktif garis bawah tembaga, touch target 44×44px). Header sticky, menyusut tinggi saat scroll. Mobile: logo tinggi 32px, menu slide dari kanan dengan "Hubungi Kami" sebagai item terakhir.
 - Slug halaman kontak holding: `/id/hubungi-kami` dan `/en/contact-us` (301 redirect dari `/id/kontak` dan `/en/contact`). Tiga anak usaha tetap mempertahankan `/kontak` dan `/contact`.
 
-**Footer:** latar Charcoal Deep, tiga kolom: (1) deskripsi singkat + logo, (2) alamat, (3) jam operasional. Baris bawah: hak cipta dan tautan ke anak usaha.
+**Footer:** latar Charcoal Deep, tiga kolom: (1) deskripsi singkat + logo (`Logo` varian terang/dark surface, tinggi 44px, tanpa tautan), (2) alamat, (3) jam operasional. Baris bawah: hak cipta dan tautan ke anak usaha.
 
 ### 4.4 Beranda — Susunan Section
 
@@ -232,9 +232,9 @@ Ritme warna: **gelap → gelap → putih → tembaga → putih → putih/kartu g
 - *(Catatan: Source Serif 4 dan Inter dihapus sepenuhnya demi kesatuan visual dan efisiensi aset).*
 
 ### 5.3 Layout
-- **Header:** dua baris. Baris atas tipis navy (pengalih bahasa, tautan "← Derco Bara Energy"). Baris bawah putih dengan menu **bernomor dinamis** mengikuti jumlah halaman aktif (`01 Beranda · 02 Tentang Kami · 03 Produk · 04 Operasi · 05 Kontak`).
+- **Header:** dua baris. Baris atas tipis navy (pengalih bahasa, tautan "← Derco Bara Energy"). Baris bawah putih dengan logo kiri (`Logo` varian asli untuk latar terang, tinggi 40px, `aria-label="PT Korin Berkat Energy, Beranda"` / `"... Home"`) dan menu **bernomor dinamis** mengikuti jumlah halaman aktif (`01 Beranda · 02 Tentang Kami · 03 Produk · 04 Operasi · 05 Kontak`).
 - **Grid editorial 12 kolom** dengan komposisi asimetris (7/5, 8/4). Garis tipis horizontal memisahkan section, seperti halaman majalah.
-- **Footer:** navy, indeks halaman, kontak, dan tautan kembali ke holding.
+- **Footer:** navy, logo kiri (`Logo` varian terang/dark surface, tinggi 44px, tanpa tautan), indeks halaman, kontak, dan tautan kembali ke holding.
 
 ### 5.4 Susunan Halaman (5 Halaman Aktif)
 | Halaman | Isi dan tata letak |
@@ -274,10 +274,10 @@ Counter angka naik (Anime.js) saat terlihat; garis gold memanjang dari kiri (Mot
 - Rasa: tegas, industrial, mudah dibaca dari jauh.
 
 ### 6.3 Layout
-- **Rail kiri tetap** (lebar 88px desktop): logo vertikal di atas, ikon menu dengan label muncul saat hover/expand, pengalih bahasa di bawah. Mobile: berubah menjadi bar bawah dengan 5 ikon + menu "Lainnya".
+- **Rail kiri tetap** (lebar 88px desktop, latar putih): logo vertikal di atas (`Logo` varian ringkas/compact icon, tinggi 32px; tinggi 40px saat rail expand, `on="light"`), ikon menu dengan label muncul saat hover/expand, pengalih bahasa di bawah. Mobile: bar atas putih dengan logo compact (tinggi 32px) dan bar bawah dengan 5 ikon + menu "Lainnya".
 - **Konten full-bleed**: foto menembus tepi kanan, tidak ada container sempit pada hero.
 - **Panel gold** menimpa foto sebagai kotak informasi (judul + tombol navy).
-- **Footer:** navy dengan blok gold untuk CTA kontak.
+- **Footer:** navy dengan logo (`Logo` varian terang/dark surface, tinggi 44px) dan blok gold untuk CTA kontak.
 
 ### 6.4 Susunan Halaman
 | Halaman | Isi dan tata letak |
@@ -313,11 +313,11 @@ Kontras: cerulean `#007BA7` di atas putih ±4,8:1, aman untuk teks dan tombol.
 - Rasa: modern, ramah, tetap serius.
 
 ### 7.3 Layout
-- **Header melayang (pill):** kapsul putih bersudut membulat penuh, menggantung 16px dari atas, bayangan `shadow-md`, sedikit transparan saat scroll.
+- **Header melayang (pill):** kapsul putih bersudut membulat penuh, menggantung 16px dari atas, bayangan `shadow-md`, sedikit transparan saat scroll. Logo di kiri (`Logo` varian asli untuk latar terang, tinggi 36px, `aria-label="PT Beramal Sukses Sejahtera, Beranda"` / `"... Home"`).
 - **Tautan Kontak di Header:** tombol CTA solid pill dihapus; digantikan dengan satu teks link "Hubungi Kami" (EN: "Contact Us") di sebelah kanan pengalih bahasa `ID | EN` (tanpa latar/border, touch target 44×44px, underline cerulean saat aktif). Menu tengah hanya memuat halaman non-kontak (`Beranda · Tentang Kami · Layanan & Produk · Operasi`).
 - **Radius besar:** kartu 24px, gambar 28px, tombol pill.
 - **Pemisah gelombang:** SVG gelombang halus antar section berganti Mist dan putih.
-- **Footer:** dark water dengan pola gelombang tipis, CTA cerulean.
+- **Footer:** dark water dengan logo (`Logo` varian terang/dark surface, tinggi 44px), pola gelombang tipis, CTA cerulean.
 
 ### 7.4 Susunan Halaman (5 Halaman Aktif, 1 Disembunyikan)
 | Halaman | Isi dan tata letak |
@@ -342,6 +342,7 @@ Komponen primitif tanpa gaya identitas. Warna, radius, dan font diambil dari tok
 | `Container` | Lebar sesuai token `narrow/default/wide` |
 | `Section` | Padding vertikal standar, prop `tone` |
 | `Button` | Varian `solid`, `outline`, `ghost`, ukuran `md/lg`, membaca `--radius-button` |
+| `Logo` | Logo perusahaan adaptif: prop `on="light"|"dark"`, `size="sm"|"md"|"lg"|number`, `compact`, `plat`, fallback wordmark, clear space half-height, tanpa filter CSS |
 | `Eyebrow`, `Heading`, `Prose` | Tipografi dasar |
 | `Reveal` | Pembungkus animasi muncul saat scroll (Motion) |
 | `Counter` | Angka naik (Anime.js) |
@@ -349,6 +350,17 @@ Komponen primitif tanpa gaya identitas. Warna, radius, dan font diambil dari tok
 | `HeroCarousel` | Carousel 3–5 gambar otomatis dengan transisi fade halus (800ms, 6s autoplay), dark overlay WCAG AA, pagination dots accessible, pause on hover/focus |
 | `FormField`, `Input`, `Textarea` | Form dengan label, error, ARIA |
 | `LanguageSwitch` | Memakai `useLocale()` |
+
+### 8.1 Aturan Penggunaan Logo
+- **Sumber Tunggal:** Konfigurasi dipusatkan di `config/branding.php` dan dikirimkan oleh backend lewat `CompanyResource` (`logo: { light, dark, compact, width, height, alt }`). Komponen React tidak menulis path berkas langsung.
+- **Konvensi Varian:**
+  - `logo.light`: Logo untuk latar **terang** (berkas asli dengan teks/tinta gelap).
+  - `logo.dark`: Logo untuk latar **gelap** (varian turunan dengan teks/tinta putih, di mana simbol warna asli dipertahankan).
+  - `logo.compact`: Versi ringkas/ikon untuk ruang sempit (rail Korin Bara).
+- **Integritas Merek:** Dilarang menggunakan filter CSS (`filter: brightness/invert`) atau mewarnai ulang simbol. Ukuran proporsional sesuai rasio asli.
+- **Ukuran Standar:** Header 36–48px (holding 48px menyusut ke 36px saat sticky; korin-berkat 40px; beramal 36px; korin-bara rail 32/40px). Footer 44px di seluruh tema.
+- **Aksesibilitas & Tautan:** Logo header dibungkus tautan beranda dengan accessible label lengkap (`{Nama Perusahaan}, Beranda` / `{Company Name}, Home`). Logo footer berupa gambar murni tanpa tautan untuk menghindari redundansi navigasi. `alt` selalu memakai nama resmi perusahaan.
+- **Fallback:** Jika logo tidak tersedia, komponen `Logo` menampilkan wordmark teks tebal accessible (`font-heading font-bold`).
 
 Aturan: komponen di `ui/` **tidak boleh** memuat warna hex atau nama perusahaan.
 
@@ -454,6 +466,7 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 - [x] Hanya satu `h1`, hierarki heading berurutan.
 - [x] Tidak ada warna hex di luar berkas token tema.
 - [x] Kontras teks lolos pada semua tema (axe WCAG 2.2 AA otomatis lulus di seluruh suite).
+- [x] Logo tampil tajam di header dan footer seluruh tema dengan varian kontras yang tepat (tanpa filter CSS, rasio proporsional, accessible alt & link).
 - [x] Tampilan benar di 360px, 768px, 1280px, dan 1920px.
 - [x] Seluruh animasi mati dengan benar saat `prefers-reduced-motion`.
 - [x] Gambar punya rasio tetap dan teks alternatif.
@@ -467,6 +480,17 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 ---
 
 ## 15. Catatan Perubahan (Changelog)
+
+### Versi 1.4 (Revisi 3 — Logo di Header dan Footer Seluruh Tema)
+- **Komponen Bersama `ui/Logo`:** Komponen mandiri untuk rendering logo beresolusi tinggi, mendukung varian `on="light"|"dark"`, `size="sm"|"md"|"lg"|number`, `compact`, `plat`, `priority`, dan wordmark fallback jika konfigurasi/file belum ada. Dilarang menggunakan filter CSS (brightness/invert).
+- **Arsitektur Logo Satu Sumber:** Konfigurasi logo dipusatkan di `config/branding.php`, diproses oleh backend action `ResolveCompanyLogo`, dan disediakan ke frontend melalui `CompanyResource` (`logo: { light, dark, compact, width, height, alt }`). Tipe data TypeScript didefinisikan di `CompanyLogoData`.
+- **Skrip Varian Terang Idempoten:** Generator Python `scripts/branding/generate_light_variants.py` (`npm run branding:light`) yang mengonversi tinta gelap menjadi putih bersih dengan menjaga transparansi alpha dan warna simbol merek asli. Lembar pratinjau matriks kontras disimpan di `docs/branding/logo-preview.png`.
+- **Integrasi Tema:**
+  - `holding`: Header menggunakan varian dark-surface (tinggi 48px menyusut ke 36px saat sticky), mobile 32px; footer menggunakan varian dark-surface (tinggi 44px).
+  - `korin-berkat`: Header putih menggunakan varian asli/light-surface (tinggi 40px); footer navy menggunakan varian dark-surface (tinggi 44px).
+  - `korin-bara`: Desktop rail putih menggunakan varian compact icon (tinggi 32px / 40px expand); mobile header menggunakan compact icon (tinggi 32px); footer navy menggunakan varian dark-surface (tinggi 44px).
+  - `beramal`: Header kapsul putih menggunakan varian asli/light-surface (tinggi 36px); footer dark water menggunakan varian dark-surface (tinggi 44px).
+- **Aksesibilitas (WCAG 2.2 AA):** Seluruh tautan logo di header memiliki accessible label (`aria-label="{Nama Perusahaan}, Beranda"` / `"{Company Name}, Home"`). Logo footer berupa gambar murni dengan atribut `alt` lengkap resmi nama perusahaan. Lolos uji axe WCAG 2.2 AA.
 
 ### Versi 1.3 (Revisi 2 — Anak Usaha: Korin Berkat & Beramal)
 - **Konfigurasi Set Halaman Dinamis:** Menambahkan method `CompanyTheme::pages()` yang memetakan tema ke daftar `PageKey` yang diaktifkan. Navigasi bernomor Korin Berkat otomatis menyesuaikan jumlah item (01-05).
