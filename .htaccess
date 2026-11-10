@@ -5,20 +5,37 @@
 
     RewriteEngine On
 
-    # Handle Authorization Header
+    # 1. Block access to hidden files and directories (like .env, .git)
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
+
+    # 2. Block access to sensitive files and internal project directories
+    RewriteRule ^(\.env|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|vite\.config\.js|tsconfig\.json|skills-lock\.json|CHANGELOG\.md|DESIGN\.md|PRD\.md|README\.md)$ - [F,NC]
+    RewriteRule ^(app|bootstrap|config|database|lang|resources|routes|scripts|tests|vendor)/ - [F,NC]
+
+    # 3. Handle Authorization & XSRF Headers
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # 4. Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # 5. If requested file exists directly in root (e.g. favicon.ico, robots.txt), serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # 6. Route requests for static assets inside public/ (build, images, storage)
+    # Ensures CSS, JS, fonts, and images are served directly with correct MIME types
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(build|images|storage)/(.*)$ public/$1/$2 [L,NC]
+
+    # 7. Send all other requests to Front Controller (index.php in root)
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
