@@ -54,6 +54,35 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/js'),
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/@inertiajs')) {
+                        return 'vendor-react';
+                    }
+                    if (id.includes('node_modules/motion') || id.includes('node_modules/animejs')) {
+                        return 'vendor-motion';
+                    }
+                    if (id.includes('node_modules/lucide-react')) {
+                        return 'vendor-icons';
+                    }
+                    if (id.includes('resources/js/themes/holding/')) {
+                        return 'theme-holding';
+                    }
+                    if (id.includes('resources/js/themes/korin-berkat/')) {
+                        return 'theme-korin-berkat';
+                    }
+                    if (id.includes('resources/js/themes/korin-bara/')) {
+                        return 'theme-korin-bara';
+                    }
+                    if (id.includes('resources/js/themes/beramal/')) {
+                        return 'theme-beramal';
+                    }
+                },
+            },
+        },
+    },
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],

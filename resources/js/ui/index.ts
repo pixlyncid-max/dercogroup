@@ -11,5 +11,6 @@ export { LanguageSwitch, type LanguageSwitchProps } from './LanguageSwitch';
 export { Prose, type ProseProps } from './Prose';
 export { Reveal, type RevealProps } from './Reveal';
 export { Section, type SectionProps, type SectionTone } from './Section';
+export { SectionHeader, type SectionHeaderProps } from './SectionHeader';
 export { Textarea, type TextareaProps } from './Textarea';
 export { ThemeIcon, type ThemeIconProps } from './ThemeIcon';

@@ -76,11 +76,13 @@ class CertificationResource extends Resource
                         FileUpload::make('file_path_id')
                             ->label('Berkas PDF (Bahasa Indonesia)')
                             ->acceptedFileTypes(['application/pdf'])
+                            ->maxSize(10240)
                             ->disk('public')
                             ->directory('documents'),
                         FileUpload::make('file_path_en')
                             ->label('Berkas PDF (English)')
                             ->acceptedFileTypes(['application/pdf'])
+                            ->maxSize(10240)
                             ->disk('public')
                             ->directory('documents'),
                     ])

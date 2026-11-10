@@ -288,7 +288,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                         <li key={item.key}>
                                             <Link
                                                 href={item.href}
-                                                className="inline-flex min-h-9 items-center text-muted-on-dark hover:text-accent-on-dark"
+                                                className="inline-flex min-h-[44px] items-center text-muted-on-dark hover:text-accent-on-dark"
                                             >
                                                 {item.label}
                                             </Link>

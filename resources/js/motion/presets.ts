@@ -70,6 +70,15 @@ export const slideInLeft: Variants = {
     },
 };
 
+export const slideInRight: Variants = {
+    hidden: { opacity: 0, x: 24 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: slowTransition,
+    },
+};
+
 export const scaleX: Variants = {
     hidden: { opacity: 0, scaleX: 0, originX: 0 },
     visible: {
@@ -104,6 +113,7 @@ export const presets = {
     fadeIn,
     stagger,
     slideInLeft,
+    slideInRight,
     scaleX,
     themeFade,
 } as const;

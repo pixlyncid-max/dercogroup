@@ -23,12 +23,20 @@ test.describe('PT Beramal Sukses Sejahtera — Calm Flow Theme (Fase 4)', () => 
         await expect(mainNav).toContainText('Layanan & Produk');
 
         // Visit Tentang Kami
-        await mainNav.getByRole('link', { name: /Tentang Kami/i }).click();
+        await page
+            .getByRole('navigation', { name: /Navigasi utama/i })
+            .first()
+            .getByRole('link', { name: /Tentang Kami/i })
+            .click();
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/beramal-sukses-sejahtera\/tentang-kami$/);
         await expect(page.locator('h1')).toContainText('Tentang PT Beramal Sukses Sejahtera');
 
         // Visit Layanan & Produk (Products) and verify heading matches CMS title
-        await mainNav.getByRole('link', { name: /Layanan & Produk/i }).click();
+        await page
+            .getByRole('navigation', { name: /Navigasi utama/i })
+            .first()
+            .getByRole('link', { name: /Layanan & Produk/i })
+            .click();
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/beramal-sukses-sejahtera\/produk$/);
         await expect(page.locator('h1')).toContainText('Layanan & Produk');
 
@@ -94,7 +102,9 @@ test.describe('PT Beramal Sukses Sejahtera — Calm Flow Theme (Fase 4)', () => 
     test('supports full WAI-ARIA keyboard navigation on the Quality & Compliance Accordion', async ({
         page,
     }) => {
-        await page.goto('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan');
+        await page.goto('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan', {
+            waitUntil: 'networkidle',
+        });
 
         const permitTrigger = page.locator('#beramal-accordion-trigger-permit');
         const certificateTrigger = page.locator('#beramal-accordion-trigger-certificate');

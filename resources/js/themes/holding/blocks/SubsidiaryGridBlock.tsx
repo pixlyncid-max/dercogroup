@@ -257,7 +257,7 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                                     <h3 className="font-heading text-xs md:text-sm font-bold uppercase tracking-[0.14em] text-ink-on-dark">
                                         <a
                                             href={sub.url ?? '#'}
-                                            className="hover:text-accent-on-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                            className="inline-flex min-h-[44px] items-center hover:text-accent-on-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                         >
                                             {sub.name}
                                         </a>
@@ -271,7 +271,7 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                                     <div className="pt-5">
                                         <a
                                             href={sub.url}
-                                            className="inline-flex min-h-[44px] items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-accent-on-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                            className="inline-flex min-h-[44px] px-4 py-2.5 items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-accent-on-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                         >
                                             {t('see_details')} →
                                         </a>

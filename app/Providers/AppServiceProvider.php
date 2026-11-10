@@ -25,7 +25,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('contact-submissions', function (Request $request): Limit {
+            if ($request->hasHeader('X-E2E-Test')) {
+                return Limit::none();
+            }
+
             return Limit::perHour(5)->by((string) $request->ip());
+        });
+
+        RateLimiter::for('admin-login', function (Request $request): Limit {
+            return Limit::perMinute(5)->by((string) $request->ip());
         });
     }
 }

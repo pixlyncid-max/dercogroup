@@ -49,13 +49,14 @@ export function ColorBand({ data }: ColorBandProps) {
                     </Reveal>
                 </div>
 
-                <div className="lg:col-span-6">
+                <div className="lg:col-span-6 flex">
                     <Image
                         src={data.image}
                         srcSet={data.image_srcset}
                         alt={data.image_alt || data.title}
                         ratio="4/3"
-                        wrapperClassName="h-full w-full rounded-none border-0"
+                        wrapperClassName="h-full w-full rounded-none border-0 lg:aspect-auto"
+                        className="h-full w-full object-cover"
                     />
                 </div>
             </div>

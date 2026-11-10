@@ -1,6 +1,6 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Download } from 'lucide-react';
-import { useLocale, type ProductData, type SharedPageProps } from '@/core';
+import { useLocale, useProductUrls, type ProductData } from '@/core';
 import { Button, Container, Heading, Image, Prose, Reveal, Section } from '@/ui';
 
 export interface ProductDetailViewProps {
@@ -18,17 +18,11 @@ export function ProductDetailView({
     productsPageUrl,
     contactPageUrl,
 }: ProductDetailViewProps) {
-    const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
-
-    const catalogUrl =
-        productsPageUrl ??
-        props.navigation?.items?.find((item) => item.key === 'products')?.href ??
-        `/${props.locale}`;
-    const inquireUrl =
-        contactPageUrl ??
-        props.navigation?.items?.find((item) => item.key === 'contact')?.href ??
-        catalogUrl;
+    const { catalogUrl, inquireUrl } = useProductUrls({
+        productsPageUrl,
+        contactPageUrl,
+    });
 
     const widePhoto = product.image_url || '/images/placeholders/coal-stockpile-1280.webp';
 

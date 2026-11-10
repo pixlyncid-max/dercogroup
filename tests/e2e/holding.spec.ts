@@ -100,5 +100,39 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
             await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
         }
     });
+
+    test('submits contact form with valid inputs and receives instant success message', async ({
+        page,
+    }) => {
+        await page.goto('/id/kontak', { waitUntil: 'networkidle' });
+        await expect(page.locator('h1')).toContainText('Hubungi PT Derco Bara Energy');
+
+        const nameInput = page.locator('input[name="name"]');
+        const emailInput = page.locator('input[name="email"]');
+        const phoneInput = page.locator('input[name="phone"]');
+        const orgInput = page.locator('input[name="organization"]');
+        const subjectInput = page.locator('input[name="subject"]');
+        const messageInput = page.locator('textarea[name="message"]');
+
+        await nameInput.fill('Budi Santoso');
+        await emailInput.fill('budi@mitra-energi.co.id');
+        await phoneInput.fill('+6281234567890');
+        await orgInput.fill('PT Mitra Perkasa Energi');
+        await subjectInput.fill('Permintaan Spesifikasi GAR 4200');
+        await messageInput.fill(
+            'Halo tim Derco, kami berminat menjajaki kontrak pasokan batu bara GAR 4200 untuk kebutuhan kuartal mendatang.',
+        );
+
+        await expect(nameInput).toHaveValue('Budi Santoso');
+        await expect(messageInput).toHaveValue(
+            'Halo tim Derco, kami berminat menjajaki kontrak pasokan batu bara GAR 4200 untuk kebutuhan kuartal mendatang.',
+        );
+
+        await page.locator('button[type="submit"]').click();
+
+        const statusMessage = page.getByRole('status');
+        await expect(statusMessage).toBeVisible({ timeout: 10000 });
+        await expect(statusMessage).toContainText('Pesan Anda Telah Diterima');
+    });
 });
 

@@ -33,7 +33,7 @@ export function Layout({ children }: HoldingLayoutProps) {
         <div data-theme="holding" className="min-h-dvh flex flex-col bg-bg text-ink">
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[var(--z-index-toast)] focus:rounded-[var(--radius-button)] focus:bg-bg focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink focus:ring-2 focus:ring-accent"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-[var(--radius-button)] focus:bg-surface-dark focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink-on-dark focus:shadow-lg"
             >
                 {t('skip_to_content')}
             </a>
@@ -254,7 +254,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                                     <a
                                         key={sub.slug}
                                         href={sub.url ?? holdingUrl}
-                                        className="inline-flex min-h-[44px] items-center text-xs text-accent-on-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                        className="inline-flex min-h-[44px] items-center px-2 py-2 text-xs text-accent-on-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     >
                                         {sub.name}
                                     </a>

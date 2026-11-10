@@ -59,7 +59,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                     <Container className="flex min-h-11 items-center justify-between gap-4 py-1">
                         <Link
                             href={holdingUrl}
-                            className="inline-flex min-h-9 items-center gap-2 text-xs font-medium tracking-[0.04em] text-muted-on-dark transition-colors hover:text-accent-on-dark"
+                            className="inline-flex min-h-[44px] items-center gap-2 text-xs font-medium tracking-[0.04em] text-muted-on-dark transition-colors hover:text-accent-on-dark"
                         >
                             <ArrowLeft
                                 className="h-3.5 w-3.5 text-accent-on-dark"
@@ -72,7 +72,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                             {primaryContact?.phone ? (
                                 <a
                                     href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
-                                    className="hidden sm:inline-block text-xs text-muted-on-dark transition-colors hover:text-ink-on-dark"
+                                    className="hidden sm:inline-flex min-h-[44px] items-center px-2 text-xs text-muted-on-dark transition-colors hover:text-ink-on-dark"
                                 >
                                     {primaryContact.phone}
                                 </a>
@@ -155,7 +155,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                 aria-label={
                                     isMobileMenuOpen ? t('nav.close_menu') : t('nav.open_menu')
                                 }
-                                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-button)] border border-line text-ink transition-colors hover:bg-surface"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-button)] border border-line text-ink transition-colors hover:bg-surface"
                             >
                                 {isMobileMenuOpen ? (
                                     <X className="h-5 w-5" aria-hidden="true" />
@@ -264,7 +264,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                     <li key={item.key}>
                                         <Link
                                             href={item.href}
-                                            className="inline-flex min-h-9 items-center gap-2.5 text-muted-on-dark transition-colors hover:text-ink-on-dark"
+                                            className="inline-flex min-h-[44px] items-center gap-2.5 text-muted-on-dark transition-colors hover:text-ink-on-dark"
                                         >
                                             <span className="font-heading text-xs font-semibold text-accent-on-dark">
                                                 {formatEditorialIndex(idx)}

@@ -11,5 +11,10 @@ export {
     type UseContactFormResult,
 } from './hooks/useContactForm';
 export { useNavigation, type UseNavigationResult } from './hooks/useNavigation';
+export {
+    useProductUrls,
+    type UseProductUrlsOptions,
+    type UseProductUrlsResult,
+} from './hooks/useProductUrls';
 export { useSeo, type UseSeoResult } from './hooks/useSeo';
 export * from './types';

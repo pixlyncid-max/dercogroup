@@ -11,6 +11,7 @@ test.describe('PT Korin Berkat Energy — Editorial Index Theme (Fase 3)', () =>
         const berkatLink = page.locator('a[href="/id/bisnis-kami/korin-berkat-energy"]').first();
         await expect(berkatLink).toBeVisible();
         await berkatLink.click();
+        await page.waitForLoadState('networkidle');
 
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/korin-berkat-energy$/);
         await expect(page.locator('[data-theme="korin-berkat"]')).toBeVisible();

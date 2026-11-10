@@ -10,6 +10,9 @@ export default defineConfig({
     use: {
         baseURL: process.env.APP_URL || 'http://127.0.0.1:8000',
         trace: 'on-first-retry',
+        extraHTTPHeaders: {
+            'X-E2E-Test': '1',
+        },
     },
     webServer: [
         {

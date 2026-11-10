@@ -6,10 +6,6 @@ import type {
     ContactInfoBlockData,
     ProductData,
 } from '@/core';
-import { beramalTheme } from './beramal';
-import { holdingTheme } from './holding';
-import { korinBaraTheme } from './korin-bara';
-import { korinBerkatTheme } from './korin-berkat';
 
 export interface ThemeRegistration {
     Layout: ComponentType<{ children: ReactNode }>;
@@ -35,21 +31,53 @@ export const SUPPORTED_THEMES: readonly CompanyThemeKey[] = [
     'beramal',
 ] as const;
 
-export const themeRegistry: Record<CompanyThemeKey, ThemeRegistration> = {
-    holding: holdingTheme,
-    'korin-berkat': korinBerkatTheme,
-    'korin-bara': korinBaraTheme,
-    beramal: beramalTheme,
-};
-
 export function isSupportedTheme(theme: string): theme is CompanyThemeKey {
     return (SUPPORTED_THEMES as readonly string[]).includes(theme);
 }
 
-export function resolveTheme(theme?: string | null): ThemeRegistration {
-    if (theme && isSupportedTheme(theme)) {
-        return themeRegistry[theme];
+const themeLoaders: Record<CompanyThemeKey, () => Promise<ThemeRegistration>> = {
+    holding: () => import('./holding').then((m) => m.holdingTheme),
+    'korin-berkat': () => import('./korin-berkat').then((m) => m.korinBerkatTheme),
+    'korin-bara': () => import('./korin-bara').then((m) => m.korinBaraTheme),
+    beramal: () => import('./beramal').then((m) => m.beramalTheme),
+};
+
+const loadedThemes = new Map<CompanyThemeKey, ThemeRegistration>();
+
+export async function preloadTheme(theme?: string | null): Promise<ThemeRegistration> {
+    const key: CompanyThemeKey = theme && isSupportedTheme(theme) ? theme : 'holding';
+    const cached = loadedThemes.get(key);
+    if (cached) {
+        return cached;
     }
 
-    return holdingTheme;
+    const registration = await themeLoaders[key]();
+    loadedThemes.set(key, registration);
+    return registration;
+}
+
+export async function preloadAllThemes(): Promise<void> {
+    await Promise.all(SUPPORTED_THEMES.map((theme) => preloadTheme(theme)));
+}
+
+export function getLoadedTheme(theme?: string | null): ThemeRegistration | null {
+    const key: CompanyThemeKey = theme && isSupportedTheme(theme) ? theme : 'holding';
+    return loadedThemes.get(key) ?? null;
+}
+
+export function resolveTheme(theme?: string | null): ThemeRegistration {
+    const key: CompanyThemeKey = theme && isSupportedTheme(theme) ? theme : 'holding';
+    const loaded = loadedThemes.get(key);
+    if (loaded) {
+        return loaded;
+    }
+
+    const fallback = loadedThemes.get('holding');
+    if (fallback) {
+        return fallback;
+    }
+
+    throw new Error(
+        `Theme "${key}" has not been preloaded yet. Call await preloadTheme("${key}") before rendering.`,
+    );
 }

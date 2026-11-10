@@ -4,6 +4,7 @@ import createServer from '@inertiajs/react/server';
 import ReactDOMServer from 'react-dom/server';
 import { setI18nContext } from '@/core/i18n';
 import type { SharedPageProps } from '@/core/types';
+import { preloadTheme } from '@/themes/registry';
 
 const appName = import.meta.env.VITE_APP_NAME || 'PT Derco Bara Energy';
 
@@ -11,7 +12,10 @@ const pages = import.meta.glob<{ default: ResolvedComponent }>('./pages/**/*.tsx
     eager: true,
 });
 
-export function renderPage(page: Page) {
+export async function renderPage(page: Page) {
+    const initialProps = page.props as unknown as SharedPageProps;
+    await preloadTheme(initialProps?.company?.theme ?? 'holding');
+
     return createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
@@ -25,7 +29,6 @@ export function renderPage(page: Page) {
             return pageModule.default;
         },
         setup: ({ App, props }) => {
-            const initialProps = page.props as unknown as SharedPageProps;
             if (initialProps?.locale && initialProps?.translations) {
                 setI18nContext(initialProps.locale, initialProps.translations);
             }

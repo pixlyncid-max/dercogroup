@@ -70,6 +70,12 @@ export function CertificationListBlock({
             return;
         }
 
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleCategory(groups[currentIndex].key);
+            return;
+        }
+
         let nextIndex: number | null = null;
 
         if (event.key === 'ArrowDown') {

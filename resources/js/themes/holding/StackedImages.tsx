@@ -26,7 +26,7 @@ export function StackedImages({
 }: StackedImagesProps) {
     return (
         <div className="relative pb-12 md:pb-16">
-            <Reveal preset="fadeUp" className={mirrored ? 'w-[86%] mr-auto' : 'w-[86%] ml-auto'}>
+            <Reveal preset="fadeUp" className={mirrored ? 'w-[86%] ml-auto' : 'w-[86%] mr-auto'}>
                 <Image
                     src={primarySrc}
                     srcSet={primarySrcSet}
@@ -37,10 +37,10 @@ export function StackedImages({
             </Reveal>
 
             <Reveal
-                preset="slideInLeft"
+                preset={mirrored ? 'slideInLeft' : 'slideInRight'}
                 className={[
                     'relative z-[var(--z-index-sticky)] -mt-12 md:-mt-20 w-[62%]',
-                    mirrored ? 'ml-auto mr-0 md:mr-4' : 'mr-auto ml-0 md:ml-4',
+                    mirrored ? 'mr-auto ml-0 md:ml-4' : 'ml-auto mr-0 md:mr-4',
                 ].join(' ')}
             >
                 <Image

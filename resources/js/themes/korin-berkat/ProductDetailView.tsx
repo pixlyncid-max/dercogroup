@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Download, FileCheck2 } from 'lucide-react';
-import { useLocale, type ProductData, type SharedPageProps } from '@/core';
+import { useLocale, useProductUrls, type ProductData, type SharedPageProps } from '@/core';
 import { Button, Container, Heading, Prose, Reveal, Section } from '@/ui';
 import { GoldRule } from './GoldRule';
 
@@ -21,17 +21,13 @@ export function ProductDetailView({
 }: ProductDetailViewProps) {
     const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
+    const { catalogUrl, inquireUrl } = useProductUrls({
+        productsPageUrl,
+        contactPageUrl,
+    });
 
     const highlightSpecs = product.specs.filter((spec) => spec.is_highlight).slice(0, 3);
     const otherProducts = (props.products ?? []).filter((item) => item.id !== product.id);
-    const catalogUrl =
-        productsPageUrl ??
-        props.navigation?.items?.find((item) => item.key === 'products')?.href ??
-        `/${props.locale}`;
-    const inquireUrl =
-        contactPageUrl ??
-        props.navigation?.items?.find((item) => item.key === 'contact')?.href ??
-        catalogUrl;
 
     return (
         <>

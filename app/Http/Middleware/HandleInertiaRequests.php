@@ -48,6 +48,9 @@ class HandleInertiaRequests extends Middleware
 
         if ($company instanceof Company) {
             $company->loadMissing('contacts');
+            if ($request->hasSession()) {
+                $request->session()->put('last_visited_theme', $company->theme->value);
+            }
         }
 
         $companyPayload = $company instanceof Company

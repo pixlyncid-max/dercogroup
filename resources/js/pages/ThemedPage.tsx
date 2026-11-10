@@ -1,23 +1,76 @@
+import { useEffect, useState } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
     useSeo,
+    type CompanyThemeKey,
     type ContactFormBlockData,
     type ContactInfoBlockData,
     type PageBlockData,
     type SharedPageProps,
 } from '@/core';
 import { resolvePreset } from '@/motion/presets';
-import { resolveTheme } from '@/themes/registry';
+import {
+    getLoadedTheme,
+    preloadTheme,
+    resolveTheme,
+    type ThemeRegistration,
+} from '@/themes/registry';
 
 export default function ThemedPage() {
     const { props } = usePage<SharedPageProps>();
-    const { title, description, canonicalUrl, alternateUrls, isPreview, jsonLd } = useSeo();
+    const {
+        title,
+        description,
+        canonicalUrl,
+        alternateUrls,
+        isPreview,
+        ogTitle,
+        ogDescription,
+        ogUrl,
+        ogType,
+        ogLocale,
+        ogSiteName,
+        ogImage,
+        twitterCard,
+        jsonLd,
+    } = useSeo();
     const prefersReducedMotion = Boolean(useReducedMotion());
 
-    const themeKey = props.company?.theme ?? 'holding';
-    const theme = resolveTheme(themeKey);
-    const { Layout, blocks: blockComponents, FallbackBlock, ContactSplit, ProductDetail } = theme;
+    const themeKey = (props.company?.theme ?? 'holding') as CompanyThemeKey;
+    const loadedTheme = getLoadedTheme(themeKey);
+    const [theme, setTheme] = useState<ThemeRegistration>(
+        () => loadedTheme ?? resolveTheme(themeKey),
+    );
+
+    useEffect(() => {
+        let isMounted = true;
+        const loaded = getLoadedTheme(themeKey);
+        if (loaded) {
+            setTheme(loaded);
+        } else {
+            preloadTheme(themeKey)
+                .then((resolved) => {
+                    if (isMounted) setTheme(resolved);
+                })
+                .catch(() => {
+                    // Fallback to currently resolved theme
+                });
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [themeKey]);
+
+    const activeTheme = getLoadedTheme(themeKey) ?? theme;
+    const {
+        Layout,
+        blocks: blockComponents,
+        FallbackBlock,
+        ContactSplit,
+        ProductDetail,
+    } = activeTheme;
     const blocks: PageBlockData[] = props.blocks ?? [];
     const product = props.product ?? null;
 
@@ -38,6 +91,23 @@ export default function ThemedPage() {
                     href ? <link key={lang} rel="alternate" hrefLang={lang} href={href} /> : null,
                 )}
                 {isPreview ? <meta name="robots" content="noindex, nofollow" /> : null}
+
+                {/* Open Graph Meta Tags (FR-SEO-2) */}
+                <meta property="og:title" content={ogTitle} />
+                {ogDescription ? <meta property="og:description" content={ogDescription} /> : null}
+                <meta property="og:url" content={ogUrl} />
+                <meta property="og:type" content={ogType} />
+                <meta property="og:locale" content={ogLocale} />
+                <meta property="og:site_name" content={ogSiteName} />
+                {ogImage ? <meta property="og:image" content={ogImage} /> : null}
+
+                {/* Twitter Cards */}
+                <meta name="twitter:card" content={twitterCard} />
+                <meta name="twitter:title" content={ogTitle} />
+                {ogDescription ? <meta name="twitter:description" content={ogDescription} /> : null}
+                {ogImage ? <meta name="twitter:image" content={ogImage} /> : null}
+
+                {/* Structured JSON-LD (Organization & LocalBusiness) */}
                 <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
             </Head>
 

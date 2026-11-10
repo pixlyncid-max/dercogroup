@@ -73,6 +73,7 @@ class ProductResource extends Resource
                 FileUpload::make('gallery_upload')
                     ->label('Unggah Foto / Galeri Produk')
                     ->image()
+                    ->maxSize(5120)
                     ->multiple()
                     ->disk('public')
                     ->directory('products')
