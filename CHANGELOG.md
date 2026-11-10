@@ -73,3 +73,4 @@ Semua perubahan penting pada proyek **PT Derco Bara Energy** didokumentasikan da
 - Buku panduan pengguna CMS admin di `docs/CMS-GUIDE.md`.
 - Diagram relasi basis data di `docs/erd.md`.
 - Tag rilis resmi `v1.0.0`.
+

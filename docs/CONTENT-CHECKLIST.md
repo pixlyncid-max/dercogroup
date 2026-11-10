@@ -180,3 +180,4 @@ Setelah berkas dan data di atas terkumpul:
    - Mengunggah foto beresolusi optimal ke media library.
    - Menambahkan spesifikasi produk dan mengunggah berkas PDF legalitas.
    - Mengubah status publikasi **PT Korin Bara Energy** dari `Draft` menjadi `Published` saat izin penayangan telah disetujui manajemen.
+
