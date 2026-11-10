@@ -867,17 +867,52 @@ class DatabaseSeeder extends Seeder
                     'id' => 'Struktur induk usaha yang menyatukan kegiatan penambangan, perdagangan, dan logistik batu bara di bawah satu standar tata kelola korporat. [PLACEHOLDER]',
                     'en' => 'Corporate holding structure uniting coal mining, trading, and logistics operations under a single governance standard. [PLACEHOLDER]',
                 ],
+                'slides' => [
+                    [
+                        'image' => '/images/placeholders/pit-benches-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Teras konsesi tambang terbuka batu bara PT Derco Bara Energy [PLACEHOLDER]',
+                            'en' => 'Open-pit coal concession benches at PT Derco Bara Energy [PLACEHOLDER]',
+                        ],
+                    ],
+                    [
+                        'image' => '/images/placeholders/crushing-plant-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Fasilitas peremukan dan konveyor pengolahan batu bara terpadu [PLACEHOLDER]',
+                            'en' => 'Integrated coal crushing plant and conveyor processing facility [PLACEHOLDER]',
+                        ],
+                    ],
+                    [
+                        'image' => '/images/placeholders/barge-jetty-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Dermaga muat tongkang batu bara di alur pelayaran sungai [PLACEHOLDER]',
+                            'en' => 'River channel barge loading terminal and transshipment jetty [PLACEHOLDER]',
+                        ],
+                    ],
+                ],
             ]);
 
-            $this->createBlock($about, 2, BlockType::Timeline, [
-                'eyebrow' => ['id' => 'REKAM JEJAK', 'en' => 'CORPORATE MILESTONES'],
-                'title' => ['id' => 'Sejarah Perkembangan Grup [PLACEHOLDER]', 'en' => 'Group Development History [PLACEHOLDER]'],
-                'orientation' => 'vertical',
-                'items' => [
-                    ['period' => '2016', 'title' => ['id' => 'Pendirian PT Derco Bara Energy [PLACEHOLDER]', 'en' => 'Establishment of PT Derco Bara Energy [PLACEHOLDER]'], 'description' => ['id' => 'Memulai kegiatan koordinasi perdagangan dan pasokan batu bara domestik di Jakarta. [PLACEHOLDER]', 'en' => 'Commenced domestic coal supply and trading coordination from Jakarta. [PLACEHOLDER]']],
-                    ['period' => '2019', 'title' => ['id' => 'Pengembangan Infrastruktur Stockpile & Jetty [PLACEHOLDER]', 'en' => 'Stockpile & Jetty Infrastructure Expansion [PLACEHOLDER]'], 'description' => ['id' => 'Peningkatan kapasitas muat tongkang 300 kaki dan fasilitas crushing di Kalimantan Timur. [PLACEHOLDER]', 'en' => 'Upgraded 300-ft barge loading capacity and crushing facilities in East Kalimantan. [PLACEHOLDER]']],
-                    ['period' => '2022', 'title' => ['id' => 'Konsolidasi Tiga Entitas Anak Usaha [PLACEHOLDER]', 'en' => 'Consolidation of Three Operating Subsidiaries [PLACEHOLDER]'], 'description' => ['id' => 'Penataan fokus operasional antara unit penambangan, perdagangan B2B, dan layanan logistik pelabuhan. [PLACEHOLDER]', 'en' => 'Structured dedicated operational mandates across mining, B2B trading, and port logistics services. [PLACEHOLDER]']],
-                    ['period' => '2025', 'title' => ['id' => 'Standarisasi Mutu & Kepatuhan Terintegrasi [PLACEHOLDER]', 'en' => 'Integrated Quality & Compliance Standardization [PLACEHOLDER]'], 'description' => ['id' => 'Penerapan sistem manajemen mutu ISO 9001:2015 dan audit keselamatan kerja di seluruh lini grup. [PLACEHOLDER]', 'en' => 'Implemented ISO 9001:2015 quality management and occupational safety audits group-wide. [PLACEHOLDER]']],
+            $this->createBlock($about, 2, BlockType::StackedImages, [
+                'eyebrow' => ['id' => 'PROFIL & OPERASI', 'en' => 'PROFILE & OPERATIONS'],
+                'title' => ['id' => 'Membangun Ekosistem Energi Terpadu [PLACEHOLDER]', 'en' => 'Building an Integrated Energy Ecosystem [PLACEHOLDER]'],
+                'lead' => [
+                    'id' => 'PT Derco Bara Energy adalah perusahaan induk pertambangan dan energi yang mengoordinasikan kegiatan penambangan terbuka, perdagangan batu bara termal, serta logistik infrastruktur pelabuhan melalui tiga entitas anak usaha terintegrasi. [PLACEHOLDER]',
+                    'en' => 'PT Derco Bara Energy is an energy and mining holding company coordinating open-pit coal extraction, thermal coal trading, and port infrastructure logistics across three integrated operating subsidiaries. [PLACEHOLDER]',
+                ],
+                'body' => [
+                    'id' => 'Area Operasional: Kegiatan operasional penambangan, fasilitas peremukan (crushing plant), jalur angkut khusus (haul road), dan terminal muat tongkang (jetty) grup berpusat di [ISI WILAYAH OPERASIONAL], didukung oleh kantor koordinasi komersial di Jakarta. [PLACEHOLDER]',
+                    'en' => 'Operational Areas: Group mining concessions, crushing plants, dedicated haul roads, and barge loading jetty facilities are centered in [ISI WILAYAH OPERASIONAL], supported by commercial coordination offices in Jakarta. [PLACEHOLDER]',
+                ],
+                'mirrored' => false,
+                'primary_image' => '/images/placeholders/pit-benches-1280.webp',
+                'primary_image_alt' => [
+                    'id' => 'Teras tambang terbuka dan jalan angkut khusus [PLACEHOLDER]',
+                    'en' => 'Open-pit mining benches and dedicated haul road [PLACEHOLDER]',
+                ],
+                'secondary_image' => '/images/placeholders/haul-trucks-1280.webp',
+                'secondary_image_alt' => [
+                    'id' => 'Armada dump truck pengangkut batu bara [PLACEHOLDER]',
+                    'en' => 'Heavy haul truck fleet transporting coal [PLACEHOLDER]',
                 ],
             ]);
 
@@ -940,6 +975,15 @@ class DatabaseSeeder extends Seeder
                 ],
                 'layout_variant' => 'structure',
             ]);
+
+            $this->createBlock($about, 6, BlockType::CtaBanner, [
+                'eyebrow' => ['id' => 'HUBUNGI KAMI', 'en' => 'CONTACT US'],
+                'title' => ['id' => 'Mulai Kemitraan Strategis Bersama Derco [PLACEHOLDER]', 'en' => 'Initiate a Strategic Partnership with Derco [PLACEHOLDER]'],
+                'subtitle' => ['id' => 'Hubungi kantor pusat kami untuk peluang kerja sama pasokan energi dan logistik pelabuhan. [PLACEHOLDER]', 'en' => 'Reach out to our corporate headquarters for energy supply and port logistics cooperation. [PLACEHOLDER]'],
+                'phone' => '+62 21 5088 7400',
+                'cta_label' => ['id' => 'Hubungi Kami', 'en' => 'Contact Us'],
+                'cta_href' => 'page:contact',
+            ]);
         }
 
         if (isset($pages[PageKey::Business->value])) {
@@ -952,6 +996,29 @@ class DatabaseSeeder extends Seeder
                 'description' => [
                     'id' => 'Tiga pilar operasional yang saling terhubung dari hulu tambang hingga pengapalan akhir kepada pelanggan industri. [PLACEHOLDER]',
                     'en' => 'Three interconnected operational pillars spanning upstream extraction through final shipment to industrial buyers. [PLACEHOLDER]',
+                ],
+                'slides' => [
+                    [
+                        'image' => '/images/placeholders/coal-stockpile-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Area stockpile batu bara terkelola dengan penataan kalori [PLACEHOLDER]',
+                            'en' => 'Managed coal stockpile yard organized by calorific grade [PLACEHOLDER]',
+                        ],
+                    ],
+                    [
+                        'image' => '/images/placeholders/haul-trucks-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Armada hauling darat mengangkut batu bara menuju pelabuhan [PLACEHOLDER]',
+                            'en' => 'Overland hauling fleet transporting coal to the port terminal [PLACEHOLDER]',
+                        ],
+                    ],
+                    [
+                        'image' => '/images/placeholders/aerial-pit-1280.webp',
+                        'image_alt' => [
+                            'id' => 'Pemandangan udara fasilitas tambang terbuka dan simpul logistik [PLACEHOLDER]',
+                            'en' => 'Aerial perspective of open-pit mining operations and logistics nodes [PLACEHOLDER]',
+                        ],
+                    ],
                 ],
             ]);
 

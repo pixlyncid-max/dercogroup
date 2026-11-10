@@ -265,7 +265,7 @@ class ProductionSeeder extends Seeder
             ]);
         }
 
-        // For Holding Home, ensure Hero block exists so the reference layout renders gracefully
+        // For Holding Home, About, and Business, ensure Hero blocks with slides exist
         if ($company->isHolding()) {
             $homePage = Page::query()
                 ->where('company_id', $company->id)
@@ -296,6 +296,108 @@ class ProductionSeeder extends Seeder
                             'en' => 'Explore Our Business',
                         ],
                         'primary_cta_href' => 'page:business',
+                    ],
+                ]);
+            }
+
+            $aboutPage = Page::query()
+                ->where('company_id', $company->id)
+                ->where('key', PageKey::About->value)
+                ->first();
+
+            if ($aboutPage && ! PageBlock::query()->where('page_id', $aboutPage->id)->where('type', BlockType::Hero)->exists()) {
+                PageBlock::query()->create([
+                    'page_id' => $aboutPage->id,
+                    'type' => BlockType::Hero,
+                    'sort_order' => 1,
+                    'is_visible' => true,
+                    'data' => [
+                        'eyebrow' => [
+                            'id' => 'PROFIL HOLDING',
+                            'en' => 'HOLDING PROFILE',
+                        ],
+                        'title' => [
+                            'id' => 'Tentang PT Derco Bara Energy',
+                            'en' => 'About PT Derco Bara Energy',
+                        ],
+                        'description' => [
+                            'id' => 'Struktur induk usaha yang menyatukan kegiatan penambangan, perdagangan, dan logistik batu bara di bawah satu standar tata kelola korporat.',
+                            'en' => 'Corporate holding structure uniting coal mining, trading, and logistics operations under a single corporate governance standard.',
+                        ],
+                        'slides' => [
+                            [
+                                'image' => '/images/placeholders/pit-benches-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Teras konsesi tambang terbuka batu bara PT Derco Bara Energy',
+                                    'en' => 'Open-pit coal concession benches at PT Derco Bara Energy',
+                                ],
+                            ],
+                            [
+                                'image' => '/images/placeholders/conveyor-loading-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Instalasi pemuatan conveyor batu bara PT Derco Bara Energy',
+                                    'en' => 'Conveyor coal loading installation at PT Derco Bara Energy',
+                                ],
+                            ],
+                            [
+                                'image' => '/images/placeholders/barge-aerial-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Armada tongkang pengangkutan batu bara di perairan sungai',
+                                    'en' => 'River barge fleet transport operations for coal logistics',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]);
+            }
+
+            $businessPage = Page::query()
+                ->where('company_id', $company->id)
+                ->where('key', PageKey::Business->value)
+                ->first();
+
+            if ($businessPage && ! PageBlock::query()->where('page_id', $businessPage->id)->where('type', BlockType::Hero)->exists()) {
+                PageBlock::query()->create([
+                    'page_id' => $businessPage->id,
+                    'type' => BlockType::Hero,
+                    'sort_order' => 1,
+                    'is_visible' => true,
+                    'data' => [
+                        'eyebrow' => [
+                            'id' => 'PORTOFOLIO BISNIS',
+                            'en' => 'BUSINESS PORTFOLIO',
+                        ],
+                        'title' => [
+                            'id' => 'Bisnis & Operasi Terintegrasi',
+                            'en' => 'Integrated Business & Operations',
+                        ],
+                        'description' => [
+                            'id' => 'Sinergi tiga entitas anak usaha dalam rantai pasok batu bara nasional dari tambang hingga titik serah.',
+                            'en' => 'Synergy of three subsidiary entities across the coal supply chain from mine mouth to point of delivery.',
+                        ],
+                        'slides' => [
+                            [
+                                'image' => '/images/placeholders/excavator-pit-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Operasi alat berat penambangan batu bara',
+                                    'en' => 'Heavy equipment mining operations',
+                                ],
+                            ],
+                            [
+                                'image' => '/images/placeholders/barge-aerial-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Logistik maritim dan pengapalan tongkang',
+                                    'en' => 'Maritime logistics and barge shipping',
+                                ],
+                            ],
+                            [
+                                'image' => '/images/placeholders/coal-stockpile-1280.webp',
+                                'image_alt' => [
+                                    'id' => 'Manajemen persediaan batu bara di stockpile pelabuhan',
+                                    'en' => 'Coal stockpile inventory management at port terminal',
+                                ],
+                            ],
+                        ],
                     ],
                 ]);
             }
