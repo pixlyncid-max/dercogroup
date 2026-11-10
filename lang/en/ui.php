@@ -19,6 +19,9 @@ return [
         'open_menu' => 'Open navigation menu',
         'close_menu' => 'Close navigation menu',
         'index_heading' => 'Page Index',
+        'more' => 'More',
+        'expand_rail' => 'Expand side navigation',
+        'collapse_rail' => 'Collapse side navigation',
     ],
     'footer' => [
         'address_heading' => 'Our Address',
@@ -49,6 +52,8 @@ return [
         'coordinates_label' => 'Coordinates',
         'flow_eyebrow' => 'SUPPLY CHAIN FLOW',
         'flow_heading' => 'Operational Stages from Pit to Vessel',
+        'scroll_prev' => 'Scroll to previous stage',
+        'scroll_next' => 'Scroll to next stage',
         'flow_steps' => [
             'pit' => [
                 'code' => '01',

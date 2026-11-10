@@ -5,12 +5,14 @@ declare(strict_types=1);
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\HoldingPageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubsidiaryPageController;
 use App\Http\Middleware\ResolveCompany;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'redirectRoot'])->name('root');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::prefix('{locale}')
     ->whereIn('locale', SetLocale::SUPPORTED_LOCALES)

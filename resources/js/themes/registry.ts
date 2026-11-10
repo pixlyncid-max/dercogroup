@@ -8,6 +8,7 @@ import type {
 } from '@/core';
 import { beramalTheme } from './beramal';
 import { holdingTheme } from './holding';
+import { korinBaraTheme } from './korin-bara';
 import { korinBerkatTheme } from './korin-berkat';
 
 export interface ThemeRegistration {
@@ -37,7 +38,7 @@ export const SUPPORTED_THEMES: readonly CompanyThemeKey[] = [
 export const themeRegistry: Record<CompanyThemeKey, ThemeRegistration> = {
     holding: holdingTheme,
     'korin-berkat': korinBerkatTheme,
-    'korin-bara': korinBerkatTheme,
+    'korin-bara': korinBaraTheme,
     beramal: beramalTheme,
 };
 

@@ -19,6 +19,9 @@ return [
         'open_menu' => 'Buka menu navigasi',
         'close_menu' => 'Tutup menu navigasi',
         'index_heading' => 'Indeks Halaman',
+        'more' => 'Lainnya',
+        'expand_rail' => 'Perluas navigasi samping',
+        'collapse_rail' => 'Ciutkan navigasi samping',
     ],
     'footer' => [
         'address_heading' => 'Alamat Kantor',
@@ -49,6 +52,8 @@ return [
         'coordinates_label' => 'Koordinat',
         'flow_eyebrow' => 'ALUR RANTAI PASOK',
         'flow_heading' => 'Tahapan Operasi dari Tambang ke Kapal',
+        'scroll_prev' => 'Geser ke tahap sebelumnya',
+        'scroll_next' => 'Geser ke tahap berikutnya',
         'flow_steps' => [
             'pit' => [
                 'code' => '01',

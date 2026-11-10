@@ -992,6 +992,7 @@ class DatabaseSeeder extends Seeder
     {
         $pages = $company->pages()->get()->keyBy(fn (Page $page): string => $page->key->value);
         $isBeramal = $company->slug === 'beramal-sukses-sejahtera';
+        $isKorinBara = $company->slug === 'korin-bara-energy';
 
         if (isset($pages[PageKey::Home->value])) {
             $home = $pages[PageKey::Home->value];
@@ -1010,13 +1011,20 @@ class DatabaseSeeder extends Seeder
                 'primary_cta_href' => 'page:products',
                 'secondary_cta_label' => ['id' => 'Hubungi Tim Komersial', 'en' => 'Contact Commercial Team'],
                 'secondary_cta_href' => 'page:contact',
-                'image' => $isBeramal ? '/images/placeholders/barge-jetty-1280.webp' : null,
+                'image' => $isBeramal
+                    ? '/images/placeholders/barge-jetty-1280.webp'
+                    : ($isKorinBara ? '/images/placeholders/pit-benches-1280.webp' : null),
                 'image_alt' => $isBeramal
                     ? [
                         'id' => 'Fasilitas operasional dan koordinasi layanan PT Beramal Sukses Sejahtera [PLACEHOLDER]',
                         'en' => 'Operational facilities and service coordination of PT Beramal Sukses Sejahtera [PLACEHOLDER]',
                     ]
-                    : null,
+                    : ($isKorinBara
+                        ? [
+                            'id' => 'Area konsesi tambang terbuka dan jalan angkut PT Korin Bara Energy [PLACEHOLDER]',
+                            'en' => 'Open-pit mining concession and haul roads of PT Korin Bara Energy [PLACEHOLDER]',
+                        ]
+                        : null),
             ]);
 
             $this->createBlock($home, 2, BlockType::Stats, [
