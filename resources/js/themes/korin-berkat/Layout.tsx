@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { resolvePreset } from '@/motion/presets';
-import { Container, LanguageSwitch } from '@/ui';
+import { Container, LanguageSwitch, Logo } from '@/ui';
 
 export interface KorinBerkatLayoutProps {
     children: ReactNode;
@@ -87,24 +87,14 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                     <Container className="flex h-20 items-center justify-between gap-6">
                         <Link
                             href={homeHref}
-                            className="group inline-flex items-center gap-3.5 py-2 text-ink"
+                            aria-label={
+                                locale === 'en'
+                                    ? `${company?.name ?? 'PT Korin Berkat Energy'}, Home`
+                                    : `${company?.name ?? 'PT Korin Berkat Energy'}, Beranda`
+                            }
+                            className="group inline-flex items-center gap-3.5 py-2 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
-                            <span
-                                aria-hidden="true"
-                                className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-button)] bg-surface-dark font-heading text-base font-semibold text-accent-on-dark"
-                            >
-                                KB
-                            </span>
-                            <div className="flex flex-col">
-                                <span className="font-heading text-base font-semibold tracking-tight text-ink sm:text-lg">
-                                    {company?.name ?? 'PT Korin Berkat Energy'}
-                                </span>
-                                <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted">
-                                    {locale === 'en'
-                                        ? 'Coal Trading & Supply'
-                                        : 'Perdagangan & Pasokan Batu Bara'}
-                                </span>
-                            </div>
+                            <Logo company={company} on="light" size={40} priority={true} />
                         </Link>
 
                         <nav
@@ -223,17 +213,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
                         {/* Column 1: Entity Identity & Parent Holding Back-link */}
                         <div className="lg:col-span-5 space-y-5">
-                            <div className="flex items-center gap-3">
-                                <span
-                                    aria-hidden="true"
-                                    className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-button)] border border-accent-on-dark/50 font-heading text-sm font-semibold text-accent-on-dark"
-                                >
-                                    KB
-                                </span>
-                                <p className="font-heading text-xl font-semibold text-ink-on-dark">
-                                    {company?.name ?? 'PT Korin Berkat Energy'}
-                                </p>
-                            </div>
+                            <Logo company={company} on="dark" size={44} />
                             <p className="max-w-[44ch] text-sm leading-6 text-muted-on-dark">
                                 {company?.about_short || company?.tagline}
                             </p>

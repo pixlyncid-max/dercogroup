@@ -19,7 +19,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useState, type ComponentType, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { resolvePreset } from '@/motion/presets';
-import { Button, Container, LanguageSwitch } from '@/ui';
+import { Button, Container, LanguageSwitch, Logo } from '@/ui';
 
 export interface KorinBaraLayoutProps {
     children: ReactNode;
@@ -74,25 +74,32 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 aria-label={t('nav.main')}
                 onMouseEnter={() => setRailExpanded(true)}
                 onMouseLeave={() => setRailExpanded(false)}
-                className={`fixed inset-y-0 left-0 z-40 hidden lg:flex lg:flex-col lg:justify-between bg-surface-dark text-ink-on-dark border-r-4 border-accent transition-[width] duration-200 ease-out ${
+                className={`fixed inset-y-0 left-0 z-40 hidden lg:flex lg:flex-col lg:justify-between bg-bg text-ink border-r-4 border-accent transition-[width] duration-200 ease-out ${
                     railExpanded ? 'lg:w-64 shadow-md' : 'lg:w-[88px]'
                 }`}
             >
-                {/* Top: Monogram + Holding Back Link */}
-                <div className="border-b border-ink-on-dark/15 p-3 space-y-3">
+                {/* Top: Brand Logo + Holding Back Link */}
+                <div className="border-b border-line p-3 space-y-3">
                     <div className="flex items-center justify-between gap-2">
                         <Link
                             href={homeHref}
-                            className="inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            aria-label={
+                                locale === 'en'
+                                    ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
+                                    : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
+                            }
+                            className="inline-flex min-h-[44px] items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
+                            <Logo
+                                company={company}
+                                on="light"
+                                compact={!railExpanded}
+                                size={railExpanded ? 40 : 36}
+                                priority={true}
+                                className="max-w-[56px] shrink-0"
+                            />
                             <span
-                                aria-hidden="true"
-                                className="flex h-12 w-12 shrink-0 items-center justify-center bg-accent font-heading text-xl font-bold tracking-wider text-ink"
-                            >
-                                KB
-                            </span>
-                            <span
-                                className={`font-heading text-base font-bold uppercase tracking-wider text-ink-on-dark whitespace-nowrap transition-opacity duration-150 ${
+                                className={`font-heading text-sm font-bold uppercase tracking-wider text-ink whitespace-nowrap transition-opacity duration-150 ${
                                     railExpanded ? 'opacity-100' : 'sr-only'
                                 }`}
                             >
@@ -107,7 +114,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                             aria-label={
                                 railExpanded ? t('nav.collapse_rail') : t('nav.expand_rail')
                             }
-                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-muted-on-dark hover:text-accent-on-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-muted hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
                             {railExpanded ? (
                                 <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -120,7 +127,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                     <Link
                         href={holdingUrl}
                         title={t('back_to_holding')}
-                        className="flex min-h-10 items-center justify-center gap-2 border border-ink-on-dark/15 bg-surface-deeper px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted-on-dark transition-colors hover:border-accent hover:text-accent-on-dark"
+                        className="flex min-h-10 items-center justify-center gap-2 border border-line bg-surface px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted transition-colors hover:border-accent hover:text-ink"
                     >
                         <ArrowLeft
                             className="h-3.5 w-3.5 shrink-0 text-accent-on-dark"
@@ -147,15 +154,15 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                 aria-current={item.active ? 'page' : undefined}
                                 className={`group flex min-h-12 items-center gap-3.5 px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] transition-colors ${
                                     item.active
-                                        ? 'border-l-4 border-accent bg-ink-on-dark/10 text-accent-on-dark'
-                                        : 'border-l-4 border-transparent text-muted-on-dark hover:bg-ink-on-dark/5 hover:text-ink-on-dark'
+                                        ? 'border-l-4 border-accent bg-surface text-ink'
+                                        : 'border-l-4 border-transparent text-muted hover:bg-surface hover:text-ink'
                                 }`}
                             >
                                 <Icon
                                     className={`h-5 w-5 shrink-0 ${
                                         item.active
-                                            ? 'text-accent-on-dark'
-                                            : 'text-muted-on-dark group-hover:text-accent-on-dark'
+                                            ? 'text-accent-strong'
+                                            : 'text-muted group-hover:text-accent-strong'
                                     }`}
                                     strokeWidth={1.85}
                                     aria-hidden="true"
@@ -173,8 +180,8 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 </nav>
 
                 {/* Bottom: Language Switcher */}
-                <div className="border-t border-ink-on-dark/15 p-3 flex justify-center">
-                    <LanguageSwitch className="flex-col gap-0.5" />
+                <div className="border-t border-line p-3 flex justify-center">
+                    <LanguageSwitch tone="light" className="flex-col gap-0.5" />
                 </div>
             </aside>
 
@@ -191,22 +198,31 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 ) : null}
 
                 {/* Mobile Top Identity Bar (< lg) */}
-                <header className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-accent bg-surface-dark px-4 py-3 text-ink-on-dark lg:hidden">
-                    <Link href={homeHref} className="inline-flex items-center gap-3">
-                        <span
-                            aria-hidden="true"
-                            className="flex h-9 w-9 items-center justify-center bg-accent font-heading text-base font-bold text-ink"
-                        >
-                            KB
-                        </span>
-                        <span className="font-heading text-base font-bold uppercase tracking-wider text-ink-on-dark">
+                <header className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-accent bg-bg px-4 py-3 text-ink lg:hidden">
+                    <Link
+                        href={homeHref}
+                        aria-label={
+                            locale === 'en'
+                                ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
+                                : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
+                        }
+                        className="inline-flex min-h-[44px] items-center gap-3"
+                    >
+                        <Logo
+                            company={company}
+                            on="light"
+                            compact={true}
+                            size={32}
+                            priority={true}
+                        />
+                        <span className="font-heading text-base font-bold uppercase tracking-wider text-ink">
                             {company?.name ?? 'PT Korin Bara Energy'}
                         </span>
                     </Link>
 
                     <Link
                         href={holdingUrl}
-                        className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-accent-on-dark"
+                        className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-accent-strong"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
                         <span>Derco</span>
@@ -262,9 +278,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
 
                         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
                             <div className="lg:col-span-5 space-y-4">
-                                <p className="font-heading text-xl font-bold uppercase tracking-wide text-accent-on-dark">
-                                    {company?.name ?? 'PT Korin Bara Energy'}
-                                </p>
+                                <Logo company={company} on="dark" size={44} />
                                 <p className="max-w-[46ch] text-sm leading-6 text-muted-on-dark">
                                     {company?.about_short || company?.tagline}
                                 </p>

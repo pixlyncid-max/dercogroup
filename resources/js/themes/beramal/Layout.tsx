@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { resolvePreset } from '@/motion/presets';
-import { Container, LanguageSwitch } from '@/ui';
+import { Container, LanguageSwitch, Logo } from '@/ui';
 import { WaveDivider } from './WaveDivider';
 
 export interface BeramalLayoutProps {
@@ -75,24 +75,20 @@ export function Layout({ children }: BeramalLayoutProps) {
                         <div className="flex items-center gap-3 min-w-0">
                             <Link
                                 href={homeHref}
+                                aria-label={
+                                    locale === 'en'
+                                        ? `${company?.name ?? 'PT Beramal Sukses Sejahtera'}, Home`
+                                        : `${company?.name ?? 'PT Beramal Sukses Sejahtera'}, Beranda`
+                                }
                                 className="inline-flex items-center gap-3 py-1 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-full"
                             >
-                                <span
-                                    aria-hidden="true"
-                                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-dark font-heading text-sm font-bold text-ink-on-dark"
-                                >
-                                    BS
-                                </span>
-                                <div className="flex flex-col min-w-0">
-                                    <span className="truncate font-heading text-sm font-bold tracking-tight text-ink sm:text-base">
-                                        {company?.name ?? 'PT Beramal Sukses Sejahtera'}
-                                    </span>
-                                    <span className="hidden sm:inline-block truncate text-[11px] font-medium text-muted">
-                                        {locale === 'en'
-                                            ? 'Integrated Operational & Facility Services'
-                                            : 'Layanan Operasional & Fasilitas Terpadu'}
-                                    </span>
-                                </div>
+                                <Logo
+                                    company={company}
+                                    on="light"
+                                    size={36}
+                                    priority={true}
+                                    className="shrink-0"
+                                />
                             </Link>
                         </div>
 
@@ -284,17 +280,7 @@ export function Layout({ children }: BeramalLayoutProps) {
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
                         {/* Column 1: Entity Profile & Holding Back-link */}
                         <div className="lg:col-span-5 space-y-5">
-                            <div className="flex items-center gap-3">
-                                <span
-                                    aria-hidden="true"
-                                    className="flex h-10 w-10 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-on-accent"
-                                >
-                                    BS
-                                </span>
-                                <p className="font-heading text-xl font-bold text-ink-on-dark">
-                                    {company?.name ?? 'PT Beramal Sukses Sejahtera'}
-                                </p>
-                            </div>
+                            <Logo company={company} on="dark" size={44} />
                             <p className="max-w-[46ch] text-sm leading-6 text-muted-on-dark">
                                 {company?.about_short || company?.tagline}
                             </p>

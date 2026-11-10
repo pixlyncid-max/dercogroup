@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { DURATION, EASE_OUT } from '@/motion/presets';
-import { Container, LanguageSwitch } from '@/ui';
+import { Container, LanguageSwitch, Logo } from '@/ui';
 
 export interface HoldingLayoutProps {
     children: ReactNode;
@@ -59,17 +59,20 @@ export function Layout({ children }: HoldingLayoutProps) {
                 >
                     <a
                         href={holdingUrl}
-                        className="inline-flex min-h-[44px] items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        aria-label={
+                            props.locale === 'en'
+                                ? `${company?.name ?? 'PT Derco Bara Energy'}, Home`
+                                : `${company?.name ?? 'PT Derco Bara Energy'}, Beranda`
+                        }
+                        className="inline-flex min-h-[44px] items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
-                        <span
-                            aria-hidden="true"
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-button)] border border-accent bg-accent/15 text-xs font-bold tracking-wider text-accent-on-dark"
-                        >
-                            DB
-                        </span>
-                        <span className="font-heading text-sm md:text-base font-bold tracking-tight text-ink-on-dark">
-                            {company?.name ?? 'PT Derco Bara Energy'}
-                        </span>
+                        <Logo
+                            company={company}
+                            on="dark"
+                            size={isSticky ? 36 : 48}
+                            priority={true}
+                            className="transition-all duration-300 motion-reduce:transition-none"
+                        />
                     </a>
 
                     <nav aria-label={t('nav.main')} className="hidden lg:flex items-center gap-7">
@@ -155,9 +158,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                         >
                             <div className="space-y-8">
                                 <div className="flex items-center justify-between border-b border-ink-on-dark/10 pb-4">
-                                    <span className="font-heading text-sm font-bold tracking-tight">
-                                        {company?.name ?? 'PT Derco Bara Energy'}
-                                    </span>
+                                    <Logo company={company} on="dark" size={32} />
                                     <button
                                         type="button"
                                         onClick={closeMobileMenu}
@@ -200,11 +201,9 @@ export function Layout({ children }: HoldingLayoutProps) {
                 <Container>
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-12 pb-12 border-b border-ink-on-dark/10">
                         <div className="md:col-span-5 space-y-5">
+                            <Logo company={company} on="dark" size={44} />
                             <p className="max-w-[44ch] text-sm leading-6 text-muted-on-dark">
                                 {company?.about_short || company?.tagline}
-                            </p>
-                            <p className="font-heading text-2xl font-bold tracking-tight text-accent-on-dark">
-                                {company?.name ?? 'PT Derco Bara Energy'}
                             </p>
                         </div>
 
