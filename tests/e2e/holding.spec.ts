@@ -45,19 +45,16 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
         await expect(page).toHaveURL(/\/en\/our-business$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('Our Business');
 
-        // Navigate to Contact in English and switch back to Indonesian (/id/kontak)
-        await page
-            .getByRole('navigation', { name: 'Primary navigation' })
-            .getByRole('link', { name: 'Contact' })
-            .click();
-        await expect(page).toHaveURL(/\/en\/contact$/);
+        // Navigate to Contact in English and switch back to Indonesian (/id/hubungi-kami)
+        await page.getByRole('link', { name: 'Contact Us' }).first().click();
+        await expect(page).toHaveURL(/\/en\/contact-us$/);
 
         await page
             .getByRole('navigation', { name: 'Language' })
             .first()
             .getByRole('link', { name: 'ID' })
             .click();
-        await expect(page).toHaveURL(/\/id\/kontak$/);
+        await expect(page).toHaveURL(/\/id\/hubungi-kami$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText(
             'Hubungi PT Derco Bara Energy',
         );
@@ -104,7 +101,7 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
     test('submits contact form with valid inputs and receives instant success message', async ({
         page,
     }) => {
-        await page.goto('/id/kontak', { waitUntil: 'networkidle' });
+        await page.goto('/id/hubungi-kami', { waitUntil: 'networkidle' });
         await expect(page.locator('h1')).toContainText('Hubungi PT Derco Bara Energy');
 
         const nameInput = page.locator('input[name="name"]');
@@ -133,6 +130,74 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
         const statusMessage = page.getByRole('status');
         await expect(statusMessage).toBeVisible({ timeout: 10000 });
         await expect(statusMessage).toContainText('Pesan Anda Telah Diterima');
+    });
+
+    test('Revision 1: Holding header, navigation, and HeroCarousel structure', async ({
+        page,
+    }, testInfo) => {
+        // Desktop Viewport
+        await page.setViewportSize({ width: 1280, height: 900 });
+        await page.goto('/id', { waitUntil: 'networkidle' });
+
+        // Header check: Middle nav contains exactly 3 items: Beranda, Tentang Kami, Bisnis Kami
+        const nav = page.getByRole('navigation', { name: 'Navigasi utama' });
+        const middleLinks = nav.getByRole('link');
+        await expect(middleLinks).toHaveCount(3);
+        await expect(middleLinks.nth(0)).toHaveText(/beranda/i);
+        await expect(middleLinks.nth(1)).toHaveText(/tentang kami/i);
+        await expect(middleLinks.nth(2)).toHaveText(/bisnis kami/i);
+
+        // Header check: Exactly one Hubungi Kami link in header, located on the right (not a button)
+        const header = page.locator('header');
+        const headerContactLink = header.getByRole('link', { name: 'HUBUNGI KAMI' });
+        await expect(headerContactLink).toBeVisible();
+        await expect(header.getByRole('button', { name: /hubungi kami/i })).toHaveCount(0);
+
+        // Capture Desktop Header Screenshot
+        await header.screenshot({
+            path: testInfo.outputPath('holding-header-desktop.png'),
+        });
+
+        // Mobile Viewport check
+        await page.setViewportSize({ width: 375, height: 667 });
+        const mobileMenuButton = page.getByRole('button', { name: /buka menu/i });
+        await expect(mobileMenuButton).toBeVisible();
+        await mobileMenuButton.click();
+
+        // Mobile drawer: Hubungi Kami is the last link
+        const mobileDrawer = page.getByRole('dialog', { name: /navigasi utama/i });
+        await expect(mobileDrawer).toBeVisible();
+        const drawerLinks = mobileDrawer.getByRole('link');
+        const lastDrawerLink = drawerLinks.last();
+        await expect(lastDrawerLink).toHaveText(/hubungi kami/i);
+
+        // Capture Mobile Header & Drawer Screenshot
+        await page.screenshot({
+            path: testInfo.outputPath('holding-header-mobile.png'),
+        });
+
+        // Close mobile drawer and switch back to desktop
+        await page.getByRole('button', { name: /tutup menu/i }).click();
+        await page.setViewportSize({ width: 1280, height: 900 });
+
+        // Check Bisnis Kami on Beranda: Real cards rendered with "Lihat Selengkapnya"
+        const subsidiaryCards = page.locator('article');
+        await expect(subsidiaryCards.first()).toBeVisible();
+        await expect(page.getByRole('link', { name: /lihat selengkapnya/i }).first()).toBeVisible();
+
+        // Check Tentang Kami has HeroCarousel with tablist pagination
+        await page.goto('/id/tentang-kami', { waitUntil: 'networkidle' });
+        const carousel = page.getByRole('region', { name: /hero image carousel/i });
+        await expect(carousel).toBeVisible();
+        const dots = carousel.getByRole('tab');
+        await expect(dots).toHaveCount(3);
+        await expect(dots.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+        // Check Bisnis Kami has HeroCarousel
+        await page.goto('/id/bisnis-kami', { waitUntil: 'networkidle' });
+        const businessCarousel = page.getByRole('region', { name: /hero image carousel/i });
+        await expect(businessCarousel).toBeVisible();
+        await expect(businessCarousel.getByRole('tab')).toHaveCount(3);
     });
 });
 

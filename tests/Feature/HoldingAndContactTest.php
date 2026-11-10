@@ -48,8 +48,12 @@ it('renders all 4 holding pages in Indonesian and English via ThemedPage with lo
     $this->get('/en/about-us')->assertOk();
     $this->get('/id/bisnis-kami')->assertOk();
     $this->get('/en/our-business')->assertOk();
-    $this->get('/id/kontak')->assertOk();
-    $this->get('/en/contact')->assertOk();
+    $this->get('/id/hubungi-kami')->assertOk();
+    $this->get('/en/contact-us')->assertOk();
+
+    // 301 redirects from legacy contact slugs
+    $this->get('/id/kontak')->assertRedirect('/id/hubungi-kami')->assertStatus(301);
+    $this->get('/en/contact')->assertRedirect('/en/contact-us')->assertStatus(301);
 });
 
 it('stores a valid contact message with company_id and locale and queues notification email', function (): void {
@@ -57,7 +61,7 @@ it('stores a valid contact message with company_id and locale and queues notific
 
     $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
 
-    $response = $this->from('/id/kontak')->post('/id/contact-messages', [
+    $response = $this->from('/id/hubungi-kami')->post('/id/contact-messages', [
         'name' => 'Budi Santoso',
         'email' => 'budi.santoso@industri-energi.co.id',
         'phone' => '+62 811 9000 123',
@@ -67,7 +71,7 @@ it('stores a valid contact message with company_id and locale and queues notific
         'website' => '',
     ]);
 
-    $response->assertRedirect('/id/kontak')
+    $response->assertRedirect('/id/hubungi-kami')
         ->assertSessionHas('contactSuccess', true);
 
     $message = ContactMessage::query()->first();
@@ -86,14 +90,14 @@ it('stores a valid contact message with company_id and locale and queues notific
 it('rejects invalid contact form submissions with validation errors', function (): void {
     Mail::fake();
 
-    $response = $this->from('/id/kontak')->post('/id/contact-messages', [
+    $response = $this->from('/id/hubungi-kami')->post('/id/contact-messages', [
         'name' => '',
         'email' => 'not-an-email',
         'subject' => '',
         'message' => 'short',
     ]);
 
-    $response->assertRedirect('/id/kontak')
+    $response->assertRedirect('/id/hubungi-kami')
         ->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
 
     expect(ContactMessage::query()->count())->toBe(0);
@@ -103,7 +107,7 @@ it('rejects invalid contact form submissions with validation errors', function (
 it('silently drops honeypot spam submissions without saving or sending email', function (): void {
     Mail::fake();
 
-    $response = $this->from('/en/contact')->post('/en/contact-messages', [
+    $response = $this->from('/en/contact-us')->post('/en/contact-messages', [
         'name' => 'Spam Bot',
         'email' => 'bot@spam.example',
         'subject' => 'Automated spam',
@@ -111,7 +115,7 @@ it('silently drops honeypot spam submissions without saving or sending email', f
         'website' => 'https://spam-link.example',
     ]);
 
-    $response->assertRedirect('/en/contact')
+    $response->assertRedirect('/en/contact-us')
         ->assertSessionHas('contactSuccess', true);
 
     expect(ContactMessage::query()->count())->toBe(0);
