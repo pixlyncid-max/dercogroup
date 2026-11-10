@@ -14,6 +14,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'redirectRoot'])->name('root');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
+Route::get('/artisan-setup', function (\Illuminate\Http\Request $request) {
+    $expectedToken = config('app.key');
+    if (empty($expectedToken) || $request->query('token') !== $expectedToken) {
+        abort(403, 'Unauthorized. Token parameter required.');
+    }
+
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $migrateOutput = \Illuminate\Support\Facades\Artisan::output();
+
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        $seedOutput = \Illuminate\Support\Facades\Artisan::output();
+
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database successfully migrated and seeded!',
+            'migrate' => trim($migrateOutput),
+            'seed' => trim($seedOutput),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile() . ':' . $e->getLine(),
+        ], 500);
+    }
+});
+
 Route::prefix('{locale}')
     ->whereIn('locale', SetLocale::SUPPORTED_LOCALES)
     ->middleware([SetLocale::class, ResolveCompany::class])
