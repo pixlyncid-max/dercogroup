@@ -28,7 +28,7 @@ Website company profile **PT Derco Bara Energy** (holding) beserta tiga situs an
 | Tes | Pest, Vitest, Playwright |
 | Kualitas kode | Laravel Pint, ESLint, Prettier |
 
-> **Catatan animasi:** Framer Motion dan Motion adalah pustaka yang sama. Cukup pasang paket `motion`. Motion untuk UI (reveal, hover, transisi halaman), Anime.js untuk counter dan animasi SVG.
+> **Catatan tipografi & animasi:** Tema holding menggunakan system Helvetica stack (`"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif`) dengan bobot 400 dan 700 untuk performa maksimal dan 0 layout shift. Framer Motion dan Motion adalah pustaka yang sama. Cukup pasang paket `motion`. Motion untuk UI (reveal, hover, transisi halaman, carousel crossfade), Anime.js untuk counter dan animasi SVG.
 
 ---
 
@@ -437,6 +437,22 @@ Pasang di crontab server (`crontab -e`):
 | Tampilan berbeda antara SSR dan klien | Ada kode yang memakai `window` saat render server. Bungkus dengan `useEffect` |
 | Email form kontak tidak terkirim | Periksa konfigurasi SMTP dan pastikan queue worker berjalan |
 | Perubahan konten tidak tampil | Bersihkan cache: `php artisan cache:clear` |
+
+---
+
+## Catatan Rilis & Perubahan (Changelog)
+
+### v1.2.0 (Revisi 1 — Tema Holding / Web Utama PT Derco Bara Energy)
+- **Tipografi:** Migrasi dari DM Sans ke Helvetica system font stack (`"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif`) bobot 400 & 700. Paket `@fontsource-variable/dm-sans` dicopot bersih.
+- **Sistem Radius:** `--radius-button: 8px` untuk tombol agak rounded; `--radius-card: 12px` untuk wadah kartu.
+- **Navigasi Header:** Menggabungkan menu Kontak dan tombol Hubungi Kami menjadi satu tautan teks kanan "Hubungi Kami" / "Contact Us" sejajar pengalih bahasa ID | EN (uppercase, tanpa border/latar, touch target 44×44px, hover/active bottom border copper). Menu tengah menjadi 3 item (`Beranda · Tentang Kami · Bisnis Kami`).
+- **Routing & SEO:** Mengubah slug kontak holding menjadi `/id/hubungi-kami` dan `/en/contact-us` dengan 301 Permanent Redirect dari `/id/kontak` dan `/en/contact`. Slug anak usaha tetap `/kontak` dan `/contact`.
+- **Komponen HeroCarousel:** Komponen carousel gambar hero mandiri (`ui/HeroCarousel`) dengan auto-crossfade 800ms, jeda autoplay saat hover/fokus, pagination accessible (`role="tablist"` / `role="tab"`), dan dukungan `prefers-reduced-motion`.
+- **Restrukturisasi Halaman Holding:**
+  - Beranda: Kartu anak usaha adaptif berasio 4:3, tombol "Lihat Selengkapnya", heading section besar disembunyikan secara visual (`sr-only`) untuk menjaga ritme visual.
+  - Tentang Kami: Hero carousel 3 gambar, deskripsi profil Derco + Area Operasional `[ISI WILAYAH OPERASIONAL]`, penghapusan blok Timeline/sejarah.
+  - Bisnis Kami: Hero carousel 3 gambar, penyederhanaan blok anak usaha alternatif tanpa perhitungan / key stats angka.
+- **Pengujian:** Penambahan unit test Vitest untuk `HeroCarousel`, Pest feature test untuk 301 redirect dan skema hero slides, serta Playwright E2E test untuk verifikasi navigasi header dan carousel.
 
 ---
 

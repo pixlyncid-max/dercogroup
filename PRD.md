@@ -1,6 +1,6 @@
 # PRD — Website PT Derco Bara Energy
 
-Versi 1.1 · Product Requirements Document
+Versi 1.2 · Product Requirements Document
 Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md)
 
 ---
@@ -66,7 +66,7 @@ Holding — PT Derco Bara Energy
 │                  │     └── (6 halaman yang sama)
 │                  └── PT Beramal Sukses Sejahtera
 │                        └── (6 halaman yang sama)
-└── Kontak
+└── Hubungi Kami
 ```
 
 4 halaman holding + 18 halaman anak usaha = **22 halaman**, di mana 18 halaman anak usaha berbagi satu struktur.
@@ -78,9 +78,10 @@ Holding — PT Derco Bara Energy
 /id/bisnis-kami                       /en/our-business
 /id/bisnis-kami/{slug}                /en/our-business/{slug}
 /id/bisnis-kami/{slug}/produk         /en/our-business/{slug}/products
-/id/kontak                            /en/contact
+/id/hubungi-kami                      /en/contact-us
+(301 redirect: /id/kontak -> /id/hubungi-kami; /en/contact -> /en/contact-us)
 ```
-Slug halaman diterjemahkan per bahasa. `/` mengarahkan ke bahasa sesuai preferensi browser, dengan cadangan `/id`.
+Slug halaman diterjemahkan per bahasa. `/` mengarahkan ke bahasa sesuai preferensi browser, dengan cadangan `/id`. Anak usaha tetap mempertahankan slug `/kontak` dan `/contact`.
 
 ### 4.3 Identitas Visual
 Lihat [DESIGN.md](./DESIGN.md). Ringkasnya:
@@ -369,3 +370,16 @@ Per perusahaan: logo, deskripsi singkat dan panjang (ID/EN), sejarah, visi-misi,
 
 - Diagram alur situs dan referensi desain beranda: dari klien/tim, disimpan di repositori pada `docs/reference/`.
 - ERD (dua bagian) disepakati dalam diskusi dan dipindahkan ke `docs/erd.md` saat fase 1.
+
+---
+
+## 14. Catatan Perubahan (Changelog)
+
+### Versi 1.2 (Revisi 1 — Holding / Web Utama)
+- **Slug & Rute Kontak Holding:** Halaman kontak holding berganti slug menjadi `/id/hubungi-kami` dan `/en/contact-us` (title: "Hubungi Kami" / "Contact Us"). Slug `/id/kontak` dan `/en/contact` dialihkan melalui 301 Permanent Redirect. Tiga anak usaha tetap menggunakan `/kontak` dan `/contact`.
+- **Navigasi Header Holding:** Menu Kontak dan tombol CTA digabung menjadi satu link kanan teks "Hubungi Kami" / "Contact Us" sejajar pengalih bahasa. Menu tengah holding menjadi 3 item (`Beranda · Tentang Kami · Bisnis Kami`).
+- **Penyelarasan Blok Holding:**
+  - Beranda: Kartu anak usaha asli dengan rasio 4:3, tombol "Lihat Selengkapnya", heading section besar disembunyikan secara visual (`sr-only`) untuk menjaga ritme desain.
+  - Tentang Kami: Hero carousel 3 gambar (`HeroCarousel`), intro split content (profil Derco + Area Operasional `[ISI WILAYAH OPERASIONAL]`), penghapusan blok Timeline/sejarah.
+  - Bisnis Kami: Hero carousel 3 gambar (`HeroCarousel`), blok anak usaha alternatif tanpa perhitungan / key stats angka.
+- **Tipografi Holding:** Seluruh font holding diganti dengan Helvetica font stack (hanya berat 400 dan 700). Token `--radius-button: 8px` dan `--radius-card: 12px`.

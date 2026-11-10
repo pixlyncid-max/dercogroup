@@ -1,6 +1,6 @@
 # DESIGN.md — PT Derco Bara Energy
 
-Versi 1.1 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
+Versi 1.2 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
 Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md)
 
 ---
@@ -122,8 +122,10 @@ Padding horizontal: 24px mobile, 40px tablet, 48px desktop.
   --color-surface: #f5f5f4;
   --color-ink: #2a2e34;
   --color-accent: #c77b2e;
-  --font-heading: "DM Sans", system-ui, sans-serif;
-  --radius-card: 4px;
+  --font-heading: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --radius-card: 12px;
+  --radius-button: 8px;
 }
 ```
 Tailwind membaca variabel ini lewat `theme.extend.colors` (`bg-bg`, `text-ink`, `bg-accent`), sehingga komponen bersama otomatis mengikuti tema.
@@ -151,20 +153,22 @@ Tailwind membaca variabel ini lewat `theme.extend.colors` (`bg-bg`, `text-ink`, 
 **Aturan kontras:** `#C77B2E` di atas putih hanya ±3,3:1, jadi hanya untuk elemen besar atau dekoratif. Teks tembaga kecil dan tombol berlatar tembaga dengan teks putih memakai `#A8621F` (±4,7:1).
 
 ### 4.2 Tipografi
-- **DM Sans** untuk judul dan isi (mirip referensi), berat 400/500/700.
+- **Helvetica Font Stack:** `"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif` untuk seluruh judul dan isi (menggantikan DM Sans).
+- Hanya memakai berat **400 (regular)** dan **700 (bold)** agar konsisten di seluruh sistem fallback tanpa layout shift.
 - Judul section berkarakter tebal, huruf kecil-kapital normal (bukan semua kapital).
 - Label kecil di atas judul (eyebrow): 12px, huruf kapital, letter-spacing `0.12em`, warna tembaga, diberi garis tembaga pendek di bawahnya (seperti "WHO WE ARE" pada referensi).
 
 | Level | Desktop | Mobile |
 |---|---|---|
-| Display (hero) | 64/68 · 700 | 40/44 |
-| H2 | 40/46 · 700 | 30/36 |
-| H3 | 24/32 · 700 | 20/28 |
-| Body | 16/28 · 400 | 16/26 |
-| Small | 14/22 | 14/22 |
+| Display (hero) | 64/68 · 700 | 40/44 · 700 |
+| H2 | 40/46 · 700 | 30/36 · 700 |
+| H3 | 24/32 · 700 | 20/28 · 700 |
+| Body | 16/28 · 400 | 16/26 · 400 |
+| Small | 14/22 · 400 | 14/22 · 400 |
 
 ### 4.3 Layout Header dan Footer
-**Header:** latar Charcoal, logo kiri, menu tengah (Beranda · Tentang Kami · Bisnis Kami · Kontak, huruf kapital 12px, item aktif bergaris bawah tembaga), kanan: pengalih bahasa `ID | EN` dan tombol putih "Hubungi Kami". Header sticky, menyusut tinggi saat scroll. Mobile: menu slide dari kanan.
+**Header:** latar Charcoal, logo kiri, menu tengah (`Beranda · Tentang Kami · Bisnis Kami`, huruf kapital 12px, item aktif bergaris bawah tembaga), kanan: pengalih bahasa `ID | EN` dan teks link "Hubungi Kami" (bukan tombol, tanpa border/latar, gaya tipografi identik dengan item menu lain, hover/aktif garis bawah tembaga, touch target 44×44px). Header sticky, menyusut tinggi saat scroll. Mobile: menu slide dari kanan dengan "Hubungi Kami" sebagai item terakhir.
+- Slug halaman kontak holding: `/id/hubungi-kami` dan `/en/contact-us` (301 redirect dari `/id/kontak` dan `/en/contact`). Tiga anak usaha tetap mempertahankan `/kontak` dan `/contact`.
 
 **Footer:** latar Charcoal Deep, tiga kolom: (1) deskripsi singkat + logo, (2) alamat, (3) jam operasional. Baris bawah: hak cipta dan tautan ke anak usaha.
 
@@ -172,25 +176,35 @@ Tailwind membaca variabel ini lewat `theme.extend.colors` (`bg-bg`, `text-ink`, 
 
 | # | Section | Latar | Tata letak |
 |---|---|---|---|
-| 1 | **Hero** | Charcoal | Kiri: eyebrow, judul besar, 2 baris deskripsi, tombol tembaga. Kanan: foto alat berat yang **menembus tepi kanan dan bawah** hero (offset negatif) |
-| 2 | **Bisnis Kami** | Charcoal | Judul tembaga tengah + 1 kalimat. Grid kartu foto, **2 kolom saat Korin Bara draft, 3 kolom setelah tayang**. Foto penuh, nama perusahaan dan deskripsi di bawah, tombol outline "Lihat Selengkapnya" |
-| 3 | **Tentang Kami (ringkas)** | Putih | Kiri: **dua foto bertumpuk offset** (besar atas, kecil bawah menjorok). Kanan: eyebrow, judul, paragraf tebal pembuka, paragraf isi, tombol tembaga |
-| 4 | **Pita Komitmen** | Tembaga penuh | Kiri: panel tembaga dengan judul putih, ikon sertifikat, 1 kalimat, tombol putih "Mutu & Kepatuhan". Kanan: foto udara tambang tanpa tepi |
-| 5 | **Visi dan Misi** | Putih | Kiri: foto bertumpuk (versi cermin dari section 3). Kanan: eyebrow, judul, daftar 3 poin dengan ikon lingkaran tembaga, paragraf, tombol |
-| 6 | **Kartu Kontak** | Putih, kartu Charcoal | Kartu lebar di tengah: ikon garis tembaga, "Ada pertanyaan?", nomor telepon besar berwarna tembaga, tombol putih "Kirim Pesan" |
+| 1 | **Hero** | Charcoal | Kiri: eyebrow, judul besar, 2 baris deskripsi, tombol tembaga agak rounded (`--radius-button: 8px`). Kanan: foto alat berat yang **menembus tepi kanan dan bawah** hero (offset negatif) |
+| 2 | **Bisnis Kami** | Charcoal | Kartu asli (`--radius-card: 12px`) untuk anak usaha berstatus `published`. Grid adaptif (2 kolom saat Korin Bara draft, 3 kolom saat published, 1 kolom di mobile). Setiap kartu memiliki foto 4:3, nama perusahaan, deskripsi maksimal 3 baris, dan tombol full-width "Lihat Selengkapnya". Efek hover: lift -4px + bayangan halus. Judul section dipertahankan semantik untuk SEO/a11y (`h2.sr-only`) tanpa tampilan visual. |
+| 3 | **Tentang Kami (ringkas)** | Putih | Kiri: **dua foto bertumpuk offset** (besar atas, kecil bawah menjorok). Kanan: paragraf tebal pembuka Derco holding, paragraf isi, tombol tembaga rounded 8px. Heading section dipertahankan semantik (`h2.sr-only`). |
+| 4 | **Pita Komitmen** | Tembaga penuh | Kiri: panel tembaga dengan judul putih, ikon sertifikat, 1 kalimat, tombol putih rounded 8px "Mutu & Kepatuhan". Kanan: foto udara tambang tanpa tepi. Heading section semantik (`h2.sr-only`). |
+| 5 | **Visi dan Misi** | Putih | Kiri: foto bertumpuk (versi cermin dari section 3). Kanan: daftar 3 poin dengan ikon lingkaran tembaga, paragraf, tombol rounded 8px. Heading section semantik (`h2.sr-only`). |
+| 6 | **Kartu Kontak** | Putih, kartu Charcoal | Kartu lebar di tengah (`--radius-card: 12px`): ikon garis tembaga, "Ada pertanyaan?", nomor telepon besar berwarna tembaga (Helvetica 700), tombol putih rounded 8px "Kirim Pesan". Heading section semantik (`h2.sr-only`). |
 | 7 | **Footer** | Charcoal Deep | Lihat 4.3 |
 
 Ritme warna: **gelap → gelap → putih → tembaga → putih → putih/kartu gelap → gelap.** Pita tembaga adalah pemecah ritme yang menjadi ciri khas halaman.
 
 ### 4.5 Halaman Holding Lainnya
-- **Tentang Kami:** hero pendek bergaris tembaga; sejarah singkat (timeline vertikal 4–6 titik); visi-misi; nilai perusahaan (3–4 kartu ikon); struktur grup (diagram sederhana holding → anak usaha).
-- **Bisnis Kami:** hero pendek; satu blok besar per anak usaha, **bergantian kiri-kanan** (foto, nama, 2 kalimat, 3 fakta kunci, tombol "Kunjungi Situs"). Anak usaha draft tidak muncul.
-- **Kontak:** dua kolom. Kiri: form (nama, email, telepon, organisasi, subjek, pesan). Kanan: alamat, telepon, email, jam, peta statis.
+- **Tentang Kami:**
+  1. Hero Carousel (3 gambar berganti crossfade 800ms, interval 6s, dark overlay WCAG AA).
+  2. Split Content: dua foto bertumpuk offset di kiri; di kanan paragraf pembuka profil PT Derco Bara Energy + paragraf "Area Operasional: ... berpusat di [ISI WILAYAH OPERASIONAL]".
+  3. Visi & Misi grup.
+  4. Nilai Perusahaan (`ValuesGridBlock`).
+  5. Struktur Grup (`SubsidiaryGridBlock` struktur kepemilikan holding → anak usaha).
+  6. CTA Banner "Hubungi Kami".
+  *(Catatan: Blok Timeline/sejarah ditiadakan pada holding).*
+- **Bisnis Kami:**
+  1. Hero Carousel (3 gambar berganti crossfade 800ms, interval 6s).
+  2. Satu blok per anak usaha bergantian kiri-kanan (foto, nama, deskripsi singkat, tombol "Kunjungi Situs"). *(Catatan: Perhitungan/key stats angka dihilangkan).*
+- **Hubungi Kami (`/id/hubungi-kami`, `/en/contact-us`):** dua kolom. Kiri: info kontak (alamat, telepon, email, jam, peta). Kanan: formulir pesan kemitraan B2B.
 
 ### 4.6 Komponen Khas Holding
 - **Foto bertumpuk offset:** dua gambar, yang kecil bergeser `-48px` ke bawah dan `+48px` ke samping, saling menimpa 24px.
 - **Pita tembaga:** section dua kolom, satu sisi warna solid, satu sisi foto. Di mobile menumpuk (teks dulu, foto di bawah).
 - **Garis eyebrow:** 40px × 2px tembaga di bawah label kecil.
+- **HeroCarousel:** carousel 3–5 gambar otomatis dengan transisi fade halus (800ms, 6s autoplay), dark overlay WCAG AA (≥ 4.5:1), tombol indikator slide bernavigasi accessible (`role="tablist"` / `role="tab"`), jeda saat hover/fokus, dan reduced-motion support.
 
 ---
 
@@ -326,11 +340,12 @@ Komponen primitif tanpa gaya identitas. Warna, radius, dan font diambil dari tok
 |---|---|
 | `Container` | Lebar sesuai token `narrow/default/wide` |
 | `Section` | Padding vertikal standar, prop `tone` |
-| `Button` | Varian `solid`, `outline`, `ghost`, ukuran `md/lg` |
+| `Button` | Varian `solid`, `outline`, `ghost`, ukuran `md/lg`, membaca `--radius-button` |
 | `Eyebrow`, `Heading`, `Prose` | Tipografi dasar |
 | `Reveal` | Pembungkus animasi muncul saat scroll (Motion) |
 | `Counter` | Angka naik (Anime.js) |
 | `Image` | `<picture>` responsif, lazy, rasio tetap, placeholder |
+| `HeroCarousel` | Carousel 3–5 gambar otomatis dengan transisi fade halus (800ms, 6s autoplay), dark overlay WCAG AA, pagination dots accessible, pause on hover/focus |
 | `FormField`, `Input`, `Textarea` | Form dengan label, error, ARIA |
 | `LanguageSwitch` | Memakai `useLocale()` |
 
@@ -344,16 +359,16 @@ Setiap blok memiliki satu skema data (backend) dan satu tampilan per tema (front
 
 | Tipe blok | Jenis | Isi | Dipakai di |
 |---|---|---|---|
-| `hero` | Statis | Eyebrow, judul, deskripsi, tombol, gambar | Semua beranda |
+| `hero` | Statis | Eyebrow, judul, deskripsi, tombol, gambar statis atau `slides` (3–5 gambar carousel) | Semua beranda, Tentang Kami holding, Bisnis Kami holding |
 | `split_content` | Statis | Gambar + teks, posisi kiri/kanan | Tentang, Beranda |
 | `stacked_images` | Statis | Dua gambar offset + teks (khas holding) | Holding |
 | `color_band` | Statis | Pita berwarna + gambar + CTA | Holding |
 | `mission_list` | Statis | Judul + daftar poin | Visi-misi |
 | `rich_text` | Statis | Teks panjang | Tentang |
 | `cta_banner` | Statis | Judul + tombol | Hampir semua |
-| `timeline` | Statis | Daftar peristiwa | Tentang |
+| `timeline` | Statis | Daftar peristiwa | Tentang (anak usaha) |
 | `values_grid` | Statis | Kartu nilai | Tentang |
-| `subsidiary_grid` | Dinamis | Anak usaha berstatus `published` | Holding |
+| `subsidiary_grid` | Dinamis | Anak usaha berstatus `published` (varian: cards, alternating, structure) | Holding |
 | `stats` | Dinamis | `company_stats` | Beranda |
 | `product_list` | Dinamis | `products` | Beranda, Produk |
 | `operation_list` | Dinamis | `operations` | Operasi |
@@ -446,4 +461,24 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 - [ ] Semua uji pada bagian 1.1 lulus untuk setiap halaman utama pada tiap tema (kabur, tiga detik, tukar tema, template, copy, referensi).
 - [ ] Tidak ada ciri "tampilan AI" dari tabel bagian 1.1 (gradasi neon, hero berformula, kartu ikon seragam di setiap section, copy klise, emoji sebagai ikon).
 - [ ] Hanya satu keluarga ikon, maksimal dua keluarga huruf per tema, dan aksen tidak dipakai di lebih dari elemen penting.
-- [ ] Skill dari folder `.agents/skills/ui-ux-pro-max` yang relevan sudah dibaca dan diterapkan; skill yang dipakai dicantumkan di laporan fase.
+- [x] Skill dari folder `.agents/skills/ui-ux-pro-max` yang relevan sudah dibaca dan diterapkan; skill yang dipakai dicantumkan di laporan fase.
+
+---
+
+## 15. Catatan Perubahan (Changelog)
+
+### Versi 1.2 (Revisi 1 — Web Utama / Tema Holding)
+- **Tipografi:** Mengganti DM Sans dengan Helvetica font stack (`"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif`) untuk `--font-heading` dan `--font-body` di tema holding. Hanya memakai berat 400 dan 700. Paket `@fontsource-variable/dm-sans` dihapus total.
+- **Tombol & Radius:** `--radius-button: 8px` diterapkan pada holding (agak rounded). `--radius-card: 12px` untuk wadah kartu.
+- **Header Holding:** Menggabungkan menu "Kontak" dan tombol "Hubungi Kami" menjadi SATU teks link "Hubungi Kami" (EN: "Contact Us") di sisi kanan sebelah pengalih bahasa ID | EN (uppercase, touch target 44×44px, hover/active bottom border copper). Menu tengah menjadi 3 item (`Beranda · Tentang Kami · Bisnis Kami`). Mobile drawer menempatkan "Hubungi Kami" sebagai link terakhir.
+- **Rute Kontak Holding:** Mengubah slug kontak holding menjadi `/id/hubungi-kami` dan `/en/contact-us`, disertai 301 permanent redirect dari `/id/kontak` dan `/en/contact`. Tiga anak usaha tetap mempertahankan `/kontak` dan `/contact`.
+- **Beranda Holding:**
+  - Section "Bisnis Kami" diubah menjadi kartu asli untuk anak usaha published dengan foto 4:3, nama, deskripsi 3 baris, dan tombol "Lihat Selengkapnya".
+  - Judul section besar setelah hero disembunyikan secara visual (`sr-only`) untuk kebersihan tampilan dan ritme visual tanpa merusak semantik heading/SEO.
+- **Tentang Kami Holding:**
+  - Hero menggunakan `HeroCarousel` (3 gambar, auto crossfade 800ms, autoplay 6s, accessible dots, pause on hover/focus).
+  - Menghapus blok Timeline/sejarah dari halaman Tentang Kami holding.
+  - Memperbarui deskripsi pembuka profil Derco holding dan menambahkan paragraf Area Operasional (`[ISI WILAYAH OPERASIONAL]`).
+- **Bisnis Kami Holding:**
+  - Hero menggunakan `HeroCarousel` (3 gambar).
+  - Menghapus perhitungan / key stats angka dari blok anak usaha; menyisakan foto, nama, deskripsi singkat, dan tombol "Kunjungi Situs".
