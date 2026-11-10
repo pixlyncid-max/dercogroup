@@ -134,3 +134,4 @@ describe('HeroCarousel', () => {
         expect(dots[0]).toHaveAttribute('aria-selected', 'true');
     });
 });
+
