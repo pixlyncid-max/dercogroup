@@ -9,6 +9,10 @@ use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Operation\Models\Operation;
 use App\Domain\Page\Models\Page;
 use App\Domain\Product\Models\Product;
+use App\Filament\Resources\ContactMessageResource;
+use App\Filament\Resources\OperationResource;
+use App\Filament\Resources\PageResource;
+use App\Filament\Resources\ProductResource;
 use Filament\Facades\Filament;
 use Filament\Widgets\Widget;
 
@@ -30,6 +34,14 @@ class StatsOverviewWidget extends Widget
             $operationsCount = $tenant->operations()->count();
             $inquiriesCount = $tenant->contactMessages()->where('status', 'new')->count();
 
+            $productUrl = $tenant->hasPage('products')
+                ? ProductResource::getUrl('index')
+                : url('/admin/korin-berkat-energy/products');
+
+            $operationUrl = $tenant->hasPage('operations')
+                ? OperationResource::getUrl('index')
+                : url('/admin/korin-berkat-energy/operations');
+
             return [
                 [
                     'label' => 'Total Halaman',
@@ -37,20 +49,23 @@ class StatsOverviewWidget extends Widget
                     'trend' => 'Aktif di CMS',
                     'icon' => 'page',
                     'color' => 'blue',
+                    'url' => PageResource::getUrl('index'),
                 ],
                 [
                     'label' => 'Total Produk',
                     'value' => (string) $productsCount,
-                    'trend' => $tenant->hasPage('products') ? 'Katalog Aktif' : 'Tidak Berlaku',
+                    'trend' => $tenant->hasPage('products') ? 'Katalog Aktif' : 'Kelola di Anak Usaha →',
                     'icon' => 'product',
                     'color' => 'amber',
+                    'url' => $productUrl,
                 ],
                 [
                     'label' => 'Total Operasi',
                     'value' => (string) $operationsCount,
-                    'trend' => $tenant->hasPage('operations') ? 'Wilayah Kerja' : 'Tidak Berlaku',
+                    'trend' => $tenant->hasPage('operations') ? 'Wilayah Kerja' : 'Kelola di Anak Usaha →',
                     'icon' => 'operation',
                     'color' => 'purple',
+                    'url' => $operationUrl,
                 ],
                 [
                     'label' => 'Pesan Masuk Baru',
@@ -58,6 +73,7 @@ class StatsOverviewWidget extends Widget
                     'trend' => 'Perlu Ditanggapi',
                     'icon' => 'user',
                     'color' => 'emerald',
+                    'url' => ContactMessageResource::getUrl('index'),
                 ],
             ];
         }
@@ -69,6 +85,7 @@ class StatsOverviewWidget extends Widget
                 'trend' => 'Semua Perusahaan',
                 'icon' => 'page',
                 'color' => 'blue',
+                'url' => '#',
             ],
             [
                 'label' => 'Total Produk',
@@ -76,6 +93,7 @@ class StatsOverviewWidget extends Widget
                 'trend' => 'Semua Katalog',
                 'icon' => 'product',
                 'color' => 'amber',
+                'url' => '#',
             ],
             [
                 'label' => 'Total Operasi',
@@ -83,6 +101,7 @@ class StatsOverviewWidget extends Widget
                 'trend' => 'Semua Wilayah',
                 'icon' => 'operation',
                 'color' => 'purple',
+                'url' => '#',
             ],
             [
                 'label' => 'Pesan Masuk Baru',
@@ -90,6 +109,7 @@ class StatsOverviewWidget extends Widget
                 'trend' => 'Semua Pesan',
                 'icon' => 'user',
                 'color' => 'emerald',
+                'url' => '#',
             ],
         ];
     }

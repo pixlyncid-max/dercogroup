@@ -24,6 +24,7 @@ use App\Policies\PagePolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\SettingPolicy;
 use App\Policies\UserPolicy;
+use App\Support\FilamentThemeResolver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -48,6 +49,15 @@ class AppServiceProvider extends ServiceProvider
     {
         if (request()->header('X-Forwarded-Proto') === 'https' || request()->isSecure() || str_starts_with(config('app.url'), 'https://')) {
             URL::forceScheme('https');
+        }
+
+        if (! app()->runningUnitTests() && ! app()->environment('testing')) {
+            $subfolder = FilamentThemeResolver::getSubfolder();
+            if ($subfolder !== '') {
+                $scheme = request()->getScheme();
+                $host = request()->getHttpHost();
+                URL::forceRootUrl("{$scheme}://{$host}{$subfolder}");
+            }
         }
 
         RateLimiter::for('contact-submissions', function (Request $request): Limit {

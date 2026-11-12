@@ -7,6 +7,8 @@ namespace App\Filament\Widgets;
 use App\Domain\Company\Models\Company;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Page\Models\Page;
+use App\Filament\Resources\ContactMessageResource;
+use App\Filament\Resources\PageResource;
 use Filament\Facades\Filament;
 use Filament\Widgets\Widget;
 
@@ -38,6 +40,7 @@ class RecentActivityWidget extends Widget
                 'description' => "Dari {$msg->name} (".($msg->subject ?: 'Pertanyaan').')',
                 'time' => $msg->created_at?->diffForHumans() ?? 'Baru saja',
                 'icon' => 'mail',
+                'url' => ContactMessageResource::getUrl('index'),
             ];
         }
 
@@ -53,6 +56,7 @@ class RecentActivityWidget extends Widget
                 'description' => $p->translateField('title', 'id').' ('.($p->company?->name ?? 'Holding').')',
                 'time' => $p->updated_at?->diffForHumans() ?? 'Baru saja',
                 'icon' => 'page',
+                'url' => PageResource::getUrl('index'),
             ];
         }
 
@@ -64,12 +68,14 @@ class RecentActivityWidget extends Widget
                     'description' => 'Halaman grup PT Derco Bara Energy dan anak usaha aktif',
                     'time' => '1 jam lalu',
                     'icon' => 'page',
+                    'url' => PageResource::getUrl('index'),
                 ],
                 [
                     'title' => 'Branding Terverifikasi',
                     'description' => 'Varian logo resmi holding dan anak perusahaan aktif',
                     'time' => '3 jam lalu',
                     'icon' => 'brand',
+                    'url' => ContactMessageResource::getUrl('index'),
                 ],
             ];
         }

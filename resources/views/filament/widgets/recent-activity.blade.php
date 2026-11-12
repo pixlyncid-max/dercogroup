@@ -20,11 +20,12 @@
     </div>
 
     <!-- Timeline List -->
-    <div class="relative pl-6 space-y-5 pt-5 before:absolute before:left-2 before:top-6 before:bottom-4 before:w-0.5 before:bg-slate-100">
+    <div class="relative pl-6 space-y-4 pt-5 before:absolute before:left-2 before:top-6 before:bottom-4 before:w-0.5 before:bg-slate-100">
         @foreach ($this->getActivities() as $item)
-            <div class="relative flex items-start justify-between gap-3 group">
+            <a href="{{ $item['url'] }}"
+               class="relative flex items-start justify-between gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors group cursor-pointer block">
                 <!-- Blue Timeline Dot -->
-                <div class="absolute -left-6 mt-1 w-2.5 h-2.5 rounded-full bg-blue-600 ring-4 ring-blue-50"></div>
+                <div class="absolute -left-6 mt-1.5 w-2.5 h-2.5 rounded-full bg-blue-600 ring-4 ring-blue-50 group-hover:bg-[#EDB856] group-hover:ring-amber-100 transition-all"></div>
 
                 <div class="space-y-0.5">
                     <div class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
@@ -38,7 +39,7 @@
                 <span class="text-[11px] font-medium text-slate-400 shrink-0">
                     {{ $item['time'] }}
                 </span>
-            </div>
+            </a>
         @endforeach
     </div>
 </div>

@@ -14,6 +14,7 @@ use App\Domain\Operation\Models\Operation;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
 use App\Domain\Product\Models\Product;
+use App\Support\FilamentThemeResolver;
 use App\Support\HasFallbackTranslations;
 use App\Support\HasWebpConversions;
 use App\Support\RecordsAuditLog;
@@ -110,7 +111,7 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
 
         $path = $logoData['compact'] ?? $logoData['light'] ?? null;
 
-        return $path ? \App\Support\FilamentThemeResolver::resolveAssetUrl($path) : null;
+        return $path ? FilamentThemeResolver::resolveAssetUrl($path) : null;
     }
 
     public function hasPage(PageKey|string $key): bool
