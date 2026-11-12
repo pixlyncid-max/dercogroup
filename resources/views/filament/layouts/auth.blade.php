@@ -28,7 +28,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 3.5rem 4rem;
-            background-color: #0B1528;
+            background-color: #E2E8F0;
             overflow: hidden;
             box-sizing: border-box;
         }
@@ -44,15 +44,8 @@
             inset: 0;
             background-image: url('/images/cms/login-mining-banner.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: left center;
             z-index: 1;
-        }
-
-        .cms-login-banner-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(11, 21, 40, 0.88) 0%, rgba(11, 21, 40, 0.65) 50%, rgba(11, 21, 40, 0.35) 100%);
-            z-index: 2;
         }
 
         .cms-login-banner-content {
@@ -93,7 +86,7 @@
         }
 
         .cms-banner-logo {
-            max-height: 44px;
+            max-height: 48px;
             width: auto;
             max-width: 220px;
             object-fit: contain;
@@ -149,36 +142,36 @@
         <!-- Left Side: Mining Banner & Corporate Identity (Desktop) -->
         <aside class="cms-login-banner" aria-label="Company Overview">
             <div class="cms-login-banner-bg" aria-hidden="true"></div>
-            <div class="cms-login-banner-overlay" aria-hidden="true"></div>
 
             <!-- Top Company Logo -->
             <div class="cms-login-banner-content">
-                <img src="/images/cms/korin-logo-light.png"
-                     alt="PT Korin Berkat Energy"
+                <img src="/images/cms/derco-logo-dark.png"
+                     alt="PT Derco Bara Energy"
                      class="cms-banner-logo"
-                     width="180"
-                     height="44" />
+                     width="200"
+                     height="48"
+                     style="max-height: 48px; width: auto; max-width: 220px; object-fit: contain;" />
             </div>
 
             <!-- Middle Core Headline -->
             <div class="cms-login-banner-content max-w-lg space-y-4 mb-12">
-                <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-tight font-heading tracking-tight">
-                    Building a Sustainable Future <span class="text-[#EDB856]">Together</span>
+                <h1 class="text-4xl xl:text-5xl font-extrabold text-[#0F172A] leading-tight font-heading tracking-tight">
+                    Building a Sustainable Future <span class="text-[#D49E35]">Together</span>
                 </h1>
-                <p class="text-base font-bold text-slate-100 flex items-center gap-2">
+                <p class="text-base font-bold text-[#0F172A] flex items-center gap-2">
                     <span>Mining</span>
-                    <span class="text-[#EDB856]">•</span>
+                    <span class="text-[#D49E35]">•</span>
                     <span>Trading</span>
-                    <span class="text-[#EDB856]">•</span>
+                    <span class="text-[#D49E35]">•</span>
                     <span>Nickel</span>
                 </p>
-                <p class="text-sm text-slate-300 leading-relaxed max-w-md">
+                <p class="text-sm text-slate-600 leading-relaxed max-w-md">
                     Committed to responsible mining, reliable trading, and a greener tomorrow.
                 </p>
             </div>
 
             <!-- Bottom Sub-branding -->
-            <div class="cms-login-banner-content text-xs text-slate-400">
+            <div class="cms-login-banner-content text-xs text-slate-500 font-medium">
                 PT Derco Bara Energy Corporate Group
             </div>
         </aside>
@@ -188,11 +181,12 @@
             <div class="cms-login-card">
                 <!-- Card Header -->
                 <div class="text-center space-y-2 mb-6">
-                    <img src="/images/cms/korin-logo-dark.png"
-                         alt="PT Korin Berkat Energy"
+                    <img src="/images/cms/derco-logo-dark.png"
+                         alt="PT Derco Bara Energy"
                          class="cms-login-logo"
-                         width="190"
-                         height="44" />
+                         width="200"
+                         height="48"
+                         style="max-height: 48px; width: auto; max-width: 220px; object-fit: contain; margin: 0 auto 1.25rem auto;" />
                     <h2 class="text-2xl font-bold text-slate-900 font-heading">Welcome Back</h2>
                     <p class="text-xs sm:text-sm text-slate-500">Please login to access your dashboard</p>
                 </div>
@@ -219,7 +213,7 @@
 
                 <!-- Footer Copyright -->
                 <p class="mt-8 text-center text-xs text-slate-400">
-                    &copy; 2025 Korin Berkat Energy. All rights reserved.
+                    &copy; {{ date('Y') }} PT Derco Bara Energy. All rights reserved.
                 </p>
             </div>
         </section>

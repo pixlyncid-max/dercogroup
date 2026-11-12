@@ -8,12 +8,28 @@ use Filament\Actions\Action;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 
 class Login extends BaseLogin
 {
     protected static string $layout = 'filament.layouts.auth';
+
+    public function hasLogo(): bool
+    {
+        return false;
+    }
+
+    public function getHeading(): string|Htmlable
+    {
+        return '';
+    }
+
+    public function getSubHeading(): string|Htmlable|null
+    {
+        return null;
+    }
 
     protected function getEmailFormComponent(): Component
     {
