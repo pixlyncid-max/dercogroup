@@ -109,7 +109,7 @@ class ProductionSeeder extends Seeder
                 'parent_id' => $holding->id,
                 'name' => 'PT Korin Bara Energy',
                 'theme' => CompanyTheme::KorinBara,
-                'status' => CompanyStatus::Draft,
+                'status' => CompanyStatus::Published,
                 'sort_order' => 3,
                 'tagline' => [
                     'id' => 'Operasi penambangan terbuka, pengangkutan darat, dan pengolahan batu bara di konsesi tambang.',

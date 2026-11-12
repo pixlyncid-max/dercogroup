@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domain\Company\Actions\CreateCompanyPages;
 use App\Domain\Company\Enums\CompanyTheme;
 use App\Domain\Company\Models\Company;
 use App\Models\User;
@@ -34,7 +35,11 @@ it('caches public responses and disables cache for draft preview', function (): 
     $korinBerkat = Company::query()->where('theme', CompanyTheme::KorinBerkat)->firstOrFail();
     $adminUser = User::query()->where('email', 'admin@dercobara.co.id')->firstOrFail();
 
-    $previewResponse = $this->actingAs($adminUser)->get('/id/bisnis-kami/korin-bara-energy?preview=1');
+    $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
+    $draftCompany = Company::factory()->draft()->subsidiary($holding)->create(['slug' => 'test-draft-preview']);
+    app(CreateCompanyPages::class)->execute($draftCompany);
+
+    $previewResponse = $this->actingAs($adminUser)->get('/id/bisnis-kami/test-draft-preview?preview=1');
     $previewResponse->assertStatus(200);
     expect($previewResponse->headers->get('Cache-Control'))->toContain('no-store');
     expect($previewResponse->headers->get('X-Robots-Tag'))->toBe('noindex, nofollow');

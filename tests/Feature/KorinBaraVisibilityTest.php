@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domain\Company\Actions\CreateCompanyPages;
+use App\Domain\Company\Actions\PublishKorinBaraAction;
 use App\Domain\Company\Enums\CompanyStatus;
 use App\Domain\Company\Models\Company;
 use App\Domain\Contact\Models\ContactMessage;
@@ -17,10 +19,9 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('returns 404 for public visitors on all PT Korin Bara Energy draft URLs and excludes it from Holding and sitemap.xml', function (): void {
-    $draftUrls = [
+it('renders all 6 published PT Korin Bara Energy pages and product detail publicly without preview flag', function (): void {
+    $publicUrls = [
         '/id/bisnis-kami/korin-bara-energy',
-        '/id/bisnis-kami/korin-bara-energy?preview=1',
         '/id/bisnis-kami/korin-bara-energy/tentang-kami',
         '/id/bisnis-kami/korin-bara-energy/produk',
         '/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200',
@@ -28,7 +29,6 @@ it('returns 404 for public visitors on all PT Korin Bara Energy draft URLs and e
         '/id/bisnis-kami/korin-bara-energy/mutu-dan-kepatuhan',
         '/id/bisnis-kami/korin-bara-energy/kontak',
         '/en/our-business/korin-bara-energy',
-        '/en/our-business/korin-bara-energy?preview=1',
         '/en/our-business/korin-bara-energy/about-us',
         '/en/our-business/korin-bara-energy/products',
         '/en/our-business/korin-bara-energy/products/thermal-coal-gar-4200',
@@ -37,114 +37,14 @@ it('returns 404 for public visitors on all PT Korin Bara Energy draft URLs and e
         '/en/our-business/korin-bara-energy/contact',
     ];
 
-    foreach ($draftUrls as $url) {
-        $this->get($url)->assertNotFound();
+    foreach ($publicUrls as $url) {
+        $response = $this->get($url);
+        $response->assertOk();
+        // Public pages do NOT have noindex headers
+        expect($response->headers->get('X-Robots-Tag'))->not()->toBe('noindex, nofollow');
     }
 
-    // Holding Home and Our Business only include the 2 published subsidiaries
-    $this->get('/id')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->has('subsidiaries', 2)
-            ->where('subsidiaries.0.slug', 'korin-berkat-energy')
-            ->where('subsidiaries.1.slug', 'beramal-sukses-sejahtera')
-        );
-
-    $this->get('/id/bisnis-kami')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->has('subsidiaries', 2)
-        );
-
-    // Sitemap XML excludes draft company URLs
-    $sitemapResponse = $this->get('/sitemap.xml');
-    $sitemapResponse->assertOk();
-    $sitemapXml = (string) $sitemapResponse->getContent();
-
-    expect($sitemapXml)
-        ->toContain('/id/bisnis-kami/korin-berkat-energy')
-        ->toContain('/id/bisnis-kami/beramal-sukses-sejahtera')
-        ->not->toContain('korin-bara-energy');
-});
-
-it('allows Super Admin and Editor to preview all 6 PT Korin Bara Energy pages and product detail with ?preview=1 and noindex headers', function (): void {
-    $superAdmin = User::query()->where('email', 'admin@dercobara.co.id')->firstOrFail();
-    $editor = User::query()->where('email', 'editor@dercobara.co.id')->firstOrFail();
-
-    // Without ?preview=1, even logged-in admin gets 404 on draft public URL
-    $this->actingAs($superAdmin)
-        ->get('/id/bisnis-kami/korin-bara-energy')
-        ->assertNotFound();
-
-    // With ?preview=1, Super Admin gets 200 OK with korin-bara theme, isPreview=true, and X-Robots-Tag: noindex, nofollow
-    $this->actingAs($superAdmin)
-        ->get('/id/bisnis-kami/korin-bara-energy?preview=1')
-        ->assertOk()
-        ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('locale', 'id')
-            ->where('isPreview', true)
-            ->where('company.slug', 'korin-bara-energy')
-            ->where('company.theme', 'korin-bara')
-            ->where('company.status', 'draft')
-            ->where('page.key', 'home')
-            ->has('blocks', 6)
-            ->has('stats', 4)
-            ->has('products', 3)
-            ->has('operations', 4)
-            ->has('certifications', 5)
-            ->where('navigation.items.0.href', '/id/bisnis-kami/korin-bara-energy?preview=1')
-            ->where('navigation.alternateUrls.en', '/en/our-business/korin-bara-energy?preview=1')
-        );
-
-    $idSlugs = [
-        'tentang-kami' => 'about',
-        'produk' => 'products',
-        'operasi' => 'operations',
-        'mutu-dan-kepatuhan' => 'compliance',
-        'kontak' => 'contact',
-    ];
-
-    foreach ($idSlugs as $slug => $expectedKey) {
-        $this->actingAs($superAdmin)
-            ->get("/id/bisnis-kami/korin-bara-energy/{$slug}?preview=1")
-            ->assertOk()
-            ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-            ->assertInertia(fn (Assert $page): Assert => $page
-                ->component('ThemedPage')
-                ->where('isPreview', true)
-                ->where('company.slug', 'korin-bara-energy')
-                ->where('company.theme', 'korin-bara')
-                ->where('page.key', $expectedKey)
-            );
-    }
-
-    // Editor can also preview EN pages and product detail with ?preview=1
-    $this->actingAs($editor)
-        ->get('/en/our-business/korin-bara-energy/products/thermal-coal-gar-4200?preview=1')
-        ->assertOk()
-        ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('locale', 'en')
-            ->where('isPreview', true)
-            ->where('company.slug', 'korin-bara-energy')
-            ->where('company.theme', 'korin-bara')
-            ->where('product.slug', 'thermal-coal-gar-4200')
-            ->has('product.specs', 5)
-            ->where('navigation.alternateUrls.id', '/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200?preview=1')
-            ->where('navigation.alternateUrls.en', '/en/our-business/korin-bara-energy/products/thermal-coal-gar-4200?preview=1')
-        );
-});
-
-it('immediately publishes PT Korin Bara Energy to Holding grid, footer, public routes, and sitemap.xml when status changes to published', function (): void {
-    $korinBara = Company::query()->where('slug', 'korin-bara-energy')->firstOrFail();
-    $korinBara->update(['status' => CompanyStatus::Published]);
-
-    // Holding Home and Our Business now list all 3 subsidiaries
+    // Holding Home and Our Business include all 3 published subsidiaries
     $this->get('/id')
         ->assertOk()
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -155,37 +55,26 @@ it('immediately publishes PT Korin Bara Energy to Holding grid, footer, public r
             ->where('subsidiaries.2.slug', 'korin-bara-energy')
         );
 
-    // Public visitors can now access Korin Bara Energy without ?preview=1
-    $this->get('/id/bisnis-kami/korin-bara-energy')
+    $this->get('/id/bisnis-kami')
         ->assertOk()
         ->assertInertia(fn (Assert $page): Assert => $page
             ->component('ThemedPage')
-            ->where('isPreview', false)
-            ->where('company.slug', 'korin-bara-energy')
-            ->where('company.theme', 'korin-bara')
-            ->where('company.status', 'published')
-            ->where('page.key', 'home')
+            ->has('subsidiaries', 3)
         );
 
-    $this->get('/en/our-business/korin-bara-energy/products/thermal-coal-gar-4200')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('isPreview', false)
-            ->where('company.slug', 'korin-bara-energy')
-            ->where('company.theme', 'korin-bara')
-            ->where('product.slug', 'thermal-coal-gar-4200')
-        );
+    // Sitemap XML includes Korin Bara URLs
+    $sitemapResponse = $this->get('/sitemap.xml');
+    $sitemapResponse->assertOk();
+    $sitemapXml = (string) $sitemapResponse->getContent();
 
-    // Sitemap XML now includes Korin Bara Energy pages and products
-    $sitemapXml = (string) $this->get('/sitemap.xml')->assertOk()->getContent();
     expect($sitemapXml)
         ->toContain('/id/bisnis-kami/korin-bara-energy')
         ->toContain('/en/our-business/korin-bara-energy')
         ->toContain('/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200');
 
-    // Contact form submission works once published
+    // Contact form submission works for Korin Bara
     Mail::fake();
+    $korinBara = Company::query()->where('slug', 'korin-bara-energy')->firstOrFail();
     $this->from('/id/bisnis-kami/korin-bara-energy/kontak')
         ->post('/id/bisnis-kami/korin-bara-energy/contact-messages', [
             'name' => 'Hendra Wijaya',
@@ -200,4 +89,63 @@ it('immediately publishes PT Korin Bara Energy to Holding grid, footer, public r
     $saved = ContactMessage::query()->first();
     expect($saved)->not->toBeNull()
         ->and($saved?->company_id)->toBe($korinBara->id);
+});
+
+it('hides draft companies from public visitors and sitemap while allowing admin preview (FR-VIS)', function (): void {
+    $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
+    $draftCompany = Company::factory()->draft()->subsidiary($holding)->create([
+        'slug' => 'draft-exploration',
+        'name' => 'PT Draft Exploration',
+    ]);
+    app(CreateCompanyPages::class)->execute($draftCompany);
+
+    $superAdmin = User::query()->where('email', 'admin@dercobara.co.id')->firstOrFail();
+    $editor = User::query()->where('email', 'editor@dercobara.co.id')->firstOrFail();
+
+    // 1. Public visitor gets 404
+    $this->get('/id/bisnis-kami/draft-exploration')->assertNotFound();
+
+    // 2. Draft company excluded from sitemap.xml
+    $sitemapXml = (string) $this->get('/sitemap.xml')->assertOk()->getContent();
+    expect($sitemapXml)->not->toContain('draft-exploration');
+
+    // 3. Logged-in admin without ?preview=1 still gets 404
+    $this->actingAs($superAdmin)
+        ->get('/id/bisnis-kami/draft-exploration')
+        ->assertNotFound();
+
+    // 4. Logged-in admin with ?preview=1 gets 200 and noindex header
+    $this->actingAs($superAdmin)
+        ->get('/id/bisnis-kami/draft-exploration?preview=1')
+        ->assertOk()
+        ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
+        ->assertInertia(fn (Assert $page): Assert => $page
+            ->component('ThemedPage')
+            ->where('locale', 'id')
+            ->where('isPreview', true)
+            ->where('company.slug', 'draft-exploration')
+            ->where('company.status', 'draft')
+        );
+
+    // 5. Editor can also preview with ?preview=1
+    $this->actingAs($editor)
+        ->get('/en/our-business/draft-exploration?preview=1')
+        ->assertOk()
+        ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+});
+
+it('executes PublishKorinBaraAction idempotently', function (): void {
+    $action = app(PublishKorinBaraAction::class);
+
+    // Run first time
+    $action->execute();
+    $korinBara = Company::query()->where('slug', 'korin-bara-energy')->firstOrFail();
+    expect($korinBara->status)->toBe(CompanyStatus::Published)
+        ->and($korinBara->pages()->where('is_published', false)->count())->toBe(0);
+
+    // Run second time (idempotent)
+    $action->execute();
+    $korinBara->refresh();
+    expect($korinBara->status)->toBe(CompanyStatus::Published)
+        ->and($korinBara->pages()->where('is_published', false)->count())->toBe(0);
 });

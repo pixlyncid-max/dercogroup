@@ -15,7 +15,9 @@ use App\Domain\Product\Models\Product;
 use App\Support\HasFallbackTranslations;
 use App\Support\HasWebpConversions;
 use App\Support\RecordsAuditLog;
+use Database\Factories\CompanyFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,9 +25,15 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Company extends Model implements HasMedia
 {
+    use HasFactory;
     use HasFallbackTranslations;
     use HasWebpConversions;
     use RecordsAuditLog;
+
+    protected static function newFactory(): CompanyFactory
+    {
+        return CompanyFactory::new();
+    }
 
     /**
      * @var list<string>

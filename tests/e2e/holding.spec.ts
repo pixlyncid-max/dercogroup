@@ -7,14 +7,16 @@ test.describe('Phase 2 Holding Theme — Navigation, Language Switch, and Access
     }) => {
         await page.goto('/id');
 
-        // Verify Holding Home displays published subsidiaries and hides draft Korin Bara
+        // Verify Holding Home displays all 3 published subsidiaries (Revisi 4 A2)
         await expect(
             page.getByRole('heading', { level: 3, name: 'PT Korin Berkat Energy' }),
         ).toBeVisible();
         await expect(
             page.getByRole('heading', { level: 3, name: 'PT Beramal Sukses Sejahtera' }),
         ).toBeVisible();
-        await expect(page.getByText('PT Korin Bara Energy')).toHaveCount(0);
+        await expect(
+            page.getByRole('heading', { level: 3, name: 'PT Korin Bara Energy' }),
+        ).toBeVisible();
 
         // Navigate to Tentang Kami
         await page

@@ -118,10 +118,11 @@ it('returns 404 for unknown products, unpublished products, and draft subsidiary
     $this->get('/id/bisnis-kami/korin-berkat-energy/produk/thermal-coal-gar-3800')
         ->assertNotFound();
 
-    // Draft subsidiary (PT Korin Bara Energy) returns 404 on home, subpages, and product detail
-    $this->get('/id/bisnis-kami/korin-bara-energy')->assertNotFound();
-    $this->get('/en/our-business/korin-bara-energy')->assertNotFound();
-    $this->get('/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200')->assertNotFound();
+    // Draft subsidiary returns 404 on home, subpages, and product detail
+    $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
+    $draftCompany = Company::factory()->draft()->subsidiary($holding)->create(['slug' => 'test-draft-sub']);
+    $this->get('/id/bisnis-kami/test-draft-sub')->assertNotFound();
+    $this->get('/en/our-business/test-draft-sub')->assertNotFound();
 });
 
 it('stores contact message linked to PT Korin Berkat Energy when submitted on subsidiary contact page', function (): void {

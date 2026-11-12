@@ -21,45 +21,40 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('seeds holding and 3 subsidiaries with 21 total pages and hides draft company from public queries', function (): void {
+it('seeds holding and 3 subsidiaries with 21 total pages and published Korin Bara', function (): void {
     expect(Company::query()->count())->toBe(4)
         ->and(Page::query()->count())->toBe(21)
         ->and(Product::query()->count())->toBe(9);
 
-    // Public scopes exclude PT Korin Bara Energy (draft)
     $publishedSlugs = Company::query()->published()->pluck('slug')->all();
     expect($publishedSlugs)
-        ->toContain('derco-bara-energy', 'korin-berkat-energy', 'beramal-sukses-sejahtera')
-        ->not->toContain('korin-bara-energy');
+        ->toContain('derco-bara-energy', 'korin-berkat-energy', 'beramal-sukses-sejahtera', 'korin-bara-energy');
 
-    // Draft company's 6 pages, deleted Korin Berkat compliance, and unpublished Beramal compliance
-    // leave 14 published pages (Holding: 4, Korin Berkat: 5, Beramal: 5)
-    expect(Page::query()->published()->count())->toBe(14)
-        ->and(Product::query()->published()->count())->toBe(6);
-
-    // ResolveCompanyAction rejects draft company for public visitors
-    $resolver = app(ResolveCompanyAction::class);
-    expect(fn () => $resolver->execute('korin-bara-energy', false))
-        ->toThrow(ModelNotFoundException::class);
-
-    // ResolveCompanyAction allows draft company in preview mode
-    $previewCompany = $resolver->execute('korin-bara-energy', true);
-    expect($previewCompany->slug)->toBe('korin-bara-energy')
-        ->and($previewCompany->status)->toBe(CompanyStatus::Draft);
+    expect(Page::query()->published()->count())->toBe(20)
+        ->and(Product::query()->published()->count())->toBe(9);
 });
 
-it('immediately reflects status change of Korin Bara in public queries without code changes', function (): void {
+it('hides draft companies from public queries and allows preview mode (FR-VIS)', function (): void {
     $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
-    $korinBara = Company::query()->where('slug', 'korin-bara-energy')->firstOrFail();
+    $draftCompany = Company::factory()->draft()->subsidiary($holding)->create([
+        'slug' => 'draft-exploration-energy',
+        'name' => 'PT Draft Exploration Energy',
+    ]);
 
-    expect($holding->publishedSubsidiaries()->count())->toBe(2);
+    $publishedSlugs = Company::query()->published()->pluck('slug')->all();
+    expect($publishedSlugs)->not->toContain('draft-exploration-energy');
 
-    $korinBara->update(['status' => CompanyStatus::Published]);
+    $resolver = app(ResolveCompanyAction::class);
+    expect(fn () => $resolver->execute('draft-exploration-energy', false))
+        ->toThrow(ModelNotFoundException::class);
 
-    // 14 previously published + 6 from Korin Bara = 20 published pages
-    expect($holding->publishedSubsidiaries()->count())->toBe(3)
-        ->and(Page::query()->published()->count())->toBe(20)
-        ->and(Product::query()->published()->count())->toBe(9);
+    $previewCompany = $resolver->execute('draft-exploration-energy', true);
+    expect($previewCompany->slug)->toBe('draft-exploration-energy')
+        ->and($previewCompany->status)->toBe(CompanyStatus::Draft);
+
+    // Status change to published reflects immediately
+    $draftCompany->update(['status' => CompanyStatus::Published]);
+    expect($holding->publishedSubsidiaries()->pluck('slug'))->toContain('draft-exploration-energy');
 });
 
 it('resolves translated slugs in both Indonesian and English via PageResolver', function (): void {
@@ -96,7 +91,7 @@ it('assembles complete page payload via GetCompanyPageAction', function (): void
     expect($payload['company']['slug'])->toBe('derco-bara-energy')
         ->and($payload['page']['key'])->toBe('home')
         ->and($payload['blocks'])->toHaveCount(6)
-        ->and($payload['subsidiaries'])->toHaveCount(2);
+        ->and($payload['subsidiaries'])->toHaveCount(3);
 });
 
 it('allows Super Admin to access all Filament CMS resources', function (): void {

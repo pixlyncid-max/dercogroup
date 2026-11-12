@@ -28,7 +28,7 @@ it('renders all 4 holding pages in Indonesian and English via ThemedPage with lo
             ->where('company.slug', 'derco-bara-energy')
             ->where('page.key', 'home')
             ->has('blocks', 6)
-            ->has('subsidiaries', 2)
+            ->has('subsidiaries', 3)
             ->where('blocks.0.data.primary_cta_href', '/id/bisnis-kami')
         );
 
@@ -40,7 +40,7 @@ it('renders all 4 holding pages in Indonesian and English via ThemedPage with lo
             ->where('company.slug', 'derco-bara-energy')
             ->where('page.key', 'home')
             ->has('blocks', 6)
-            ->has('subsidiaries', 2)
+            ->has('subsidiaries', 3)
             ->where('blocks.0.data.primary_cta_href', '/en/our-business')
         );
 
