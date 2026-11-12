@@ -13,6 +13,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -42,14 +44,10 @@ class CompanyContactResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 Grid::make(3)
                     ->schema([
-                        Select::make('company_id')
-                            ->label('Perusahaan')
-                            ->relationship('company', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
                         Select::make('type')
                             ->label('Tipe Kontak')
                             ->options(ContactType::options())
@@ -68,20 +66,20 @@ class CompanyContactResource extends Resource
                         TextInput::make('notify_email')
                             ->label('Email Tujuan Notifikasi Form (FR-CON-4)')
                             ->email()
-                            ->maxLength(150),
-                        TextInput::make('latitude')
-                            ->label('Latitude Peta')
-                            ->numeric(),
-                        TextInput::make('longitude')
-                            ->label('Longitude Peta')
-                            ->numeric(),
+                            ->maxLength(150)
+                            ->helperText('Form contact publik akan meneruskan pesan ke email ini.'),
+                        TextInput::make('sort_order')
+                            ->label('Urutan Tampil')
+                            ->numeric()
+                            ->default(1)
+                            ->required(),
                     ])
                     ->columnSpanFull(),
-                FilamentTranslatable::textInput('label', 'Label Kantor / Lokasi', true),
-                FilamentTranslatable::textarea('address', 'Alamat Lengkap', true, 2),
-                FilamentTranslatable::textInput('operating_hours', 'Jam Operasional', false),
-                KeyValue::make('socials')
-                    ->label('Tautan Media Sosial (mis. linkedin => https://...)')
+                FilamentTranslatable::textInput('label', 'Label / Nama Kantor', true),
+                FilamentTranslatable::textarea('address', 'Alamat Lengkap', true, 3),
+                FilamentTranslatable::textInput('operating_hours', 'Jam Kerja (mis. Senin-Jumat 08:00 - 17:00)', false),
+                KeyValue::make('social_links')
+                    ->label('Tautan Media Sosial (Platform => URL)')
                     ->columnSpanFull(),
             ]);
     }
@@ -90,24 +88,31 @@ class CompanyContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
-                    ->label('Perusahaan')
-                    ->sortable(),
+                TextColumn::make('label_id')
+                    ->label('Kantor / Fasilitas')
+                    ->state(fn (CompanyContact $record): string => $record->translateField('label', 'id'))
+                    ->searchable(),
                 TextColumn::make('type')
                     ->label('Tipe')
                     ->badge()
                     ->formatStateUsing(fn (ContactType|string $state): string => $state instanceof ContactType ? $state->label('id') : (string) $state),
                 TextColumn::make('phone')
-                    ->label('Telepon'),
+                    ->label('Telepon')
+                    ->placeholder('-'),
                 TextColumn::make('email')
-                    ->label('Email Publik'),
+                    ->label('Email Publik')
+                    ->placeholder('-'),
                 TextColumn::make('notify_email')
-                    ->label('Email Notifikasi Form'),
+                    ->label('Email Notifikasi')
+                    ->placeholder('-'),
+                TextColumn::make('sort_order')
+                    ->label('Urutan')
+                    ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('company_id')
-                    ->label('Perusahaan')
-                    ->relationship('company', 'name'),
+                SelectFilter::make('type')
+                    ->label('Tipe Kontak')
+                    ->options(ContactType::options()),
             ])
             ->recordActions([
                 EditAction::make(),

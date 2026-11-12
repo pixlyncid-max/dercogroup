@@ -88,6 +88,16 @@ Buka:
 - Situs publik: <http://localhost:8000> (mengarah ke `/id`)
 - CMS admin: <http://localhost:8000/admin>
 
+### Pengelolaan Multi-Perusahaan (CMS Multi-Tenancy)
+CMS mengimplementasikan Filament Multi-Tenancy dengan `Company` sebagai entitas tenant:
+- **Tenant Switcher**: Terletak di bagian atas sidebar CMS. Menampilkan logo resmi, nama perusahaan, serta lencana status tayang (`Published`/`Draft`). Holding (`derco-bara-energy`) selalu berada di urutan teratas.
+- **Satu Admin untuk Semua**: Seluruh pengguna ber-peran `Super Admin` dan `Editor` dapat berpindah dan mengelola keempat entitas perusahaan tanpa hambatan.
+- **Resource Global vs Ter-scope Tenant**:
+  - *Global (Super Admin saja)*: `Perusahaan`, `Pengguna CMS`, `Pengaturan Sistem`.
+  - *Ter-scope Tenant*: `Halaman & Blok`, `Produk & Spesifikasi`, `Operasi & Lokasi`, `Statistik Perusahaan`, `Sertifikasi & Izin`, `Kontak Perusahaan`, `Pesan Masuk`.
+- **Navigasi Adaptif**: Modul `Produk`, `Operasi`, dan `Sertifikasi` otomatis tersembunyi bila perusahaan terkait tidak memiliki kapabilitas halaman tersebut (mis. Holding tidak menampilkan menu Produk/Operasi/Sertifikasi).
+- **Widget Ringkasan Grup**: Tabel konsolidasi seluruh anak usaha pada dasbor untuk memantau status tayang, pesan baru, dan draft halaman dalam satu kueri efisien tanpa N+1.
+
 ---
 
 ## Perintah Sehari-hari
@@ -490,6 +500,30 @@ Pasang di crontab server (`crontab -e`):
 ---
 
 ## Catatan Rilis & Perubahan (Changelog)
+
+### v1.6.0 (Revisi 5 — Multi-Tenancy Perusahaan, Pengelolaan Satu Admin, & CRUD Aktif)
+- **Filament Multi-Tenancy (Tenant = `Company`):**
+  - Satu panel CMS mengelola holding (`derco-bara-energy`) dan seluruh tiga anak usaha (`korin-berkat-energy`, `beramal-sukses-sejahtera`, `korin-bara-energy`).
+  - **Satu Admin Mengelola Semua**: Tidak ada tabel `company_user`. Seluruh pengguna CMS (`Super Admin` maupun `Editor`) dapat mengakses dan beralih ke seluruh perusahaan tanpa batas via Tenant Switcher di sidebar.
+  - Tenant Switcher di sidebar menampilkan logo resmi (`ResolveCompanyLogo`), nama entitas, holding di posisi pertama, dan lencana status tayang (`Published`/`Draft`).
+  - Tenant bawaan saat login: Holding (`derco-bara-energy`).
+- **Isolasi Konten Otomatis & Keamanan:**
+  - Resource berpemilik `company_id` (`Page`, Blok, `Product`, `Operation`, `CompanyStat`, `Certification`, `CompanyContact`, `ContactMessage`) otomatis ter-scope ke tenant aktif.
+  - Akses ID/URL lintas tenant mengembalikan respons `404 Not Found`.
+- **Navigasi Adaptif per Kemampuan Perusahaan:**
+  - Modul `Produk`, `Operasi`, dan `Sertifikasi` hanya tampil di navigasi bila perusahaan memiliki halaman terkait (`Company::hasPage(...)`). Holding tidak melihat menu Produk, dan Korin Berkat tidak melihat Sertifikasi.
+- **Profil Tenant & Pengaturan:**
+  - Halaman profil tenant (`/admin/{tenant}/profile`) untuk mengedit nama, tagline, deskripsi, email notifikasi formulir, dan metadata SEO bawaan.
+  - Kolom status tayang (`published`/`draft`) dan tema visual hanya dapat diubah oleh Super Admin.
+  - Tabel `settings` diperluas dengan `company_id` nullable dan constraint unik `['company_id', 'key']` dengan fallback otomatis ke pengaturan global via `CompanySettingsReader`.
+- **Dasbor & Widget Ringkasan Grup:**
+  - Seluruh widget dasbor ter-scope ke data tenant aktif (`StatsOverviewWidget`, `HeroBannerWidget`, `QuickActionsWidget`, `RecentActivityWidget`).
+  - Penambahan widget **Ringkasan Grup** (`GroupSummaryWidget`) pada dasbor setiap tenant: menampilkan status tayang, jumlah pesan masuk baru, jumlah halaman draft, dan tombol tautan cepat perpindahan tenant yang dieksekusi dalam 1 query tunggal (`GetGroupSummaryAction`) tanpa N+1.
+- **Pengaman CRUD & Hak Akses:**
+  - Pengaman penghapusan: dilarang menghapus holding, dilarang menghapus perusahaan yang masih memiliki anak usaha/pesan masuk, dilarang menghapus akun sendiri atau Super Admin terakhir.
+  - Editor dilarang menghapus halaman dan dilarang mengakses modul sistem (`Company`, `User`, `Setting`).
+- **Pengujian Lengkap:**
+  - Penambahan 9 skenario pengujian Pest di `tests/Feature/CmsMultiTenancyCrudTest.php` (total 79 tes, 987 assertions lulus 100%).
 
 ### v1.5.0 (Revisi 4 — Penayangan Korin Bara, Alias Logo, dan Redesain CMS Admin)
 - **Penayangan PT Korin Bara Energy:**

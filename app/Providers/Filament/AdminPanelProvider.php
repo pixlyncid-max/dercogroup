@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Domain\Company\Models\Company;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Tenancy\EditCompanyProfile;
 use App\Filament\Widgets\DashboardGreetingWidget;
+use App\Filament\Widgets\GroupSummaryWidget;
 use App\Filament\Widgets\HeroBannerWidget;
 use App\Filament\Widgets\QuickActionsWidget;
 use App\Filament\Widgets\RecentActivityWidget;
@@ -38,6 +41,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->tenant(Company::class, slugAttribute: 'slug')
+            ->tenantProfile(EditCompanyProfile::class)
             ->theme(FilamentThemeResolver::make())
             ->login(Login::class)
             ->passwordReset()
@@ -89,6 +94,7 @@ class AdminPanelProvider extends PanelProvider
                 StatsOverviewWidget::class,
                 HeroBannerWidget::class,
                 QuickActionsWidget::class,
+                GroupSummaryWidget::class,
                 WebsiteOverviewWidget::class,
                 RecentActivityWidget::class,
             ])

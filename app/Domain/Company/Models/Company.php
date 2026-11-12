@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Domain\Company\Models;
 
+use App\Domain\Company\Actions\ResolveCompanyLogo;
 use App\Domain\Company\Enums\CompanyStatus;
 use App\Domain\Company\Enums\CompanyTheme;
 use App\Domain\Compliance\Models\Certification;
 use App\Domain\Contact\Models\CompanyContact;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Operation\Models\Operation;
+use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
 use App\Domain\Product\Models\Product;
 use App\Support\HasFallbackTranslations;
 use App\Support\HasWebpConversions;
 use App\Support\RecordsAuditLog;
 use Database\Factories\CompanyFactory;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 
-class Company extends Model implements HasMedia
+class Company extends Model implements HasAvatar, HasMedia, HasName
 {
     use HasFactory;
     use HasFallbackTranslations;
@@ -87,6 +92,40 @@ class Company extends Model implements HasMedia
     public function isPublished(): bool
     {
         return $this->status === CompanyStatus::Published;
+    }
+
+    public function getFilamentName(): string|Htmlable
+    {
+        $statusBadge = $this->isPublished()
+            ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 ml-1.5">Published</span>'
+            : '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 ml-1.5">Draft</span>';
+
+        return str('<span>'.$this->name.'</span> '.$statusBadge)->toHtmlString();
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        /** @var array{light?: string, compact?: string}|null $logoData */
+        $logoData = app(ResolveCompanyLogo::class)->execute($this);
+
+        $path = $logoData['compact'] ?? $logoData['light'] ?? null;
+
+        return $path ? asset(ltrim($path, '/')) : null;
+    }
+
+    public function hasPage(PageKey|string $key): bool
+    {
+        $keyString = $key instanceof PageKey ? $key->value : $key;
+
+        if ($this->relationLoaded('pages')) {
+            return $this->pages->contains(function (Page $page) use ($keyString): bool {
+                $pageKey = $page->key instanceof PageKey ? $page->key->value : (string) $page->key;
+
+                return $pageKey === $keyString;
+            });
+        }
+
+        return $this->pages()->where('key', $keyString)->exists();
     }
 
     /**

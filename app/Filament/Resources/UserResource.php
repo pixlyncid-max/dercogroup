@@ -13,6 +13,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -22,6 +23,8 @@ use UnitEnum;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static bool $isScopedToTenant = false;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
@@ -86,7 +89,31 @@ class UserResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Pengguna CMS')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus akun pengguna ini?')
+                    ->before(function (DeleteAction $action, User $record): void {
+                        $currentUser = auth()->user();
+
+                        if ($currentUser && $currentUser->id === $record->id) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Tidak Dapat Menghapus Akun Sendiri')
+                                ->body('Anda tidak dapat menghapus akun yang sedang Anda gunakan untuk masuk.')
+                                ->send();
+                            $action->halt();
+                        }
+
+                        if ($record->isSuperAdmin() && User::role(User::ROLE_SUPER_ADMIN)->count() <= 1) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Super Admin Terakhir')
+                                ->body('Sistem harus mempertahankan minimal satu akun dengan peran Super Admin.')
+                                ->send();
+                            $action->halt();
+                        }
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

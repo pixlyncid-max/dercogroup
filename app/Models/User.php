@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Company\Models\Company;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasDefaultTenant;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasDefaultTenant, HasTenants
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
@@ -55,6 +60,30 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasAnyRole([self::ROLE_SUPER_ADMIN, self::ROLE_EDITOR]);
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->hasAnyRole([self::ROLE_SUPER_ADMIN, self::ROLE_EDITOR]);
+    }
+
+    /**
+     * @return Collection<int, Company>
+     */
+    public function getTenants(Panel $panel): Collection
+    {
+        return Company::query()
+            ->orderByRaw('parent_id IS NOT NULL') // Holding first
+            ->orderBy('sort_order')
+            ->get();
+    }
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        return Company::query()
+            ->orderByRaw('parent_id IS NOT NULL') // Holding first
+            ->orderBy('sort_order')
+            ->first();
     }
 
     public function isSuperAdmin(): bool

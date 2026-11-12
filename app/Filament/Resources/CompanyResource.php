@@ -20,6 +20,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
@@ -32,15 +33,22 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
+    protected static bool $isScopedToTenant = false;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Struktur & Halaman';
+    protected static string|UnitEnum|null $navigationGroup = 'Sistem & Hak Akses';
 
     protected static ?string $modelLabel = 'Perusahaan';
 
     protected static ?string $pluralModelLabel = 'Perusahaan';
 
     protected static ?int $navigationSort = 1;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -140,7 +148,38 @@ class CompanyResource extends Resource
                     })
                     ->openUrlInNewTab(),
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Perusahaan')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus data perusahaan ini? Tindakan ini tidak dapat dibatalkan.')
+                    ->before(function (DeleteAction $action, Company $record): void {
+                        if ($record->isHolding()) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Holding Utama Tidak Boleh Dihapus')
+                                ->body('Holding PT Derco Bara Energy adalah entitas utama sistem dan tidak boleh dihapus.')
+                                ->send();
+                            $action->halt();
+                        }
+
+                        if ($record->subsidiaries()->exists()) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Perusahaan Memiliki Anak Usaha')
+                                ->body('Pindahkan atau hapus semua anak usaha terkait sebelum menghapus entitas ini.')
+                                ->send();
+                            $action->halt();
+                        }
+
+                        if ($record->contactMessages()->exists()) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Perusahaan Memiliki Pesan Masuk')
+                                ->body('Terdapat arsip pesan kontak masuk yang terkait dengan perusahaan ini.')
+                                ->send();
+                            $action->halt();
+                        }
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Policies;
+
+use App\Models\User;
+
+class ContactMessagePolicy extends CmsBasePolicy
+{
+    public function create(User $user): bool
+    {
+        return false;
+    }
+}
+

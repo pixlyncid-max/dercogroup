@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Domain\Company\Models\Company;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Page\Models\Page;
+use Filament\Facades\Filament;
 use Filament\Widgets\Widget;
 
 class RecentActivityWidget extends Widget
@@ -21,26 +23,35 @@ class RecentActivityWidget extends Widget
 
     public function getActivities(): array
     {
+        $tenant = Filament::getTenant();
         $activities = [];
 
         // 1. Recent contact inquiries
-        $messages = ContactMessage::query()->latest()->take(2)->get();
+        $messagesQuery = ContactMessage::query()->latest();
+        if ($tenant instanceof Company) {
+            $messagesQuery->where('company_id', $tenant->id);
+        }
+        $messages = $messagesQuery->take(2)->get();
         foreach ($messages as $msg) {
             $activities[] = [
-                'title' => 'New inquiry received',
-                'description' => "From {$msg->name} (".($msg->company?->name ?? 'General Inquiry').')',
-                'time' => $msg->created_at?->diffForHumans() ?? 'Recently',
+                'title' => 'Pesan Masuk Baru',
+                'description' => "Dari {$msg->name} (".($msg->subject ?: 'Pertanyaan').')',
+                'time' => $msg->created_at?->diffForHumans() ?? 'Baru saja',
                 'icon' => 'mail',
             ];
         }
 
         // 2. Recent page updates
-        $pages = Page::query()->latest('updated_at')->take(2)->get();
+        $pagesQuery = Page::query()->latest('updated_at');
+        if ($tenant instanceof Company) {
+            $pagesQuery->where('company_id', $tenant->id);
+        }
+        $pages = $pagesQuery->take(2)->get();
         foreach ($pages as $p) {
             $activities[] = [
-                'title' => 'Page updated',
+                'title' => 'Halaman Diperbarui',
                 'description' => $p->translateField('title', 'id').' ('.($p->company?->name ?? 'Holding').')',
-                'time' => $p->updated_at?->diffForHumans() ?? 'Recently',
+                'time' => $p->updated_at?->diffForHumans() ?? 'Baru saja',
                 'icon' => 'page',
             ];
         }
@@ -49,16 +60,16 @@ class RecentActivityWidget extends Widget
         if (empty($activities)) {
             $activities = [
                 [
-                    'title' => 'Content synchronized',
-                    'description' => 'PT Derco Bara Energy group pages and subsidiaries published',
-                    'time' => '1h ago',
+                    'title' => 'Konten Tersinkronisasi',
+                    'description' => 'Halaman grup PT Derco Bara Energy dan anak usaha aktif',
+                    'time' => '1 jam lalu',
                     'icon' => 'page',
                 ],
                 [
-                    'title' => 'Branding verified',
-                    'description' => 'Official logo variants for holding and subsidiaries active',
-                    'time' => '3h ago',
-                    'icon' => 'banner',
+                    'title' => 'Branding Terverifikasi',
+                    'description' => 'Varian logo resmi holding dan anak perusahaan aktif',
+                    'time' => '3 jam lalu',
+                    'icon' => 'brand',
                 ],
             ];
         }

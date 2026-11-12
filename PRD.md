@@ -191,29 +191,35 @@ Fitur visibilitas anak usaha (`draft` / `published`) merupakan kebutuhan inti ar
 
 Dibangun dengan Filament di `/admin`, terpisah dari tampilan publik.
 
-### 6.1 Peran
-| Peran | Hak |
-|---|---|
-| **Super Admin** | Semua, termasuk pengguna, pengaturan, dan status tayang |
-| **Editor** | Mengedit konten dan menerbitkannya; tidak dapat mengelola pengguna dan pengaturan sistem |
+### 6.1 Multi-Tenancy & Peran (Revisi 5)
+Sistem CMS menggunakan **Filament Multi-Tenancy** dengan entitas tenant = `Company` (Holding `derco-bara-energy` dan 3 anak perusahaan: `korin-berkat-energy`, `beramal-sukses-sejahtera`, `korin-bara-energy`).
 
-Pembatasan editor per anak usaha (tabel `company_user`) ditunda ke versi berikutnya; skema dibuat agar mudah ditambahkan.
+**Prinsip Arsitektur Utama**:
+1. **Satu Admin untuk Semua Entitas**: Tidak ada tabel `company_user` dan tidak ada isolasi akun per anak usaha. Seluruh pengguna CMS (`Super Admin` maupun `Editor`) dapat mengakses dan beralih ke seluruh entitas perusahaan melalui Tenant Switcher di sidebar.
+2. **Tenant Switcher**: Menampilkan logo resmi perusahaan, nama perusahaan, holding di urutan teratas, serta status tayang (Published/Draft). Tenant awal setelah login adalah holding (`derco-bara-energy`).
+3. **Isolasi Konten Otomatis**: Setiap data yang berpemilik `company_id` otomatis ter-scope ke tenant aktif. Akses lintas-tenant via URL/ID secara otomatis mengembalikan HTTP 404.
+4. **Navigasi Adaptif (B4)**: Modul `Produk`, `Operasi`, dan `Sertifikasi` hanya muncul bila perusahaan terkait memiliki halaman yang bersesuaian (`Company::hasPage(PageKey)`). Holding tidak menampilkan Produk/Operasi/Sertifikasi; Korin Berkat tidak menampilkan Sertifikasi.
+5. **Widget Ringkasan Grup (B6)**: Ditampilkan pada dashboard setiap tenant, menyajikan ringkasan 4 perusahaan (status tayang, jumlah pesan masuk baru, halaman draft, dan tombol kelola cepat) yang dieksekusi dalam 1 query kueri tunggal via `GetGroupSummaryAction` tanpa N+1.
 
-### 6.2 Modul
-| Modul | Isi |
+| Peran | Hak Akses |
 |---|---|
-| Perusahaan | Data dasar, tema, tagline, logo, **status tayang** |
-| Halaman | Judul, slug, SEO per bahasa, tampil di menu, urutan |
-| Blok halaman | Penyusun halaman: tambah, urut ulang (drag), sembunyikan, edit tiap blok dengan form sesuai tipe |
-| Produk | Termasuk spesifikasi dan galeri |
-| Operasi | Termasuk koordinat |
-| Statistik | Angka kunci |
-| Sertifikasi | Dokumen dan masa berlaku |
-| Kontak perusahaan | Alamat dan jalur komunikasi |
-| Pesan masuk | Inbox dengan status `new/read/replied`, filter, ekspor CSV |
-| Media | Pustaka gambar dan dokumen |
-| Pengaturan | SEO default, email tujuan, kode analytics |
-| Pengguna | Akun, peran |
+| **Super Admin** | Akses penuh tanpa batas (`Gate::before`), mengelola entitas Perusahaan, Pengguna CMS, Pengaturan Sistem, profil & status/tema tenant, serta dapat menghapus Halaman (dengan pengaman holding & self-deletion). |
+| **Editor** | Mengelola dan menerbitkan seluruh konten ter-scope tenant (Halaman, Blok, Produk, Operasi, Statistik, Sertifikasi, Kontak, Pesan Masuk) di semua perusahaan. Dilarang menghapus Halaman, dilarang mengakses modul Perusahaan/Pengguna/Pengaturan Sistem, dan dilarang mengubah status publikasi atau tema di profil tenant. |
+
+### 6.2 Matriks CRUD per Modul
+| Modul | Lingkup | Buat | Baca | Ubah | Hapus | Pengaman & Keterangan |
+|---|---|---|---|---|---|---|
+| **Perusahaan** | Global (Super Admin) | Ya | Ya | Ya | Ya | Memicu `CreateCompanyPages` saat dibuat. Dilarang hapus holding, anak usaha yang aktif, atau perusahaan dengan data pesan kontak. |
+| **Halaman & Blok** | Tenant | Ya | Ya | Ya | Super Admin | Judul & slug ID/EN, SEO, urutan, toggle tayang. Editor dilarang menghapus halaman. Blok hero mendukung 3-5 slides gambar. |
+| **Produk + Spesifikasi** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Tabel spesifikasi, galeri gambar, toggle tayang, hanya muncul bila perusahaan memiliki halaman Produk. |
+| **Operasi & Lokasi** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Tipe operasi, koordinat latitude/longitude, foto fasilitas. |
+| **Statistik Perusahaan** | Tenant | Ya | Ya | Ya | Ya | Angka, prefix, suffix, satuan, urutan tampil. |
+| **Sertifikasi & Izin** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Berkas PDF ID & EN, masa berlaku, indikator kedaluwarsa. |
+| **Kontak Perusahaan** | Tenant | Ya | Ya | Ya | Ya | Tipe kantor, alamat, telepon, WhatsApp, email notifikasi form publik. |
+| **Pesan Masuk** | Tenant | Tidak | Ya | Ya | Ya (Soft delete) | Dibuat hanya dari form publik; admin dapat mengubah status (`new/read/replied`) dan catatan internal. |
+| **Pengguna CMS** | Global (Super Admin) | Ya | Ya | Ya | Ya | Kata sandi di-hash, role Spatie. Dilarang menghapus akun sendiri atau Super Admin terakhir. |
+| **Pengaturan Sistem** | Global (Super Admin) | Ya | Ya | Ya | Ya | Pengaturan global dengan fallback per tenant. |
+| **Profil Tenant** | Tenant Profile Page | n/a | Ya | Ya | n/a | Nama, tagline, deskripsi, email notifikasi, SEO default. Status dan tema hanya dapat diubah oleh Super Admin. |
 
 ### 6.3 Kebutuhan CMS (FR-CMS)
 | ID | Kebutuhan | Prioritas |

@@ -21,6 +21,8 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
+    protected static bool $isScopedToTenant = false;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static string|UnitEnum|null $navigationGroup = 'Sistem & Hak Akses';
@@ -43,7 +45,6 @@ class SettingResource extends Resource
                 TextInput::make('key')
                     ->label('Kunci Pengaturan')
                     ->required()
-                    ->unique(ignoreRecord: true)
                     ->maxLength(150),
                 TextInput::make('group')
                     ->label('Kelompok (seo, contact, analytics)')

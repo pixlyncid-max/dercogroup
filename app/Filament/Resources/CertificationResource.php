@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Domain\Company\Traits\HasAdaptiveTenantNavigation;
 use App\Domain\Compliance\Enums\CertificationCategory;
 use App\Domain\Compliance\Models\Certification;
+use App\Domain\Page\Enums\PageKey;
 use App\Filament\Resources\CertificationResource\Pages\ManageCertifications;
 use App\Support\FilamentTranslatable;
 use BackedEnum;
@@ -13,8 +15,10 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -27,6 +31,8 @@ use UnitEnum;
 
 class CertificationResource extends Resource
 {
+    use HasAdaptiveTenantNavigation;
+
     protected static ?string $model = Certification::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shield-check';
@@ -39,18 +45,19 @@ class CertificationResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getRequiredPageKey(): PageKey
+    {
+        return PageKey::Compliance;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 Grid::make(3)
                     ->schema([
-                        Select::make('company_id')
-                            ->label('Perusahaan')
-                            ->relationship('company', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
                         Select::make('category')
                             ->label('Kategori Dokumen')
                             ->options(CertificationCategory::options())
@@ -94,9 +101,6 @@ class CertificationResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
-                    ->label('Perusahaan')
-                    ->sortable(),
                 TextColumn::make('category')
                     ->label('Kategori')
                     ->badge()
@@ -118,9 +122,6 @@ class CertificationResource extends Resource
                     ->color(fn (string $state): string => $state === 'Aktif' ? 'success' : 'danger'),
             ])
             ->filters([
-                SelectFilter::make('company_id')
-                    ->label('Perusahaan')
-                    ->relationship('company', 'name'),
                 SelectFilter::make('category')
                     ->label('Kategori')
                     ->options(CertificationCategory::options()),

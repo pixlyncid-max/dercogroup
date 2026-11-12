@@ -98,30 +98,34 @@ it('allows Super Admin to access all Filament CMS resources', function (): void 
     $superAdmin = User::query()->where('email', 'admin@dercobara.co.id')->firstOrFail();
 
     $this->actingAs($superAdmin)
-        ->get('/admin/companies')
+        ->get('/admin/derco-bara-energy/companies')
         ->assertOk();
 
     $this->actingAs($superAdmin)
-        ->get('/admin/users')
+        ->get('/admin/derco-bara-energy/users')
         ->assertOk();
 
     $this->actingAs($superAdmin)
-        ->get('/admin/settings')
+        ->get('/admin/derco-bara-energy/settings')
         ->assertOk();
 });
 
-it('allows Editor to access content resources while restricting Users and Settings in Filament CMS', function (): void {
+it('allows Editor to access content resources while restricting Companies, Users, and Settings in Filament CMS', function (): void {
     $editor = User::query()->where('email', 'editor@dercobara.co.id')->firstOrFail();
 
     $this->actingAs($editor)
-        ->get('/admin/companies')
+        ->get('/admin/derco-bara-energy/pages')
         ->assertOk();
 
     $this->actingAs($editor)
-        ->get('/admin/users')
+        ->get('/admin/derco-bara-energy/companies')
         ->assertForbidden();
 
     $this->actingAs($editor)
-        ->get('/admin/settings')
+        ->get('/admin/derco-bara-energy/users')
+        ->assertForbidden();
+
+    $this->actingAs($editor)
+        ->get('/admin/derco-bara-energy/settings')
         ->assertForbidden();
 });

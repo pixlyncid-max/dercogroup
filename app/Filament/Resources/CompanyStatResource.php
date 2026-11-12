@@ -12,13 +12,13 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Select;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -40,14 +40,10 @@ class CompanyStatResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 Grid::make(4)
                     ->schema([
-                        Select::make('company_id')
-                            ->label('Perusahaan')
-                            ->relationship('company', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
                         TextInput::make('value')
                             ->label('Angka Statistik')
                             ->numeric()
@@ -74,28 +70,24 @@ class CompanyStatResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
-                    ->label('Perusahaan')
-                    ->sortable(),
-                TextColumn::make('formatted_value')
-                    ->label('Nilai')
-                    ->state(fn (CompanyStat $record): string => sprintf(
-                        '%s%s%s',
+                TextColumn::make('label_id')
+                    ->label('Keterangan (ID)')
+                    ->state(fn (CompanyStat $record): string => $record->translateField('label', 'id')),
+                TextColumn::make('display_value')
+                    ->label('Tampilan Angka')
+                    ->state(fn (CompanyStat $record): string => trim(sprintf(
+                        '%s%s %s',
                         $record->prefix ?? '',
-                        number_format((float) $record->value, 0, ',', '.'),
+                        number_format((float) $record->value),
                         $record->suffix ?? '',
-                    )),
+                    )))
+                    ->badge(),
                 TextColumn::make('unit_id')
                     ->label('Satuan')
                     ->state(fn (CompanyStat $record): string => $record->translateField('unit', 'id')),
-                TextColumn::make('label_id')
-                    ->label('Label')
-                    ->state(fn (CompanyStat $record): string => $record->translateField('label', 'id')),
-            ])
-            ->filters([
-                SelectFilter::make('company_id')
-                    ->label('Perusahaan')
-                    ->relationship('company', 'name'),
+                TextColumn::make('sort_order')
+                    ->label('Urutan')
+                    ->sortable(),
             ])
             ->recordActions([
                 EditAction::make(),

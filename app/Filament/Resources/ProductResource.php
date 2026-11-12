@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Domain\Company\Traits\HasAdaptiveTenantNavigation;
+use App\Domain\Page\Enums\PageKey;
 use App\Domain\Product\Models\Product;
 use App\Filament\Resources\ProductResource\Pages\ManageProducts;
 use App\Support\FilamentTranslatable;
@@ -12,9 +14,10 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
@@ -22,12 +25,13 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use UnitEnum;
 
 class ProductResource extends Resource
 {
+    use HasAdaptiveTenantNavigation;
+
     protected static ?string $model = Product::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cube';
@@ -40,18 +44,19 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getRequiredPageKey(): PageKey
+    {
+        return PageKey::Products;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 Grid::make(3)
                     ->schema([
-                        Select::make('company_id')
-                            ->label('Perusahaan')
-                            ->relationship('company', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
                         TextInput::make('slug')
                             ->label('Slug Produk')
                             ->required()
@@ -98,10 +103,10 @@ class ProductResource extends Resource
                                     ->label('Satuan (kcal/kg, %)')
                                     ->maxLength(50),
                                 Toggle::make('is_highlight')
-                                    ->label('Tampil Inline (3 Utama)')
-                                    ->default(true),
+                                    ->label('Sorot (Highlight)')
+                                    ->default(false),
                             ]),
-                        FilamentTranslatable::textInput('label', 'Nama Parameter Spesifikasi', true),
+                        FilamentTranslatable::textInput('label', 'Label Spesifikasi (ID/EN)', true),
                     ])
                     ->columnSpanFull(),
             ]);
@@ -111,13 +116,15 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
-                    ->label('Perusahaan')
-                    ->sortable(),
                 TextColumn::make('name_id')
-                    ->label('Nama Produk')
+                    ->label('Nama Produk (ID)')
                     ->state(fn (Product $record): string => $record->translateField('name', 'id'))
-                    ->searchable(query: fn ($query, string $search) => $query->where('name', 'like', "%{$search}%")),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('category_label_id')
+                    ->label('Kategori')
+                    ->state(fn (Product $record): string => $record->translateField('category_label', 'id'))
+                    ->badge(),
                 TextColumn::make('slug')
                     ->label('Slug')
                     ->badge(),
@@ -125,18 +132,12 @@ class ProductResource extends Resource
                     ->label('Tayang')
                     ->boolean(),
                 TextColumn::make('specs_count')
-                    ->label('Jml Spesifikasi')
-                    ->counts('specs'),
-                TextColumn::make('missing_en')
-                    ->label('Status EN')
-                    ->state(fn (Product $record): string => $record->hasMissingTranslation('en') ? 'Belum diterjemahkan' : 'Lengkap')
-                    ->badge()
-                    ->color(fn (string $state): string => $state === 'Lengkap' ? 'success' : 'warning'),
-            ])
-            ->filters([
-                SelectFilter::make('company_id')
-                    ->label('Perusahaan')
-                    ->relationship('company', 'name'),
+                    ->label('Jumlah Spesifikasi')
+                    ->counts('specs')
+                    ->badge(),
+                TextColumn::make('sort_order')
+                    ->label('Urutan')
+                    ->sortable(),
             ])
             ->recordActions([
                 EditAction::make(),

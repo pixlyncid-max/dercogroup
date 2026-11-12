@@ -17,6 +17,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -28,7 +30,6 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -50,14 +51,10 @@ class PageResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 Grid::make(3)
                     ->schema([
-                        Select::make('company_id')
-                            ->label('Perusahaan')
-                            ->relationship('company', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
                         Select::make('key')
                             ->label('Kunci Halaman')
                             ->options(PageKey::options())
@@ -119,10 +116,6 @@ class PageResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
-                    ->label('Perusahaan')
-                    ->sortable()
-                    ->searchable(),
                 TextColumn::make('key')
                     ->label('Kunci')
                     ->badge()
@@ -149,11 +142,6 @@ class PageResource extends Resource
                     ->badge()
                     ->color(fn (string $state): string => $state === 'Lengkap' ? 'success' : 'warning'),
             ])
-            ->filters([
-                SelectFilter::make('company_id')
-                    ->label('Perusahaan')
-                    ->relationship('company', 'name'),
-            ])
             ->recordActions([
                 Action::make('preview')
                     ->label('Pratinjau')
@@ -164,11 +152,16 @@ class PageResource extends Resource
                     ))
                     ->openUrlInNewTab(),
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->visible(fn (): bool => auth()->user()?->isSuperAdmin() ?? false)
+                    ->modalHeading('Hapus Halaman')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus halaman ini beserta seluruh blok penyusunnya? URL publik halaman ini tidak akan dapat diakses lagi.')
+                    ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->visible(fn (): bool => auth()->user()?->isSuperAdmin() ?? false),
                 ]),
             ]);
     }
