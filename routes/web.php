@@ -9,25 +9,27 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubsidiaryPageController;
 use App\Http\Middleware\ResolveCompany;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'redirectRoot'])->name('root');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
-Route::get('/artisan-setup', function (\Illuminate\Http\Request $request) {
+Route::get('/artisan-setup', function (Request $request) {
     $expectedToken = config('app.key');
     if (empty($expectedToken) || $request->query('token') !== $expectedToken) {
         abort(403, 'Unauthorized. Token parameter required.');
     }
 
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        $migrateOutput = \Illuminate\Support\Facades\Artisan::output();
+        Artisan::call('migrate', ['--force' => true]);
+        $migrateOutput = Artisan::output();
 
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        $seedOutput = \Illuminate\Support\Facades\Artisan::output();
+        Artisan::call('db:seed', ['--force' => true]);
+        $seedOutput = Artisan::output();
 
-        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        Artisan::call('optimize:clear');
 
         return response()->json([
             'status' => 'success',
@@ -35,11 +37,11 @@ Route::get('/artisan-setup', function (\Illuminate\Http\Request $request) {
             'migrate' => trim($migrateOutput),
             'seed' => trim($seedOutput),
         ]);
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
         return response()->json([
             'status' => 'error',
             'message' => $e->getMessage(),
-            'file' => $e->getFile() . ':' . $e->getLine(),
+            'file' => $e->getFile().':'.$e->getLine(),
         ], 500);
     }
 });

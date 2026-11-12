@@ -1,0 +1,200 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/*
+ * CMS Admin Theme Tokens (docs/CMS-DESIGN.md)
+ * Designed to mirror docs/reference/cms/dashboard.png and login.png
+ */
+:root {
+    --cms-sidebar-bg: #152238;
+    --cms-sidebar-border: rgba(255, 255, 255, 0.08);
+    --cms-sidebar-item-hover: rgba(255, 255, 255, 0.06);
+    --cms-sidebar-item-active-bg: rgba(237, 184, 86, 0.16);
+    --cms-sidebar-item-active-border: rgba(237, 184, 86, 0.35);
+    --cms-sidebar-text: #94a3b8;
+    --cms-sidebar-text-active: #edb856;
+    --cms-content-bg: #eff1f7;
+    --cms-card-bg: #ffffff;
+    --cms-card-border: #e2e8f0;
+    --cms-accent-gold: #edb856;
+    --cms-navy-dark: #122a44;
+}
+
+/* ==========================================================================
+   Filament Layout & Sidebar Customization
+   ========================================================================== */
+
+/* Main Page Container */
+.fi-layout {
+    background-color: var(--cms-content-bg);
+}
+
+.fi-main {
+    background-color: var(--cms-content-bg);
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+}
+
+/* Topbar Header */
+.fi-topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--cms-card-border);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Sidebar Body */
+aside.fi-sidebar {
+    background-color: var(--cms-sidebar-bg);
+    border-right: 1px solid var(--cms-sidebar-border);
+}
+
+.fi-sidebar-header {
+    background-color: var(--cms-sidebar-bg);
+    border-bottom: 1px solid var(--cms-sidebar-border);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Navigation Groups */
+.fi-sidebar-group-label {
+    color: #64748b;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Navigation Items */
+.fi-sidebar-item-btn {
+    border-radius: 0.75rem;
+    color: var(--cms-sidebar-text);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+.fi-sidebar-item-btn:hover {
+    background-color: var(--cms-sidebar-item-hover);
+    color: #ffffff;
+}
+
+/* Active Navigation Item */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    background-color: var(--cms-sidebar-item-active-bg);
+    border: 1px solid var(--cms-sidebar-item-active-border);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon {
+    color: var(--cms-sidebar-text-active);
+}
+
+/* Global Search Input Pill */
+.fi-global-search-field input {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    padding-left: 2.25rem;
+    padding-right: 3rem;
+}
+
+.fi-global-search-field input:focus {
+    border-color: var(--cms-accent-gold);
+    box-shadow: 0 0 0 2px rgba(237, 184, 86, 0.2);
+}
+
+/* ==========================================================================
+   Filament Tables, Cards & Modals
+   ========================================================================== */
+
+/* Tables and Resource Card Containers */
+.fi-ta-ctn,
+.fi-section {
+    background-color: var(--cms-card-bg);
+    border: 1px solid var(--cms-card-border);
+    border-radius: 1rem;
+    box-shadow:
+        0 1px 3px 0 rgba(15, 23, 42, 0.03),
+        0 1px 2px -1px rgba(15, 23, 42, 0.02);
+}
+
+/* Table Header */
+.fi-ta-header {
+    padding: 1.25rem 1.5rem;
+}
+
+.fi-ta-header-cell {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Table Row Hover */
+.fi-ta-row:hover {
+    background-color: #f8fafc;
+}
+
+/* Form Inputs and Textareas */
+.fi-fo-field-wrp input,
+.fi-fo-field-wrp select,
+.fi-fo-field-wrp textarea {
+    border-radius: 0.625rem;
+    border-color: #cbd5e1;
+}
+
+.fi-fo-field-wrp input:focus,
+.fi-fo-field-wrp select:focus,
+.fi-fo-field-wrp textarea:focus {
+    border-color: var(--cms-accent-gold);
+    box-shadow: 0 0 0 2px rgba(237, 184, 86, 0.2);
+}
+
+/* Buttons */
+.fi-btn {
+    border-radius: 0.625rem;
+    font-weight: 600;
+}
+
+/* Keyframes for Waving Hand */
+@keyframes wave {
+    0% {
+        transform: rotate(0deg);
+    }
+    10% {
+        transform: rotate(14deg);
+    }
+    20% {
+        transform: rotate(-8deg);
+    }
+    30% {
+        transform: rotate(14deg);
+    }
+    40% {
+        transform: rotate(-4deg);
+    }
+    50% {
+        transform: rotate(10deg);
+    }
+    60% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.animate-wave {
+    animation: wave 2.5s infinite;
+}
