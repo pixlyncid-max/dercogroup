@@ -38,4 +38,3 @@ it('gracefully returns empty string when neither Vite nor static file exists wit
 
     expect($html)->toBe('');
 });
-

@@ -30,9 +30,11 @@ class FilamentThemeResolver implements Htmlable, Stringable
 
     public function toHtml(): string
     {
+        $html = '';
+
         // 1. Try resolving via Vite (HMR dev server or production manifest)
         try {
-            return (string) app(Vite::class)($this->vitePath);
+            $html = (string) app(Vite::class)($this->vitePath);
         } catch (Throwable) {
             // 2. Resilient fallback: If Vite manifest is missing this entry on the server,
             // serve the compiled static stylesheet directly without throwing ViteException.
@@ -41,11 +43,38 @@ class FilamentThemeResolver implements Htmlable, Stringable
             if (file_exists($fullStaticPath)) {
                 $version = (string) filemtime($fullStaticPath);
 
-                return '<link rel="stylesheet" href="'.asset($this->staticPath).'?v='.$version.'" data-navigate-track />';
+                $html = '<link rel="stylesheet" href="/'.ltrim($this->staticPath, '/').'?v='.$version.'" data-navigate-track />';
             }
+        }
 
-            // 3. Graceful fallback: return empty string so Filament loads default theme
+        if ($html === '') {
             return '';
         }
+
+        // 3. Ensure URLs are root-relative (or match current request scheme/host),
+        // preventing mixed-content blocks or localhost hardcoding when APP_URL in .env
+        // is set to http://localhost while accessed on https://dercogroup.co.id.
+        return $this->normalizeToRootRelative($html);
+    }
+
+    protected function normalizeToRootRelative(string $html): string
+    {
+        return (string) preg_replace_callback(
+            '#(href|src)=["\']https?://[^/]+(:\d+)?(/[^"\']+)["\']#i',
+            function (array $matches): string {
+                $attr = $matches[1];
+                $port = $matches[2] ?? '';
+                $path = $matches[3];
+
+                // If this is Vite HMR server on port 5173, keep full host so client can connect
+                if ($port === ':5173') {
+                    return $matches[0];
+                }
+
+                // Otherwise convert to root-relative path
+                return sprintf('%s="%s"', $attr, $path);
+            },
+            $html
+        );
     }
 }
