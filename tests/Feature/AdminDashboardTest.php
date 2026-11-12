@@ -132,3 +132,4 @@ class AdminDashboardTest extends TestCase
         }
     }
 }
+

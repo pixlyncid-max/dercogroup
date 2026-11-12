@@ -101,3 +101,4 @@ Pengukuran nilai warna langsung dari berkas piksel referensi:
    Teks `#0F172A` di atas `#FFFFFF` memiliki rasio kontras 16.5:1 (melebihi standar 4.5:1). Teks sekunder `#64748B` di atas putih memiliki rasio 4.6:1 (lulus WCAG AA). Teks emas `#EDB856` hanya dipakai sebagai aksen tombol dengan teks gelap `#152238` (kontras 8.2:1) atau sebagai latar dengan kontras teruji.
 3. **Navigasi Keyboard:**
    Semua input dan tombol aksi cepat memiliki ring fokus keyboard yang terlihat jelas (`:focus-visible: ring-2 ring-accent`).
+

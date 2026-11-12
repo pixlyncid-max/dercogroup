@@ -55,3 +55,4 @@ class CompanyFactory extends Factory
         ]);
     }
 }
+

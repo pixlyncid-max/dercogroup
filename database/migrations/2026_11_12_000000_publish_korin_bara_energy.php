@@ -17,3 +17,4 @@ return new class extends Migration
         // Irreversible company status transition.
     }
 };
+
