@@ -4,8 +4,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "build:ssr": "vite build && vite build --ssr",
+        "build": "vite build && node scripts/copy-filament-theme.js",
+        "build:ssr": "vite build && vite build --ssr && node scripts/copy-filament-theme.js",
         "lint": "eslint resources/js",
         "format": "prettier --write \"resources/**/*.{ts,tsx,css}\"",
         "format:check": "prettier --check \"resources/**/*.{ts,tsx,css}\"",

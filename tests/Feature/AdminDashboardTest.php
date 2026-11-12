@@ -20,6 +20,8 @@ use App\Filament\Widgets\WebsiteOverviewWidget;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Vite;
+use Illuminate\Foundation\ViteException;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -35,6 +37,19 @@ class AdminDashboardTest extends TestCase
 
     public function test_login_page_renders_successfully(): void
     {
+        $response = $this->get('/admin/login');
+        $response->assertOk();
+        $response->assertSee('Welcome Back');
+        $response->assertSee('Building a Sustainable Future');
+    }
+
+    public function test_login_page_renders_successfully_even_when_vite_manifest_throws_exception(): void
+    {
+        $this->mock(Vite::class, function ($mock): void {
+            $mock->shouldReceive('__invoke')
+                ->andThrow(new ViteException('Unable to locate file in Vite manifest'));
+        });
+
         $response = $this->get('/admin/login');
         $response->assertOk();
         $response->assertSee('Welcome Back');
@@ -132,4 +147,3 @@ class AdminDashboardTest extends TestCase
         }
     }
 }
-
