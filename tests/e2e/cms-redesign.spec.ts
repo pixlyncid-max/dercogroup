@@ -51,10 +51,11 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
         await page.goto('/admin/login');
         await page.fill('input[type="email"], input[id*="email"]', 'admin@dercobara.co.id');
         await page.fill('input[type="password"], input[id*="password"]', 'password');
-        await page.click('button[type="submit"]');
-
-        await page.waitForURL('**/admin', { timeout: 15000 });
-        await page.waitForLoadState('networkidle');
+        await Promise.all([
+            page.waitForURL('**/admin', { timeout: 25000 }),
+            page.click('button[type="submit"]'),
+        ]);
+        await page.waitForLoadState('domcontentloaded');
 
         // Verify key widgets from reference
         // 1. Sidebar Mountain Footer
@@ -85,6 +86,15 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
 
         // 7. Recent Activity
         await expect(page.locator('text=Recent Activity')).toBeVisible();
+
+        // Verify layout geometry (12-column spans, matching reference layout)
+        const heroBox = await page.locator('.cms-hero-banner').boundingBox();
+        expect(heroBox).not.toBeNull();
+        expect(heroBox!.width).toBeGreaterThan(600); // 8 cols in 1672px viewport is ~877px
+
+        const statCardsBox = await page.locator('.cms-stat-cards').boundingBox();
+        expect(statCardsBox).not.toBeNull();
+        expect(statCardsBox!.width).toBeGreaterThan(1000); // 12 cols span full content width (~1328px)
 
         // Capture screenshot
         await page.screenshot({ path: path.join(COMPARE_DIR, 'dashboard-actual.png') });

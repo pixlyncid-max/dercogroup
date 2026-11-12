@@ -45,14 +45,22 @@
 }
 
 /* Sidebar Body */
-aside.fi-sidebar {
-    background-color: var(--cms-sidebar-bg);
-    border-right: 1px solid var(--cms-sidebar-border);
+.fi-sidebar,
+#fi-main-sidebar,
+.fi-sidebar-header-ctn,
+.fi-sidebar-header,
+.fi-sidebar-nav {
+    background-color: var(--cms-sidebar-bg) !important;
+    border-right: 1px solid var(--cms-sidebar-border) !important;
+}
+
+#fi-main-sidebar {
+    min-height: 100vh !important;
 }
 
 .fi-sidebar-header {
-    background-color: var(--cms-sidebar-bg);
-    border-bottom: 1px solid var(--cms-sidebar-border);
+    background-color: var(--cms-sidebar-bg) !important;
+    border-bottom: 1px solid var(--cms-sidebar-border) !important;
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
@@ -200,52 +208,61 @@ aside.fi-sidebar {
 }
 
 /* ==========================================================================
-   Dashboard 12-Column Grid Layout & Widget Spans
+   Dashboard 12-Column Grid Layout & Widget Spans (Filament v5 Schema Components)
    ========================================================================== */
-.fi-wi {
+.fi-grid {
     display: grid !important;
-    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    grid-template-columns: var(--cols-default, repeat(1, minmax(0, 1fr))) !important;
     gap: 1.5rem !important;
     width: 100% !important;
 }
 
-@media (max-width: 1023px) {
-    .fi-wi {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+.fi-grid-col {
+    grid-column: var(--col-span-default, span 1 / span 1) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.fi-sc-component {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+@media (min-width: 640px) {
+    .sm\:fi-grid-cols {
+        grid-template-columns: var(--cols-sm, var(--cols-default)) !important;
     }
-    .fi-wi > * {
-        grid-column: span 1 / span 1 !important;
+    .sm\:fi-grid-col-span {
+        grid-column: var(--col-span-sm, var(--col-span-default)) !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:fi-grid-cols {
+        grid-template-columns: var(--cols-md, var(--cols-sm, var(--cols-default))) !important;
+    }
+    .md\:fi-grid-col-span {
+        grid-column: var(--col-span-md, var(--col-span-sm, var(--col-span-default))) !important;
     }
 }
 
 @media (min-width: 1024px) {
-    .fi-wi > div:has(.cms-greeting-section),
-    .fi-wi > div:first-child {
-        grid-column: span 12 / span 12 !important;
+    .fi-grid.lg\:fi-grid-cols,
+    .lg\:fi-grid-cols {
+        grid-template-columns: var(--cols-lg, repeat(12, minmax(0, 1fr))) !important;
     }
 
-    .fi-wi > div:has(.cms-stat-cards),
-    .fi-wi > div:nth-child(2) {
-        grid-column: span 12 / span 12 !important;
+    .fi-grid-col.lg\:fi-grid-col-span,
+    .lg\:fi-grid-col-span {
+        grid-column: var(--col-span-lg, var(--col-span-default)) !important;
     }
+}
 
-    .fi-wi > div:has(.cms-hero-banner),
-    .fi-wi > div:nth-child(3) {
-        grid-column: span 8 / span 8 !important;
+@media (min-width: 1280px) {
+    .xl\:fi-grid-cols {
+        grid-template-columns: var(--cols-xl, var(--cols-lg, var(--cols-default))) !important;
     }
-
-    .fi-wi > div:has(.cms-quick-actions),
-    .fi-wi > div:nth-child(4) {
-        grid-column: span 4 / span 4 !important;
-    }
-
-    .fi-wi > div:has(.cms-website-overview),
-    .fi-wi > div:nth-child(5) {
-        grid-column: span 7 / span 7 !important;
-    }
-
-    .fi-wi > div:has(.cms-recent-activity),
-    .fi-wi > div:nth-child(6) {
-        grid-column: span 5 / span 5 !important;
+    .xl\:fi-grid-col-span {
+        grid-column: var(--col-span-xl, var(--col-span-lg, var(--col-span-default))) !important;
     }
 }

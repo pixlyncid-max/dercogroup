@@ -11,10 +11,40 @@ use App\Filament\Widgets\RecentActivityWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use App\Filament\Widgets\WebsiteOverviewWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Schema;
 
 class Dashboard extends BaseDashboard
 {
     protected static ?string $title = 'Dashboard';
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->columns([
+                'default' => 1,
+                'lg' => 12,
+            ])
+            ->components([
+                Livewire::make(DashboardGreetingWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 12]),
+
+                Livewire::make(StatsOverviewWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 12]),
+
+                Livewire::make(HeroBannerWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 8]),
+
+                Livewire::make(QuickActionsWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 4]),
+
+                Livewire::make(WebsiteOverviewWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 7]),
+
+                Livewire::make(RecentActivityWidget::class)
+                    ->columnSpan(['default' => 1, 'lg' => 5]),
+            ]);
+    }
 
     public function getWidgets(): array
     {

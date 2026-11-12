@@ -22,15 +22,24 @@
     }
 
     /* Persistent Luxury Corporate Sidebar */
-    aside.fi-sidebar {
-        background-color: var(--cms-sidebar-bg) !important;
-        border-right: 1px solid var(--cms-sidebar-border) !important;
+    .fi-sidebar,
+    #fi-main-sidebar,
+    .fi-sidebar-header-ctn,
+    .fi-sidebar-header,
+    .fi-sidebar-nav,
+    .fi-sidebar-nav-groups {
+        background-color: #121E31 !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #fi-main-sidebar {
         min-height: 100vh !important;
+        width: 17.5rem !important;
     }
 
     .fi-sidebar-header {
-        background-color: var(--cms-sidebar-bg) !important;
-        border-bottom: 1px solid var(--cms-sidebar-border) !important;
+        background-color: #121E31 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         padding: 1.25rem 1rem !important;
     }
 
@@ -44,26 +53,26 @@
 
     .fi-sidebar-item-btn {
         border-radius: 0.75rem !important;
-        color: var(--cms-sidebar-text) !important;
+        color: #94a3b8 !important;
         font-size: 0.8125rem !important;
         font-weight: 500 !important;
         transition: all 0.15s ease-in-out !important;
     }
 
     .fi-sidebar-item-btn:hover {
-        background-color: var(--cms-sidebar-item-hover) !important;
+        background-color: rgba(255, 255, 255, 0.06) !important;
         color: #ffffff !important;
     }
 
     .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
-        background-color: var(--cms-sidebar-item-active-bg) !important;
-        border: 1px solid var(--cms-sidebar-item-active-border) !important;
+        background-color: #1E2F48 !important;
+        border: 1px solid rgba(237, 184, 86, 0.4) !important;
         color: #ffffff !important;
         font-weight: 600 !important;
     }
 
     .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon {
-        color: var(--cms-sidebar-text-active) !important;
+        color: #EDB856 !important;
     }
 
     /* Clean Crisp Topbar */
@@ -78,59 +87,61 @@
         padding: 1.5rem 2rem 3rem 2rem !important;
     }
 
-    /* Robust Rock-Solid 12-Column Dashboard Grid Layout */
-    .fi-wi {
+    /* Robust Rock-Solid 12-Column Dashboard Grid Layout (Filament v5 Schema Components) */
+    .fi-grid {
         display: grid !important;
-        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+        grid-template-columns: var(--cols-default, repeat(1, minmax(0, 1fr))) !important;
         gap: 1.5rem !important;
         width: 100% !important;
     }
 
-    @media (max-width: 1023px) {
-        .fi-wi {
-            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    .fi-grid-col {
+        grid-column: var(--col-span-default, span 1 / span 1) !important;
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+    .fi-sc-component {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    @media (min-width: 640px) {
+        .sm\:fi-grid-cols {
+            grid-template-columns: var(--cols-sm, var(--cols-default)) !important;
         }
-        .fi-wi > * {
-            grid-column: span 1 / span 1 !important;
+        .sm\:fi-grid-col-span {
+            grid-column: var(--col-span-sm, var(--col-span-default)) !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .md\:fi-grid-cols {
+            grid-template-columns: var(--cols-md, var(--cols-sm, var(--cols-default))) !important;
+        }
+        .md\:fi-grid-col-span {
+            grid-column: var(--col-span-md, var(--col-span-sm, var(--col-span-default))) !important;
         }
     }
 
     @media (min-width: 1024px) {
-        /* Greeting Section: Full Width (12 cols) */
-        .fi-wi > div:has(.cms-greeting-section),
-        .fi-wi > div:first-child {
-            grid-column: span 12 / span 12 !important;
+        .fi-grid.lg\:fi-grid-cols,
+        .lg\:fi-grid-cols {
+            grid-template-columns: var(--cols-lg, repeat(12, minmax(0, 1fr))) !important;
         }
 
-        /* 4 Stat Cards: Full Width (12 cols) */
-        .fi-wi > div:has(.cms-stat-cards),
-        .fi-wi > div:nth-child(2) {
-            grid-column: span 12 / span 12 !important;
+        .fi-grid-col.lg\:fi-grid-col-span,
+        .lg\:fi-grid-col-span {
+            grid-column: var(--col-span-lg, var(--col-span-default)) !important;
         }
+    }
 
-        /* Hero Banner: 8 Columns */
-        .fi-wi > div:has(.cms-hero-banner),
-        .fi-wi > div:nth-child(3) {
-            grid-column: span 8 / span 8 !important;
+    @media (min-width: 1280px) {
+        .xl\:fi-grid-cols {
+            grid-template-columns: var(--cols-xl, var(--cols-lg, var(--cols-default))) !important;
         }
-
-        /* Quick Actions: 4 Columns */
-        .fi-wi > div:has(.cms-quick-actions),
-        .fi-wi > div:nth-child(4) {
-            grid-column: span 4 / span 4 !important;
-        }
-
-        /* Website Overview: 7 Columns */
-        .fi-wi > div:has(.cms-website-overview),
-        .fi-wi > div:nth-child(5) {
-            grid-column: span 7 / span 7 !important;
-        }
-
-        /* Recent Activity: 5 Columns */
-        .fi-wi > div:has(.cms-recent-activity),
-        .fi-wi > div:nth-child(6) {
-            grid-column: span 5 / span 5 !important;
+        .xl\:fi-grid-col-span {
+            grid-column: var(--col-span-xl, var(--col-span-lg, var(--col-span-default))) !important;
         }
     }
 </style>
-
