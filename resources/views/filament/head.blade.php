@@ -1,48 +1,15 @@
 {{-- Responsive link to Filament admin theme stylesheet (supports subfolders like XAMPP and custom domains) --}}
 <link rel="stylesheet" href="{{ asset('css/filament/admin/theme.css') }}?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
 
-{{-- Auto-reset stale Alpine collapsed groups so menus are always active, non-collapsed, and never throw null errors --}}
-<script>
-    try {
-        localStorage.setItem('filament:sidebar:collapsed_groups', '[]');
-    } catch (e) {}
-
-    document.addEventListener('alpine:init', function () {
-        try {
-            localStorage.setItem('filament:sidebar:collapsed_groups', '[]');
-            if (window.Alpine && window.Alpine.store) {
-                // Hook into sidebar store if already registered or when registered
-                const origStore = window.Alpine.store;
-                window.Alpine.store = function (name, value) {
-                    if (name === 'sidebar' && value && typeof value === 'object') {
-                        value.collapsedGroups = [];
-                        value.groupIsCollapsed = function () { return false; };
-                    }
-                    return origStore.apply(this, arguments);
-                };
-
-                const existingSidebar = window.Alpine.store('sidebar');
-                if (existingSidebar) {
-                    existingSidebar.collapsedGroups = [];
-                    existingSidebar.groupIsCollapsed = function () { return false; };
-                }
-            }
-        } catch (e) {}
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        try {
-            if (window.Alpine && window.Alpine.store && window.Alpine.store('sidebar')) {
-                const store = window.Alpine.store('sidebar');
-                store.collapsedGroups = [];
-                store.groupIsCollapsed = function () { return false; };
-            }
-        } catch (e) {}
-    });
-</script>
-
-{{-- Critical styles guaranteeing desktop grid layout and dark navy corporate sidebar --}}
+{{-- Critical styles guaranteeing desktop grid layout, dark navy corporate sidebar, and cloaked overlays --}}
 <style>
+    /* Alpine Cloak - Essential to prevent dropdown panels, modals, and tooltips flashing or staying stuck open */
+    [x-cloak],
+    [x-cloak="-lg"],
+    [x-cloak=""] {
+        display: none !important;
+    }
+
     :root {
         --cms-sidebar-bg: #121E31;
         --cms-sidebar-border: rgba(255, 255, 255, 0.08);

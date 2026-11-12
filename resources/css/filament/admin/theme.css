@@ -4,6 +4,15 @@
 @source '../../../../resources/views/filament/**/*';
 
 /*
+ * Cloak uninitialized Alpine elements to prevent dropdown and modal popups on load
+ */
+[x-cloak],
+[x-cloak="-lg"],
+[x-cloak=""] {
+    display: none !important;
+}
+
+/*
  * CMS Admin Theme Tokens (docs/CMS-DESIGN.md)
  * Designed to mirror docs/reference/cms/dashboard.png and login.png
  */
