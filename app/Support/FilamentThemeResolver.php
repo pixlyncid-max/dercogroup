@@ -43,7 +43,7 @@ class FilamentThemeResolver implements Htmlable, Stringable
             if (file_exists($fullStaticPath)) {
                 $version = (string) filemtime($fullStaticPath);
 
-                $html = '<link rel="stylesheet" href="/'.ltrim($this->staticPath, '/').'?v='.$version.'" data-navigate-track />';
+                $html = '<link rel="stylesheet" href="'.asset($this->staticPath).'?v='.$version.'" data-navigate-track />';
             }
         }
 

@@ -88,32 +88,84 @@
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
+    height: auto;
+    overflow: visible;
+    visibility: visible;
+    opacity: 1;
 }
 
 /* Navigation Items */
+.fi-sidebar-item {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
 .fi-sidebar-item-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     border-radius: 0.75rem;
     color: var(--cms-sidebar-text);
-    padding: 0.625rem 0.875rem;
+    padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
     font-weight: 500;
     transition: all 0.15s ease-in-out;
 }
 
+.fi-sidebar-item-label,
+.fi-sidebar-item-btn .fi-sidebar-item-label,
+.fi-sidebar-item-btn > span {
+    color: var(--cms-sidebar-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    display: inline-block;
+    visibility: visible;
+    opacity: 1;
+}
+
+.fi-sidebar-item-icon,
+.fi-sidebar-item-btn .fi-sidebar-item-icon,
+.fi-sidebar-item-btn > svg,
+.fi-sidebar-item-btn .fi-icon {
+    color: #94a3b8;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    display: inline-block;
+    visibility: visible;
+}
+
 .fi-sidebar-item-btn:hover {
     background-color: var(--cms-sidebar-item-hover);
+}
+
+.fi-sidebar-item-btn:hover .fi-sidebar-item-label,
+.fi-sidebar-item-btn:hover > span {
     color: #ffffff;
+}
+
+.fi-sidebar-item-btn:hover .fi-sidebar-item-icon,
+.fi-sidebar-item-btn:hover > svg,
+.fi-sidebar-item-btn:hover .fi-icon {
+    color: var(--cms-sidebar-text-active);
 }
 
 /* Active Navigation Item */
 .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
     background-color: var(--cms-sidebar-item-active-bg);
     border: 1px solid var(--cms-sidebar-item-active-border);
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > span {
     color: #ffffff;
     font-weight: 600;
 }
 
-.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon {
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > svg,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-icon {
     color: var(--cms-sidebar-text-active);
 }
 

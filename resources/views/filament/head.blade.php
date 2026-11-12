@@ -1,5 +1,45 @@
-{{-- Root-relative link to Filament admin theme stylesheet (immune to mixed-content & APP_URL localhost issues) --}}
-<link rel="stylesheet" href="/css/filament/admin/theme.css?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
+{{-- Responsive link to Filament admin theme stylesheet (supports subfolders like XAMPP and custom domains) --}}
+<link rel="stylesheet" href="{{ asset('css/filament/admin/theme.css') }}?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
+
+{{-- Auto-reset stale Alpine collapsed groups so menus are always active, non-collapsed, and never throw null errors --}}
+<script>
+    try {
+        localStorage.setItem('filament:sidebar:collapsed_groups', '[]');
+    } catch (e) {}
+
+    document.addEventListener('alpine:init', function () {
+        try {
+            localStorage.setItem('filament:sidebar:collapsed_groups', '[]');
+            if (window.Alpine && window.Alpine.store) {
+                // Hook into sidebar store if already registered or when registered
+                const origStore = window.Alpine.store;
+                window.Alpine.store = function (name, value) {
+                    if (name === 'sidebar' && value && typeof value === 'object') {
+                        value.collapsedGroups = [];
+                        value.groupIsCollapsed = function () { return false; };
+                    }
+                    return origStore.apply(this, arguments);
+                };
+
+                const existingSidebar = window.Alpine.store('sidebar');
+                if (existingSidebar) {
+                    existingSidebar.collapsedGroups = [];
+                    existingSidebar.groupIsCollapsed = function () { return false; };
+                }
+            }
+        } catch (e) {}
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            if (window.Alpine && window.Alpine.store && window.Alpine.store('sidebar')) {
+                const store = window.Alpine.store('sidebar');
+                store.collapsedGroups = [];
+                store.groupIsCollapsed = function () { return false; };
+            }
+        } catch (e) {}
+    });
+</script>
 
 {{-- Critical styles guaranteeing desktop grid layout and dark navy corporate sidebar --}}
 <style>
@@ -9,7 +49,7 @@
         --cms-sidebar-item-hover: rgba(255, 255, 255, 0.06);
         --cms-sidebar-item-active-bg: #1E2F48;
         --cms-sidebar-item-active-border: rgba(237, 184, 86, 0.4);
-        --cms-sidebar-text: #94a3b8;
+        --cms-sidebar-text: #cbd5e1;
         --cms-sidebar-text-active: #EDB856;
         --cms-content-bg: #EFF1F7;
         --cms-accent-gold: #EDB856;
@@ -63,6 +103,10 @@
         display: flex !important;
         flex-direction: column !important;
         gap: 0.125rem !important;
+        height: auto !important;
+        overflow: visible !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .fi-sidebar-group-btn:hover svg,
@@ -70,27 +114,77 @@
         color: #EDB856 !important;
     }
 
+    /* Sidebar Navigation Items - High Contrast & Crisp */
+    .fi-sidebar-item {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
     .fi-sidebar-item-btn {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
         border-radius: 0.75rem !important;
-        color: #94a3b8 !important;
+        padding: 0.5rem 0.75rem !important;
         font-size: 0.8125rem !important;
         font-weight: 500 !important;
         transition: all 0.15s ease-in-out !important;
     }
 
+    .fi-sidebar-item-label,
+    .fi-sidebar-item-btn .fi-sidebar-item-label,
+    .fi-sidebar-item-btn > span {
+        color: #cbd5e1 !important;
+        font-size: 0.8125rem !important;
+        font-weight: 500 !important;
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .fi-sidebar-item-icon,
+    .fi-sidebar-item-btn .fi-sidebar-item-icon,
+    .fi-sidebar-item-btn > svg,
+    .fi-sidebar-item-btn .fi-icon {
+        color: #94a3b8 !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        flex-shrink: 0 !important;
+        display: inline-block !important;
+        visibility: visible !important;
+    }
+
     .fi-sidebar-item-btn:hover {
-        background-color: rgba(255, 255, 255, 0.06) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .fi-sidebar-item-btn:hover .fi-sidebar-item-label,
+    .fi-sidebar-item-btn:hover > span {
         color: #ffffff !important;
     }
 
+    .fi-sidebar-item-btn:hover .fi-sidebar-item-icon,
+    .fi-sidebar-item-btn:hover > svg,
+    .fi-sidebar-item-btn:hover .fi-icon {
+        color: #EDB856 !important;
+    }
+
+    /* Active Navigation Item */
     .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
         background-color: #1E2F48 !important;
-        border: 1px solid rgba(237, 184, 86, 0.4) !important;
+        border: 1px solid rgba(237, 184, 86, 0.5) !important;
+    }
+
+    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-label,
+    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn > span {
         color: #ffffff !important;
         font-weight: 600 !important;
     }
 
-    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon {
+    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-icon,
+    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn > svg,
+    .fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-icon {
         color: #EDB856 !important;
     }
 
