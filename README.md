@@ -6,6 +6,7 @@ Website company profile **PT Derco Bara Energy** (holding) beserta tiga situs an
 |---|---|
 | [PRD.md](./PRD.md) | Kebutuhan produk, ruang lingkup, kriteria penerimaan |
 | [DESIGN.md](./DESIGN.md) | Sistem desain, tema, dan layout |
+| [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md) | Spesifikasi visual tema & dasbor CMS Admin (Revisi 4) |
 | [docs/erd.md](./docs/erd.md) | Diagram relasi entitas basis data (Mermaid ERD) |
 | [docs/CONTENT-CHECKLIST.md](./docs/CONTENT-CHECKLIST.md) | Daftar periksa konten & aset siap pakai untuk klien |
 | [docs/CMS-GUIDE.md](./docs/CMS-GUIDE.md) | Panduan operasional CMS Filament untuk administrator |
@@ -192,7 +193,7 @@ Database (companies, pages, page_blocks, ...)
 - Admin yang login dapat membuka halaman `draft` dalam mode pratinjau (berlabel dan `noindex`).
 - Untuk menayangkan: ubah status menjadi `published` di CMS.
 
-PT Korin Bara Energy saat ini berstatus `draft`.
+PT Korin Bara Energy berstatus `published` (tayang penuh). Fitur status draft/published (FR-VIS) tetap aktif untuk seluruh entitas lainnya.
 
 ---
 
@@ -489,6 +490,25 @@ Pasang di crontab server (`crontab -e`):
 ---
 
 ## Catatan Rilis & Perubahan (Changelog)
+
+### v1.5.0 (Revisi 4 — Penayangan Korin Bara, Alias Logo, dan Redesain CMS Admin)
+- **Penayangan PT Korin Bara Energy:**
+  - Status Korin Bara beralih ke `published` di database seeder dan lewat migrasi data idempoten `2026_11_12_000000_publish_korin_bara_energy.php`.
+  - Seluruh 6 halaman Korin Bara tayang aktif (200 OK) tanpa penanda preview dan terindeks di `sitemap.xml`.
+  - Grid Bisnis Kami di beranda holding otomatis menjadi 3 kolom kartu.
+  - Mekanisme draft/published (FR-VIS) dipertahankan utuh dan divalidasi dengan perusahaan uji berstatus draft.
+- **Logo Korin Bara = Logo Korin Berkat:**
+  - `config/branding.php` memetakan entri `korin-bara` merujuk langsung ke definisi logo `korin-berkat`.
+  - Varian ringkas (compact symbol) diekstrak ke `public/images/logo/Logo-KorinBerkatEnergy-compact.png` untuk rail vertikal 88px Korin Bara.
+  - Berkas compact lama `Logo-KorinBaraEnergy-compact.png` tidak dihapus (tetap aman sebagai berkas arsip yang tidak digunakan).
+  - Alt text tetap unik semantik ("PT Korin Bara Energy").
+- **Redesain CMS Admin (Filament v5):**
+  - Mengikuti foto referensi konsol korporat modern (spesifikasi di `docs/CMS-DESIGN.md`, hasil perbandingan di `docs/branding/cms-compare/`).
+  - Tema custom di `resources/css/filament/admin/theme.css` dengan token warna terpusat (Primary Amber `#EDB856`, Sidebar Dark Navy `#111C2E`, Canvas `#F8FAFC`).
+  - Sidebar custom dengan siluet pegunungan (`sidebar-mountains.png`), pintasan "View Website", dan logout.
+  - Halaman login kustom (`resources/views/filament/layouts/auth.blade.php`): split 50:50 dengan foto pertambangan, judul "Building a Sustainable Future Together", kartu input modern, dan alternatif SSO.
+  - 6 Widget dasbor kustom dengan data riil database: `DashboardGreetingWidget`, `StatsOverviewWidget`, `HeroBannerWidget`, `QuickActionsWidget`, `WebsiteOverviewWidget`, `RecentActivityWidget`.
+  - Aksesibilitas WCAG 2.2 AA terverifikasi via Playwright & axe-core.
 
 ### v1.4.0 (Revisi 3 — Logo di Header dan Footer Seluruh Tema)
 - **Komponen Bersama `Logo`:** Komponen mandiri `resources/js/ui/Logo.tsx` yang menangani render logo beresolusi tinggi, prop `on="light"|"dark"`, `size="sm"|"md"|"lg"|number`, `compact`, `plat`, `priority`, dan wordmark fallback semantik. Dilarang menggunakan filter CSS (brightness/invert).

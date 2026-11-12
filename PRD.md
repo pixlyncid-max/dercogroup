@@ -1,7 +1,7 @@
 # PRD — Website PT Derco Bara Energy
 
-Versi 1.4 · Product Requirements Document
-Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md)
+Versi 1.5 · Product Requirements Document
+Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md) · [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)
 
 ---
 
@@ -9,11 +9,11 @@ Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md)
 
 Membangun website company profile **PT Derco Bara Energy** (holding) beserta tiga situs anak usaha di bawah satu aplikasi:
 
-1. PT Korin Bara Energy (dibuat penuh, **belum ditayangkan**)
-2. PT Korin Berkat Energy
-3. PT Beramal Sukses Sejahtera
+1. PT Korin Bara Energy (tayang penuh, 6 halaman aktif)
+2. PT Korin Berkat Energy (5 halaman aktif)
+3. PT Beramal Sukses Sejahtera (4 halaman aktif)
 
-Website dwibahasa (Indonesia dan Inggris), dikelola lewat CMS admin, dibangun dengan Laravel 12, React, dan MySQL. Tampilan holding mengikuti gambar referensi; tiap anak usaha memiliki identitas visual dan layout sendiri dengan warna dasar putih.
+Website dwibahasa (Indonesia dan Inggris), dikelola lewat CMS admin, dibangun dengan Laravel 12, React, dan MySQL. Tampilan holding mengikuti gambar referensi; tiap anak usaha memiliki identitas visual dan layout sendiri dengan warna dasar putih. Tampilan CMS admin (/admin) mengikuti spesifikasi visual referensi konsol korporat modern.
 
 ---
 
@@ -53,13 +53,13 @@ Perusahaan memiliki tiga bisnis utama tetapi belum punya satu pintu masuk yang m
 
 ## 4. Ruang Lingkup
 
-### 4.1 Peta Situs (21 halaman database, 14 halaman publik aktif)
+### 4.1 Peta Situs (21 halaman database, 20 halaman publik aktif)
 
 ```
 Holding — PT Derco Bara Energy (4 halaman)
 ├── Beranda
 ├── Tentang Kami
-├── Bisnis Kami  ──┬── PT Korin Bara Energy      [draft, disembunyikan - 6 halaman]
+├── Bisnis Kami  ──┬── PT Korin Bara Energy      [tayang - 6 halaman]
 │                  │     ├── Beranda · Tentang Kami · Produk
 │                  │     └── Operasi · Mutu & Kepatuhan · Kontak
 │                  ├── PT Korin Berkat Energy    [aktif - 5 halaman]
@@ -73,10 +73,10 @@ Holding — PT Derco Bara Energy (4 halaman)
 ```
 
 - Holding: 4 halaman publik.
-- PT Korin Bara Energy: 6 halaman (berstatus `draft`).
+- PT Korin Bara Energy: 6 halaman aktif tayang (berstatus `published`).
 - PT Korin Berkat Energy: 5 halaman aktif (halaman Mutu & Kepatuhan dihapus permanen).
 - PT Beramal Sukses Sejahtera: 6 halaman tersimpan di CMS (5 halaman aktif tayang + 1 halaman Mutu & Kepatuhan nonaktif `is_published=false` dan `show_in_nav=false`, publik 404).
-- Total: **21 halaman di basis data**, dengan **14 halaman publik aktif** yang dapat diakses pengunjung biasa tanpa login.
+- Total: **21 halaman di basis data**, dengan **20 halaman publik aktif** yang dapat diakses pengunjung biasa tanpa login. Ditambah halaman detail produk dan detail layanan dinamis.
 
 ### 4.2 URL dan Bahasa
 ```
@@ -123,7 +123,7 @@ Prioritas: **P0** wajib rilis, **P1** penting, **P2** bila waktu memungkinkan.
 | FR-PUB-8 | Konfigurasi set halaman dinamis per tema via `CompanyTheme::pages()` tanpa pengkondisian bercabang di controller/action | P0 |
 
 ### 5.2 Visibilitas Anak Usaha (FR-VIS)
-Khusus kebutuhan klien: Korin Bara dibuat tetapi belum ditampilkan.
+Fitur visibilitas anak usaha (`draft` / `published`) merupakan kebutuhan inti arsitektur sistem. Di Revisi 4, PT Korin Bara Energy telah beralih ke status `published` (tayang penuh). Fitur FR-VIS tetap aktif sepenuhnya untuk seluruh entitas perusahaan di masa mendatang.
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -229,6 +229,24 @@ Pembatasan editor per anak usaha (tabel `company_user`) ditunda ke versi berikut
 
 ### 6.4 Tipe Blok
 Daftar lengkap dan tampilannya per tema ada di [DESIGN.md](./DESIGN.md), bagian 9: `hero`, `split_content`, `stacked_images`, `color_band`, `mission_list`, `rich_text`, `cta_banner`, `timeline`, `values_grid` (statis); `subsidiary_grid`, `stats`, `product_list`, `operation_list`, `certification_list`, `contact_info`, `contact_form` (dinamis).
+
+### 6.5 Desain Antarmuka CMS Admin (Revisi 4)
+Tampilan CMS admin (/admin) direkayasa ulang mengacu pada foto referensi konsol korporat modern (spesifikasi detail di [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)):
+1. **Layout & Sidebar**:
+   - Sidebar Dark Navy (`#111C2E`) berlebar 264px (`16.5rem`) dengan aksen hover emas (`#EDB856`).
+   - Header sidebar menampilkan monogram emas korporat Korin Berkat/Derco.
+   - Footer sidebar memuat siluet grafis pegunungan (`sidebar-mountains.png`), tautan cepat "View Website", dan tombol Logout.
+   - Area konten berlatar sejuk (`#F8FAFC`) dengan kartu permukaan putih radius `1rem` (16px) dan bayangan lembut.
+2. **Halaman Login Khusus**:
+   - Split 50:50 desktop: sisi kiri memuat foto operasional pertambangan dengan filter gelap, logo emas, dan tipografi "Building a Sustainable Future Together (Mining • Trading • Nickel)".
+   - Sisi kanan memuat kartu login putih dengan input bernuansa modern, pemulihan kata sandi (`Forgot Password?`), dan alternatif login SSO.
+3. **Dasbor Khusus dengan Metrik Nyata**:
+   - `DashboardGreetingWidget`: Ucapan waktu nyata sesuai jam (Pagi/Siang/Sore/Malam), nama pengguna login, tanggal lokal dan jam langsung.
+   - `StatsOverviewWidget`: 4 kartu ringkasan berbasis data riil database (Total Pages, Total Products, Total Operations, Total Users) lengkap dengan grafik tren sparkline SVG.
+   - `HeroBannerWidget`: Spanduk operasional pertambangan dengan badge emas dan CTA langsung ke situs publik.
+   - `QuickActionsWidget`: 6 tombol aksi cepat menuju modul-modul CMS utama.
+   - `WebsiteOverviewWidget`: Grafik analitik tren pengunjung 30 hari interaktif dengan indikator pengunjung, durasi sesi, dan bounce rate.
+   - `RecentActivityWidget`: Garis waktu aktivitas audit riil dari database.
 
 ---
 

@@ -1,7 +1,7 @@
 # DESIGN.md — PT Derco Bara Energy
 
-Versi 1.4 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
-Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md)
+Versi 1.5 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
+Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md) · [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)
 
 ---
 
@@ -72,7 +72,7 @@ Pengembangan **wajib memakai skill yang ada di folder `.agents/skills/ui-ux-pro-
 |---|---|---|---|---|
 | `holding` | PT Derco Bara Energy | Gelap dan putih bergantian (mengikuti gambar referensi) | Corporate industrial | Tayang |
 | `korin-berkat` | PT Korin Berkat Energy | Putih | Editorial data-driven | Tayang |
-| `korin-bara` | PT Korin Bara Energy | Putih | Hangat, padat, full-bleed | **Draft (disembunyikan)** |
+| `korin-bara` | PT Korin Bara Energy | Putih | Hangat, padat, full-bleed | **Tayang (Published)** |
 | `beramal` | PT Beramal Sukses Sejahtera | Putih | Bersih, ringan, lembut | Tayang |
 
 Aturan penerapan:
@@ -251,11 +251,11 @@ Counter angka naik (Anime.js) saat terlihat; garis gold memanjang dari kiri (Mot
 
 ---
 
-## 6. Tema Korin Bara Energy — "Field Rail" (status: draft)
+## 6. Tema Korin Bara Energy — "Field Rail" (status: tayang)
 
 **Gagasan:** hangat dan membumi, seperti lapangan tambang. Bidang gold dan foto lebar tanpa tepi mendominasi, navy menjadi warna teks. Navigasi berupa **rail vertikal** di kiri, yang membuat situs ini langsung terasa berbeda dari saudaranya.
 
-> Tema ini **dibuat penuh tetapi tidak tayang** sampai status perusahaan diubah menjadi `published` di CMS (lihat PRD, FR-VIS).
+> Tema ini **tayang penuh** dengan status perusahaan `published` di basis data (lihat PRD, FR-VIS). Enam halaman aktif dan detail produk dapat diakses secara publik.
 
 ### 6.1 Palet
 | Peran | Hex |
@@ -480,6 +480,31 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 ---
 
 ## 15. Catatan Perubahan (Changelog)
+
+### Versi 1.5 (Revisi 4 — Penayangan Korin Bara, Alias Logo, dan Redesain CMS Admin)
+- **Penayangan PT Korin Bara Energy:**
+  - Status Korin Bara diubah menjadi `published` di seeder dan lewat migrasi data idempoten `2026_11_12_000000_publish_korin_bara_energy`.
+  - Seluruh 6 halaman Korin Bara aktif publik (200 OK) tanpa penanda preview dan terdaftar di `sitemap.xml`.
+  - Grid Bisnis Kami beranda holding beradaptasi menjadi 3 kolom kartu (`PT Korin Berkat Energy`, `PT Beramal Sukses Sejahtera`, `PT Korin Bara Energy`).
+  - Mekanisme draft/published (FR-VIS) dipertahankan utuh untuk entitas pengujian/masa depan.
+- **Logo Korin Bara = Logo Korin Berkat:**
+  - Konfigurasi `config/branding.php` untuk entri `korin-bara` merujuk langsung ke definisi logo `korin-berkat` via alias memori (tanpa duplikasi definisi atau file).
+  - Varian ringkas (compact symbol) diekstrak ke `public/images/logo/Logo-KorinBerkatEnergy-compact.png` untuk rail 88px Korin Bara.
+  - Berkas compact lama `Logo-KorinBaraEnergy-compact.png` tidak dihapus (dipertahankan sebagai arsip tidak aktif).
+  - Alt text tetap unik semantik ("PT Korin Bara Energy").
+- **Redesain Antarmuka CMS Admin (Filament v5):**
+  - Mengacu 100% pada foto referensi konsol korporat modern (dokumen spesifikasi [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md) dan perbandingan [docs/branding/cms-compare/](./docs/branding/cms-compare/)).
+  - Tema khusus di `resources/css/filament/admin/theme.css` dengan token warna terpusat (Primary Amber `#EDB856`, Sidebar Dark Navy `#111C2E`, Canvas `#F8FAFC`, Surface `#FFFFFF`, Border `#E2E8F0`).
+  - Sidebar custom dengan siluet grafis pegunungan (`sidebar-mountains.png`), pintasan "View Website", dan logout.
+  - Halaman login kustom (`resources/views/filament/layouts/auth.blade.php`): split 50:50 dengan backdrop foto pertambangan, tipografi korporat, input modern, pemulihan kata sandi, dan alternatif SSO.
+  - 6 Widget dasbor kustom berbasis data riil database:
+    1. `DashboardGreetingWidget` (live clock & greeting)
+    2. `StatsOverviewWidget` (real DB metrics & sparkline trends)
+    3. `HeroBannerWidget` (mining hero photo & badge)
+    4. `QuickActionsWidget` (6 shortcut buttons)
+    5. `WebsiteOverviewWidget` (analytics trend chart)
+    6. `RecentActivityWidget` (live activity timeline)
+  - Aksesibilitas WCAG 2.2 AA terverifikasi hijau via axe-core.
 
 ### Versi 1.4 (Revisi 3 — Logo di Header dan Footer Seluruh Tema)
 - **Komponen Bersama `ui/Logo`:** Komponen mandiri untuk rendering logo beresolusi tinggi, mendukung varian `on="light"|"dark"`, `size="sm"|"md"|"lg"|number`, `compact`, `plat`, `priority`, dan wordmark fallback jika konfigurasi/file belum ada. Dilarang menggunakan filter CSS (brightness/invert).
