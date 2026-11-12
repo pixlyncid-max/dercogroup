@@ -47,12 +47,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.25rem')
             ->sidebarWidth('17.5rem')
             ->sidebarCollapsibleOnDesktop(false)
-            ->collapsibleNavigationGroups(true)
+            ->collapsibleNavigationGroups(false)
             ->navigationGroups([
-                NavigationGroup::make('Komunikasi & Pesan')->collapsed(false),
-                NavigationGroup::make('Struktur & Halaman')->collapsed(false),
-                NavigationGroup::make('Konten Operasional')->collapsed(false),
-                NavigationGroup::make('Sistem & Hak Akses')->collapsed(false),
+                NavigationGroup::make('Komunikasi & Pesan')->collapsible(false),
+                NavigationGroup::make('Struktur & Halaman')->collapsible(false),
+                NavigationGroup::make('Konten Operasional')->collapsible(false),
+                NavigationGroup::make('Sistem & Hak Akses')->collapsible(false),
             ])
             ->maxContentWidth(Width::Full)
             ->renderHook(

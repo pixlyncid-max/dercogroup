@@ -104,8 +104,10 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
         await page.waitForLoadState('domcontentloaded');
 
         // Verify key widgets from reference
-        // 1. Sidebar Mountain Footer
-        await expect(page.locator('.cms-sidebar-mountains')).toBeVisible();
+        // 1. Sidebar Clean Background & Footer (mountain photo removed per user request)
+        await expect(page.locator('.fi-sidebar')).toBeVisible();
+        await expect(page.locator('.cms-sidebar-bottom')).toBeVisible();
+        await expect(page.locator('.cms-sidebar-mountains')).toHaveCount(0);
 
         // 2. Greeting Widget
         await expect(page.locator('text=Good').first()).toBeVisible();

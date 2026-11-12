@@ -43,16 +43,10 @@
         padding: 1.25rem 1rem !important;
     }
 
-    .fi-sidebar-group-btn {
-        cursor: pointer !important;
-        user-select: none !important;
-        border-radius: 0.5rem !important;
-        padding: 0.375rem 0.5rem !important;
-        transition: background-color 0.15s ease-in-out !important;
-    }
-
-    .fi-sidebar-group-btn:hover {
-        background-color: rgba(255, 255, 255, 0.04) !important;
+    /* Clean Corporate Static Navigation Groups */
+    .fi-sidebar-group {
+        margin-top: 0.75rem !important;
+        margin-bottom: 0.25rem !important;
     }
 
     .fi-sidebar-group-label {
@@ -61,17 +55,14 @@
         font-weight: 700 !important;
         letter-spacing: 0.08em !important;
         text-transform: uppercase !important;
-        transition: color 0.15s ease-in-out !important;
+        padding: 0.375rem 0.75rem !important;
+        display: block !important;
     }
 
-    .fi-sidebar-group-btn:hover .fi-sidebar-group-label {
-        color: #cbd5e1 !important;
-    }
-
-    .fi-sidebar-group-btn svg,
-    .fi-sidebar-group-collapse-button {
-        color: #64748b !important;
-        transition: color 0.15s ease-in-out !important;
+    .fi-sidebar-group-items {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.125rem !important;
     }
 
     .fi-sidebar-group-btn:hover svg,
