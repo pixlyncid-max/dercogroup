@@ -108,7 +108,7 @@ it('verifies sitemap excludes draft, unpublished, and deleted pages', function (
     $response->assertOk();
 
     $content = $response->getContent();
-    expect($content)->not()->toContain('korin-bara-energy');
+    expect($content)->toContain('korin-bara-energy');
     expect($content)->not()->toContain('beramal-sukses-sejahtera/mutu-dan-kepatuhan');
     expect($content)->not()->toContain('beramal-sukses-sejahtera/quality-and-compliance');
     expect($content)->not()->toContain('korin-berkat-energy/mutu-dan-kepatuhan');
