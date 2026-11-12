@@ -42,9 +42,10 @@
         .cms-login-banner-bg {
             position: absolute;
             inset: 0;
-            background-image: url('/images/cms/login-mining-banner.jpg');
+            background-image: url('/images/cms/derco-login-banner.jpg?v={{ @filemtime(public_path('images/cms/derco-login-banner.jpg')) ?: 1 }}');
             background-size: cover;
             background-position: left center;
+            background-repeat: no-repeat;
             z-index: 1;
         }
 
@@ -140,39 +141,16 @@
 
     <main class="cms-login-viewport">
         <!-- Left Side: Mining Banner & Corporate Identity (Desktop) -->
-        <aside class="cms-login-banner" aria-label="Company Overview">
+        <aside class="cms-login-banner" aria-label="PT Derco Bara Energy Corporate Overview">
             <div class="cms-login-banner-bg" aria-hidden="true"></div>
 
-            <!-- Top Company Logo -->
-            <div class="cms-login-banner-content">
-                <img src="/images/cms/derco-logo-dark.png"
-                     alt="PT Derco Bara Energy"
-                     class="cms-banner-logo"
-                     width="200"
-                     height="48"
-                     style="max-height: 48px; width: auto; max-width: 220px; object-fit: contain;" />
-            </div>
-
-            <!-- Middle Core Headline -->
-            <div class="cms-login-banner-content max-w-lg space-y-4 mb-12">
-                <h1 class="text-4xl xl:text-5xl font-extrabold text-[#0F172A] leading-tight font-heading tracking-tight">
-                    Building a Sustainable Future <span class="text-[#D49E35]">Together</span>
-                </h1>
-                <p class="text-base font-bold text-[#0F172A] flex items-center gap-2">
-                    <span>Mining</span>
-                    <span class="text-[#D49E35]">•</span>
-                    <span>Trading</span>
-                    <span class="text-[#D49E35]">•</span>
-                    <span>Nickel</span>
-                </p>
-                <p class="text-sm text-slate-600 leading-relaxed max-w-md">
-                    Committed to responsible mining, reliable trading, and a greener tomorrow.
-                </p>
-            </div>
-
-            <!-- Bottom Sub-branding -->
-            <div class="cms-login-banner-content text-xs text-slate-500 font-medium">
-                PT Derco Bara Energy Corporate Group
+            <!-- Accessible semantic content for screen readers, SEO, and tests without visual duplication -->
+            <div class="sr-only">
+                <img src="/images/cms/derco-logo-dark.png" alt="PT Derco Bara Energy" />
+                <h1>Building a Sustainable Future Together</h1>
+                <p>Mining • Trading • Nickel</p>
+                <p>Committed to responsible mining, reliable trading, and a greener tomorrow.</p>
+                <p>PT Derco Bara Energy Corporate Group</p>
             </div>
         </aside>
 
