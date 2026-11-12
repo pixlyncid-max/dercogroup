@@ -7,6 +7,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (request()->header('X-Forwarded-Proto') === 'https' || request()->isSecure() || str_starts_with(config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
+
         RateLimiter::for('contact-submissions', function (Request $request): Limit {
             if ($request->hasHeader('X-E2E-Test')) {
                 return Limit::none();

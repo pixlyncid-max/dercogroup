@@ -1,7 +1,7 @@
 <div class="cms-hero-banner relative overflow-hidden rounded-2xl min-h-[260px] md:min-h-[290px] flex flex-col justify-between p-6 sm:p-8 bg-slate-900 border border-slate-200/50 shadow-md">
     <!-- Mining Background Photo -->
     <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image: url('{{ asset('images/cms/dashboard-hero-banner.jpg') }}');"></div>
+         style="background-image: url('/images/cms/dashboard-hero-banner.jpg');"></div>
 
     <!-- Dark gradient overlay for text readability -->
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-transparent"></div>
@@ -9,13 +9,13 @@
     <!-- Top Badge / Subtitle -->
     <div class="relative z-10 space-y-2">
         <span class="inline-block text-xs font-bold uppercase tracking-wider text-[#EDB856]">
-            Korin Berkat Energy
+            PT Derco Bara Energy
         </span>
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
             Mining · Trading · Nickel
         </h2>
         <p class="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed mt-1">
-            Building a sustainable future through responsible mining, strategic trading, and nickel resources.
+            Building a sustainable future through responsible mining, strategic trading, and energy resources.
         </p>
     </div>
 

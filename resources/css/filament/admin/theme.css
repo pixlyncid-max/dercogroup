@@ -198,3 +198,54 @@ aside.fi-sidebar {
 .animate-wave {
     animation: wave 2.5s infinite;
 }
+
+/* ==========================================================================
+   Dashboard 12-Column Grid Layout & Widget Spans
+   ========================================================================== */
+.fi-wi {
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+}
+
+@media (max-width: 1023px) {
+    .fi-wi {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+    .fi-wi > * {
+        grid-column: span 1 / span 1 !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .fi-wi > div:has(.cms-greeting-section),
+    .fi-wi > div:first-child {
+        grid-column: span 12 / span 12 !important;
+    }
+
+    .fi-wi > div:has(.cms-stat-cards),
+    .fi-wi > div:nth-child(2) {
+        grid-column: span 12 / span 12 !important;
+    }
+
+    .fi-wi > div:has(.cms-hero-banner),
+    .fi-wi > div:nth-child(3) {
+        grid-column: span 8 / span 8 !important;
+    }
+
+    .fi-wi > div:has(.cms-quick-actions),
+    .fi-wi > div:nth-child(4) {
+        grid-column: span 4 / span 4 !important;
+    }
+
+    .fi-wi > div:has(.cms-website-overview),
+    .fi-wi > div:nth-child(5) {
+        grid-column: span 7 / span 7 !important;
+    }
+
+    .fi-wi > div:has(.cms-recent-activity),
+    .fi-wi > div:nth-child(6) {
+        grid-column: span 5 / span 5 !important;
+    }
+}

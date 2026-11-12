@@ -88,7 +88,7 @@ class AdminDashboardTest extends TestCase
 
         // 3. Hero Banner Widget
         Livewire::test(HeroBannerWidget::class)
-            ->assertSee('Korin Berkat Energy')
+            ->assertSee('PT Derco Bara Energy')
             ->assertSee('Mining · Trading · Nickel');
 
         // 4. Quick Actions Widget

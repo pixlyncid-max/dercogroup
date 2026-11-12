@@ -44,9 +44,13 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Derco Bara Energy CMS')
             ->brandLogo(fn () => view('filament.brand'))
             ->brandLogoHeight('2.25rem')
-            ->sidebarWidth('16.5rem')
-            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('17.5rem')
+            ->sidebarCollapsibleOnDesktop(false)
             ->maxContentWidth(Width::Full)
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => view('filament.head'),
+            )
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_FOOTER,
                 fn () => view('filament.sidebar-footer'),

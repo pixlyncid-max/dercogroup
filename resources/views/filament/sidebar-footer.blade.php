@@ -1,7 +1,7 @@
 <div class="cms-sidebar-bottom relative mt-auto px-4 pb-4 pt-6">
     <!-- Mountain landscape background graphic -->
     <div class="cms-sidebar-mountains pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-bottom bg-no-repeat bg-contain opacity-25"
-         style="background-image: url('{{ asset('images/cms/sidebar-mountains.png') }}');"></div>
+         style="background-image: url('/images/cms/sidebar-mountains.png');"></div>
 
     <div class="relative z-10 space-y-2">
         <a href="{{ url('/id') }}" target="_blank" rel="noopener noreferrer"
