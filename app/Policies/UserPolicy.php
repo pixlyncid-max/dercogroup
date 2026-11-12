@@ -47,4 +47,3 @@ class UserPolicy extends CmsBasePolicy
         return true;
     }
 }
-

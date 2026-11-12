@@ -3,12 +3,13 @@
     $companyName = $company?->name ?? 'PT Derco Bara Energy';
     $tagline = $company ? ($company->translateField('tagline', 'id') ?: 'Mining · Trading · Nickel') : 'Mining · Trading · Nickel';
     $description = $company ? ($company->translateField('about_short', 'id') ?: 'Building a sustainable future through responsible mining, strategic trading, and energy resources.') : 'Building a sustainable future through responsible mining, strategic trading, and energy resources.';
+    $heroBgUrl = \App\Support\FilamentThemeResolver::resolveAssetUrl('images/cms/dashboard-hero-banner.jpg');
     $publicUrl = $this->getPublicUrl();
 @endphp
 <div class="cms-hero-banner relative overflow-hidden rounded-2xl min-h-[260px] md:min-h-[290px] flex flex-col justify-between p-6 sm:p-8 bg-slate-900 border border-slate-200/50 shadow-md">
     <!-- Mining Background Photo -->
     <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image: url('/images/cms/dashboard-hero-banner.jpg');"></div>
+         style="background-image: url('{{ $heroBgUrl }}');"></div>
 
     <!-- Dark gradient overlay for text readability -->
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-transparent"></div>

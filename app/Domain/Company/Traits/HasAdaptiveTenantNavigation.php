@@ -23,4 +23,3 @@ trait HasAdaptiveTenantNavigation
         return $tenant->hasPage(static::getRequiredPageKey());
     }
 }
-

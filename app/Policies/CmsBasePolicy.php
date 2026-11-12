@@ -53,4 +53,3 @@ abstract class CmsBasePolicy
         return $user->hasAnyRole([User::ROLE_SUPER_ADMIN, User::ROLE_EDITOR]);
     }
 }
-

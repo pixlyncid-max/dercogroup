@@ -1,13 +1,25 @@
 {{-- Responsive link to Filament admin theme stylesheet (supports subfolders like XAMPP and custom domains) --}}
-<link rel="stylesheet" href="{{ asset('css/filament/admin/theme.css') }}?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
+@php
+    $themeCssUrl = \App\Support\FilamentThemeResolver::resolveAssetUrl('css/filament/admin/theme.css');
+@endphp
+<link rel="stylesheet" href="{{ $themeCssUrl }}?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
 
-{{-- Critical styles guaranteeing desktop grid layout, dark navy corporate sidebar, and cloaked overlays --}}
+{{-- Critical styles guaranteeing desktop grid layout, dark navy corporate sidebar, and defensive layout constraints --}}
 <style>
-    /* Alpine Cloak - Essential to prevent dropdown panels, modals, and tooltips flashing or staying stuck open */
+    /* Alpine Cloak - Scoped properly so desktop sidebar is NEVER hidden */
     [x-cloak],
-    [x-cloak="-lg"],
-    [x-cloak=""] {
+    [x-cloak=''],
+    [x-cloak='x-cloak'],
+    [x-cloak='1'] {
         display: none !important;
+    }
+
+    @media (max-width: 1023px) {
+        [x-cloak='-lg'],
+        [x-cloak='-md'],
+        [x-cloak='-sm'] {
+            display: none !important;
+        }
     }
 
     :root {
@@ -26,6 +38,20 @@
     body {
         font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         background-color: var(--cms-content-bg) !important;
+    }
+
+    /* Screen reader & Skip to content defensive constraints */
+    .fi-skip-to-content,
+    .fi-sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
     }
 
     /* Persistent Luxury Corporate Sidebar */
@@ -48,6 +74,118 @@
         background-color: #121E31 !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         padding: 1.25rem 1rem !important;
+    }
+
+    /* Tenant switcher & Avatar constraints */
+    .fi-tenant-menu {
+        width: 100% !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .fi-tenant-menu-trigger {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.625rem 0.875rem !important;
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 0.75rem !important;
+        transition: all 0.15s ease-in-out !important;
+        cursor: pointer !important;
+        box-sizing: border-box !important;
+    }
+
+    .fi-tenant-menu-trigger:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(237, 184, 86, 0.3) !important;
+    }
+
+    .fi-tenant-menu-trigger img,
+    .fi-tenant-avatar,
+    .fi-avatar {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+        max-width: 2.25rem !important;
+        max-height: 2.25rem !important;
+        border-radius: 0.5rem !important;
+        object-fit: contain !important;
+        background-color: rgba(255, 255, 255, 0.06) !important;
+        padding: 0.25rem !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .fi-tenant-menu-trigger-text {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0 !important;
+        text-align: left !important;
+        flex: 1 1 auto !important;
+        overflow: hidden !important;
+    }
+
+    .fi-tenant-menu-trigger-tenant-name {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.375rem !important;
+        font-size: 0.8125rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .fi-tenant-menu-trigger svg,
+    .fi-sidebar-item-btn svg,
+    .fi-icon-btn svg,
+    .fi-topbar svg,
+    .fi-icon {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        max-width: 1.25rem !important;
+        max-height: 1.25rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .fi-tenant-menu-trigger svg {
+        color: #94a3b8 !important;
+        margin-left: auto !important;
+    }
+
+    /* Tenant dropdown list styling */
+    .fi-dropdown-panel {
+        background-color: #121E31 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
+        padding: 0.375rem !important;
+    }
+
+    .fi-dropdown-list-item {
+        border-radius: 0.5rem !important;
+        padding: 0.5rem 0.75rem !important;
+        color: #cbd5e1 !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+
+    .fi-dropdown-list-item:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: #EDB856 !important;
+    }
+
+    .fi-dropdown-list-item-image {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+        max-width: 1.5rem !important;
+        max-height: 1.5rem !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        border-radius: 0.375rem !important;
+        flex-shrink: 0 !important;
     }
 
     /* Clean Corporate Static Navigation Groups */

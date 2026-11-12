@@ -44,4 +44,3 @@ class CompanyPolicy extends CmsBasePolicy
         return true;
     }
 }
-

@@ -157,4 +157,3 @@ class EditCompanyProfile extends EditTenantProfile
         return $record;
     }
 }
-

@@ -24,7 +24,7 @@ return [
         'holding' => [
             'light' => '/images/logo/Logo-DercoBaraEnergy.png',
             'dark' => '/images/logo/Logo-DercoBaraEnergy-light.png',
-            'compact' => null,
+            'compact' => '/images/logo/Logo-DercoBaraEnergy-compact.png',
             'width' => 676,
             'height' => 369,
             'alt' => 'PT Derco Bara Energy',
@@ -37,7 +37,7 @@ return [
         'beramal' => [
             'light' => '/images/logo/Logo-BeramalSuksesSejahtera.png',
             'dark' => '/images/logo/Logo-BeramalSuksesSejahtera-light.png',
-            'compact' => null,
+            'compact' => '/images/logo/Logo-BeramalSuksesSejahtera-compact.png',
             'width' => 693,
             'height' => 360,
             'alt' => 'PT Beramal Sukses Sejahtera',

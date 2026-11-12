@@ -33,4 +33,3 @@ class SettingPolicy extends CmsBasePolicy
         return $user->isSuperAdmin();
     }
 }
-

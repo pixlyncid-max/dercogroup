@@ -110,7 +110,7 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
 
         $path = $logoData['compact'] ?? $logoData['light'] ?? null;
 
-        return $path ? asset(ltrim($path, '/')) : null;
+        return $path ? \App\Support\FilamentThemeResolver::resolveAssetUrl($path) : null;
     }
 
     public function hasPage(PageKey|string $key): bool

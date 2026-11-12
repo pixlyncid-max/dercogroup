@@ -28,6 +28,36 @@ class FilamentThemeResolver implements Htmlable, Stringable
         return $this->toHtml();
     }
 
+    public static function getSubfolder(): string
+    {
+        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+        if ($scriptName !== '') {
+            $scriptDir = str_replace('\\', '/', dirname($scriptName));
+            if ($scriptDir !== '/' && $scriptDir !== '.') {
+                return rtrim($scriptDir, '/');
+            }
+        }
+
+        $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+        if (preg_match('#^(/[^/]+/(?:public/)?)#', $requestUri, $matches)) {
+            $candidate = rtrim($matches[1], '/');
+            $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+            if ($docRoot !== '' && is_dir($docRoot.$candidate)) {
+                return $candidate;
+            }
+        }
+
+        return '';
+    }
+
+    public static function resolveAssetUrl(string $path): string
+    {
+        $cleanPath = ltrim($path, '/');
+        $subfolder = static::getSubfolder();
+
+        return ($subfolder !== '' ? $subfolder : '').'/'.$cleanPath;
+    }
+
     public function toHtml(): string
     {
         $html = '';
@@ -42,8 +72,9 @@ class FilamentThemeResolver implements Htmlable, Stringable
 
             if (file_exists($fullStaticPath)) {
                 $version = (string) filemtime($fullStaticPath);
+                $url = static::resolveAssetUrl($this->staticPath);
 
-                $html = '<link rel="stylesheet" href="'.asset($this->staticPath).'?v='.$version.'" data-navigate-track />';
+                $html = '<link rel="stylesheet" href="'.$url.'?v='.$version.'" data-navigate-track />';
             }
         }
 
@@ -51,17 +82,19 @@ class FilamentThemeResolver implements Htmlable, Stringable
             return '';
         }
 
-        // 3. Ensure URLs are root-relative (or match current request scheme/host),
+        // 3. Ensure URLs are root-relative (or match current request scheme/host and subfolder),
         // preventing mixed-content blocks or localhost hardcoding when APP_URL in .env
-        // is set to http://localhost while accessed on https://dercogroup.co.id.
+        // is set to http://localhost while accessed on subfolder or custom port/domain.
         return $this->normalizeToRootRelative($html);
     }
 
     protected function normalizeToRootRelative(string $html): string
     {
+        $subfolder = static::getSubfolder();
+
         return (string) preg_replace_callback(
             '#(href|src)=["\']https?://[^/]+(:\d+)?(/[^"\']+)["\']#i',
-            function (array $matches): string {
+            function (array $matches) use ($subfolder): string {
                 $attr = $matches[1];
                 $port = $matches[2] ?? '';
                 $path = $matches[3];
@@ -71,7 +104,11 @@ class FilamentThemeResolver implements Htmlable, Stringable
                     return $matches[0];
                 }
 
-                // Otherwise convert to root-relative path
+                // If running in subfolder (e.g. /derco-app/public) and path does not have it yet
+                if ($subfolder !== '' && ! str_starts_with($path, $subfolder)) {
+                    $path = $subfolder.$path;
+                }
+
                 return sprintf('%s="%s"', $attr, $path);
             },
             $html

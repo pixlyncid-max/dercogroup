@@ -13,4 +13,3 @@ class ContactMessagePolicy extends CmsBasePolicy
         return false;
     }
 }
-

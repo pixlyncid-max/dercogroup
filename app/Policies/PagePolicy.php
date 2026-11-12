@@ -18,4 +18,3 @@ class PagePolicy extends CmsBasePolicy
         return $user->isSuperAdmin();
     }
 }
-

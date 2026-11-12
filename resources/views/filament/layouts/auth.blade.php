@@ -2,9 +2,15 @@
     'livewire' => null,
 ])
 
+@php
+    $themeCssUrl = \App\Support\FilamentThemeResolver::resolveAssetUrl('css/filament/admin/theme.css');
+    $loginBannerUrl = \App\Support\FilamentThemeResolver::resolveAssetUrl('images/cms/derco-login-banner.jpg');
+    $logoUrl = \App\Support\FilamentThemeResolver::resolveAssetUrl('images/cms/derco-logo-dark.png');
+@endphp
+
 <x-filament-panels::layout.base :livewire="$livewire">
-    {{-- Ensure theme stylesheet is loaded via root-relative URL, immune to APP_URL localhost issues --}}
-    <link rel="stylesheet" href="/css/filament/admin/theme.css?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
+    {{-- Ensure theme stylesheet is loaded via subfolder-aware URL --}}
+    <link rel="stylesheet" href="{{ $themeCssUrl }}?v={{ @filemtime(public_path('css/filament/admin/theme.css')) ?: 1 }}" />
 
     {{-- Embedded Self-Contained Critical CSS for instantaneous zero-CLS layout rendering --}}
     <style>
@@ -42,7 +48,7 @@
         .cms-login-banner-bg {
             position: absolute;
             inset: 0;
-            background-image: url('/images/cms/derco-login-banner.jpg?v={{ @filemtime(public_path('images/cms/derco-login-banner.jpg')) ?: 1 }}');
+            background-image: url('{{ $loginBannerUrl }}?v={{ @filemtime(public_path('images/cms/derco-login-banner.jpg')) ?: 1 }}');
             background-size: cover;
             background-position: left center;
             background-repeat: no-repeat;
@@ -274,7 +280,7 @@
             <div class="cms-login-card">
                 <!-- Card Header -->
                 <div class="text-center space-y-2 mb-6">
-                    <img src="/images/cms/derco-logo-dark.png"
+                    <img src="{{ $logoUrl }}"
                          alt="PT Derco Bara Energy"
                          class="cms-login-logo"
                          width="200"
