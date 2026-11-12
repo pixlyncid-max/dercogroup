@@ -61,9 +61,21 @@ class BrandingLogoTest extends TestCase
         $this->assertEquals(369, $dercoLogo['height']);
         $this->assertEquals('PT Derco Bara Energy', $dercoLogo['alt']);
 
+        $korinBerkatLogo = $action->execute(CompanyTheme::KorinBerkat);
         $korinBaraLogo = $action->execute(CompanyTheme::KorinBara);
+
+        $this->assertNotNull($korinBerkatLogo);
         $this->assertNotNull($korinBaraLogo);
-        $this->assertEquals('/images/logo/Logo-KorinBaraEnergy-compact.png', $korinBaraLogo['compact']);
+
+        // Same logo files (light, dark, compact)
+        $this->assertEquals($korinBerkatLogo['light'], $korinBaraLogo['light']);
+        $this->assertEquals($korinBerkatLogo['dark'], $korinBaraLogo['dark']);
+        $this->assertEquals($korinBerkatLogo['compact'], $korinBaraLogo['compact']);
+        $this->assertEquals('/images/logo/Logo-KorinBerkatEnergy-compact.png', $korinBaraLogo['compact']);
+
+        // Different alt texts
+        $this->assertEquals('PT Korin Berkat Energy', $korinBerkatLogo['alt']);
+        $this->assertEquals('PT Korin Bara Energy', $korinBaraLogo['alt']);
     }
 
     public function test_resolve_company_logo_returns_null_for_non_existent_or_missing_files(): void

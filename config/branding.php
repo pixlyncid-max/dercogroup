@@ -10,6 +10,15 @@ declare(strict_types=1);
  * - 'dark': Berkas logo untuk permukaan GELAP (background charcoal/navy/dark water). Berisi varian bertinta terang/putih.
  * - 'compact': Berkas logo ringkas / ikon untuk penempatan sempit (opsional, mis. rail vertikal 88px).
  */
+$korinBerkatLogo = [
+    'light' => '/images/logo/Logo-KorinBerkatEnergy.png',
+    'dark' => '/images/logo/Logo-KorinBerkatEnergy-light.png',
+    'compact' => '/images/logo/Logo-KorinBerkatEnergy-compact.png',
+    'width' => 559,
+    'height' => 446,
+    'alt' => 'PT Korin Berkat Energy',
+];
+
 return [
     'logos' => [
         'holding' => [
@@ -20,20 +29,9 @@ return [
             'height' => 369,
             'alt' => 'PT Derco Bara Energy',
         ],
-        'korin-berkat' => [
-            'light' => '/images/logo/Logo-KorinBerkatEnergy.png',
-            'dark' => '/images/logo/Logo-KorinBerkatEnergy-light.png',
-            'compact' => null,
-            'width' => 559,
-            'height' => 446,
-            'alt' => 'PT Korin Berkat Energy',
-        ],
+        'korin-berkat' => $korinBerkatLogo,
         'korin-bara' => [
-            'light' => '/images/logo/Logo-KorinBerkatEnergy.png',
-            'dark' => '/images/logo/Logo-KorinBerkatEnergy-light.png',
-            'compact' => '/images/logo/Logo-KorinBaraEnergy-compact.png',
-            'width' => 559,
-            'height' => 446,
+            ...$korinBerkatLogo,
             'alt' => 'PT Korin Bara Energy',
         ],
         'beramal' => [

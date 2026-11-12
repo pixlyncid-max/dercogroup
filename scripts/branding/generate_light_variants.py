@@ -39,7 +39,7 @@ CONFIG = {
         'val_threshold': 0.40,
         'has_light_variant': True,
         'extract_compact': True,
-        'compact_name': 'Logo-KorinBaraEnergy-compact.png',
+        'compact_name': 'Logo-KorinBerkatEnergy-compact.png',
         # Symbol is cleanly separated between Y=50 and Y=286
         'compact_crop_box': (20, 50, 526, 287), # (left, top, right, bottom)
     },

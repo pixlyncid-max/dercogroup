@@ -107,8 +107,8 @@ test.describe('Revision 3 — Header & Footer Brand Logos across all themes', ()
             const railImg = railLink.locator('img');
             await expect(railImg).toBeVisible();
             const railSrc = await railImg.getAttribute('src');
-            // Compact icon or original — either is valid depending on viewport width
-            expect(railSrc).toMatch(/Logo-KorinBara/);
+            // Korin Bara now shares Korin Berkat's logo definition (Revisi 4 B1/B6)
+            expect(railSrc).toMatch(/Logo-KorinBerkatEnergy/);
             const isRailLoaded = await railImg.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
             expect(isRailLoaded).toBe(true);
         }
@@ -121,9 +121,9 @@ test.describe('Revision 3 — Header & Footer Brand Logos across all themes', ()
             const img = document.querySelector('footer img[alt="PT Korin Bara Energy"]') as HTMLImageElement | null;
             return img ? img.getAttribute('src') : null;
         });
-        // Footer uses dark-surface variant
+        // Footer uses Korin Berkat's dark-surface variant with Korin Bara alt text
         if (footerSrc !== null) {
-            expect(footerSrc).toMatch(/Logo-KorinBara/);
+            expect(footerSrc).toMatch(/Logo-KorinBerkatEnergy/);
         }
     });
 
