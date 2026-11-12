@@ -94,48 +94,163 @@
             display: block;
         }
 
-        /* Form styling resilience */
+        /* Complete Login Card Form Layout & Styling */
+        .cms-login-card form {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .cms-login-card .fi-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            gap: 1.125rem !important;
+            grid-template-columns: none !important;
+        }
+
+        .cms-login-card .fi-grid-col {
+            width: 100% !important;
+            min-width: 100% !important;
+            grid-column: auto !important;
+        }
+
+        .cms-login-card .fi-sc-component {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+
+        .cms-login-card .fi-fo-field {
+            width: 100% !important;
+        }
+
+        /* Hide text labels on email and password (placeholders act as visual cues matching reference) */
+        .cms-login-card .fi-fo-field:not(:has(input[type="checkbox"])) .fi-fo-field-label-col {
+            display: none !important;
+        }
+
+        /* Input field container styling */
+        .cms-login-card .fi-input-wrp {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            background-color: #ffffff !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 0.75rem !important;
+            padding: 0.25rem 0.625rem !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+            transition: all 0.2s ease !important;
+            box-sizing: border-box !important;
+        }
+
+        .cms-login-card .fi-input-wrp:focus-within {
+            border-color: #122A44 !important;
+            box-shadow: 0 0 0 2px rgba(18, 42, 68, 0.12) !important;
+        }
+
+        .cms-login-card .fi-input-wrp-prefix svg {
+            color: #94a3b8 !important;
+            width: 1.125rem !important;
+            height: 1.125rem !important;
+            margin-right: 0.375rem !important;
+        }
+
+        .cms-login-card .fi-input-wrp input[type="text"],
+        .cms-login-card .fi-input-wrp input[type="email"],
+        .cms-login-card .fi-input-wrp input[type="password"] {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            width: 100% !important;
+            padding: 0.5rem 0.375rem !important;
+            font-size: 0.875rem !important;
+            color: #0f172a !important;
+            line-height: 1.5 !important;
+        }
+
+        .cms-login-card .fi-input-wrp input::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        /* Remember Me & Forgot Password Row */
+        .cms-login-card .fi-fo-field:has(input[type="checkbox"]) {
+            width: 100% !important;
+            margin-top: -0.25rem !important;
+            margin-bottom: 0.25rem !important;
+        }
+
+        .cms-login-card .fi-fo-field:has(input[type="checkbox"]) .fi-fo-field-label-col {
+            width: 100% !important;
+        }
+
+        .cms-login-card .fi-fo-field:has(input[type="checkbox"]) .fi-fo-field-label-ctn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+        }
+
+        .cms-login-card label.fi-fo-field-label {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            cursor: pointer !important;
+            font-size: 0.8125rem !important;
+            font-weight: 500 !important;
+            color: #64748b !important;
+            user-select: none !important;
+        }
+
+        .cms-login-card input[type="checkbox"] {
+            width: 1rem !important;
+            height: 1rem !important;
+            border-radius: 0.25rem !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #122A44 !important;
+            cursor: pointer !important;
+        }
+
+        .cms-login-card .fi-fo-field-hint-ctn a,
+        .cms-login-card a.fi-link {
+            color: #EDB856 !important;
+            font-size: 0.8125rem !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            transition: color 0.15s ease !important;
+        }
+
+        .cms-login-card .fi-fo-field-hint-ctn a:hover,
+        .cms-login-card a.fi-link:hover {
+            color: #D49E35 !important;
+        }
+
+        /* Submit Button */
         .cms-login-card .fi-btn-primary,
         .cms-login-card button[type="submit"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
             background-color: #122A44 !important;
             color: #ffffff !important;
             border-radius: 0.75rem !important;
             font-weight: 600 !important;
+            font-size: 0.875rem !important;
             padding: 0.75rem 1.25rem !important;
             width: 100% !important;
+            min-height: 2.75rem !important;
             border: none !important;
             cursor: pointer !important;
             box-shadow: 0 4px 6px -1px rgba(18, 42, 68, 0.15) !important;
             transition: all 0.2s ease !important;
+            box-sizing: border-box !important;
         }
 
         .cms-login-card .fi-btn-primary:hover,
         .cms-login-card button[type="submit"]:hover {
             background-color: #0c1d30 !important;
             transform: translateY(-1px);
-        }
-
-        .cms-login-card input[type="text"],
-        .cms-login-card input[type="email"],
-        .cms-login-card input[type="password"] {
-            border-radius: 0.75rem !important;
-            border: 1px solid #E2E8F0 !important;
-            padding: 0.65rem 0.875rem !important;
-            font-size: 0.875rem !important;
-            width: 100% !important;
-            background-color: #ffffff !important;
-            box-sizing: border-box !important;
-        }
-
-        .cms-login-card input[type="text"]:focus,
-        .cms-login-card input[type="email"]:focus,
-        .cms-login-card input[type="password"]:focus {
-            border-color: #122A44 !important;
-            outline: 2px solid rgba(18, 42, 68, 0.15) !important;
-        }
-
-        .cms-login-card .fi-fo-field-wrp-label {
-            display: none !important; /* Icons and placeholders act as visual cues matching reference */
+            box-shadow: 0 6px 10px -1px rgba(18, 42, 68, 0.2) !important;
         }
     </style>
 

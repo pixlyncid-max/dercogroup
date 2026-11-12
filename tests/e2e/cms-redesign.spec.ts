@@ -25,6 +25,44 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
         await page.goto('/admin/login');
         await page.waitForLoadState('networkidle');
 
+        const elementSizes = await page.evaluate(() => {
+            const emailInp = document.querySelector('input[type="email"]');
+            const passInp = document.querySelector('input[type="password"]');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const card = document.querySelector('.cms-login-card');
+            return {
+                cardWidth: card?.getBoundingClientRect().width,
+                emailWidth: emailInp?.getBoundingClientRect().width,
+                passWidth: passInp?.getBoundingClientRect().width,
+                submitBtnWidth: submitBtn?.getBoundingClientRect().width,
+            };
+        });
+        console.log('LOGIN_ELEMENT_SIZES:', JSON.stringify(elementSizes, null, 2));
+
+        expect(elementSizes.emailWidth).toBeGreaterThan(200);
+        expect(elementSizes.passWidth).toBeGreaterThan(200);
+        expect(elementSizes.submitBtnWidth).toBeGreaterThan(300);
+
+        const verticalPositions = await page.evaluate(() => {
+            const items = [
+                { name: 'logo', el: document.querySelector('.cms-login-logo') },
+                { name: 'welcome', el: document.querySelector('h2') },
+                { name: 'email', el: document.querySelector('input[type="email"]') },
+                { name: 'password', el: document.querySelector('input[type="password"]') },
+                { name: 'remember', el: document.querySelector('input[type="checkbox"]') },
+                { name: 'forgot', el: Array.from(document.querySelectorAll('a')).find(a => a.textContent?.includes('Forgot Password')) },
+                { name: 'submit', el: document.querySelector('button[type="submit"]') },
+                { name: 'sso', el: Array.from(document.querySelectorAll('button')).find(b => b.textContent?.includes('Login with SSO')) },
+                { name: 'copyright', el: Array.from(document.querySelectorAll('p')).find(p => p.textContent?.includes('All rights reserved')) },
+            ];
+            return items.map(it => ({
+                name: it.name,
+                y: it.el ? Math.round(it.el.getBoundingClientRect().y) : null,
+                height: it.el ? Math.round(it.el.getBoundingClientRect().height) : null,
+            }));
+        });
+        console.log('VERTICAL_POSITIONS:', JSON.stringify(verticalPositions, null, 2));
+
         // Check key elements from reference
         await expect(page.locator('text=Building a Sustainable')).toBeVisible();
         await expect(page.locator('text=Welcome Back')).toBeVisible();

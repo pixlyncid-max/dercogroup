@@ -6,6 +6,7 @@ namespace App\Filament\Pages\Auth;
 
 use Filament\Actions\Action;
 use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
 use Illuminate\Contracts\Support\Htmlable;
@@ -49,12 +50,18 @@ class Login extends BaseLogin
         return TextInput::make('password')
             ->label('Password')
             ->placeholder('Password')
-            ->hint(filament()->hasPasswordReset() ? new HtmlString(Blade::render('<x-filament::link :href="filament()->getRequestPasswordResetUrl()" tabindex="-1" class="!text-[#EDB856] hover:!text-[#D49E35] font-semibold text-xs">Forgot Password?</x-filament::link>')) : null)
             ->prefixIcon('heroicon-o-lock-closed')
             ->password()
             ->revealable(filament()->arePasswordsRevealable())
             ->required()
             ->extraInputAttributes(['class' => '!rounded-xl !py-2.5 !text-sm']);
+    }
+
+    protected function getRememberFormComponent(): Component
+    {
+        return Checkbox::make('remember')
+            ->label('Remember Me')
+            ->hint(filament()->hasPasswordReset() ? new HtmlString(Blade::render('<x-filament::link :href="filament()->getRequestPasswordResetUrl()" tabindex="-1" class="!text-[#EDB856] hover:!text-[#D49E35] font-semibold text-xs">Forgot Password?</x-filament::link>')) : null);
     }
 
     protected function getAuthenticateFormAction(): Action
