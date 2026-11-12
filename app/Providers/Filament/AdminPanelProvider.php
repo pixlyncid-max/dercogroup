@@ -17,6 +17,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -46,6 +47,13 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.25rem')
             ->sidebarWidth('17.5rem')
             ->sidebarCollapsibleOnDesktop(false)
+            ->collapsibleNavigationGroups(true)
+            ->navigationGroups([
+                NavigationGroup::make('Komunikasi & Pesan')->collapsed(false),
+                NavigationGroup::make('Struktur & Halaman')->collapsed(false),
+                NavigationGroup::make('Konten Operasional')->collapsed(false),
+                NavigationGroup::make('Sistem & Hak Akses')->collapsed(false),
+            ])
             ->maxContentWidth(Width::Full)
             ->renderHook(
                 PanelsRenderHook::HEAD_END,

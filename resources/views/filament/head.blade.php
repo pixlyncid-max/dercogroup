@@ -43,12 +43,40 @@
         padding: 1.25rem 1rem !important;
     }
 
+    .fi-sidebar-group-btn {
+        cursor: pointer !important;
+        user-select: none !important;
+        border-radius: 0.5rem !important;
+        padding: 0.375rem 0.5rem !important;
+        transition: background-color 0.15s ease-in-out !important;
+    }
+
+    .fi-sidebar-group-btn:hover {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+    }
+
     .fi-sidebar-group-label {
         color: #64748b !important;
         font-size: 0.6875rem !important;
         font-weight: 700 !important;
         letter-spacing: 0.08em !important;
         text-transform: uppercase !important;
+        transition: color 0.15s ease-in-out !important;
+    }
+
+    .fi-sidebar-group-btn:hover .fi-sidebar-group-label {
+        color: #cbd5e1 !important;
+    }
+
+    .fi-sidebar-group-btn svg,
+    .fi-sidebar-group-collapse-button {
+        color: #64748b !important;
+        transition: color 0.15s ease-in-out !important;
+    }
+
+    .fi-sidebar-group-btn:hover svg,
+    .fi-sidebar-group-btn:hover .fi-sidebar-group-collapse-button {
+        color: #EDB856 !important;
     }
 
     .fi-sidebar-item-btn {

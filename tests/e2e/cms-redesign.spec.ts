@@ -45,6 +45,14 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
     });
 
     test('Admin dashboard matches reference layout, widgets, and real DB metrics', async ({ page }) => {
+        page.on('console', msg => console.log('BROWSER_LOG:', msg.type(), msg.text()));
+        page.on('pageerror', err => console.log('BROWSER_ERROR:', err.message));
+        page.on('response', res => {
+            if (res.status() === 404) {
+                console.log('404_FAILED_URL:', res.url());
+            }
+        });
+
         await page.setViewportSize({ width: 1672, height: 941 });
 
         // Log in
@@ -95,6 +103,23 @@ test.describe('CMS Admin Redesign (Revisi 4)', () => {
         const statCardsBox = await page.locator('.cms-stat-cards').boundingBox();
         expect(statCardsBox).not.toBeNull();
         expect(statCardsBox!.width).toBeGreaterThan(1000); // 12 cols span full content width (~1328px)
+
+        // 8. Verify all navigation groups are expanded by default and items are visible & clickable
+        await expect(page.locator('.fi-sidebar a[href*="/admin/pages"]')).toBeVisible();
+        await expect(page.locator('.fi-sidebar a[href*="/admin/companies"]')).toBeVisible();
+        await expect(page.locator('.fi-sidebar a[href*="/admin/products"]')).toBeVisible();
+        await expect(page.locator('.fi-sidebar a[href*="/admin/contact-messages"]')).toBeVisible();
+
+        // 9. Click on "Halaman" from sidebar and verify navigation works
+        await Promise.all([
+            page.waitForURL('**/admin/pages', { timeout: 15000 }),
+            page.locator('.fi-sidebar a[href*="/admin/pages"]').click(),
+        ]);
+        await expect(page.locator('h1:has-text("Halaman")')).toBeVisible();
+
+        // 10. Click on "Dashboard" from sidebar to return
+        await page.locator('.fi-sidebar a:has-text("Dashboard")').first().click();
+        await expect(page.locator('.cms-hero-banner')).toBeVisible({ timeout: 15000 });
 
         // Capture screenshot
         await page.screenshot({ path: path.join(COMPARE_DIR, 'dashboard-actual.png') });
