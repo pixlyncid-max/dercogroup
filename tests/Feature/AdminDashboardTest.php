@@ -125,7 +125,6 @@ class AdminDashboardTest extends TestCase
             'products' => 'korin-berkat-energy',
             'operations' => 'korin-berkat-energy',
             'company-stats' => 'derco-bara-energy',
-            'certifications' => 'beramal-sukses-sejahtera',
             'contact-messages' => 'derco-bara-energy',
             'company-contacts' => 'derco-bara-energy',
             'users' => 'derco-bara-energy',
@@ -137,5 +136,8 @@ class AdminDashboardTest extends TestCase
             $listResponse = $this->get("/admin/{$tenantSlug}/{$slug}");
             $listResponse->assertOk();
         }
+
+        // Certifications is dormant per Revisi 6 Section 0 Item 9
+        $this->get('/admin/beramal-sukses-sejahtera/certifications')->assertForbidden();
     }
 }

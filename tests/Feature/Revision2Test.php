@@ -9,7 +9,6 @@ use App\Domain\Page\Enums\PageKey;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
@@ -29,11 +28,9 @@ it('verifies per-theme page configuration and page counts', function (): void {
     expect($korinBerkat->pages()->count())->toBe(5);
     expect($korinBerkat->pages()->where('key', PageKey::Compliance->value)->exists())->toBeFalse();
 
-    // Beramal has 6 pages, with Compliance unpublished and hidden from nav
-    expect($beramal->pages()->count())->toBe(6);
-    $beramalCompliance = $beramal->pages()->where('key', PageKey::Compliance->value)->firstOrFail();
-    expect($beramalCompliance->is_published)->toBeFalse();
-    expect($beramalCompliance->show_in_nav)->toBeFalse();
+    // Beramal has 5 pages (Compliance completely deleted per Revisi 6 Section 0 Item 9)
+    expect($beramal->pages()->count())->toBe(5);
+    expect($beramal->pages()->where('key', PageKey::Compliance->value)->exists())->toBeFalse();
 });
 
 it('executes SyncSubsidiaryPagesAction idempotently', function (): void {
@@ -46,45 +43,25 @@ it('executes SyncSubsidiaryPagesAction idempotently', function (): void {
     $beramal = Company::query()->where('slug', 'beramal-sukses-sejahtera')->firstOrFail();
 
     expect($korinBerkat->pages()->count())->toBe(5);
-    expect($beramal->pages()->count())->toBe(6);
+    expect($beramal->pages()->count())->toBe(5);
 
     // Run a second time to ensure idempotency
     $action->execute();
 
     expect($korinBerkat->pages()->count())->toBe(5);
-    expect($beramal->pages()->count())->toBe(6);
+    expect($beramal->pages()->count())->toBe(5);
 });
 
-it('returns 404 for public Beramal compliance and 200 with preview flag for authenticated preview requests', function (): void {
-    // Public requests return 404
+it('returns 404 for Beramal compliance because the page is permanently deleted per Revisi 6 Section 0 Item 9', function (): void {
+    // Both public and preview requests return 404
     $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan')->assertNotFound();
     $this->get('/en/our-business/beramal-sukses-sejahtera/quality-and-compliance')->assertNotFound();
-
-    // Public requests with ?preview=1 still return 404 for unauthenticated users
     $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan?preview=1')->assertNotFound();
 
-    // Authenticated admin with ?preview=1 returns 200 with isPreview flag
     $admin = User::query()->firstOrFail();
-
     $this->actingAs($admin)
         ->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan?preview=1')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('locale', 'id')
-            ->where('page.key', 'compliance')
-            ->where('isPreview', true)
-        );
-
-    $this->actingAs($admin)
-        ->get('/en/our-business/beramal-sukses-sejahtera/quality-and-compliance?preview=1')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('locale', 'en')
-            ->where('page.key', 'compliance')
-            ->where('isPreview', true)
-        );
+        ->assertNotFound();
 });
 
 it('returns 404 for Korin Berkat compliance URLs because the page is permanently deleted', function (): void {

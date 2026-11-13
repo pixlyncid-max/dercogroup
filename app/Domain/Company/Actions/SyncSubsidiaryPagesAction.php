@@ -19,6 +19,7 @@ class SyncSubsidiaryPagesAction
     {
         $this->syncKorinBerkat();
         $this->syncBeramal();
+        $this->syncKorinBara();
     }
 
     private function syncKorinBerkat(): void
@@ -112,17 +113,15 @@ class SyncSubsidiaryPagesAction
             return;
         }
 
-        // 1. Deactivate Compliance page (is_published = false, show_in_nav = false)
+        // 1. Delete Compliance page (Section 0 Item 9)
         $compliancePage = Page::query()
             ->where('company_id', $company->id)
             ->where('key', PageKey::Compliance->value)
             ->first();
 
         if ($compliancePage) {
-            $compliancePage->update([
-                'is_published' => false,
-                'show_in_nav' => false,
-            ]);
+            $compliancePage->blocks()->delete();
+            $compliancePage->delete();
         }
 
         // 2. Update Contact page title & slug to "Hubungi Kami" / "hubungi-kami"
@@ -173,6 +172,35 @@ class SyncSubsidiaryPagesAction
 
         if ($aboutPage) {
             $aboutPage->blocks()->where('type', BlockType::Timeline)->delete();
+        }
+    }
+
+    private function syncKorinBara(): void
+    {
+        $company = Company::query()->where('slug', 'korin-bara-energy')->first();
+        if (! $company) {
+            return;
+        }
+
+        // 1. Delete Compliance page (Section 0 Item 9)
+        $compliancePage = Page::query()
+            ->where('company_id', $company->id)
+            ->where('key', PageKey::Compliance->value)
+            ->first();
+
+        if ($compliancePage) {
+            $compliancePage->blocks()->delete();
+            $compliancePage->delete();
+        }
+
+        // 2. Remove CertificationList from Beranda if present
+        $homePage = Page::query()
+            ->where('company_id', $company->id)
+            ->where('key', PageKey::Home->value)
+            ->first();
+
+        if ($homePage) {
+            $homePage->blocks()->where('type', BlockType::CertificationList)->delete();
         }
     }
 }

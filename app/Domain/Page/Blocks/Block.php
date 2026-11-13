@@ -25,24 +25,149 @@ abstract class Block
 {
     abstract public static function type(): BlockType;
 
+    public static function isToggleable(): bool
+    {
+        return true;
+    }
+
     /**
      * Single declarative field schema for this block type.
      *
      * Supported field types:
-     * - translatable_text
-     * - translatable_textarea
-     * - translatable_richtext
-     * - text
-     * - link (internal "page:<key>[#fragment]" reference or absolute/relative URL; resolved per locale)
+     * - translatable_text (alias: text)
+     * - translatable_textarea (alias: paragraph)
+     * - translatable_richtext (alias: rich_text_limited)
+     * - text (single language / technical)
+     * - link (internal "page:<key>[#fragment]" reference or absolute/relative URL)
      * - number
-     * - boolean
+     * - boolean (alias: switch)
      * - select (with 'options' => array<string, string>)
-     * - image (automatically enforces required alt_text when image is uploaded)
-     * - repeater (with 'fields' => list<array<string, mixed>>)
+     * - image (automatically enforces alt text)
+     * - repeater (alias: list, with 'fields' => list<array<string, mixed>>)
      *
      * @return list<array<string, mixed>>
      */
     abstract public static function fields(): array;
+
+    /**
+     * Generate complete default data payload for this block type in both languages.
+     *
+     * @return array<string, mixed>
+     */
+    public static function defaultData(): array
+    {
+        return self::buildDefaultsFromFields(static::fields());
+    }
+
+    /**
+     * Generate TypeScript interface definition for this block type.
+     */
+    public static function toTypeScript(): string
+    {
+        $typeName = str_replace(' ', '', ucwords(str_replace('_', ' ', static::type()->value))).'BlockData';
+        $lines = ["export interface {$typeName} {"];
+
+        foreach (static::fields() as $field) {
+            $name = (string) ($field['name'] ?? $field['key'] ?? '');
+            $type = self::normalizeFieldType((string) ($field['type'] ?? 'text'));
+            $required = (bool) ($field['required'] ?? false);
+            $optional = $required ? '' : '?';
+
+            $tsType = match ($type) {
+                'translatable_text', 'translatable_textarea', 'translatable_richtext' => 'Record<\'id\' | \'en\', string>',
+                'text', 'link' => 'string',
+                'number' => 'number',
+                'boolean' => 'boolean',
+                'select' => 'string',
+                'image' => 'string | null',
+                'repeater' => 'Array<Record<string, unknown>>',
+                default => 'unknown',
+            };
+
+            $lines[] = "    {$name}{$optional}: {$tsType};";
+            if ($type === 'image') {
+                $lines[] = "    {$name}_alt{$optional}: Record<'id' | 'en', string>;";
+            }
+        }
+
+        $lines[] = '}';
+
+        return implode("\n", $lines);
+    }
+
+    protected static function normalizeFieldType(string $type): string
+    {
+        return match ($type) {
+            'paragraph' => 'translatable_textarea',
+            'rich_text_limited' => 'translatable_richtext',
+            'switch' => 'boolean',
+            'list' => 'repeater',
+            default => $type,
+        };
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $fields
+     * @return array<string, mixed>
+     */
+    public static function buildDefaultsFromFields(array $fields): array
+    {
+        $defaults = [];
+
+        foreach ($fields as $field) {
+            $name = (string) ($field['name'] ?? $field['key'] ?? '');
+            $type = self::normalizeFieldType((string) ($field['type'] ?? 'text'));
+
+            if (array_key_exists('default', $field)) {
+                $defaults[$name] = $field['default'];
+
+                continue;
+            }
+
+            switch ($type) {
+                case 'translatable_text':
+                case 'translatable_textarea':
+                case 'translatable_richtext':
+                    $defaults[$name] = [
+                        'id' => (string) ($field['default_id'] ?? ''),
+                        'en' => (string) ($field['default_en'] ?? ''),
+                    ];
+                    break;
+
+                case 'text':
+                case 'link':
+                    $defaults[$name] = (string) ($field['default_id'] ?? '');
+                    break;
+
+                case 'number':
+                    $defaults[$name] = 0;
+                    break;
+
+                case 'boolean':
+                    $defaults[$name] = (bool) ($field['default'] ?? false);
+                    break;
+
+                case 'select':
+                    $options = is_array($field['options'] ?? null) ? $field['options'] : [];
+                    $defaults[$name] = array_key_first($options) ?? '';
+                    break;
+
+                case 'image':
+                    $defaults[$name] = null;
+                    $defaults["{$name}_alt"] = [
+                        'id' => (string) ($field['default_id'] ?? ''),
+                        'en' => (string) ($field['default_en'] ?? ''),
+                    ];
+                    break;
+
+                case 'repeater':
+                    $defaults[$name] = [];
+                    break;
+            }
+        }
+
+        return $defaults;
+    }
 
     /**
      * Generate Laravel validation rules from static::fields().
@@ -108,9 +233,9 @@ abstract class Block
         $rules = [];
 
         foreach ($fields as $field) {
-            $name = (string) $field['name'];
+            $name = (string) ($field['name'] ?? $field['key'] ?? '');
             $path = $prefix !== '' ? "{$prefix}.{$name}" : $name;
-            $type = (string) $field['type'];
+            $type = self::normalizeFieldType((string) ($field['type'] ?? 'text'));
             $required = (bool) ($field['required'] ?? false);
 
             switch ($type) {
@@ -118,12 +243,22 @@ abstract class Block
                 case 'translatable_textarea':
                 case 'translatable_richtext':
                     $rules[$path] = [$required ? 'required' : 'nullable', 'array'];
-                    $rules["{$path}.id"] = [$required ? 'required' : 'nullable', 'string'];
-                    $rules["{$path}.en"] = ['nullable', 'string'];
+                    $idRules = [$required ? 'required' : 'nullable', 'string'];
+                    $enRules = ['nullable', 'string'];
+                    if (isset($field['max_chars'])) {
+                        $idRules[] = 'max:'.(int) $field['max_chars'];
+                        $enRules[] = 'max:'.(int) $field['max_chars'];
+                    }
+                    $rules["{$path}.id"] = $idRules;
+                    $rules["{$path}.en"] = $enRules;
                     break;
 
                 case 'text':
-                    $rules[$path] = [$required ? 'required' : 'nullable', 'string'];
+                    $textRules = [$required ? 'required' : 'nullable', 'string'];
+                    if (isset($field['max_chars'])) {
+                        $textRules[] = 'max:'.(int) $field['max_chars'];
+                    }
+                    $rules[$path] = $textRules;
                     break;
 
                 case 'link':
@@ -216,10 +351,10 @@ abstract class Block
         $components = [];
 
         foreach ($fields as $field) {
-            $name = (string) $field['name'];
+            $name = (string) ($field['name'] ?? $field['key'] ?? '');
             $path = $prefix !== '' ? "{$prefix}.{$name}" : $name;
             $label = (string) ($field['label'] ?? $name);
-            $type = (string) $field['type'];
+            $type = self::normalizeFieldType((string) ($field['type'] ?? 'text'));
             $required = (bool) ($field['required'] ?? false);
 
             switch ($type) {

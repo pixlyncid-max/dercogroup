@@ -50,6 +50,19 @@ class CertificationResource extends Resource
         return PageKey::Compliance;
     }
 
+    /**
+     * Module is dormant per Revisi 6 Section 0 Item 9 (code preserved, hidden from CMS navigation).
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema

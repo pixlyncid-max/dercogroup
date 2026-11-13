@@ -21,16 +21,16 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('seeds holding and 3 subsidiaries with 21 total pages and published Korin Bara', function (): void {
+it('seeds holding and 3 subsidiaries with 19 total pages and published Korin Bara', function (): void {
     expect(Company::query()->count())->toBe(4)
-        ->and(Page::query()->count())->toBe(21)
+        ->and(Page::query()->count())->toBe(19)
         ->and(Product::query()->count())->toBe(9);
 
     $publishedSlugs = Company::query()->published()->pluck('slug')->all();
     expect($publishedSlugs)
         ->toContain('derco-bara-energy', 'korin-berkat-energy', 'beramal-sukses-sejahtera', 'korin-bara-energy');
 
-    expect(Page::query()->published()->count())->toBe(20)
+    expect(Page::query()->published()->count())->toBe(19)
         ->and(Product::query()->published()->count())->toBe(9);
 });
 

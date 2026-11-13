@@ -79,20 +79,13 @@ it('renders all 5 active PT Beramal Sukses Sejahtera pages in Indonesian and Eng
             );
     }
 
-    // Compliance page is unpublished: returns 404 for public access
+    // Compliance page has been permanently removed across all companies (Revisi 6 Section 0 Item 9)
     $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan')->assertNotFound();
     $this->get('/en/our-business/beramal-sukses-sejahtera/quality-and-compliance')->assertNotFound();
-
-    // With ?preview=1 for authenticated admin, compliance returns 200 with preview flag
     $admin = User::query()->firstOrFail();
     $this->actingAs($admin)
         ->get('/id/bisnis-kami/beramal-sukses-sejahtera/mutu-dan-kepatuhan?preview=1')
-        ->assertOk()
-        ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('ThemedPage')
-            ->where('page.key', 'compliance')
-            ->where('isPreview', true)
-        );
+        ->assertNotFound();
 
     // Legacy contact URLs redirect with 301 to hubungi-kami / contact-us
     $this->get('/id/bisnis-kami/beramal-sukses-sejahtera/kontak')

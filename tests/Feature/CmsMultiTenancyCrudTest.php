@@ -122,11 +122,11 @@ test('B4: adaptive menu hides and shows modules according to company pages', fun
         ->and(OperationResource::canViewAny())->toBeTrue()
         ->and(CertificationResource::canViewAny())->toBeFalse();
 
-    // Beramal: has products, operations, AND compliance
+    // Beramal: has products, operations, NO compliance (Certification dormant per Revisi 6)
     Filament::setTenant($this->beramal);
     expect(ProductResource::canViewAny())->toBeTrue()
         ->and(OperationResource::canViewAny())->toBeTrue()
-        ->and(CertificationResource::canViewAny())->toBeTrue();
+        ->and(CertificationResource::canViewAny())->toBeFalse();
 });
 
 test('B5: tenant profile page and settings reader work per tenant with global fallback', function (): void {

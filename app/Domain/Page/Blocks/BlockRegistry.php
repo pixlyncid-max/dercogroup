@@ -17,6 +17,8 @@ class BlockRegistry
     public static function all(): array
     {
         return [
+            BlockType::Header->value => HeaderBlock::class,
+            BlockType::Footer->value => FooterBlock::class,
             BlockType::Hero->value => HeroBlock::class,
             BlockType::SplitContent->value => SplitContentBlock::class,
             BlockType::StackedImages->value => StackedImagesBlock::class,

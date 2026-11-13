@@ -144,6 +144,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ([$holding, $korinBerkat, $beramal, $korinBara] as $company) {
             $createPages->execute($company);
+            $this->seedCompanyHeaderAndFooter($company);
             $this->seedCompanyStats($company);
             $this->seedCompanyOperations($company);
             $this->seedCompanyCertifications($company, $pdfId, $pdfEn);
@@ -1126,19 +1127,6 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
-            // Korin Berkat and Beramal remove CertificationList from Home
-            if ($isKorinBara) {
-                $this->createBlock($home, $sortOrder++, BlockType::CertificationList, [
-                    'eyebrow' => ['id' => 'KEPATUHAN & MUTU', 'en' => 'COMPLIANCE & QUALITY'],
-                    'title' => ['id' => 'Sertifikasi, Izin Usaha & Standar K3LH [PLACEHOLDER]', 'en' => 'Certifications, Operating Permits & HSE Standards [PLACEHOLDER]'],
-                    'description' => [
-                        'id' => 'Dokumen verifikasi legalitas izin operasi dan standar manajemen mutu yang dapat diunduh langsung. [PLACEHOLDER]',
-                        'en' => 'Operating license verification records and quality management certificates available for direct download. [PLACEHOLDER]',
-                    ],
-                    'group_by_category' => true,
-                ]);
-            }
-
             $this->createBlock($home, $sortOrder++, BlockType::CtaBanner, [
                 'eyebrow' => $isBeramal
                     ? ['id' => 'KONSULTASI LAYANAN', 'en' => 'SERVICE CONSULTATION']
@@ -1370,14 +1358,72 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    private function seedCompanyHeaderAndFooter(Company $company): void
+    {
+        PageBlock::query()->firstOrCreate(
+            [
+                'company_id' => $company->id,
+                'section_key' => 'header',
+            ],
+            [
+                'page_id' => null,
+                'type' => BlockType::Header,
+                'sort_order' => 0,
+                'is_visible' => true,
+                'data' => [
+                    'logo_path' => null,
+                    'logo_alt' => [
+                        'id' => "Logo {$company->name}",
+                        'en' => "{$company->name} Logo",
+                    ],
+                    'show_company_badge' => true,
+                    'show_language_switch' => true,
+                    'nav_items' => [],
+                ],
+            ]
+        );
+
+        PageBlock::query()->firstOrCreate(
+            [
+                'company_id' => $company->id,
+                'section_key' => 'footer',
+            ],
+            [
+                'page_id' => null,
+                'type' => BlockType::Footer,
+                'sort_order' => 999,
+                'is_visible' => true,
+                'data' => [
+                    'description' => [
+                        'id' => 'Grup energi dan pertambangan terintegrasi dengan komitmen keberlanjutan dan keunggulan operasional.',
+                        'en' => 'Integrated energy and mining group committed to sustainability and operational excellence.',
+                    ],
+                    'copyright_text' => [
+                        'id' => "© 2026 {$company->name}. Seluruh hak cipta dilindungi.",
+                        'en' => "© 2026 {$company->name}. All rights reserved.",
+                    ],
+                    'quick_links' => [],
+                    'disclaimer' => [
+                        'id' => null,
+                        'en' => null,
+                    ],
+                ],
+            ]
+        );
+    }
+
     /**
      * @param  array<string, mixed>  $data
      */
     private function createBlock(Page $page, int $sortOrder, BlockType $type, array $data): void
     {
+        $pageKeyValue = $page->key instanceof PageKey ? $page->key->value : (string) $page->key;
+
         PageBlock::query()->create([
+            'company_id' => $page->company_id,
             'page_id' => $page->id,
             'type' => $type,
+            'section_key' => "{$pageKeyValue}_{$type->value}_{$sortOrder}",
             'sort_order' => $sortOrder,
             'is_visible' => true,
             'data' => $data,

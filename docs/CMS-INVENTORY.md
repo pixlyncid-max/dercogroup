@@ -238,3 +238,4 @@ Pada CMS v2 (Revisi 6), sidebar tidak lagi menampilkan resource tabel terpisah (
 - Pseudo-halaman **Header** diedit sebagai kartu pertama pada **Beranda**, dengan label peringatan: *"Perubahan ini tampil di semua halaman"*.
 - Pseudo-halaman **Footer** menjadi item terpisah di bagian bawah daftar halaman perusahaan.
 - Halaman **Mutu & Kepatuhan** resmi dihapus dari seluruh entitas anak usaha sesuai Butir 9 Bagian 0; kode `Certification` dipertahankan sebagai modul dorman tanpa menu di CMS.
+

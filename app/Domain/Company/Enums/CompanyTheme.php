@@ -47,7 +47,6 @@ enum CompanyTheme: string
                 PageKey::About,
                 PageKey::Products,
                 PageKey::Operations,
-                PageKey::Compliance,
                 PageKey::Contact,
             ],
             self::KorinBara => [
@@ -55,7 +54,6 @@ enum CompanyTheme: string
                 PageKey::About,
                 PageKey::Products,
                 PageKey::Operations,
-                PageKey::Compliance,
                 PageKey::Contact,
             ],
         };
@@ -66,15 +64,7 @@ enum CompanyTheme: string
      */
     public function pageOverrides(): array
     {
-        return match ($this) {
-            self::Beramal => [
-                PageKey::Compliance->value => [
-                    'is_published' => false,
-                    'show_in_nav' => false,
-                ],
-            ],
-            default => [],
-        };
+        return [];
     }
 
     /**

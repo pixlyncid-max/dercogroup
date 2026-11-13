@@ -6,6 +6,8 @@ namespace App\Domain\Page\Enums;
 
 enum BlockType: string
 {
+    case Header = 'header';
+    case Footer = 'footer';
     case Hero = 'hero';
     case SplitContent = 'split_content';
     case StackedImages = 'stacked_images';
@@ -26,6 +28,8 @@ enum BlockType: string
     public function label(): string
     {
         return match ($this) {
+            self::Header => 'Header Website (Logo & Navigasi)',
+            self::Footer => 'Footer Website (Identitas & Hak Cipta)',
             self::Hero => 'Hero Section',
             self::SplitContent => 'Split Content (Gambar & Teks)',
             self::StackedImages => 'Stacked Images Offset (Khas Holding)',

@@ -19,21 +19,19 @@ beforeEach(function (): void {
     $this->seed(DatabaseSeeder::class);
 });
 
-it('renders all 6 published PT Korin Bara Energy pages and product detail publicly without preview flag', function (): void {
+it('renders all 5 published PT Korin Bara Energy pages and product detail publicly without preview flag', function (): void {
     $publicUrls = [
         '/id/bisnis-kami/korin-bara-energy',
         '/id/bisnis-kami/korin-bara-energy/tentang-kami',
         '/id/bisnis-kami/korin-bara-energy/produk',
         '/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200',
         '/id/bisnis-kami/korin-bara-energy/operasi',
-        '/id/bisnis-kami/korin-bara-energy/mutu-dan-kepatuhan',
         '/id/bisnis-kami/korin-bara-energy/kontak',
         '/en/our-business/korin-bara-energy',
         '/en/our-business/korin-bara-energy/about-us',
         '/en/our-business/korin-bara-energy/products',
         '/en/our-business/korin-bara-energy/products/thermal-coal-gar-4200',
         '/en/our-business/korin-bara-energy/operations',
-        '/en/our-business/korin-bara-energy/quality-and-compliance',
         '/en/our-business/korin-bara-energy/contact',
     ];
 
@@ -43,6 +41,10 @@ it('renders all 6 published PT Korin Bara Energy pages and product detail public
         // Public pages do NOT have noindex headers
         expect($response->headers->get('X-Robots-Tag'))->not()->toBe('noindex, nofollow');
     }
+
+    // Mutu & Kepatuhan returns 404 (Revisi 6 Section 0 Item 9)
+    $this->get('/id/bisnis-kami/korin-bara-energy/mutu-dan-kepatuhan')->assertNotFound();
+    $this->get('/en/our-business/korin-bara-energy/quality-and-compliance')->assertNotFound();
 
     // Holding Home and Our Business include all 3 published subsidiaries
     $this->get('/id')
