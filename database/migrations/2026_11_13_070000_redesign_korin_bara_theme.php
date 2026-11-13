@@ -23,3 +23,4 @@ return new class extends Migration
         // Safe idempotent migration; down is no-op
     }
 };
+

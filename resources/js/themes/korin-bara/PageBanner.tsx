@@ -76,3 +76,4 @@ export function PageBanner({ title, image, imageAlt }: PageBannerProps) {
         </section>
     );
 }
+

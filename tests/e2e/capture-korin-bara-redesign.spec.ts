@@ -87,3 +87,4 @@ test.describe('Capture Korin Bara Redesign Multi-Resolution Screenshots', () => 
         }
     }
 });
+
