@@ -61,3 +61,4 @@ test.describe('Capture CMS Stage 9 Screenshots', () => {
         await page.screenshot({ path: path.join(ARTIFACT_DIR, 'derco-editor-mobile.png') });
     });
 });
+
