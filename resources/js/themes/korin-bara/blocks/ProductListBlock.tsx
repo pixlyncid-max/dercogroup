@@ -44,8 +44,11 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
             : [
                   {
                       id: 1,
+                      slug: 'thermal-coal-gar-4200',
                       name: 'Batubara Berkualitas Tinggi',
                       summary:
+                          'Kami menyediakan batubara dengan spesifikasi terbaik untuk mendukung kebutuhan energi dan industri, dengan kualitas yang terjamin dan pasokan yang stabil. [PLACEHOLDER]',
+                      description:
                           'Kami menyediakan batubara dengan spesifikasi terbaik untuk mendukung kebutuhan energi dan industri, dengan kualitas yang terjamin dan pasokan yang stabil. [PLACEHOLDER]',
                       url: '/produk/thermal-coal-gar-4200',
                       image_url: '/images/placeholders/coal-lumps-1280.webp',
@@ -80,9 +83,13 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
                                       Object.entries(specIcons).find(([k]) => key.includes(k))?.[1] ||
                                       defaultSpecs[sIdx]?.icon ||
                                       Flame;
+                                  const displayValue =
+                                      spec.unit && !spec.value.includes(spec.unit)
+                                          ? `${spec.value} ${spec.unit}`
+                                          : spec.value;
                                   return {
                                       name: spec.label,
-                                      value: spec.value,
+                                      value: displayValue,
                                       icon: IconComponent,
                                   };
                               })
@@ -106,7 +113,7 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
                                 </h2>
 
                                 <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
-                                    {product.summary}
+                                    {product.summary || product.description}
                                 </p>
 
                                 <div className="pt-2">

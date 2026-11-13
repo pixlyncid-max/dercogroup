@@ -64,7 +64,7 @@ test.describe('PT Korin Bara Energy — Redesign & Public Verification', () => {
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/korin-bara-energy$/);
         await expect(page.locator('[data-theme="korin-bara"]')).toBeVisible();
         await expect(page.getByTestId('preview-banner')).toHaveCount(0);
-        await expect(page.locator('h1')).toContainText('Energi untuk');
+        await expect(page.locator('h1')).toContainText('PT Korin Bara Energy');
 
         // Sitemap XML includes published korin-bara-energy
         const sitemapResponse = await page.goto('/sitemap.xml');
@@ -108,7 +108,7 @@ test.describe('PT Korin Bara Energy — Redesign & Public Verification', () => {
         const publicPages = [
             {
                 url: '/id/bisnis-kami/korin-bara-energy',
-                h1: 'Energi untuk',
+                h1: 'PT Korin Bara Energy',
                 isHome: true,
             },
             {

@@ -56,12 +56,18 @@ export function SplitContentBlock({ data }: SplitContentBlockProps) {
                             {data.title}
                         </h2>
 
+                        {data.lead ? (
+                            <p className="font-heading text-lg font-medium leading-relaxed text-[#101F38] sm:text-xl">
+                                {data.lead}
+                            </p>
+                        ) : null}
+
                         <div className="space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
                             {paragraphs.length > 0 ? (
                                 paragraphs.map((p, idx) => <p key={idx}>{p}</p>)
-                            ) : (
+                            ) : data.body ? (
                                 <p>{data.body}</p>
-                            )}
+                            ) : null}
                         </div>
 
                         {data.cta_label && data.cta_href ? (

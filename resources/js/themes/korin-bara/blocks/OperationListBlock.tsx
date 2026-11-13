@@ -28,7 +28,7 @@ export function OperationListBlock({ data }: OperationListBlockProps) {
 
     const checklistItems =
         operations.length > 0
-            ? operations.slice(0, 3).map((op) => op.name)
+            ? operations.slice(0, 4).map((op) => op.name)
             : [
                   'Penambangan Terbuka (Open Pit Mining)',
                   'Pengangkutan dan Hauling',

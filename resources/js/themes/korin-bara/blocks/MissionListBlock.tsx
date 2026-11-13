@@ -36,6 +36,12 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                         <blockquote className="text-base sm:text-lg font-medium leading-relaxed text-slate-700 italic border-l-2 border-line pl-4">
                             {visionQuote}
                         </blockquote>
+
+                        {data.body ? (
+                            <p className="text-sm text-slate-600 leading-relaxed pt-2">
+                                {data.body}
+                            </p>
+                        ) : null}
                     </Reveal>
 
                     {/* Mission Column */}
@@ -56,7 +62,12 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                                         aria-hidden="true"
                                         className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#C59B27]"
                                     />
-                                    <span>{item.title}</span>
+                                    <div>
+                                        <span className="font-semibold text-[#101F38]">{item.title}</span>
+                                        {item.description ? (
+                                            <p className="text-sm text-slate-600 mt-1">{item.description}</p>
+                                        ) : null}
+                                    </div>
                                 </li>
                             ))}
                         </ul>
