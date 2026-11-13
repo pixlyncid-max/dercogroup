@@ -155,3 +155,4 @@ export interface CmsSection<T = Record<string, unknown>> {
     is_visible: boolean;
     sort_order: number;
 }
+
