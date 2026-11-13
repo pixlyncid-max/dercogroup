@@ -179,22 +179,63 @@
     /* Tenant dropdown list styling */
     .fi-dropdown-panel {
         background-color: #121E31 !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
         border-radius: 0.75rem !important;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
         padding: 0.375rem !important;
     }
 
+    .fi-dropdown-list-item,
+    .fi-dropdown-list-item-btn,
+    .fi-dropdown-list-item-label,
+    .fi-dropdown-list-item button,
+    .fi-dropdown-list-item a,
+    .fi-dropdown-list-item span:not([class*="bg-"]):not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-rose"]),
+    .fi-tenant-menu-item span:not([class*="bg-"]):not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-rose"]) {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
     .fi-dropdown-list-item {
         border-radius: 0.5rem !important;
         padding: 0.5rem 0.75rem !important;
-        color: #cbd5e1 !important;
         transition: all 0.15s ease-in-out !important;
     }
 
-    .fi-dropdown-list-item:hover {
+    .fi-dropdown-list-item:hover,
+    .fi-dropdown-list-item:focus-within,
+    .fi-dropdown-list-item-btn:hover {
         background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .fi-dropdown-list-item:hover,
+    .fi-dropdown-list-item:hover .fi-dropdown-list-item-btn,
+    .fi-dropdown-list-item:hover .fi-dropdown-list-item-label,
+    .fi-dropdown-list-item:hover button,
+    .fi-dropdown-list-item:hover a,
+    .fi-dropdown-list-item:hover span:not([class*="bg-"]):not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-rose"]),
+    .fi-tenant-menu-item:hover span:not([class*="bg-"]):not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-rose"]) {
         color: #EDB856 !important;
+    }
+
+    .fi-dropdown-list-item svg,
+    .fi-dropdown-list-item-btn svg,
+    .fi-dropdown-list-item-icon {
+        color: #ffffff !important;
+        transition: color 0.15s ease-in-out !important;
+    }
+
+    .fi-dropdown-list-item:hover svg,
+    .fi-dropdown-list-item:hover .fi-dropdown-list-item-btn svg,
+    .fi-dropdown-list-item:hover .fi-dropdown-list-item-icon {
+        color: #EDB856 !important;
+    }
+
+    .fi-dropdown-panel hr,
+    .fi-dropdown-list-divider,
+    .fi-dropdown-panel .fi-dropdown-list + .fi-dropdown-list {
+        border-color: rgba(255, 255, 255, 0.12) !important;
+        margin: 0.375rem 0 !important;
     }
 
     .fi-dropdown-list-item-image {

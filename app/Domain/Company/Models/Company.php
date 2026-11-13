@@ -109,7 +109,7 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
             ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white ml-1.5" title="'.$unreadCount.' pesan baru">'.$unreadCount.'</span>'
             : '';
 
-        return str('<span>'.$this->name.'</span> '.$statusBadge.$unreadBadge)->toHtmlString();
+        return str('<span class="fi-company-tenant-title text-white font-medium" style="color: #ffffff !important;">'.$this->name.'</span> '.$statusBadge.$unreadBadge)->toHtmlString();
     }
 
     public function getFilamentAvatarUrl(): ?string
