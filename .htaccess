@@ -3,7 +3,11 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteRule ^$ public/ [L]
+    RewriteRule ((?s).*) public/$1 [L]
+    </IfModule>
 
     # 1. Block access to hidden files and directories (like .env, .git)
     RewriteCond %{SCRIPT_FILENAME} -d [OR]
