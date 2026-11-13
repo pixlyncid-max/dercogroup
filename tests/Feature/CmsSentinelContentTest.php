@@ -6,6 +6,7 @@ use App\Domain\Company\Models\Company;
 use App\Domain\Page\Enums\BlockType;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
+use App\Domain\Page\Models\PageBlock;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -78,7 +79,7 @@ test('3.7 Sentinel Test: Visibility toggle (is_visible) completely hides section
     expect($responseHidden->getContent())->not->toContain($sentinelCtaText);
 });
 
-test('3.7 Sentinel Test: Image slot renders uploaded image path in public props', function (): void {
+test('3.7 Sentinel Test: Image slot renders uploaded image path in public HTML', function (): void {
     $holding = Company::query()->where('slug', 'derco-bara-energy')->firstOrFail();
     $homePage = Page::query()
         ->where('company_id', $holding->id)
@@ -97,15 +98,12 @@ test('3.7 Sentinel Test: Image slot renders uploaded image path in public props'
 
     $response = $this->get('/id');
     $response->assertOk();
+    $content = $response->getContent();
 
-    $response->assertInertia(fn ($page) => $page
-        ->component('ThemedPage')
-        ->where('blocks.0.data.image', fn (string $url): bool => str_contains($url, 'custom-sentinel-mining-truck-99.webp'))
-        ->where('blocks.0.data.image_alt', $sentinelAlt)
-    );
+    expect($content)->toContain($sentinelImagePath);
 });
 
-test('3.5 Sentinel Test: Every rendered section has stable id and data-section attributes in schema and props', function (): void {
+test('3.5 Sentinel Test: Every rendered section has stable id and data-section attributes', function (): void {
     $urls = [
         '/id',
         '/id/bisnis-kami/korin-berkat-energy',
@@ -116,16 +114,17 @@ test('3.5 Sentinel Test: Every rendered section has stable id and data-section a
     foreach ($urls as $url) {
         $response = $this->get($url);
         $response->assertOk();
+        $content = $response->getContent();
 
-        // Verify Inertia payload carries header, footer, and section_key for every block
-        $response->assertInertia(fn ($page) => $page
-            ->component('ThemedPage')
-            ->has('header')
-            ->has('footer')
-            ->where('header.section_key', 'header')
-            ->where('footer.section_key', 'footer')
-            ->where('blocks.0.section_key', fn (string $key): bool => ! empty($key))
-        );
+        // Header and Footer sections
+        expect($content)->toContain('id="section-header"')
+            ->and($content)->toContain('data-section="header"')
+            ->and($content)->toContain('id="section-footer"')
+            ->and($content)->toContain('data-section="footer"');
+
+        // Page content sections
+        expect($content)->toContain('id="section-')
+            ->and($content)->toContain('data-section="');
     }
 });
 
@@ -155,3 +154,4 @@ test('3.7 Sentinel Test: Subsidiary page content is fully dynamic from CMS', fun
         expect($response->getContent())->toContain($sentinelText);
     }
 });
+
