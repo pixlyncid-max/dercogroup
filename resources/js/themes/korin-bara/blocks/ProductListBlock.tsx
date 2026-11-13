@@ -27,8 +27,19 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
     const { t } = useLocale();
     const allProducts: ProductData[] = props.products ?? [];
 
-    const limit = data.limit && data.limit > 0 ? data.limit : allProducts.length;
+    const isHomePage = props.page?.key === 'home';
+    const limit = isHomePage
+        ? data.limit && data.limit > 0
+            ? data.limit
+            : 1
+        : data.limit && data.limit > 0
+          ? data.limit
+          : allProducts.length;
     const products = allProducts.slice(0, limit);
+
+    const productsUrl =
+        props.navigation?.items?.find((i) => i.key === 'products')?.href ||
+        `/${props.locale}/produk`;
 
     // Fallback if no products seeded
     const fallbackSpecs: ProductSpecData[] = [
@@ -175,6 +186,18 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
                         </div>
                     );
                 })}
+
+                {isHomePage ? (
+                    <Reveal preset="fadeUp" className="flex justify-center pt-4">
+                        <Link
+                            href={productsUrl}
+                            className="kb-btn-outline min-h-[44px]"
+                        >
+                            <span>{t('products.view_all_products')}</span>
+                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </Link>
+                    </Reveal>
+                ) : null}
             </Container>
         </section>
     );

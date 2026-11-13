@@ -349,11 +349,64 @@ class SyncSubsidiaryPagesAction
                 $homeAbout->update(['data' => $homeAboutData, 'is_visible' => true]);
             }
 
-            // Deactivate sections not in reference (Prompt 0 & Section 3)
+            // Ensure Produk Teaser (home_product_list_3)
+            $homeProd = $homePage->blocks()->where('type', BlockType::ProductList)->first();
+            $homeProdData = [
+                'eyebrow' => ['id' => 'PRODUK UNGGULAN', 'en' => 'FEATURED PRODUCTS'],
+                'title' => ['id' => 'Produk & Layanan Utama [PLACEHOLDER]', 'en' => 'Primary Products & Services [PLACEHOLDER]'],
+                'limit' => 1,
+                'show_download_button' => false,
+            ];
+            if (! $homeProd) {
+                PageBlock::query()->create([
+                    'page_id' => $homePage->id,
+                    'company_id' => $company->id,
+                    'section_key' => 'home_product_list_3',
+                    'type' => BlockType::ProductList,
+                    'sort_order' => 4,
+                    'is_visible' => true,
+                    'data' => $homeProdData,
+                ]);
+            } else {
+                $homeProd->update([
+                    'sort_order' => 4,
+                    'is_visible' => true,
+                    'data' => $homeProdData,
+                ]);
+            }
+
+            // Ensure Operasi Teaser (home_operation_list_4)
+            $homeOp = $homePage->blocks()->where('type', BlockType::OperationList)->first();
+            $homeOpData = [
+                'eyebrow' => ['id' => 'AKTIVITAS OPERASIONAL', 'en' => 'OPERATIONAL ACTIVITIES'],
+                'title' => ['id' => 'Operasi yang Profesional [PLACEHOLDER]', 'en' => 'Professional Operations [PLACEHOLDER]'],
+                'description' => [
+                    'id' => 'Kami menjalankan kegiatan pertambangan dengan standar keselamatan tinggi, efisiensi operasional, serta kepedulian terhadap lingkungan. [PLACEHOLDER]',
+                    'en' => 'We operate mining activities with high safety standards, operational efficiency, and environmental stewardship. [PLACEHOLDER]',
+                ],
+                'show_map' => false,
+            ];
+            if (! $homeOp) {
+                PageBlock::query()->create([
+                    'page_id' => $homePage->id,
+                    'company_id' => $company->id,
+                    'section_key' => 'home_operation_list_4',
+                    'type' => BlockType::OperationList,
+                    'sort_order' => 5,
+                    'is_visible' => true,
+                    'data' => $homeOpData,
+                ]);
+            } else {
+                $homeOp->update([
+                    'sort_order' => 5,
+                    'is_visible' => true,
+                    'data' => $homeOpData,
+                ]);
+            }
+
+            // Deactivate sections not used on Home (Stats & CTA Banner)
             $homePage->blocks()->whereIn('type', [
                 BlockType::Stats,
-                BlockType::ProductList,
-                BlockType::OperationList,
                 BlockType::CtaBanner,
             ])->update(['is_visible' => false]);
         }

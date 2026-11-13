@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, Check, MapPin } from 'lucide-react';
 import { useLocale, type OperationData, type OperationListBlockData, type SharedPageProps } from '@/core';
 import { Container, Image, Reveal } from '@/ui';
@@ -19,6 +19,11 @@ export function OperationListBlock({ data }: OperationListBlockProps) {
     const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
     const operations: OperationData[] = props.operations ?? [];
+
+    const isHomePage = props.page?.key === 'home';
+    const operationsUrl =
+        props.navigation?.items?.find((i) => i.key === 'operations')?.href ||
+        `/${props.locale}/operasi`;
 
     const eyebrow = data.eyebrow || t('operations.activity_eyebrow');
     const title = data.title || t('operations.activity_title');
@@ -71,15 +76,25 @@ export function OperationListBlock({ data }: OperationListBlockProps) {
                             ))}
                         </ul>
 
-                        {/* Pill Anchor Button */}
+                        {/* Pill Action Button */}
                         <div className="pt-4">
-                            <a
-                                href="#daftar-operasi"
-                                className="kb-btn-solid min-h-[44px]"
-                            >
-                                <span>{t('operations.view_details')}</span>
-                                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                            </a>
+                            {isHomePage ? (
+                                <Link
+                                    href={operationsUrl}
+                                    className="kb-btn-solid min-h-[44px]"
+                                >
+                                    <span>{t('operations.view_details')}</span>
+                                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </Link>
+                            ) : (
+                                <a
+                                    href="#daftar-operasi"
+                                    className="kb-btn-solid min-h-[44px]"
+                                >
+                                    <span>{t('operations.view_details')}</span>
+                                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </a>
+                            )}
                         </div>
                     </Reveal>
 
@@ -104,8 +119,8 @@ export function OperationListBlock({ data }: OperationListBlockProps) {
                     </Reveal>
                 </div>
 
-                {/* Operations Directory List Below */}
-                {operations.length > 0 ? (
+                {/* Operations Directory List Below (hidden on Home teaser, shown on Operations page) */}
+                {!isHomePage && operations.length > 0 ? (
                     <div id="daftar-operasi" className="pt-8 border-t border-line scroll-mt-24 space-y-6">
                         <div className="flex flex-col gap-1">
                             <span className="kb-eyebrow">{t('operations.directory_eyebrow')}</span>

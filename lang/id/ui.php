@@ -58,6 +58,7 @@ return [
         'download_spec' => 'Unduh Lembar Spesifikasi (PDF)',
         'view_specification' => 'Detail Spesifikasi',
         'all_products' => 'Kembali ke Daftar Produk',
+        'view_all_products' => 'Lihat Semua Produk',
         'inquire_product' => 'Minta Penawaran Kargo Ini',
         'overview_heading' => 'Deskripsi & Karakteristik Teknis',
         'parameter_value' => 'Nilai Parameter',

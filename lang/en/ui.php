@@ -58,6 +58,7 @@ return [
         'download_spec' => 'Download Specification Sheet (PDF)',
         'view_specification' => 'Specification Details',
         'all_products' => 'Back to Product Catalog',
+        'view_all_products' => 'View All Products',
         'inquire_product' => 'Request Quotation for This Grade',
         'overview_heading' => 'Technical Description & Characteristics',
         'parameter_value' => 'Parameter Value',
