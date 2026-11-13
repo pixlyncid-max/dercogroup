@@ -51,7 +51,7 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
                       description:
                           'Kami menyediakan batubara dengan spesifikasi terbaik untuk mendukung kebutuhan energi dan industri, dengan kualitas yang terjamin dan pasokan yang stabil. [PLACEHOLDER]',
                       url: '/produk/thermal-coal-gar-4200',
-                      image_url: '/images/placeholders/coal-lumps-1280.webp',
+                      image_url: '/images/placeholders/coal-stockpile-1280.webp',
                       specs: fallbackSpecs,
                   },
               ];
@@ -64,7 +64,7 @@ export function ProductListBlock({ data }: ProductListBlockProps) {
             <Container className="space-y-24">
                 {displayProducts.map((product, pIdx) => {
                     const productImage =
-                        product.image_url || '/images/placeholders/coal-lumps-1280.webp';
+                        product.image_url || '/images/placeholders/coal-stockpile-1280.webp';
                     const detailHref = product.url || '#';
 
                     // 4 general specs

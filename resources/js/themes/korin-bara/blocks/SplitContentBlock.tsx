@@ -9,7 +9,7 @@ export interface SplitContentBlockProps {
 }
 
 export function SplitContentBlock({ data }: SplitContentBlockProps) {
-    const splitImage = data.image || '/images/placeholders/aerial-mine-1280.webp';
+    const splitImage = data.image || '/images/placeholders/aerial-pit-1280.webp';
     const isImageLeft = data.image_position === 'left';
     const hasOffsetBorder = !isImageLeft; // Offset border on right-side photo (Tentang Kami)
 

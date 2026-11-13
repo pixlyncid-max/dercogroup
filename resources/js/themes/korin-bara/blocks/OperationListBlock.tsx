@@ -11,7 +11,7 @@ export interface OperationListBlockProps {
 const OPERATION_GRID_IMAGES = [
     '/images/placeholders/excavator-loading-1280.webp',
     '/images/placeholders/haul-trucks-1280.webp',
-    '/images/placeholders/aerial-mine-1280.webp',
+    '/images/placeholders/aerial-pit-1280.webp',
     '/images/placeholders/coal-stockpile-1280.webp',
 ] as const;
 

@@ -12,7 +12,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
     const { t } = useLocale();
     const prefersReducedMotion = Boolean(useReducedMotion());
 
-    const heroImage = data.image || '/images/placeholders/excavator-dump-1280.webp';
+    const heroImage = data.image || '/images/placeholders/hero-excavator-1280.webp';
     const primaryLabel = data.primary_cta_label || t('read_more');
     const primaryHref = data.primary_cta_href || '#';
     const secondaryLabel = data.secondary_cta_label || t('contact_us');
