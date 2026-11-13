@@ -53,7 +53,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                 </div>
             ) : null}
 
-            <header className="sticky top-0 z-40 bg-bg">
+            <header id="section-header" data-section="header" className="sticky top-0 z-40 bg-bg">
                 {/* Row 1: Thin Navy Bar with Holding Back-Link & Language Switch */}
                 <div className="bg-surface-dark text-ink-on-dark border-b border-ink-on-dark/10">
                     <Container className="flex min-h-11 items-center justify-between gap-4 py-1">
@@ -208,7 +208,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
             </main>
 
             {/* Navy Editorial Footer */}
-            <footer className="bg-surface-dark text-ink-on-dark border-t-2 border-accent">
+            <footer id="section-footer" data-section="footer" className="bg-surface-dark text-ink-on-dark border-t-2 border-accent">
                 <Container className="py-16 md:py-20">
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
                         {/* Column 1: Entity Identity & Parent Holding Back-link */}

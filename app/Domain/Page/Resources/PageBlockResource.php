@@ -39,6 +39,7 @@ class PageBlockResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type->value,
+            'section_key' => $this->section_key ?? $this->type->value,
             'sort_order' => $this->sort_order,
             'data' => $blockClass::localizeData($rawData, $locale, $linkResolver),
         ];

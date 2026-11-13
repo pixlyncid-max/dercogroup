@@ -99,6 +99,7 @@ export interface PageData {
 export interface PageBlockData<TData = Record<string, unknown>> {
     id: number;
     type: BlockTypeValue;
+    section_key?: string;
     sort_order: number;
     data: TData;
 }

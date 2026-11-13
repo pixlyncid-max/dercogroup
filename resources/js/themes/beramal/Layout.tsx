@@ -63,7 +63,7 @@ export function Layout({ children }: BeramalLayoutProps) {
             ) : null}
 
             {/* Floating Pill Header suspended 16px (top-4) from the top */}
-            <header className="sticky top-4 z-40 px-4 sm:px-6 lg:px-8 pt-4">
+            <header id="section-header" data-section="header" className="sticky top-4 z-40 px-4 sm:px-6 lg:px-8 pt-4">
                 <div className="mx-auto max-w-[var(--container-wide)]">
                     <div
                         className={[
@@ -228,7 +228,7 @@ export function Layout({ children }: BeramalLayoutProps) {
             <WaveDivider tone="dark" className="mt-8" />
 
             {/* Dark Water Footer with Thin Wave Pattern and Cerulean CTA */}
-            <footer className="relative overflow-hidden bg-surface-dark text-ink-on-dark">
+            <footer id="section-footer" data-section="footer" className="relative overflow-hidden bg-surface-dark text-ink-on-dark">
                 {/* Subtle Thin Wave Background Pattern */}
                 <svg
                     aria-hidden="true"

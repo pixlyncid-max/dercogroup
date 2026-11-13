@@ -73,4 +73,3 @@ class FooterBlock extends Block
         ];
     }
 }
-

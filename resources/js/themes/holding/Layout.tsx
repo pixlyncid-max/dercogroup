@@ -45,6 +45,8 @@ export function Layout({ children }: HoldingLayoutProps) {
             ) : null}
 
             <header
+                id="section-header"
+                data-section="header"
                 className={[
                     'sticky top-0 z-[var(--z-index-overlay)] bg-surface-dark text-ink-on-dark border-b border-ink-on-dark/10 transition-[min-height,box-shadow] duration-[var(--duration-base)]',
                     isSticky ? 'min-h-[60px] shadow-md' : 'min-h-[80px]',
@@ -197,7 +199,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                 {children}
             </main>
 
-            <footer className="bg-surface-deeper text-ink-on-dark pt-16 pb-12">
+            <footer id="section-footer" data-section="footer" className="bg-surface-deeper text-ink-on-dark pt-16 pb-12">
                 <Container>
                     <div className="grid grid-cols-1 gap-10 md:grid-cols-12 pb-12 border-b border-ink-on-dark/10">
                         <div className="md:col-span-5 space-y-5">

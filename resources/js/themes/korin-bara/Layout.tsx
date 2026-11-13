@@ -198,7 +198,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 ) : null}
 
                 {/* Mobile Top Identity Bar (< lg) */}
-                <header className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-accent bg-bg px-4 py-3 text-ink lg:hidden">
+                <header id="section-header" data-section="header" className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-accent bg-bg px-4 py-3 text-ink lg:hidden">
                     <Link
                         href={homeHref}
                         aria-label={
@@ -225,7 +225,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                         className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-accent-strong"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                        <span>Derco</span>
+                        <span>{t('holding_short')}</span>
                     </Link>
                 </header>
 
@@ -234,7 +234,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 </main>
 
                 {/* Navy Footer with Bold Brass Gold CTA Block (DESIGN.md 6.3) */}
-                <footer className="bg-surface-dark text-ink-on-dark border-t-4 border-accent">
+                <footer id="section-footer" data-section="footer" className="bg-surface-dark text-ink-on-dark border-t-4 border-accent">
                     <Container className="py-14 md:py-20 space-y-14">
                         {/* Brass Gold CTA Block */}
                         <div className="grid grid-cols-1 gap-6 bg-accent p-7 text-ink sm:p-10 lg:grid-cols-12 lg:items-center">

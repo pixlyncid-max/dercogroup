@@ -140,34 +140,54 @@ export default function ThemedPage() {
                                     renderedContactSplit.done = true;
 
                                     return (
-                                        <ContactSplit
+                                        <div
                                             key={`contact-split-${block.id}`}
-                                            infoData={
-                                                contactInfoBlock!
-                                                    .data as unknown as ContactInfoBlockData
-                                            }
-                                            formData={
-                                                contactFormBlock!
-                                                    .data as unknown as ContactFormBlockData
-                                            }
-                                            hasHeroH1={hasHeroBlock}
-                                        />
+                                            id="section-contact_split"
+                                            data-section="contact_split"
+                                        >
+                                            <ContactSplit
+                                                infoData={
+                                                    contactInfoBlock!
+                                                        .data as unknown as ContactInfoBlockData
+                                                }
+                                                formData={
+                                                    contactFormBlock!
+                                                        .data as unknown as ContactFormBlockData
+                                                }
+                                                hasHeroH1={hasHeroBlock}
+                                            />
+                                        </div>
                                     );
                                 }
 
                                 const isFirstBlock = idx === 0 && !hasHeroBlock;
                                 const BlockComponent = blockComponents[block.type];
+                                const sectionKey = block.section_key || block.type;
+
                                 if (BlockComponent) {
                                     return (
-                                        <BlockComponent
+                                        <div
                                             key={block.id}
-                                            data={block.data}
-                                            isFirstBlock={isFirstBlock}
-                                        />
+                                            id={`section-${sectionKey}`}
+                                            data-section={sectionKey}
+                                        >
+                                            <BlockComponent
+                                                data={block.data}
+                                                isFirstBlock={isFirstBlock}
+                                            />
+                                        </div>
                                     );
                                 }
 
-                                return <FallbackBlock key={block.id} data={block.data} />;
+                                return (
+                                    <div
+                                        key={block.id}
+                                        id={`section-${sectionKey}`}
+                                        data-section={sectionKey}
+                                    >
+                                        <FallbackBlock data={block.data} />
+                                    </div>
+                                );
                             })
                         )}
                     </Layout>

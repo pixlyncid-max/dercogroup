@@ -45,5 +45,25 @@ export default tseslint.config(
             ],
         },
     },
+    {
+        files: ['resources/js/themes/**/*.{ts,tsx}', 'resources/js/pages/**/*.{ts,tsx}'],
+        rules: {
+            'react/jsx-no-literals': [
+                'error',
+                {
+                    noStrings: false,
+                    allowedStrings: [
+                        '/', ':', '-', '•', '|', '·', '©', '→', '←', '&', '&amp;',
+                        'gar', 'nar', 'hgi', 'mm', 'kcal/kg',
+                        'GAR', 'NAR', 'MT', 'km', '%', '+', '—',
+                        ' ', ',', '.', '01', '02', '03', '04', '05', '06',
+                        '07', '08', '09', '10', '24/7', 'PDF', 'HTTP',
+                    ],
+                    ignoreProps: true,
+                    noAttributeStrings: false,
+                },
+            ],
+        },
+    },
 );
 

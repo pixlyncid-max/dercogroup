@@ -156,7 +156,7 @@ export function ProductDetailView({
                         <div className="flex flex-wrap items-end justify-between gap-4">
                             <div className="space-y-2">
                                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink">
-                                    COA / ASTM / ISO STANDARD
+                                    {t('products.standard_badge')}
                                 </p>
                                 <Heading level={2} size="h2">
                                     {t('products.specifications')}

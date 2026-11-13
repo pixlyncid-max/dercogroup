@@ -167,7 +167,7 @@ export function ProductDetailView({
                                         aria-hidden="true"
                                         className="h-2 w-2 rounded-full bg-accent"
                                     />
-                                    <span>SLA / ISO STANDARD</span>
+                                    <span>{t('products.standard_badge')}</span>
                                 </span>
                                 <Heading level={2} size="h2">
                                     {t('products.specifications')}

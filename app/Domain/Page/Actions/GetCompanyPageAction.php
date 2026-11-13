@@ -11,6 +11,7 @@ use App\Domain\Compliance\Resources\CertificationResource;
 use App\Domain\Contact\Resources\CompanyContactResource;
 use App\Domain\Operation\Resources\OperationResource;
 use App\Domain\Page\Enums\PageKey;
+use App\Domain\Page\Models\PageBlock;
 use App\Domain\Page\Resources\PageBlockResource;
 use App\Domain\Page\Resources\PageResource;
 use App\Domain\Product\Resources\ProductResource;
@@ -63,6 +64,16 @@ class GetCompanyPageAction
             ? $company->publishedSubsidiaries()->with(['stats', 'contacts'])->get()
             : collect();
 
+        $headerBlock = PageBlock::query()
+            ->where('company_id', $company->id)
+            ->where('section_key', 'header')
+            ->first();
+
+        $footerBlock = PageBlock::query()
+            ->where('company_id', $company->id)
+            ->where('section_key', 'footer')
+            ->first();
+
         $isPreview = $allowDraftPreview && (! $company->isPublished() || ! $page->is_published);
 
         return [
@@ -71,6 +82,8 @@ class GetCompanyPageAction
             'company' => (new CompanyResource($company))->resolve(),
             'page' => (new PageResource($page))->resolve(),
             'blocks' => PageBlockResource::collection($page->visibleBlocks)->resolve(),
+            'header' => $headerBlock ? (new PageBlockResource($headerBlock))->resolve() : null,
+            'footer' => $footerBlock ? (new PageBlockResource($footerBlock))->resolve() : null,
             'navigation' => $this->buildNavigation->execute($company, $page, $locale, $isPreview),
             'subsidiaries' => CompanyResource::collection($subsidiaries)->resolve(),
             'stats' => CompanyStatResource::collection($company->stats)->resolve(),

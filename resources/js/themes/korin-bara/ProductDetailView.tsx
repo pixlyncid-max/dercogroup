@@ -111,7 +111,7 @@ export function ProductDetailView({
                             </Heading>
                         </div>
                         <span className="font-heading text-xs font-bold uppercase tracking-[0.14em] text-accent-strong">
-                            ASTM / ISO VERIFIED
+                            {t('products.highlight_badge')}
                         </span>
                     </div>
 

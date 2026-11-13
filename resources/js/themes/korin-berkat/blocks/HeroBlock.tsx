@@ -15,7 +15,7 @@ export interface HeroBlockProps {
  */
 export function HeroBlock({ data }: HeroBlockProps) {
     const { props } = usePage<SharedPageProps>();
-    const { locale } = useLocale();
+    const { locale, t } = useLocale();
     const stats = (props.stats ?? props.company?.stats ?? []).slice(0, 3);
 
     return (
@@ -29,14 +29,15 @@ export function HeroBlock({ data }: HeroBlockProps) {
                     >
                         <div className="space-y-6">
                             <div className="flex items-center gap-3">
-                                <span className="font-heading text-xs font-semibold tracking-[0.14em] text-accent-strong">
-                                    01 / INDEX
-                                </span>
                                 {data.eyebrow ? (
                                     <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ink">
                                         {data.eyebrow}
                                     </span>
-                                ) : null}
+                                ) : (
+                                    <span className="font-heading text-xs font-semibold tracking-[0.14em] text-accent-strong">
+                                        {t('nav.index_heading')}
+                                    </span>
+                                )}
                             </div>
 
                             <GoldRule thick className="w-20" />
@@ -97,7 +98,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                                     : 'DATA KUNCI OPERASIONAL'}
                             </span>
                             <span className="font-heading text-xs font-semibold text-muted-on-dark">
-                                I – III
+                                {`1 — ${stats.length}`}
                             </span>
                         </div>
 

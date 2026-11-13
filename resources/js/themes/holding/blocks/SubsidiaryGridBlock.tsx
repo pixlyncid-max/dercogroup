@@ -38,7 +38,7 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                     <div className="mt-12 space-y-8">
                         <div className="rounded-[var(--radius-card)] border-2 border-accent bg-surface-dark p-6 md:p-8 text-ink-on-dark">
                             <span className="text-xs font-semibold uppercase tracking-[0.12em] text-accent-on-dark">
-                                Holding Entity
+                                {holdingTagline || t('footer.parent_group_label')}
                             </span>
                             <h3 className="mt-2 font-heading text-2xl font-bold">{holdingName}</h3>
                             {holdingTagline ? (
