@@ -1,86 +1,64 @@
 import { Link, usePage } from '@inertiajs/react';
-import {
-    ArrowLeft,
-    ArrowRight,
-    Building2,
-    ChevronLeft,
-    ChevronRight,
-    Compass,
-    Home,
-    Layers,
-    Mail,
-    MoreHorizontal,
-    Phone,
-    ShieldCheck,
-    X,
-    type LucideProps,
-} from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useState, type ComponentType, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
-import { resolvePreset } from '@/motion/presets';
-import { Button, Container, LanguageSwitch, Logo } from '@/ui';
+import { Container, LanguageSwitch, Logo } from '@/ui';
+import { PageBanner } from './PageBanner';
 
 export interface KorinBaraLayoutProps {
     children: ReactNode;
 }
 
-const navIconByKey: Record<string, ComponentType<LucideProps>> = {
-    home: Home,
-    about: Building2,
-    products: Layers,
-    operations: Compass,
-    compliance: ShieldCheck,
-    contact: Mail,
-};
-
-/**
- * PT Korin Bara Energy Layout ("Field Rail", DESIGN.md Section 6.3).
- * Desktop: Fixed 88px vertical left rail (expandable on hover/toggle) with icons + labels and bottom language switcher.
- * Mobile: Fixed bottom bar with 5 icons + "More / Lainnya" sheet.
- * Footer: Deep navy with a bold Brass Gold CTA block.
- */
 export function Layout({ children }: KorinBaraLayoutProps) {
     const { props } = usePage<SharedPageProps>();
     const { locale, t } = useLocale();
-    const { items, holdingUrl, contactUrl, isMobileMenuOpen, closeMobileMenu, toggleMobileMenu } =
-        useNavigation();
+    const { items, contactUrl } = useNavigation();
     const prefersReducedMotion = Boolean(useReducedMotion());
-    const [railExpanded, setRailExpanded] = useState(false);
+    const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
     const company = props.company;
-    const contacts = props.contacts ?? company?.contacts ?? [];
-    const primaryContact = contacts[0];
-    const isPreview = Boolean(props.isPreview);
+    const isHomePage = props.page?.key === 'home' || !props.page?.key;
 
-    const homeHref = items[0]?.href ?? `/${locale}`;
-    const mobilePrimaryItems = items.slice(0, 5);
-    const mobileOverflowItems = items.slice(5);
+    const homeHref = `/${locale}`;
+    const pageTitle =
+        props.product?.name ||
+        props.page?.title ||
+        (props.title ? String(props.title).split('·')[0].trim() : '');
+
+    const currentPath =
+        typeof window !== 'undefined'
+            ? window.location.pathname
+            : props.page?.slug
+              ? `/${locale}/${props.page.slug}`
+              : `/${locale}`;
+
+    // Header CTA data
+    const headerCtaLabel =
+        (props.company as { header_cta_label?: string })?.header_cta_label ||
+        t('contact_us');
+    const headerCtaHref =
+        (props.company as { header_cta_href?: string })?.header_cta_href ||
+        contactUrl ||
+        `/${locale}/kontak`;
 
     return (
         <div
             data-theme="korin-bara"
-            className="min-h-screen flex flex-col bg-bg text-ink font-body selection:bg-accent selection:text-ink"
+            className="min-h-screen flex flex-col bg-bg text-ink font-body selection:bg-accent selection:text-white"
         >
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-24 focus:z-50 focus:bg-surface-dark focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink-on-dark focus:shadow-lg"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-6 focus:z-50 focus:bg-surface-dark focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:rounded-full"
             >
                 {t('skip_to_content')}
             </a>
 
-            {/* Desktop Fixed Vertical Left Rail (88px collapsed, 256px expanded on hover/toggle) */}
-            <aside
-                aria-label={t('nav.main')}
-                onMouseEnter={() => setRailExpanded(true)}
-                onMouseLeave={() => setRailExpanded(false)}
-                className={`fixed inset-y-0 left-0 z-40 hidden lg:flex lg:flex-col lg:justify-between bg-bg text-ink border-r-4 border-accent transition-[width] duration-200 ease-out ${
-                    railExpanded ? 'lg:w-64 shadow-md' : 'lg:w-[88px]'
-                }`}
-            >
-                {/* Top: Brand Logo + Holding Back Link */}
-                <div className="border-b border-line p-3 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
+            {/* Horizontal White Sticky Header (height ~80px) */}
+            <header className="sticky top-0 z-40 h-20 w-full border-b border-line bg-white/95 backdrop-blur-md transition-shadow duration-200">
+                <Container className="flex h-full items-center justify-between gap-4">
+                    {/* Left: Brand Logo */}
+                    <div className="flex items-center">
                         <Link
                             href={homeHref}
                             aria-label={
@@ -88,346 +66,285 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                     ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
                                     : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
                             }
-                            className="inline-flex min-h-[44px] items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="inline-flex min-h-[44px] items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-lg"
                         >
                             <Logo
                                 company={company}
                                 on="light"
-                                compact={!railExpanded}
-                                size={railExpanded ? 40 : 36}
+                                compact={false}
+                                size={44}
                                 priority={true}
-                                className="max-w-[56px] shrink-0"
+                                className="h-11 w-auto max-w-[200px] shrink-0"
                             />
-                            <span
-                                className={`font-heading text-sm font-bold uppercase tracking-wider text-ink whitespace-nowrap transition-opacity duration-150 ${
-                                    railExpanded ? 'opacity-100' : 'sr-only'
-                                }`}
-                            >
-                                {company?.name ?? 'PT Korin Bara Energy'}
-                            </span>
+                        </Link>
+                    </div>
+
+                    {/* Center: Desktop Horizontal Navigation */}
+                    <nav
+                        aria-label={t('nav.main')}
+                        className="hidden lg:flex lg:items-center lg:gap-8"
+                    >
+                        {items.map((item) => {
+                            // Exact active state check: only one item active at a time
+                            const isActive =
+                                item.active ??
+                                (item.href === homeHref
+                                    ? currentPath === homeHref || currentPath === `${homeHref}/`
+                                    : currentPath.startsWith(item.href));
+
+                            return (
+                                <Link
+                                    key={item.key}
+                                    href={item.href}
+                                    aria-current={isActive ? 'page' : undefined}
+                                    className={`group relative inline-flex min-h-[44px] items-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md ${
+                                        isActive
+                                            ? 'font-bold text-ink'
+                                            : 'font-medium text-slate-600 hover:text-ink'
+                                    }`}
+                                >
+                                    <span>{item.label}</span>
+                                    {isActive ? (
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute bottom-2 left-0 right-0 h-[2px] rounded-full bg-accent"
+                                        />
+                                    ) : (
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute bottom-2 left-0 right-0 h-[2px] scale-x-0 rounded-full bg-accent/50 transition-transform duration-150 group-hover:scale-x-100"
+                                        />
+                                    )}
+                                </Link>
+                            );
+                        })}
+                    </nav>
+
+                    {/* Right: Language Switch & CTA Pill Button */}
+                    <div className="hidden lg:flex lg:items-center lg:gap-5">
+                        <Link
+                            href={headerCtaHref}
+                            className="kb-btn-solid min-h-[44px]"
+                        >
+                            <span>{headerCtaLabel}</span>
+                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
 
+                        <div className="h-6 w-[1px] bg-line" aria-hidden="true" />
+
+                        <LanguageSwitch tone="light" />
+                    </div>
+
+                    {/* Mobile Hamburger Button */}
+                    <div className="flex items-center gap-3 lg:hidden">
+                        <LanguageSwitch tone="light" />
                         <button
                             type="button"
-                            onClick={() => setRailExpanded((prev) => !prev)}
-                            aria-expanded={railExpanded}
-                            aria-label={
-                                railExpanded ? t('nav.collapse_rail') : t('nav.expand_rail')
-                            }
-                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-muted hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            onClick={() => setMobileDrawerOpen(true)}
+                            aria-expanded={mobileDrawerOpen}
+                            aria-label={t('nav.toggle_menu')}
+                            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-line bg-surface p-2.5 text-ink transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
-                            {railExpanded ? (
-                                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                            ) : (
-                                <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                            )}
+                            <Menu className="h-6 w-6" aria-hidden="true" />
                         </button>
                     </div>
+                </Container>
+            </header>
 
-                    <Link
-                        href={holdingUrl}
-                        title={t('back_to_holding')}
-                        className="flex min-h-10 items-center justify-center gap-2 border border-line bg-surface px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted transition-colors hover:border-accent hover:text-ink"
-                    >
-                        <ArrowLeft
-                            className="h-3.5 w-3.5 shrink-0 text-accent-on-dark"
-                            aria-hidden="true"
-                        />
-                        <span className={railExpanded ? 'truncate' : 'sr-only'}>
-                            {t('holding_short')}
-                        </span>
-                    </Link>
-                </div>
-
-                {/* Middle: Vertical Icon Navigation */}
-                <nav
-                    aria-label={t('nav.main')}
-                    className="flex-1 overflow-y-auto py-4 px-2 space-y-1.5"
-                >
-                    {items.map((item) => {
-                        const Icon = navIconByKey[item.key] ?? Layers;
-
-                        return (
-                            <Link
-                                key={item.key}
-                                href={item.href}
-                                aria-current={item.active ? 'page' : undefined}
-                                className={`group flex min-h-12 items-center gap-3.5 px-3.5 py-2.5 text-xs font-bold uppercase tracking-[0.1em] transition-colors ${
-                                    item.active
-                                        ? 'border-l-4 border-accent bg-surface text-ink'
-                                        : 'border-l-4 border-transparent text-muted hover:bg-surface hover:text-ink'
-                                }`}
-                            >
-                                <Icon
-                                    className={`h-5 w-5 shrink-0 ${
-                                        item.active
-                                            ? 'text-accent-strong'
-                                            : 'text-muted group-hover:text-accent-strong'
-                                    }`}
-                                    strokeWidth={1.85}
-                                    aria-hidden="true"
-                                />
-                                <span
-                                    className={`whitespace-nowrap transition-opacity duration-150 ${
-                                        railExpanded ? 'opacity-100' : 'sr-only'
-                                    }`}
-                                >
-                                    {item.label}
-                                </span>
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                {/* Bottom: Language Switcher */}
-                <div className="border-t border-line p-3 flex justify-center">
-                    <LanguageSwitch tone="light" className="flex-col gap-0.5" />
-                </div>
-            </aside>
-
-            {/* Content Wrapper Offset by 88px Left Rail on Desktop */}
-            <div className="flex min-h-screen flex-1 flex-col lg:pl-[88px] pb-16 lg:pb-0">
-                {isPreview ? (
-                    <div
-                        role="status"
-                        data-testid="preview-banner"
-                        className="bg-accent px-4 py-2.5 text-center font-heading text-sm font-bold uppercase tracking-[0.1em] text-ink border-b-2 border-ink"
-                    >
-                        {t('preview_banner')}
-                    </div>
-                ) : null}
-
-                {/* Mobile Top Identity Bar (< lg) */}
-                <header id="section-header" data-section="header" className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-accent bg-bg px-4 py-3 text-ink lg:hidden">
-                    <Link
-                        href={homeHref}
-                        aria-label={
-                            locale === 'en'
-                                ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
-                                : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
-                        }
-                        className="inline-flex min-h-[44px] items-center gap-3"
-                    >
-                        <Logo
-                            company={company}
-                            on="light"
-                            compact={true}
-                            size={32}
-                            priority={true}
-                        />
-                        <span className="font-heading text-base font-bold uppercase tracking-wider text-ink">
-                            {company?.name ?? 'PT Korin Bara Energy'}
-                        </span>
-                    </Link>
-
-                    <Link
-                        href={holdingUrl}
-                        className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-accent-strong"
-                    >
-                        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                        <span>{t('holding_short')}</span>
-                    </Link>
-                </header>
-
-                <main id="main-content" className="flex-1">
-                    {children}
-                </main>
-
-                {/* Navy Footer with Bold Brass Gold CTA Block (DESIGN.md 6.3) */}
-                <footer id="section-footer" data-section="footer" className="bg-surface-dark text-ink-on-dark border-t-4 border-accent">
-                    <Container className="py-14 md:py-20 space-y-14">
-                        {/* Brass Gold CTA Block */}
-                        <div className="grid grid-cols-1 gap-6 bg-accent p-7 text-ink sm:p-10 lg:grid-cols-12 lg:items-center">
-                            <div className="lg:col-span-8 space-y-2">
-                                <p className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-ink">
-                                    {locale === 'en'
-                                        ? 'FIELD OPERATIONS & COMMERCIAL DESK'
-                                        : 'OPERASI LAPANGAN & MEJA KOMERSIAL'}
-                                </p>
-                                <h2 className="font-heading text-2xl font-bold uppercase tracking-wide text-ink sm:text-3xl">
-                                    {company?.name ?? 'PT Korin Bara Energy'}
-                                </h2>
-                                <p className="max-w-[58ch] text-sm font-medium leading-6 text-ink">
-                                    {company?.tagline}
-                                </p>
-                            </div>
-                            <div className="lg:col-span-4 flex flex-wrap items-center gap-4 lg:justify-end">
-                                {primaryContact?.phone ? (
-                                    <a
-                                        href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
-                                        className="inline-flex min-h-11 items-center gap-2 font-heading text-lg font-bold text-ink hover:underline"
-                                    >
-                                        <Phone className="h-4 w-4" aria-hidden="true" />
-                                        <span>{primaryContact.phone}</span>
-                                    </a>
-                                ) : null}
-                                <Button
-                                    href={contactUrl}
-                                    variant="solid"
-                                    size="md"
-                                    className="bg-surface-dark text-ink-on-dark hover:bg-surface-deeper font-heading text-sm font-bold uppercase tracking-[0.12em]"
-                                >
-                                    <span>{t('contact_us')}</span>
-                                    <ArrowRight
-                                        className="h-4 w-4 text-accent-on-dark"
-                                        aria-hidden="true"
-                                    />
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-                            <div className="lg:col-span-5 space-y-4">
-                                <Logo company={company} on="dark" size={44} />
-                                <p className="max-w-[46ch] text-sm leading-6 text-muted-on-dark">
-                                    {company?.about_short || company?.tagline}
-                                </p>
-                                <div className="pt-2">
-                                    <Link
-                                        href={holdingUrl}
-                                        className="inline-flex min-h-10 items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent-on-dark hover:underline"
-                                    >
-                                        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                                        <span>{t('back_to_holding')}</span>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className="lg:col-span-3 space-y-3">
-                                <h3 className="font-heading text-sm font-bold uppercase tracking-[0.14em] text-accent-on-dark">
-                                    {t('nav.index_heading')}
-                                </h3>
-                                <ul className="space-y-2 text-sm">
-                                    {items.map((item) => (
-                                        <li key={item.key}>
-                                            <Link
-                                                href={item.href}
-                                                className="inline-flex min-h-[44px] items-center text-muted-on-dark hover:text-accent-on-dark"
-                                            >
-                                                {item.label}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="lg:col-span-4 space-y-3">
-                                <h3 className="font-heading text-sm font-bold uppercase tracking-[0.14em] text-accent-on-dark">
-                                    {t('footer.address_heading')}
-                                </h3>
-                                {primaryContact ? (
-                                    <div className="space-y-2 text-sm leading-6 text-muted-on-dark">
-                                        <p>{primaryContact.address}</p>
-                                        {primaryContact.email ? (
-                                            <p>{primaryContact.email}</p>
-                                        ) : null}
-                                        {primaryContact.operating_hours ? (
-                                            <p className="pt-2 text-xs border-t border-ink-on-dark/15">
-                                                {primaryContact.operating_hours}
-                                            </p>
-                                        ) : null}
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-
-                        <div className="border-t border-ink-on-dark/15 pt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs text-muted-on-dark">
-                            <p>
-                                {`© ${new Date().getFullYear()} ${company?.name ?? 'PT Korin Bara Energy'}. ${t('footer.rights_reserved')}`}
-                            </p>
-                            <LanguageSwitch />
-                        </div>
-                    </Container>
-                </footer>
-            </div>
-
-            {/* Mobile Bottom Navigation Bar: 5 Icons + "Lainnya / More" (DESIGN.md 6.3) */}
-            <nav
-                aria-label={t('nav.main')}
-                className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t-2 border-accent bg-surface-dark text-ink-on-dark lg:hidden"
-            >
-                {mobilePrimaryItems.map((item) => {
-                    const Icon = navIconByKey[item.key] ?? Layers;
-
-                    return (
-                        <Link
-                            key={item.key}
-                            href={item.href}
-                            aria-current={item.active ? 'page' : undefined}
-                            className={`flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-1.5 text-[10px] font-bold uppercase tracking-wider ${
-                                item.active
-                                    ? 'bg-ink-on-dark/10 text-accent-on-dark'
-                                    : 'text-muted-on-dark hover:text-ink-on-dark'
-                            }`}
-                        >
-                            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                            <span className="truncate max-w-full">{item.label}</span>
-                        </Link>
-                    );
-                })}
-
-                <button
-                    type="button"
-                    onClick={toggleMobileMenu}
-                    aria-expanded={isMobileMenuOpen}
-                    aria-controls="korin-bara-mobile-more"
-                    className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-on-dark hover:text-accent-on-dark"
-                >
-                    {isMobileMenuOpen ? (
-                        <X className="h-4 w-4 shrink-0" aria-hidden="true" />
-                    ) : (
-                        <MoreHorizontal className="h-4 w-4 shrink-0" aria-hidden="true" />
-                    )}
-                    <span className="truncate max-w-full">{t('nav.more')}</span>
-                </button>
-            </nav>
-
-            {/* Mobile "Lainnya / More" Sheet */}
+            {/* Mobile Drawer */}
             <AnimatePresence>
-                {isMobileMenuOpen ? (
-                    <motion.div
-                        id="korin-bara-mobile-more"
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={resolvePreset('fadeIn', prefersReducedMotion)}
-                        className="fixed inset-x-0 bottom-14 z-40 border-t-2 border-accent bg-surface-dark p-5 text-ink-on-dark shadow-lg lg:hidden"
-                    >
-                        <div className="space-y-4">
-                            {mobileOverflowItems.map((item) => {
-                                const Icon = navIconByKey[item.key] ?? Mail;
-
-                                return (
-                                    <Link
-                                        key={item.key}
-                                        href={item.href}
-                                        onClick={closeMobileMenu}
-                                        className="flex min-h-11 items-center gap-3 border-b border-ink-on-dark/15 pb-3 font-heading text-base font-bold uppercase tracking-wider text-ink-on-dark"
-                                    >
-                                        <Icon
-                                            className="h-4 w-4 text-accent-on-dark"
-                                            aria-hidden="true"
-                                        />
-                                        <span>{item.label}</span>
-                                    </Link>
-                                );
-                            })}
-
-                            <div className="flex items-center justify-between pt-1">
-                                <Link
-                                    href={holdingUrl}
-                                    onClick={closeMobileMenu}
-                                    className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-on-dark"
+                {mobileDrawerOpen ? (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: prefersReducedMotion ? 0 : 0.15 }}
+                            onClick={() => setMobileDrawerOpen(false)}
+                            aria-hidden="true"
+                            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs lg:hidden"
+                        />
+                        <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label={t('nav.main')}
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: 'easeOut' }}
+                            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col bg-white p-6 shadow-2xl lg:hidden"
+                        >
+                            {/* Drawer Header */}
+                            <div className="flex items-center justify-between border-b border-line pb-4">
+                                <Logo
+                                    company={company}
+                                    on="light"
+                                    compact={false}
+                                    size={36}
+                                    className="h-9 w-auto max-w-[160px]"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileDrawerOpen(false)}
+                                    aria-label={t('close')}
+                                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg p-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                 >
-                                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                                    <span>{t('back_to_holding')}</span>
-                                </Link>
-                                <LanguageSwitch />
+                                    <X className="h-6 w-6" aria-hidden="true" />
+                                </button>
                             </div>
-                        </div>
-                    </motion.div>
+
+                            {/* Drawer Nav Items */}
+                            <nav className="flex flex-1 flex-col gap-2 py-6">
+                                {items.map((item) => {
+                                    const isActive =
+                                        item.active ??
+                                        (item.href === homeHref
+                                            ? currentPath === homeHref
+                                            : currentPath.startsWith(item.href));
+
+                                    return (
+                                        <Link
+                                            key={item.key}
+                                            href={item.href}
+                                            onClick={() => setMobileDrawerOpen(false)}
+                                            aria-current={isActive ? 'page' : undefined}
+                                            className={`flex min-h-[44px] items-center justify-between rounded-lg px-4 py-3 text-base transition-colors ${
+                                                isActive
+                                                    ? 'bg-amber-50 font-bold text-accent'
+                                                    : 'font-medium text-ink hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            <span>{item.label}</span>
+                                            {isActive ? (
+                                                <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+                                            ) : null}
+                                        </Link>
+                                    );
+                                })}
+                            </nav>
+
+                            {/* Drawer Bottom CTA */}
+                            <div className="border-t border-line pt-4 space-y-4">
+                                <Link
+                                    href={headerCtaHref}
+                                    onClick={() => setMobileDrawerOpen(false)}
+                                    className="kb-btn-solid w-full min-h-[44px]"
+                                >
+                                    <span>{headerCtaLabel}</span>
+                                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </Link>
+                            </div>
+                        </motion.div>
+                    </>
                 ) : null}
             </AnimatePresence>
+
+            {/* Inside Pages Banner (Tentang Kami, Operasi, Produk, Kontak, Product Detail) */}
+            {!isHomePage && pageTitle ? (
+                <PageBanner title={pageTitle} />
+            ) : null}
+
+            {/* Main Content */}
+            <main id="main-content" className="flex-1">
+                {children}
+            </main>
+
+            {/* Footer (Navy, Mountain Silhouette, Diagonal Gold Wedge) */}
+            <footer className="relative overflow-hidden bg-[#101F38] text-white">
+                {/* Subtle Mountain Silhouette Background (SVG) */}
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-48 opacity-[0.07]"
+                >
+                    <svg
+                        viewBox="0 0 1200 240"
+                        preserveAspectRatio="none"
+                        className="h-full w-full fill-current text-white"
+                    >
+                        <path d="M0,240 L0,180 L140,80 L280,190 L450,40 L620,170 L790,60 L960,180 L1100,100 L1200,160 L1200,240 Z" />
+                    </svg>
+                </div>
+
+                {/* Diagonal Gold Wedge in Bottom-Right Corner */}
+                <div aria-hidden="true" className="kb-footer-wedge" />
+
+                {/* Content Container */}
+                <Container className="relative z-10 py-12 lg:py-16">
+                    {/* Top Row: Logo, Navigation, Socials */}
+                    <div className="flex flex-col items-center justify-between gap-8 border-b border-white/10 pb-10 lg:flex-row">
+                        {/* Logo on="dark" height 44px without link (DESIGN.md 8.1) */}
+                        <div className="flex shrink-0 items-center">
+                            <Logo
+                                company={company}
+                                on="dark"
+                                compact={false}
+                                size={44}
+                                className="h-11 w-auto max-w-[200px]"
+                            />
+                        </div>
+
+                        {/* Horizontal Menu in Middle (Mobile: 2 columns) */}
+                        <nav
+                            aria-label={t('nav.footer')}
+                            className="grid grid-cols-2 gap-x-8 gap-y-3 text-center sm:flex sm:flex-wrap sm:justify-center sm:gap-6 lg:gap-8"
+                        >
+                            {items.map((item) => (
+                                <Link
+                                    key={item.key}
+                                    href={item.href}
+                                    className="min-h-[44px] inline-flex items-center text-sm font-medium text-slate-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </nav>
+
+                        {/* Circular White Social Icons */}
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://linkedin.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="LinkedIn PT Korin Bara Energy"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6 1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6Z" />
+                                </svg>
+                            </a>
+                            <a
+                                href="https://youtube.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="YouTube PT Korin Bara Energy"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73Z" />
+                                </svg>
+                            </a>
+                            <a
+                                href="https://instagram.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram PT Korin Bara Energy"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069ZM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Bottom Row: Dynamic Copyright Text */}
+                    <div className="pt-8 text-center text-xs text-slate-400">
+                        <p>
+                            &copy; {new Date().getFullYear()} {company?.name ?? 'PT Korin Bara Energy'}. {t('footer.all_rights_reserved')}
+                        </p>
+                    </div>
+                </Container>
+            </footer>
         </div>
     );
 }

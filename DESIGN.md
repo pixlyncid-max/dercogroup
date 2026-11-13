@@ -1,6 +1,6 @@
 # DESIGN.md — PT Derco Bara Energy
 
-Versi 1.5 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
+Versi 1.6 · Dokumen sistem desain untuk website holding dan tiga anak usaha.
 Dokumen pendamping: [PRD.md](./PRD.md) · [README.md](./README.md) · [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)
 
 ---
@@ -72,7 +72,7 @@ Pengembangan **wajib memakai skill yang ada di folder `.agents/skills/ui-ux-pro-
 |---|---|---|---|---|
 | `holding` | PT Derco Bara Energy | Gelap dan putih bergantian (mengikuti gambar referensi) | Corporate industrial | Tayang |
 | `korin-berkat` | PT Korin Berkat Energy | Putih | Editorial data-driven | Tayang |
-| `korin-bara` | PT Korin Bara Energy | Putih | Hangat, padat, full-bleed | **Tayang (Published)** |
+| `korin-bara` | PT Korin Bara Energy | Putih | Bold Horizon: Korporat B2B bersih, terang, dan tegas; putih dengan navy & brass-gold | **Tayang (Published)** |
 | `beramal` | PT Beramal Sukses Sejahtera | Putih | Bersih, ringan, lembut | Tayang |
 
 Aturan penerapan:
@@ -251,43 +251,54 @@ Counter angka naik (Anime.js) saat terlihat; garis gold memanjang dari kiri (Mot
 
 ---
 
-## 6. Tema Korin Bara Energy — "Field Rail" (status: tayang)
+## 6. Tema Korin Bara Energy — "Bold Horizon" (status: tayang)
 
-**Gagasan:** hangat dan membumi, seperti lapangan tambang. Bidang gold dan foto lebar tanpa tepi mendominasi, navy menjadi warna teks. Navigasi berupa **rail vertikal** di kiri, yang membuat situs ini langsung terasa berbeda dari saudaranya.
+**Gagasan:** korporat B2B yang bersih, terang, dan tegas. Latar putih dominan dipadukan dengan navy tua untuk tipografi judul dan brass-gold untuk aksen presisi. Foto alat berat tambang dan pit terbuka menjadi bintang visual. Navigasi berupa **header horizontal putih sticky** di atas (rail vertikal kiri versi lama dihapus).
 
-> Tema ini **tayang penuh** dengan status perusahaan `published` di basis data (lihat PRD, FR-VIS). Enam halaman aktif dan detail produk dapat diakses secara publik.
+> Tema ini **tayang penuh** dengan status perusahaan `published` di basis data (lihat PRD, FR-VIS). Lima halaman aktif dan detail produk dapat diakses secara publik mengikuti gambar referensi klien (`docs/reference/korin-bara-redesign.png`).
 
 ### 6.1 Palet
-| Peran | Hex |
-|---|---|
-| Latar | `#FFFFFF` |
-| Cream (surface hangat) | `#FAF4E4` |
-| Brass gold (bidang besar) | `#C9962B` |
-| Gold gelap (teks/garis di atas putih) | `#7A5A10` |
-| Ink navy | `#13203F` |
-| Slate | `#4F566B` |
-| Line | `#EADFC6` |
+| Peran | Hex | Keterangan & Kontras |
+|---|---|---|
+| Latar | `#FFFFFF` | Latar kanvas bersih |
+| Surface | `#F8FAFC` | Surface abu-biru sangat muda untuk strip dan kartu |
+| Navy (ink judul & footer) | `#101F38` | Kontras 14,8:1 terhadap putih (AAA) |
+| Brass gold (tombol solid & teks di atas putih) | `#8A6212` | Kontras 5,55:1 terhadap putih (lulus WCAG 2.2 AA ≥ 4,5:1) |
+| Brass gold hover | `#72500C` | Kontras 7,2:1 terhadap putih |
+| Brass gold dekoratif | `#C59B27` | Garis eyebrow, ikon bulat, irisan sudut footer |
+| Gold di atas navy | `#E2B44F` | Teks/aksen pada latar gelap |
+| Slate (body text) | `#4B5563` | Kontras 7,1:1 terhadap putih |
+| Line / Hairline | `#E2E8F0` | Garis pemisah halus |
+
+**Aturan Kontras:** Tombol solid berlatar gold dan teks gold di atas putih wajib memakai varian tegas `#8A6212` (rasio 5,55:1) agar lulus uji WCAG 2.2 AA. Gold terang `#C59B27` hanya diperuntukkan bagi elemen dekoratif non-teks.
 
 ### 6.2 Tipografi
-- Judul: **Barlow Condensed** (600/700), huruf kapital, letter-spacing `0.02em`.
-- Isi: **Barlow** (400/500).
-- Rasa: tegas, industrial, mudah dibaca dari jauh.
+- **Keluarga Huruf:** **Plus Jakarta Sans** (`@fontsource/plus-jakarta-sans`) self-hosted dengan `font-display: swap` untuk judul maupun teks isi. Paket font lama (Barlow dan Barlow Condensed) dihapus sepenuhnya dari dependensi proyek.
+- **Bobot:** Judul 700 (tegas, modern), teks isi 400/500, label uppercase 700.
+- **Penekanan Hero:** Baris kedua judul hero yang bergaya miring (*italic*) dikelola dinamis melalui field CMS `title_emphasis`, tanpa hardcode di JSX.
+- **Skala Ukuran:** Display 64/68, H2 40/46, H3 24/32, Body 16/28.
 
-### 6.3 Layout
-- **Rail kiri tetap** (lebar 88px desktop, latar putih): logo vertikal di atas (`Logo` varian ringkas/compact icon, tinggi 32px; tinggi 40px saat rail expand, `on="light"`), ikon menu dengan label muncul saat hover/expand, pengalih bahasa di bawah. Mobile: bar atas putih dengan logo compact (tinggi 32px) dan bar bawah dengan 5 ikon + menu "Lainnya".
-- **Konten full-bleed**: foto menembus tepi kanan, tidak ada container sempit pada hero.
-- **Panel gold** menimpa foto sebagai kotak informasi (judul + tombol navy).
-- **Footer:** navy dengan logo (`Logo` varian terang/dark surface, tinggi 44px) dan blok gold untuk CTA kontak.
+### 6.3 Bentuk & Motif Khas
+- **Bentuk:** Tombol kapsul penuh (`--radius-button: 9999px`), kartu dan foto berradius 12px (`--radius-card: 12px`), elevasi bayangan halus (`shadow-sm` hingga `shadow-md`).
+- **Motif Eyebrow:** Garis gold pendek (32px × 2px) **di kiri** teks, diikuti label uppercase emas tegas.
+- **Bentuk Diagonal Hero:** Poligon datar semi-transparan (`clip-path`) abu-biru sangat muda di latar belakang hero Beranda tanpa gradasi.
+- **Foto Alat Berat Hero:** Foto alat berat menembus tepi kanan viewport dengan tepi kiri terpotong diagonal (`clip-path`) menyatu ke kanvas putih.
+- **Bingkai Gold Offset:** Garis tepi gold tipis offset pada sisi atas dan kanan foto profil di Tentang Kami.
+- **Irisan Diagonal Footer:** Bentuk wedge diagonal gold di sudut kanan bawah footer serta siluet pegunungan samar.
 
-### 6.4 Susunan Halaman
-| Halaman | Isi dan tata letak |
+### 6.4 Layout Global
+- **Header Horizontal:** Latar putih sticky tinggi ~80px dengan bayangan tipis saat scroll. Kiri: `Logo` (`on="light"`, tinggi 44px desktop, 32px mobile). Tengah: menu horizontal `Beranda · Tentang Kami · Operasi · Produk · Kontak` (item aktif berupa teks navy tebal + garis bawah gold). Kanan: tombol pill gold "Hubungi Kami →" dan pengalih bahasa `ID | EN` (`tone="light"`). Mobile: drawer samping dari kanan; bar bawah lama dengan 5 ikon dihapus total.
+- **Banner Halaman Dalam:** Banner foto penuh tinggi 240–280px (160–200px mobile) dengan overlay gelap gradien dari kiri (kontras teks ≥ 4,5:1), judul putih tebal (`h1` tunggal per halaman), dan breadcrumb `Beranda › {Judul Halaman}`.
+- **Footer:** Latar navy `#101F38`, logo `on="dark"` tinggi 44px tanpa tautan, menu horizontal tengah, ikon sosial bulat putih kanan, irisan diagonal gold, siluet pegunungan samar, dan hak cipta tahun dinamis.
+
+### 6.5 Susunan Halaman (5 Halaman Aktif)
+| Halaman | Isi dan Tata Letak Redesain |
 |---|---|
-| **Beranda** | Hero full-bleed foto tambang, panel gold di kiri bawah berisi judul dan tombol. Strip 4 angka di bawah hero. "Apa yang kami lakukan" dalam 3 tile besar. Pita cream dengan foto operasi. CTA gold |
-| **Tentang Kami** | Opening statement besar satu kalimat. Foto lebar. Dua kolom visi-misi. Nilai perusahaan sebagai deretan 4 kartu bergaris atas gold |
-| **Produk** | Tile besar dua kolom dengan label sudut gold (mis. kategori kalori). Detail produk: foto lebar, spesifikasi dalam kotak cream |
-| **Operasi** | **Strip proses horizontal dengan scroll-snap** (tambang → pengangkutan → stockpile → pengapalan), tiap langkah satu kartu foto. Di bawahnya daftar lokasi |
-| **Mutu & Kepatuhan** | Grid kartu dokumen dengan ikon, nama, masa berlaku, tombol unduh |
-| **Kontak** | Form di atas panel gold lebar, info dan peta di bawah |
+| **Beranda** | 1. Hero: latar putih berpoligon diagonal, teks kiri dengan penekanan judul italic dinamis, dua tombol pill (solid & outline), foto alat berat kanan menembus viewport.<br>2. Strip Nilai: kartu tipis radius 12 latar surface menimpa tepi hero berisi 4 item pilar sejajar (ikon garis gold + label navy).<br>3. Tentang Perusahaan: split 2 kolom (foto udara tambang 4:3 kiri, narasi dan tombol pill "Selengkapnya →" kanan).<br>*(Section lama: stats, 3 tile produk, pita operasi, dan CTA banner dinonaktifkan via saklar visibilitas tanpa menghapus data)*. |
+| **Tentang Kami** | 1. Banner & Breadcrumb.<br>2. Split Profil: narasi kiri dan foto berbingkai gold offset kanan.<br>3. Baris Visi/Misi: dua kolom dipisah garis vertikal hairline (ikon bulat gold mata untuk kutipan Visi; ikon bulat gold target untuk 3 poin Misi dengan bullet bulat gold).<br>*(Blok timeline dan nilai lama dinonaktifkan via saklar)*. |
+| **Operasi** | 1. Banner & Breadcrumb.<br>2. Split Aktivitas Operasional: kiri narasi, checklist centang gold bulat, dan tombol pill "Lihat Detail Operasi →" (anchor scroll); kanan grid foto 2×2 (radius 8, rasio 4:3).<br>3. Direktori Lokasi & Fasilitas: daftar simpul tambang dengan koordinat bergaris hairline dan lencana pil gold gelap. |
+| **Produk** | 1. Banner & Breadcrumb.<br>2. Komposisi 3 Kolom 4/4/4: kiri eyebrow, H2, narasi, tombol pill "Spesifikasi Produk →"; tengah foto produk batubara radius 12 berbayangan; kanan kartu "Spesifikasi Umum" (4 parameter kunci: Kalori, TM, Ash, Sulfur). Berulang per produk published. |
+| **Kontak** | 1. Banner & Breadcrumb.<br>2. Dua Kolom: formulir pesan dalam kartu putih radius 12 dengan tombol pill gold di kiri; kartu info alamat, telepon, email, jam, dan koordinat di kanan. |
 
 ---
 
@@ -358,7 +369,7 @@ Komponen primitif tanpa gaya identitas. Warna, radius, dan font diambil dari tok
   - `logo.dark`: Logo untuk latar **gelap** (varian turunan dengan teks/tinta putih, di mana simbol warna asli dipertahankan).
   - `logo.compact`: Versi ringkas/ikon untuk ruang sempit (rail Korin Bara).
 - **Integritas Merek:** Dilarang menggunakan filter CSS (`filter: brightness/invert`) atau mewarnai ulang simbol. Ukuran proporsional sesuai rasio asli.
-- **Ukuran Standar:** Header 36–48px (holding 48px menyusut ke 36px saat sticky; korin-berkat 40px; beramal 36px; korin-bara rail 32/40px). Footer 44px di seluruh tema.
+- **Ukuran Standar:** Header 36–48px (holding 48px menyusut ke 36px saat sticky; korin-berkat 40px; beramal 36px; korin-bara header horizontal 44px desktop / 32px mobile). Footer 44px di seluruh tema (pada korin-bara logo footer berlatar navy `on="dark"` tanpa link).
 - **Aksesibilitas & Tautan:** Logo header dibungkus tautan beranda dengan accessible label lengkap (`{Nama Perusahaan}, Beranda` / `{Company Name}, Home`). Logo footer berupa gambar murni tanpa tautan untuk menghindari redundansi navigasi. `alt` selalu memakai nama resmi perusahaan.
 - **Fallback:** Jika logo tidak tersedia, komponen `Logo` menampilkan wordmark teks tebal accessible (`font-heading font-bold`).
 
@@ -480,6 +491,23 @@ Menambah tema baru = satu folder di `themes/`, satu berkas CSS token, satu baris
 ---
 
 ## 15. Catatan Perubahan (Changelog)
+
+### Versi 1.6 (Revisi 7 — Redesain Tema Korin Bara "Bold Horizon")
+- **Penyesuaian Menyeluruh Mengikuti Referensi Klien (`docs/reference/korin-bara-redesign.png`):**
+  - Menggantikan konsep lama "Field Rail" dengan tema "Bold Horizon": korporat B2B yang bersih, terang, dan tegas (putih `#FFFFFF`, navy `#101F38`, brass-gold `#8A6212` dengan kontras 5.55:1 $\ge$ 4.5:1 WCAG AA).
+  - Menghapus rail vertikal 88px di sisi kiri dan mobile 5-icon bottom bar.
+  - Menerapkan header horizontal putih sticky (~80px desktop, ~64px mobile), logo `on="light"` (44px desktop, 32px mobile), active nav text tebal + underline gold pendek, CTA pill gold ("Hubungi Kami →"), switcher bahasa `ID | EN`, dan mobile navigation drawer dari kanan.
+- **Tipografi:**
+  - Migrasi font ke **Plus Jakarta Sans** (400 normal/italic, 500, 600, 700 normal/italic) via self-host `@fontsource/plus-jakarta-sans`.
+  - Menghapus dependensi `@fontsource/barlow` dan `@fontsource/barlow-condensed`.
+- **Desain Halaman:**
+  - **Beranda:** Hero putih dengan bentuk diagonal semi-transparan (`clip-path`), teks staggered dengan italic emphasis di baris kedua, foto alat berat menembus tepi kanan viewport dengan potongan diagonal (`clip-path`). Nilai Perusahaan disajikan dalam strip 4 kolom yang menimpa batas bawah hero. Tentang Perusahaan split 2-kolom foto + teks.
+  - **Tentang Kami:** Banner foto full-width dengan overlay gelap kontras WCAG AA, split profil perusahaan dengan bingkai garis gold offset, dan Visi/Misi 2-kolom berpemisah hairline (ikon mata & target, bullet gold).
+  - **Operasi:** Banner foto full-width, split aktivitas operasional bercentang putih dalam lingkaran gold + anchor button ke `#daftar-operasi`, dan grid foto 2x2. Direktori lokasi operasi di bawah ditata ulang dengan baris bergaris hairline dan pill badge tipe.
+  - **Produk:** Banner foto batubara full-width, tata letak 3-kolom (4/4/4): pengantar produk unggulan, foto batubara radius 12, dan kartu "Spesifikasi Umum" 4 baris berpemisah hairline (Kalori, TM, Ash, Sulfur).
+  - **Footer:** Berlatar navy `#101F38`, logo `on="dark"` 44px tanpa link, tautan menu horizontal, ikon sosial bulat putih, hak cipta dinamis, siluet grafis pegunungan, dan irisan diagonal gold di sudut kanan bawah.
+- **Aksesibilitas (WCAG 2.2 AA):**
+  - Seluruh halaman lulus audit otomatis Axe-core via Playwright.
 
 ### Versi 1.5 (Revisi 4 — Penayangan Korin Bara, Alias Logo, dan Redesain CMS Admin)
 - **Penayangan PT Korin Bara Energy:**

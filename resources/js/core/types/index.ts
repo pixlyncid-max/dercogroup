@@ -113,6 +113,7 @@ export interface HeroSlideData {
 export interface HeroBlockData {
     eyebrow?: string;
     title: string;
+    title_emphasis?: string;
     description: string;
     primary_cta_label?: string;
     primary_cta_href?: string | null;

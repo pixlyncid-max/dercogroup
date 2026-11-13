@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Password;
+use Spatie\Permission\Models\Role;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -114,7 +115,7 @@ class UserResource extends Resource
                         // Prevent removing Super Admin role if this is the last Super Admin
                         if ($record->isSuperAdmin() && User::role(User::ROLE_SUPER_ADMIN)->count() <= 1) {
                             $selectedRoles = $data['roles'] ?? [];
-                            $superAdminRole = \Spatie\Permission\Models\Role::where('name', User::ROLE_SUPER_ADMIN)->first();
+                            $superAdminRole = Role::where('name', User::ROLE_SUPER_ADMIN)->first();
                             if ($superAdminRole && ! in_array($superAdminRole->id, (array) $selectedRoles, false)) {
                                 Notification::make()
                                     ->danger()

@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Domain\Company\Enums\CompanyTheme;
 use App\Domain\Company\Models\Company;
-use App\Domain\Contact\Enums\ContactMessageStatus;
-use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Page\Enums\BlockType;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\ContentRevision;
-use App\Domain\Page\Models\Page;
 use App\Domain\Page\Models\PageBlock;
-use App\Domain\Page\Schema\SectionSchema;
 use App\Filament\Pages\EditWebsitePage;
 use App\Filament\Pages\WebsiteSettings;
 use App\Models\User;
@@ -28,10 +23,15 @@ class CmsStage9VerificationTest extends TestCase
     use RefreshDatabase;
 
     private User $superAdmin;
+
     private User $editor;
+
     private Company $holding;
+
     private Company $korinBerkat;
+
     private Company $korinBara;
+
     private Company $beramal;
 
     protected function setUp(): void

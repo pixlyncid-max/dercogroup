@@ -43,6 +43,20 @@ class HeaderBlock extends Block
                 'default' => true,
             ],
             [
+                'name' => 'cta_label',
+                'type' => 'translatable_text',
+                'label' => 'Label Tombol Aksi Header',
+                'help_text' => 'Label tombol sorotan di sudut kanan header (contoh: Hubungi Kami).',
+                'required' => false,
+            ],
+            [
+                'name' => 'cta_href',
+                'type' => 'link',
+                'label' => 'Tujuan Tombol Aksi Header',
+                'help_text' => 'Halaman tujuan ketika tombol aksi ditekan (contoh: /kontak).',
+                'required' => false,
+            ],
+            [
                 'name' => 'nav_items',
                 'type' => 'repeater',
                 'label' => 'Daftar Menu Navigasi Header',

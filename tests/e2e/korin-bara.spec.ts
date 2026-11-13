@@ -38,7 +38,7 @@ function removeDraftTestCompany(): void {
     );
 }
 
-test.describe('PT Korin Bara Energy — Published Subsidiary & Draft Mechanism (Revisi 4)', () => {
+test.describe('PT Korin Bara Energy — Redesign & Public Verification', () => {
     test.beforeEach(() => {
         ensureKorinBaraPublished();
     });
@@ -60,11 +60,11 @@ test.describe('PT Korin Bara Energy — Published Subsidiary & Draft Mechanism (
         await expect(korinBaraLink).toBeVisible();
         await korinBaraLink.click();
 
-        // Public visitor lands on PT Korin Bara Energy with Field Rail theme and no preview banner
+        // Public visitor lands on PT Korin Bara Energy with new corporate theme and no preview banner
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/korin-bara-energy$/);
         await expect(page.locator('[data-theme="korin-bara"]')).toBeVisible();
         await expect(page.getByTestId('preview-banner')).toHaveCount(0);
-        await expect(page.locator('h1')).toContainText('PT Korin Bara Energy');
+        await expect(page.locator('h1')).toContainText('Energi untuk');
 
         // Sitemap XML includes published korin-bara-energy
         const sitemapResponse = await page.goto('/sitemap.xml');
@@ -99,7 +99,7 @@ test.describe('PT Korin Bara Energy — Published Subsidiary & Draft Mechanism (
         expect(sitemapText).not.toContain('draft-exploration-energy');
     });
 
-    test('allows public visitors to access all 6 Korin Bara pages + product detail and passes Axe WCAG 2.2 AA', async ({
+    test('verifies horizontal sticky header, menu order, inside page banner, and Axe WCAG 2.2 AA', async ({
         page,
     }) => {
         test.setTimeout(90000);
@@ -108,31 +108,33 @@ test.describe('PT Korin Bara Energy — Published Subsidiary & Draft Mechanism (
         const publicPages = [
             {
                 url: '/id/bisnis-kami/korin-bara-energy',
-                h1: 'PT Korin Bara Energy',
+                h1: 'Energi untuk',
+                isHome: true,
             },
             {
                 url: '/id/bisnis-kami/korin-bara-energy/tentang-kami',
-                h1: 'Tentang PT Korin Bara Energy',
-            },
-            {
-                url: '/id/bisnis-kami/korin-bara-energy/produk',
-                h1: 'Katalog Produk PT Korin Bara Energy',
-            },
-            {
-                url: '/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200',
-                h1: 'Batu Bara Termal GAR 4.200',
+                h1: 'Tentang Kami',
+                isHome: false,
             },
             {
                 url: '/id/bisnis-kami/korin-bara-energy/operasi',
-                h1: 'Jaringan Operasi PT Korin Bara Energy',
+                h1: 'Operasi',
+                isHome: false,
             },
             {
-                url: '/id/bisnis-kami/korin-bara-energy/mutu-dan-kepatuhan',
-                h1: 'Mutu, Izin, dan Kepatuhan Regulasi',
+                url: '/id/bisnis-kami/korin-bara-energy/produk',
+                h1: 'Produk',
+                isHome: false,
+            },
+            {
+                url: '/id/bisnis-kami/korin-bara-energy/produk/thermal-coal-gar-4200',
+                h1: 'Batu Bara Termal',
+                isHome: false,
             },
             {
                 url: '/id/bisnis-kami/korin-bara-energy/kontak',
-                h1: 'Kontak PT Korin Bara Energy',
+                h1: 'Kontak',
+                isHome: false,
             },
         ];
 
@@ -145,8 +147,30 @@ test.describe('PT Korin Bara Energy — Published Subsidiary & Draft Mechanism (
             await expect(page.locator('h1')).toHaveCount(1);
             await expect(page.locator('h1')).toContainText(item.h1);
 
-            if (item.url.includes('/operasi')) {
-                await expect(page.getByTestId('korin-bara-process-strip')).toBeVisible();
+            // Verify horizontal header is visible
+            await expect(page.locator('header')).toBeVisible();
+            const mainNav = page.locator('header nav').first();
+            await expect(mainNav).toBeVisible();
+
+            // Verify menu links exist in correct order (Beranda, Tentang Kami, Operasi, Produk, Kontak)
+            const menuLinks = mainNav.locator('a');
+            const menuTexts = await menuLinks.allTextContents();
+            expect(menuTexts).toEqual(
+                expect.arrayContaining(['Beranda', 'Tentang Kami', 'Operasi', 'Produk', 'Kontak'])
+            );
+
+            // Verify inside page banner and breadcrumb on non-home pages
+            if (!item.isHome) {
+                await expect(page.getByTestId('korin-bara-page-banner')).toBeVisible();
+                await expect(page.locator('nav[aria-label*="remah roti"], nav[aria-label*="Breadcrumb"]')).toBeVisible();
+            }
+
+            // Verify specific page elements
+            if (item.url.endsWith('/produk')) {
+                await expect(page.getByTestId('korin-bara-products')).toBeVisible();
+            }
+            if (item.url.endsWith('/operasi')) {
+                await expect(page.getByTestId('korin-bara-operations')).toBeVisible();
             }
 
             const results = await new AxeBuilder({ page })

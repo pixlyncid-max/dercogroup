@@ -9,7 +9,6 @@ use App\Domain\Company\Enums\CompanyTheme;
 use App\Domain\Company\Models\Company;
 use App\Domain\Company\Models\Setting;
 use App\Domain\Media\Actions\ProcessUploadedMediaAction;
-use App\Support\FilamentThemeResolver;
 use BackedEnum;
 use Filament\Facades\Filament;
 use Filament\Notifications\Notification;

@@ -1,16 +1,16 @@
 {
-  "_theme-holding-D9ab6ZAd.js": {
-    "file": "assets/theme-holding-D9ab6ZAd.js",
+  "_theme-holding-B9camjqA.js": {
+    "file": "assets/theme-holding-B9camjqA.js",
     "name": "theme-holding",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ]
   },
-  "_vendor-icons-DWNtUYmb.js": {
-    "file": "assets/vendor-icons-DWNtUYmb.js",
+  "_vendor-icons-DORaaKYI.js": {
+    "file": "assets/vendor-icons-DORaaKYI.js",
     "name": "vendor-icons",
     "imports": [
       "_vendor-react-Cl5OSeng.js"
@@ -51,152 +51,200 @@
     "file": "assets/manrope-vietnamese-wght-normal-usUDDRr7.woff2",
     "src": "node_modules/@fontsource-variable/manrope/files/manrope-vietnamese-wght-normal.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff": {
-    "file": "assets/barlow-condensed-latin-600-normal-BFJEwTuo.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-italic.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-400-italic-DLV2cdXz.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-italic.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2": {
-    "file": "assets/barlow-condensed-latin-600-normal-DepVgxBB.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-400-italic-J3O89QBi.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-italic.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff": {
-    "file": "assets/barlow-condensed-latin-700-normal-Dmwat-ge.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-normal.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-400-normal-Dbdydbkh.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-normal.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2": {
-    "file": "assets/barlow-condensed-latin-700-normal-v1xN8_Wq.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-400-normal-CJkVxub1.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-400-normal.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-600-normal.woff": {
-    "file": "assets/barlow-condensed-latin-ext-600-normal-Clv9cIcR.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-500-normal.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-500-normal-B7C_nQD_.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-500-normal.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-600-normal.woff2": {
-    "file": "assets/barlow-condensed-latin-ext-600-normal-18ESti3H.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-500-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-500-normal-WMJmRWOr.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-500-normal.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-700-normal.woff": {
-    "file": "assets/barlow-condensed-latin-ext-700-normal-BIHFfxf0.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-600-normal.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-600-normal-BtwufOTE.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-600-normal.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-700-normal.woff2": {
-    "file": "assets/barlow-condensed-latin-ext-700-normal-CwuXbfVR.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-ext-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-600-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-600-normal-C5KBqx06.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-600-normal.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-600-normal.woff": {
-    "file": "assets/barlow-condensed-vietnamese-600-normal-CNlPk46_.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-italic.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-700-italic-B8gqiGHw.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-italic.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-600-normal.woff2": {
-    "file": "assets/barlow-condensed-vietnamese-600-normal-A5AYRdjN.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-700-italic-BOakJaVF.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-italic.woff2"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-700-normal.woff": {
-    "file": "assets/barlow-condensed-vietnamese-700-normal-DhIzd8Tb.woff",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-normal.woff": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-700-normal-pWfpUei5.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-normal.woff"
   },
-  "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-700-normal.woff2": {
-    "file": "assets/barlow-condensed-vietnamese-700-normal-DYeBwlKR.woff2",
-    "src": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-vietnamese-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-cyrillic-ext-700-normal-iShZaXYX.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-cyrillic-ext-700-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-400-normal.woff": {
-    "file": "assets/barlow-latin-400-normal-fsAxiSwU.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-400-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-italic.woff": {
+    "file": "assets/plus-jakarta-sans-latin-400-italic-BVaBttQe.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-italic.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-400-normal.woff2": {
-    "file": "assets/barlow-latin-400-normal-qiz4-Cze.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-400-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-400-italic-D5MFNpT-.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-italic.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff": {
-    "file": "assets/barlow-latin-500-normal-C1h8hMer.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff2": {
-    "file": "assets/barlow-latin-500-normal-BPAOfeC8.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-500-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-600-normal.woff": {
-    "file": "assets/barlow-latin-600-normal-CNwfPWQD.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-600-normal.woff2": {
-    "file": "assets/barlow-latin-600-normal-DILqtrty.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-700-normal.woff": {
-    "file": "assets/barlow-latin-700-normal-__SGTsZ1.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-700-normal.woff2": {
-    "file": "assets/barlow-latin-700-normal-A9pxMQ4z.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-400-normal.woff": {
-    "file": "assets/barlow-latin-ext-400-normal-CvBsJvxq.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-400-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-italic.woff": {
+    "file": "assets/plus-jakarta-sans-latin-700-italic-DarEIpt8.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-italic.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-400-normal.woff2": {
-    "file": "assets/barlow-latin-ext-400-normal-HxX4XjxC.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-400-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-700-italic-B6fOe9QJ.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-italic.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-500-normal.woff": {
-    "file": "assets/barlow-latin-ext-500-normal-CJPcKP2Q.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-500-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-500-normal.woff2": {
-    "file": "assets/barlow-latin-ext-500-normal-DOaysfXq.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-500-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-600-normal.woff": {
-    "file": "assets/barlow-latin-ext-600-normal-DMVRjfRT.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-italic.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-400-italic-DO3wxI6M.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-italic.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-600-normal.woff2": {
-    "file": "assets/barlow-latin-ext-600-normal-B8NK_A3D.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-400-italic--YfxA26p.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-italic.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-700-normal.woff": {
-    "file": "assets/barlow-latin-ext-700-normal-CctuGmmz.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-400-normal-2ppkqaOR.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-latin-ext-700-normal.woff2": {
-    "file": "assets/barlow-latin-ext-700-normal-BLuWmldJ.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-latin-ext-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-400-normal-D127hM_v.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-400-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-400-normal.woff": {
-    "file": "assets/barlow-vietnamese-400-normal-BFeobeCK.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-400-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-500-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-500-normal-CqEEAICU.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-500-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-400-normal.woff2": {
-    "file": "assets/barlow-vietnamese-400-normal-Dpl4UHAZ.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-400-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-500-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-500-normal-9VZagAe1.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-500-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-500-normal.woff": {
-    "file": "assets/barlow-vietnamese-500-normal-GNfB7rCE.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-500-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-600-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-600-normal-B0WRRYJ1.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-600-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-500-normal.woff2": {
-    "file": "assets/barlow-vietnamese-500-normal-zTViEIzf.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-500-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-600-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-600-normal-DQgPU_Cg.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-600-normal.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-600-normal.woff": {
-    "file": "assets/barlow-vietnamese-600-normal-CA_GiK2e.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-600-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-italic.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-700-italic-Diju4BEl.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-italic.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-600-normal.woff2": {
-    "file": "assets/barlow-vietnamese-600-normal-DcjprdFV.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-600-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-700-italic-bFhnYJdU.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-italic.woff2"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-700-normal.woff": {
-    "file": "assets/barlow-vietnamese-700-normal-4Jt4k04K.woff",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-700-normal.woff"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-normal.woff": {
+    "file": "assets/plus-jakarta-sans-latin-ext-700-normal-8-d-IyIQ.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-normal.woff"
   },
-  "node_modules/@fontsource/barlow/files/barlow-vietnamese-700-normal.woff2": {
-    "file": "assets/barlow-vietnamese-700-normal-D6euyNzi.woff2",
-    "src": "node_modules/@fontsource/barlow/files/barlow-vietnamese-700-normal.woff2"
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-latin-ext-700-normal-BajbvANd.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-ext-700-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-italic.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-400-italic-BwMUgQYW.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-italic.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-400-italic-DxHMt71w.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-italic.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-normal.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-400-normal-B8TCSmUq.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-400-normal-Cg2kxhWu.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-400-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-500-normal.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-500-normal-CvE5C8T-.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-500-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-500-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-500-normal-DiU8zqi-.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-500-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-600-normal.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-600-normal-5YsyKbU1.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-600-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-600-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-600-normal-Y4VTTRme.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-600-normal.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-italic.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-700-italic-DOUDQg3g.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-italic.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-italic.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-700-italic-cvvPQL89.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-italic.woff2"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff": {
+    "file": "assets/plus-jakarta-sans-vietnamese-700-normal-BCh_uG_5.woff",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff"
+  },
+  "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff2": {
+    "file": "assets/plus-jakarta-sans-vietnamese-700-normal-CV6qDkkj.woff2",
+    "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BS10RKJ3.css",
+    "file": "assets/app-dZwBzAGL.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -205,7 +253,7 @@
     ]
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-C8ZlGCJ6.css",
+    "file": "assets/theme-Dn8_CNfj.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true,
     "name": "theme",
@@ -214,18 +262,18 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-Cc3WlFeO.js",
+    "file": "assets/app-DbtGk-QM.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ],
     "dynamicImports": [
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "resources/js/themes/korin-berkat/index.ts",
       "resources/js/themes/korin-bara/index.ts",
       "resources/js/themes/beramal/index.ts",
@@ -234,7 +282,7 @@
       "resources/js/pages/ThemedPage.tsx"
     ],
     "css": [
-      "assets/app-BS10RKJ3.css"
+      "assets/app-dZwBzAGL.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -243,58 +291,70 @@
       "assets/manrope-vietnamese-wght-normal-usUDDRr7.woff2",
       "assets/manrope-latin-ext-wght-normal-Ch3YOpNY.woff2",
       "assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-A5AYRdjN.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-CNlPk46_.woff",
-      "assets/barlow-condensed-latin-ext-600-normal-18ESti3H.woff2",
-      "assets/barlow-condensed-latin-ext-600-normal-Clv9cIcR.woff",
-      "assets/barlow-condensed-latin-600-normal-DepVgxBB.woff2",
-      "assets/barlow-condensed-latin-600-normal-BFJEwTuo.woff",
-      "assets/barlow-condensed-vietnamese-700-normal-DYeBwlKR.woff2",
-      "assets/barlow-condensed-vietnamese-700-normal-DhIzd8Tb.woff",
-      "assets/barlow-condensed-latin-ext-700-normal-CwuXbfVR.woff2",
-      "assets/barlow-condensed-latin-ext-700-normal-BIHFfxf0.woff",
-      "assets/barlow-condensed-latin-700-normal-v1xN8_Wq.woff2",
-      "assets/barlow-condensed-latin-700-normal-Dmwat-ge.woff",
-      "assets/barlow-vietnamese-400-normal-Dpl4UHAZ.woff2",
-      "assets/barlow-vietnamese-400-normal-BFeobeCK.woff",
-      "assets/barlow-latin-ext-400-normal-HxX4XjxC.woff2",
-      "assets/barlow-latin-ext-400-normal-CvBsJvxq.woff",
-      "assets/barlow-latin-400-normal-qiz4-Cze.woff2",
-      "assets/barlow-latin-400-normal-fsAxiSwU.woff",
-      "assets/barlow-vietnamese-500-normal-zTViEIzf.woff2",
-      "assets/barlow-vietnamese-500-normal-GNfB7rCE.woff",
-      "assets/barlow-latin-ext-500-normal-DOaysfXq.woff2",
-      "assets/barlow-latin-ext-500-normal-CJPcKP2Q.woff",
-      "assets/barlow-latin-500-normal-BPAOfeC8.woff2",
-      "assets/barlow-latin-500-normal-C1h8hMer.woff",
-      "assets/barlow-vietnamese-600-normal-DcjprdFV.woff2",
-      "assets/barlow-vietnamese-600-normal-CA_GiK2e.woff",
-      "assets/barlow-latin-ext-600-normal-B8NK_A3D.woff2",
-      "assets/barlow-latin-ext-600-normal-DMVRjfRT.woff",
-      "assets/barlow-latin-600-normal-DILqtrty.woff2",
-      "assets/barlow-latin-600-normal-CNwfPWQD.woff",
-      "assets/barlow-vietnamese-700-normal-D6euyNzi.woff2",
-      "assets/barlow-vietnamese-700-normal-4Jt4k04K.woff",
-      "assets/barlow-latin-ext-700-normal-BLuWmldJ.woff2",
-      "assets/barlow-latin-ext-700-normal-CctuGmmz.woff",
-      "assets/barlow-latin-700-normal-A9pxMQ4z.woff2",
-      "assets/barlow-latin-700-normal-__SGTsZ1.woff"
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-CJkVxub1.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-Dbdydbkh.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-Cg2kxhWu.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-B8TCSmUq.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-D127hM_v.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-2ppkqaOR.woff",
+      "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+      "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-J3O89QBi.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-DLV2cdXz.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-DxHMt71w.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-BwMUgQYW.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-italic--YfxA26p.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-italic-DO3wxI6M.woff",
+      "assets/plus-jakarta-sans-latin-400-italic-D5MFNpT-.woff2",
+      "assets/plus-jakarta-sans-latin-400-italic-BVaBttQe.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-WMJmRWOr.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-B7C_nQD_.woff",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-DiU8zqi-.woff2",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-CvE5C8T-.woff",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-9VZagAe1.woff2",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-CqEEAICU.woff",
+      "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+      "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-C5KBqx06.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-BtwufOTE.woff",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-Y4VTTRme.woff2",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-5YsyKbU1.woff",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-DQgPU_Cg.woff2",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-B0WRRYJ1.woff",
+      "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+      "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-iShZaXYX.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-pWfpUei5.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-CV6qDkkj.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-BCh_uG_5.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-BajbvANd.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-8-d-IyIQ.woff",
+      "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+      "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-BOakJaVF.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-B8gqiGHw.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-cvvPQL89.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-DOUDQg3g.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-bFhnYJdU.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-Diju4BEl.woff",
+      "assets/plus-jakarta-sans-latin-700-italic-B6fOe9QJ.woff2",
+      "assets/plus-jakarta-sans-latin-700-italic-DarEIpt8.woff"
     ]
   },
   "resources/js/pages/Error.tsx": {
-    "file": "assets/Error-CQx_pAmj.js",
+    "file": "assets/Error-DONkHaJ2.js",
     "name": "Error",
     "src": "resources/js/pages/Error.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "resources/js/app.tsx",
-      "_vendor-icons-DWNtUYmb.js",
+      "_vendor-icons-DORaaKYI.js",
       "_vendor-motion-Du7OqQs8.js"
     ],
     "css": [
-      "assets/app-BS10RKJ3.css"
+      "assets/app-dZwBzAGL.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -303,70 +363,82 @@
       "assets/manrope-vietnamese-wght-normal-usUDDRr7.woff2",
       "assets/manrope-latin-ext-wght-normal-Ch3YOpNY.woff2",
       "assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-A5AYRdjN.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-CNlPk46_.woff",
-      "assets/barlow-condensed-latin-ext-600-normal-18ESti3H.woff2",
-      "assets/barlow-condensed-latin-ext-600-normal-Clv9cIcR.woff",
-      "assets/barlow-condensed-latin-600-normal-DepVgxBB.woff2",
-      "assets/barlow-condensed-latin-600-normal-BFJEwTuo.woff",
-      "assets/barlow-condensed-vietnamese-700-normal-DYeBwlKR.woff2",
-      "assets/barlow-condensed-vietnamese-700-normal-DhIzd8Tb.woff",
-      "assets/barlow-condensed-latin-ext-700-normal-CwuXbfVR.woff2",
-      "assets/barlow-condensed-latin-ext-700-normal-BIHFfxf0.woff",
-      "assets/barlow-condensed-latin-700-normal-v1xN8_Wq.woff2",
-      "assets/barlow-condensed-latin-700-normal-Dmwat-ge.woff",
-      "assets/barlow-vietnamese-400-normal-Dpl4UHAZ.woff2",
-      "assets/barlow-vietnamese-400-normal-BFeobeCK.woff",
-      "assets/barlow-latin-ext-400-normal-HxX4XjxC.woff2",
-      "assets/barlow-latin-ext-400-normal-CvBsJvxq.woff",
-      "assets/barlow-latin-400-normal-qiz4-Cze.woff2",
-      "assets/barlow-latin-400-normal-fsAxiSwU.woff",
-      "assets/barlow-vietnamese-500-normal-zTViEIzf.woff2",
-      "assets/barlow-vietnamese-500-normal-GNfB7rCE.woff",
-      "assets/barlow-latin-ext-500-normal-DOaysfXq.woff2",
-      "assets/barlow-latin-ext-500-normal-CJPcKP2Q.woff",
-      "assets/barlow-latin-500-normal-BPAOfeC8.woff2",
-      "assets/barlow-latin-500-normal-C1h8hMer.woff",
-      "assets/barlow-vietnamese-600-normal-DcjprdFV.woff2",
-      "assets/barlow-vietnamese-600-normal-CA_GiK2e.woff",
-      "assets/barlow-latin-ext-600-normal-B8NK_A3D.woff2",
-      "assets/barlow-latin-ext-600-normal-DMVRjfRT.woff",
-      "assets/barlow-latin-600-normal-DILqtrty.woff2",
-      "assets/barlow-latin-600-normal-CNwfPWQD.woff",
-      "assets/barlow-vietnamese-700-normal-D6euyNzi.woff2",
-      "assets/barlow-vietnamese-700-normal-4Jt4k04K.woff",
-      "assets/barlow-latin-ext-700-normal-BLuWmldJ.woff2",
-      "assets/barlow-latin-ext-700-normal-CctuGmmz.woff",
-      "assets/barlow-latin-700-normal-A9pxMQ4z.woff2",
-      "assets/barlow-latin-700-normal-__SGTsZ1.woff"
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-CJkVxub1.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-Dbdydbkh.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-Cg2kxhWu.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-B8TCSmUq.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-D127hM_v.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-2ppkqaOR.woff",
+      "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+      "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-J3O89QBi.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-DLV2cdXz.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-DxHMt71w.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-BwMUgQYW.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-italic--YfxA26p.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-italic-DO3wxI6M.woff",
+      "assets/plus-jakarta-sans-latin-400-italic-D5MFNpT-.woff2",
+      "assets/plus-jakarta-sans-latin-400-italic-BVaBttQe.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-WMJmRWOr.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-B7C_nQD_.woff",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-DiU8zqi-.woff2",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-CvE5C8T-.woff",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-9VZagAe1.woff2",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-CqEEAICU.woff",
+      "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+      "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-C5KBqx06.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-BtwufOTE.woff",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-Y4VTTRme.woff2",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-5YsyKbU1.woff",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-DQgPU_Cg.woff2",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-B0WRRYJ1.woff",
+      "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+      "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-iShZaXYX.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-pWfpUei5.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-CV6qDkkj.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-BCh_uG_5.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-BajbvANd.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-8-d-IyIQ.woff",
+      "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+      "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-BOakJaVF.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-B8gqiGHw.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-cvvPQL89.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-DOUDQg3g.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-bFhnYJdU.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-Diju4BEl.woff",
+      "assets/plus-jakarta-sans-latin-700-italic-B6fOe9QJ.woff2",
+      "assets/plus-jakarta-sans-latin-700-italic-DarEIpt8.woff"
     ]
   },
   "resources/js/pages/Home.tsx": {
-    "file": "assets/Home-D4Tln09S.js",
+    "file": "assets/Home-DDyRY1WC.js",
     "name": "Home",
     "src": "resources/js/pages/Home.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ]
   },
   "resources/js/pages/ThemedPage.tsx": {
-    "file": "assets/ThemedPage-DIeaj6Kw.js",
+    "file": "assets/ThemedPage-tXwNL-DJ.js",
     "name": "ThemedPage",
     "src": "resources/js/pages/ThemedPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "resources/js/app.tsx",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ],
     "css": [
-      "assets/app-BS10RKJ3.css"
+      "assets/app-dZwBzAGL.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -375,78 +447,90 @@
       "assets/manrope-vietnamese-wght-normal-usUDDRr7.woff2",
       "assets/manrope-latin-ext-wght-normal-Ch3YOpNY.woff2",
       "assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-A5AYRdjN.woff2",
-      "assets/barlow-condensed-vietnamese-600-normal-CNlPk46_.woff",
-      "assets/barlow-condensed-latin-ext-600-normal-18ESti3H.woff2",
-      "assets/barlow-condensed-latin-ext-600-normal-Clv9cIcR.woff",
-      "assets/barlow-condensed-latin-600-normal-DepVgxBB.woff2",
-      "assets/barlow-condensed-latin-600-normal-BFJEwTuo.woff",
-      "assets/barlow-condensed-vietnamese-700-normal-DYeBwlKR.woff2",
-      "assets/barlow-condensed-vietnamese-700-normal-DhIzd8Tb.woff",
-      "assets/barlow-condensed-latin-ext-700-normal-CwuXbfVR.woff2",
-      "assets/barlow-condensed-latin-ext-700-normal-BIHFfxf0.woff",
-      "assets/barlow-condensed-latin-700-normal-v1xN8_Wq.woff2",
-      "assets/barlow-condensed-latin-700-normal-Dmwat-ge.woff",
-      "assets/barlow-vietnamese-400-normal-Dpl4UHAZ.woff2",
-      "assets/barlow-vietnamese-400-normal-BFeobeCK.woff",
-      "assets/barlow-latin-ext-400-normal-HxX4XjxC.woff2",
-      "assets/barlow-latin-ext-400-normal-CvBsJvxq.woff",
-      "assets/barlow-latin-400-normal-qiz4-Cze.woff2",
-      "assets/barlow-latin-400-normal-fsAxiSwU.woff",
-      "assets/barlow-vietnamese-500-normal-zTViEIzf.woff2",
-      "assets/barlow-vietnamese-500-normal-GNfB7rCE.woff",
-      "assets/barlow-latin-ext-500-normal-DOaysfXq.woff2",
-      "assets/barlow-latin-ext-500-normal-CJPcKP2Q.woff",
-      "assets/barlow-latin-500-normal-BPAOfeC8.woff2",
-      "assets/barlow-latin-500-normal-C1h8hMer.woff",
-      "assets/barlow-vietnamese-600-normal-DcjprdFV.woff2",
-      "assets/barlow-vietnamese-600-normal-CA_GiK2e.woff",
-      "assets/barlow-latin-ext-600-normal-B8NK_A3D.woff2",
-      "assets/barlow-latin-ext-600-normal-DMVRjfRT.woff",
-      "assets/barlow-latin-600-normal-DILqtrty.woff2",
-      "assets/barlow-latin-600-normal-CNwfPWQD.woff",
-      "assets/barlow-vietnamese-700-normal-D6euyNzi.woff2",
-      "assets/barlow-vietnamese-700-normal-4Jt4k04K.woff",
-      "assets/barlow-latin-ext-700-normal-BLuWmldJ.woff2",
-      "assets/barlow-latin-ext-700-normal-CctuGmmz.woff",
-      "assets/barlow-latin-700-normal-A9pxMQ4z.woff2",
-      "assets/barlow-latin-700-normal-__SGTsZ1.woff"
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-CJkVxub1.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-normal-Dbdydbkh.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-Cg2kxhWu.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-normal-B8TCSmUq.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-D127hM_v.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-normal-2ppkqaOR.woff",
+      "assets/plus-jakarta-sans-latin-400-normal-Dhut76fR.woff2",
+      "assets/plus-jakarta-sans-latin-400-normal-BDKaGhyp.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-J3O89QBi.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-400-italic-DLV2cdXz.woff",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-DxHMt71w.woff2",
+      "assets/plus-jakarta-sans-vietnamese-400-italic-BwMUgQYW.woff",
+      "assets/plus-jakarta-sans-latin-ext-400-italic--YfxA26p.woff2",
+      "assets/plus-jakarta-sans-latin-ext-400-italic-DO3wxI6M.woff",
+      "assets/plus-jakarta-sans-latin-400-italic-D5MFNpT-.woff2",
+      "assets/plus-jakarta-sans-latin-400-italic-BVaBttQe.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-WMJmRWOr.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-500-normal-B7C_nQD_.woff",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-DiU8zqi-.woff2",
+      "assets/plus-jakarta-sans-vietnamese-500-normal-CvE5C8T-.woff",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-9VZagAe1.woff2",
+      "assets/plus-jakarta-sans-latin-ext-500-normal-CqEEAICU.woff",
+      "assets/plus-jakarta-sans-latin-500-normal-Bf-nb4oT.woff2",
+      "assets/plus-jakarta-sans-latin-500-normal-DYtqi0QS.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-C5KBqx06.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-600-normal-BtwufOTE.woff",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-Y4VTTRme.woff2",
+      "assets/plus-jakarta-sans-vietnamese-600-normal-5YsyKbU1.woff",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-DQgPU_Cg.woff2",
+      "assets/plus-jakarta-sans-latin-ext-600-normal-B0WRRYJ1.woff",
+      "assets/plus-jakarta-sans-latin-600-normal-DLTa1BUW.woff2",
+      "assets/plus-jakarta-sans-latin-600-normal-BR_Ojra4.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-iShZaXYX.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-normal-pWfpUei5.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-CV6qDkkj.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-normal-BCh_uG_5.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-BajbvANd.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-normal-8-d-IyIQ.woff",
+      "assets/plus-jakarta-sans-latin-700-normal-CfpNZvy6.woff2",
+      "assets/plus-jakarta-sans-latin-700-normal-DqEcQeE5.woff",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-BOakJaVF.woff2",
+      "assets/plus-jakarta-sans-cyrillic-ext-700-italic-B8gqiGHw.woff",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-cvvPQL89.woff2",
+      "assets/plus-jakarta-sans-vietnamese-700-italic-DOUDQg3g.woff",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-bFhnYJdU.woff2",
+      "assets/plus-jakarta-sans-latin-ext-700-italic-Diju4BEl.woff",
+      "assets/plus-jakarta-sans-latin-700-italic-B6fOe9QJ.woff2",
+      "assets/plus-jakarta-sans-latin-700-italic-DarEIpt8.woff"
     ]
   },
   "resources/js/themes/beramal/index.ts": {
-    "file": "assets/theme-beramal-Bjfrb9Oe.js",
+    "file": "assets/theme-beramal-CDdFGW3t.js",
     "name": "theme-beramal",
     "src": "resources/js/themes/beramal/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ]
   },
   "resources/js/themes/korin-bara/index.ts": {
-    "file": "assets/theme-korin-bara-CAHUKOdj.js",
+    "file": "assets/theme-korin-bara-C8aZC7FZ.js",
     "name": "theme-korin-bara",
     "src": "resources/js/themes/korin-bara/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ]
   },
   "resources/js/themes/korin-berkat/index.ts": {
-    "file": "assets/theme-korin-berkat-D0b-m_sv.js",
+    "file": "assets/theme-korin-berkat-EYbzcU8T.js",
     "name": "theme-korin-berkat",
     "src": "resources/js/themes/korin-berkat/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-D9ab6ZAd.js",
+      "_theme-holding-B9camjqA.js",
       "_vendor-motion-Du7OqQs8.js",
-      "_vendor-icons-DWNtUYmb.js"
+      "_vendor-icons-DORaaKYI.js"
     ]
   }
 }

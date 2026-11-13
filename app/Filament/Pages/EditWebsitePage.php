@@ -20,6 +20,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Pages\PageConfiguration;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
@@ -450,7 +451,7 @@ class EditWebsitePage extends Page
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, ContentRevision>
+     * @return Collection<int, ContentRevision>
      */
     public function getRevisions()
     {
@@ -494,7 +495,7 @@ class EditWebsitePage extends Page
             $this->visibility = $snapshot['visibility'];
         }
 
-        $restoreSummary = 'Dipulihkan dari versi ' . $revision->created_at->format('d M Y H:i');
+        $restoreSummary = 'Dipulihkan dari versi '.$revision->created_at->format('d M Y H:i');
         $this->performSave($tenant, $restoreSummary, force: true);
 
         $this->closeHistory();

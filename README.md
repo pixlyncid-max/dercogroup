@@ -535,6 +535,19 @@ Pasang di crontab server (`crontab -e`):
   - Lolos uji kegunaan 10 tugas umum awam (seluruhnya dapat diselesaikan dalam $\le 3$ klik dari sidebar, jauh di bawah batas $\le 5$ klik).
   - 135 Pest tests lolos 100% (1,873 assertions), TypeScript green, ESLint green.
 
+### v1.7.0 (Revisi 7 — Redesain Tema Korin Bara "Bold Horizon")
+- **Penyelarasan Total Tema Korin Bara Mengikuti Gambar Referensi Klien (`docs/reference/korin-bara-redesign.png`):**
+  - **Header & Navigasi Horizontal:** Menghapus rail vertikal 88px dan mobile bottom bar; menggantikannya dengan header horizontal putih sticky (~80px desktop, 64px mobile), logo `on="light"` (44px desktop, 32px mobile), active nav navy tebal + underline gold pendek, CTA pill gold ("Hubungi Kami →"), switcher bahasa `ID | EN`, dan mobile drawer dari kanan.
+  - **Banner Halaman Dalam:** Banner foto full-width (240–280px desktop) dengan overlay gelap sisi kiri (kontras WCAG AA $\ge 4.5:1$), judul putih `h1`, dan breadcrumb `Beranda › {Judul}`.
+  - **Tipografi Plus Jakarta Sans:** Migrasi font tema Korin Bara ke `@fontsource/plus-jakarta-sans` (400 normal/italic, 500, 600, 700 normal/italic). Paket font Barlow dan Barlow Condensed dihapus total.
+  - **Palet Warna & Kontras:** Navy `#101F38`, surface `#F8FAFC`, dan brass-gold `#8A6212` untuk tombol/teks kontras tinggi (5.55:1 pada putih), gold `#C59B27` untuk aksen non-teks.
+  - **Halaman Beranda:** Hero putih dengan latar diagonal flat clip-path, penekanan judul baris kedua (italic emphasis dinamis via CMS `title_emphasis`), foto alat berat menembus tepi kanan dengan potongan diagonal `clip-path`. Strip nilai 4 item (`values_grid` varian `strip`) menimpa batas bawah hero. Section Tentang Perusahaan 2 kolom.
+  - **Halaman Tentang Kami:** Split profil perusahaan dengan bingkai garis gold offset, Visi & Misi 2 kolom dipisah garis vertikal hairline (ikon mata & target, bullet gold).
+  - **Halaman Operasi:** Split aktivitas operasional bercentang emas dalam lingkaran + tombol scroll ke `#daftar-operasi` + grid foto 2x2. Direktori lokasi operasi di bawah ditata ulang dengan baris bergaris hairline dan pill badge tipe.
+  - **Halaman Produk:** Banner batubara full-width, tata letak 3 kolom (4/4/4): pengantar, foto batubara radius 12, dan kartu "Spesifikasi Umum" 4 baris berpemisah hairline (Kalori, TM, Ash, Sulfur).
+  - **Footer:** Navy tua `#101F38`, logo `on="dark"` 44px tanpa link, tautan menu horizontal, ikon sosial bulat putih, hak cipta dinamis, siluet grafis pegunungan, dan irisan diagonal gold.
+  - **Pengujian & Verifikasi:** Seluruh 135 Pest tests green, 21 frontend Vitest tests green, dan Playwright E2E & Axe accessibility tests green (100% WCAG 2.2 AA). 40 tangkapan layar multi-resolusi tersimpan di `docs/branding/korin-bara-redesign/`.
+
 ### v1.6.0 (Revisi 5 — Multi-Tenancy Perusahaan, Pengelolaan Satu Admin, & CRUD Aktif)
 - **Filament Multi-Tenancy (Tenant = `Company`):**
   - Satu panel CMS mengelola holding (`derco-bara-energy`) dan seluruh tiga anak usaha (`korin-berkat-energy`, `beramal-sukses-sejahtera`, `korin-bara-energy`).

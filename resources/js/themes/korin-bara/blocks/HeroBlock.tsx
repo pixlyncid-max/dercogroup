@@ -1,93 +1,147 @@
+import { Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
-import type { HeroBlockData } from '@/core';
-import { Button, Heading, Image, Reveal } from '@/ui';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
+import { useLocale, type HeroBlockData } from '@/core';
+import { Container, Image } from '@/ui';
 
 export interface HeroBlockProps {
     data: HeroBlockData;
 }
 
-/**
- * Korin Bara Hero ("Field Rail", DESIGN.md Section 6.3 & 6.4).
- * Full-bleed edge-to-edge mining photograph with a bold Brass Gold panel anchored at the bottom-left.
- */
 export function HeroBlock({ data }: HeroBlockProps) {
-    const heroImage = data.image || '/images/placeholders/pit-benches-1280.webp';
+    const { t } = useLocale();
+    const prefersReducedMotion = Boolean(useReducedMotion());
+
+    const heroImage = data.image || '/images/placeholders/excavator-dump-1280.webp';
+    const primaryLabel = data.primary_cta_label || t('read_more');
+    const primaryHref = data.primary_cta_href || '#';
+    const secondaryLabel = data.secondary_cta_label || t('contact_us');
+    const secondaryHref = data.secondary_cta_href || '#';
+
+    // Animation variants
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: prefersReducedMotion ? 0 : 0.08,
+            },
+        },
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 16 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: prefersReducedMotion ? 0.15 : 0.4 },
+        },
+    };
+
+    const photoVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { duration: prefersReducedMotion ? 0.15 : 0.6 },
+        },
+    };
 
     return (
-        <section className="relative overflow-hidden border-b-4 border-ink bg-surface-dark">
-            {/* Full-bleed mining photograph */}
-            <div className="relative min-h-[520px] w-full lg:min-h-[640px]">
-                <div className="absolute inset-0">
-                    <Image
-                        src={heroImage}
-                        srcSet={data.image_srcset ?? undefined}
-                        alt={data.image_alt || data.title}
-                        ratio="16/9"
-                        priority
-                        wrapperClassName="h-full w-full border-0 rounded-none"
-                        className="h-full w-full object-cover"
-                    />
-                    <div aria-hidden="true" className="absolute inset-0 bg-surface-deeper/45" />
-                </div>
+        <section
+            data-testid="korin-bara-hero"
+            className="relative overflow-hidden bg-white pt-8 pb-20 lg:pt-14 lg:pb-28"
+        >
+            {/* Flat semi-transparent diagonal shape behind left/center content */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-0 w-3/4 bg-slate-100/60 kb-hero-bg-diagonal"
+            />
 
-                {/* Bottom-Left Brass Gold Panel */}
-                <div className="relative z-10 flex min-h-[520px] items-end p-4 sm:p-8 lg:min-h-[640px] lg:p-14">
-                    <Reveal
-                        preset="fadeUp"
-                        className="w-full max-w-2xl border-t-4 border-ink bg-accent p-7 text-ink shadow-md sm:p-10 lg:p-12 space-y-6"
+            <Container className="relative z-10">
+                <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+                    {/* Left Column: Text & CTAs (7 columns on desktop) */}
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={containerVariants}
+                        className="flex flex-col space-y-6 lg:col-span-7"
                     >
                         {data.eyebrow ? (
-                            <div className="inline-flex items-center gap-2.5 border-b-2 border-ink pb-1.5">
-                                <span className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-ink">
-                                    {data.eyebrow}
-                                </span>
-                            </div>
+                            <motion.div variants={itemVariants}>
+                                <span className="kb-eyebrow">{data.eyebrow}</span>
+                            </motion.div>
                         ) : null}
 
-                        <Heading
-                            level={1}
-                            size="display"
-                            className="text-ink uppercase tracking-[0.02em]"
+                        <motion.h1
+                            variants={itemVariants}
+                            className="font-heading text-4xl font-bold tracking-tight text-[#101F38] sm:text-5xl lg:text-6xl lg:leading-[1.15]"
                         >
-                            {data.title}
-                        </Heading>
+                            <span>{data.title}</span>
+                            {data.title_emphasis ? (
+                                <span className="block font-normal italic text-[#101F38]">
+                                    {data.title_emphasis}
+                                </span>
+                            ) : null}
+                        </motion.h1>
 
-                        <p className="max-w-[56ch] text-base font-medium leading-7 text-ink sm:text-lg">
+                        <motion.p
+                            variants={itemVariants}
+                            className="max-w-[65ch] text-base leading-relaxed text-slate-600 sm:text-lg"
+                        >
                             {data.description}
-                        </p>
+                        </motion.p>
 
-                        {data.primary_cta_label || data.secondary_cta_label ? (
-                            <div className="flex flex-wrap items-center gap-4 pt-2">
+                        {(data.primary_cta_label && data.primary_cta_href) ||
+                        (data.secondary_cta_label && data.secondary_cta_href) ? (
+                            <motion.div
+                                variants={itemVariants}
+                                className="flex flex-wrap items-center gap-4 pt-2"
+                            >
                                 {data.primary_cta_label && data.primary_cta_href ? (
-                                    <Button
-                                        href={data.primary_cta_href}
-                                        variant="solid"
-                                        size="lg"
-                                        className="bg-surface-dark text-ink-on-dark hover:bg-surface-deeper font-heading text-sm font-bold uppercase tracking-[0.14em]"
+                                    <Link
+                                        href={primaryHref}
+                                        className="kb-btn-solid min-h-[44px]"
                                     >
-                                        <span>{data.primary_cta_label}</span>
-                                        <ArrowRight
-                                            className="h-4 w-4 text-accent-on-dark"
-                                            aria-hidden="true"
-                                        />
-                                    </Button>
+                                        <span>{primaryLabel}</span>
+                                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                    </Link>
                                 ) : null}
 
                                 {data.secondary_cta_label && data.secondary_cta_href ? (
-                                    <Button
-                                        href={data.secondary_cta_href}
-                                        variant="outline"
-                                        size="lg"
-                                        className="border-2 border-ink text-ink hover:bg-ink hover:text-ink-on-dark font-heading text-sm font-bold uppercase tracking-[0.14em]"
+                                    <Link
+                                        href={secondaryHref}
+                                        className="kb-btn-outline min-h-[44px]"
                                     >
-                                        {data.secondary_cta_label}
-                                    </Button>
+                                        <span>{secondaryLabel}</span>
+                                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                    </Link>
                                 ) : null}
-                            </div>
+                            </motion.div>
                         ) : null}
-                    </Reveal>
+                    </motion.div>
+
+                    {/* Right Column: Full-Bleed Cut Heavy Machinery Photo (5 columns, breaking to right viewport edge) */}
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={photoVariants}
+                        className="relative lg:col-span-5 lg:-mr-[calc((100vw-1200px)/2)] xl:-mr-[calc((100vw-1280px)/2)]"
+                    >
+                        <div className="relative overflow-hidden rounded-2xl shadow-xl lg:rounded-l-2xl lg:rounded-r-none kb-hero-image-cut">
+                            <Image
+                                src={heroImage}
+                                srcSet={data.image_srcset ?? undefined}
+                                alt={data.image_alt || data.title}
+                                ratio="16/9"
+                                priority
+                                fetchPriority="high"
+                                wrapperClassName="border-0 rounded-none h-full w-full"
+                                className="h-[300px] w-full object-cover sm:h-[400px] lg:h-[480px]"
+                            />
+                        </div>
+                    </motion.div>
                 </div>
-            </div>
+            </Container>
         </section>
     );
 }

@@ -1,80 +1,83 @@
+import { Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 import type { SplitContentBlockData } from '@/core';
-import { Button, Container, Heading, Image, Prose, Reveal, Section } from '@/ui';
+import { Container, Image, Reveal } from '@/ui';
 
 export interface SplitContentBlockProps {
     data: SplitContentBlockData;
     isFirstBlock?: boolean;
 }
 
-/**
- * Korin Bara Split Content ("Field Rail", DESIGN.md Section 6.4).
- * Large single-sentence opening statement followed by a wide documentary photograph and body text.
- */
-export function SplitContentBlock({ data, isFirstBlock = false }: SplitContentBlockProps) {
-    const wideImage = data.image || '/images/placeholders/pit-benches-1280.webp';
+export function SplitContentBlock({ data }: SplitContentBlockProps) {
+    const splitImage = data.image || '/images/placeholders/aerial-mine-1280.webp';
+    const isImageLeft = data.image_position === 'left';
+    const hasOffsetBorder = !isImageLeft; // Offset border on right-side photo (Tentang Kami)
+
+    const paragraphs = data.body ? data.body.split('\n\n').filter(Boolean) : [];
 
     return (
-        <Section tone="default" className="border-b-2 border-line">
-            <Container className="space-y-10">
-                <Reveal preset="fadeUp" className="space-y-5">
-                    <div className="flex items-center gap-3">
-                        <span aria-hidden="true" className="h-1.5 w-10 bg-accent" />
-                        {data.eyebrow ? (
-                            <span className="font-heading text-sm font-bold uppercase tracking-[0.14em] text-accent-strong">
-                                {data.eyebrow}
-                            </span>
-                        ) : null}
-                    </div>
-
-                    <Heading level={isFirstBlock ? 1 : 2} size="h2" className="text-ink">
-                        {data.title}
-                    </Heading>
-
-                    {data.lead ? (
-                        <p className="border-l-4 border-accent bg-surface p-6 font-heading text-2xl font-bold uppercase tracking-wide text-ink sm:text-3xl">
-                            {data.lead}
-                        </p>
-                    ) : null}
-                </Reveal>
-
-                <Reveal preset="fadeIn" className="border-2 border-ink bg-surface-dark">
-                    <Image
-                        src={wideImage}
-                        srcSet={data.image_srcset ?? undefined}
-                        alt={data.image_alt || data.title}
-                        ratio="16/9"
-                        wrapperClassName="border-0 rounded-none"
-                    />
-                </Reveal>
-
-                <Reveal
-                    preset="fadeUp"
-                    className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center"
-                >
-                    <div className="lg:col-span-8">
-                        <Prose className="text-muted">
-                            <p>{data.body}</p>
-                        </Prose>
-                    </div>
-                    {data.cta_label && data.cta_href ? (
-                        <div className="lg:col-span-4 flex lg:justify-end">
-                            <Button
-                                href={data.cta_href}
-                                variant="solid"
-                                size="lg"
-                                className="bg-surface-dark text-ink-on-dark hover:bg-surface-deeper font-heading text-sm font-bold uppercase tracking-[0.14em]"
-                            >
-                                <span>{data.cta_label}</span>
-                                <ArrowRight
-                                    className="h-4 w-4 text-accent-on-dark"
-                                    aria-hidden="true"
+        <section
+            data-testid="korin-bara-split-content"
+            className="py-16 lg:py-24 bg-white border-b border-line overflow-hidden"
+        >
+            <Container>
+                <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+                    {/* Image Column */}
+                    <Reveal
+                        preset="fadeIn"
+                        className={`lg:col-span-6 ${isImageLeft ? 'lg:order-1' : 'lg:order-2'}`}
+                    >
+                        <div className={`relative ${hasOffsetBorder ? 'kb-offset-border' : ''}`}>
+                            <div className="relative z-10 overflow-hidden rounded-xl shadow-md">
+                                <Image
+                                    src={splitImage}
+                                    srcSet={data.image_srcset ?? undefined}
+                                    alt={data.image_alt || data.title}
+                                    ratio="4/3"
+                                    wrapperClassName="border-0 rounded-none h-full w-full"
+                                    className="h-full w-full object-cover"
                                 />
-                            </Button>
+                            </div>
                         </div>
-                    ) : null}
-                </Reveal>
+                    </Reveal>
+
+                    {/* Text Column */}
+                    <Reveal
+                        preset="fadeUp"
+                        className={`space-y-6 lg:col-span-6 ${isImageLeft ? 'lg:order-2' : 'lg:order-1'}`}
+                    >
+                        {data.eyebrow ? (
+                            <div>
+                                <span className="kb-eyebrow">{data.eyebrow}</span>
+                            </div>
+                        ) : null}
+
+                        <h2 className="font-heading text-3xl font-bold tracking-tight text-[#101F38] sm:text-4xl">
+                            {data.title}
+                        </h2>
+
+                        <div className="space-y-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+                            {paragraphs.length > 0 ? (
+                                paragraphs.map((p, idx) => <p key={idx}>{p}</p>)
+                            ) : (
+                                <p>{data.body}</p>
+                            )}
+                        </div>
+
+                        {data.cta_label && data.cta_href ? (
+                            <div className="pt-2">
+                                <Link
+                                    href={data.cta_href}
+                                    className="kb-btn-solid min-h-[44px]"
+                                >
+                                    <span>{data.cta_label}</span>
+                                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </Link>
+                            </div>
+                        ) : null}
+                    </Reveal>
+                </div>
             </Container>
-        </Section>
+        </section>
     );
 }

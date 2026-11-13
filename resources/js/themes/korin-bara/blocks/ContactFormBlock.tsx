@@ -1,5 +1,5 @@
 import type { ContactFormBlockData } from '@/core';
-import { ContactFormBody, Container, Heading, Reveal } from '@/ui';
+import { ContactFormBody, Container, Reveal } from '@/ui';
 
 export interface ContactFormBlockProps {
     data: ContactFormBlockData;
@@ -14,31 +14,33 @@ export function ContactFormContent({
     data: ContactFormBlockData;
     headingLevel?: 1 | 2;
 }) {
+    const HeadingTag = `h${headingLevel}` as const;
+
     return (
         <Reveal
             preset="fadeUp"
-            className="border-4 border-ink bg-accent p-6 text-ink sm:p-10 lg:p-12 space-y-8"
+            className="rounded-xl border border-line bg-white p-6 sm:p-8 lg:p-10 shadow-md space-y-6"
         >
-            <div className="space-y-3 border-b-2 border-ink pb-6">
+            <div className="space-y-2 border-b border-line pb-6">
                 {data.eyebrow ? (
-                    <p className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-ink">
-                        {data.eyebrow}
-                    </p>
+                    <div>
+                        <span className="kb-eyebrow">{data.eyebrow}</span>
+                    </div>
                 ) : null}
-                <Heading level={headingLevel} size="h2" className="text-ink">
+                <HeadingTag className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[#101F38]">
                     {data.title}
-                </Heading>
+                </HeadingTag>
                 {data.description ? (
-                    <p className="max-w-[58ch] text-base font-medium leading-7 text-ink">
+                    <p className="text-base text-slate-600 leading-relaxed">
                         {data.description}
                     </p>
                 ) : null}
             </div>
 
-            <div className="border-2 border-ink bg-bg p-6 text-ink sm:p-8">
+            <div>
                 <ContactFormBody
                     submitLabel={data.submit_label}
-                    buttonClassName="bg-surface-dark text-ink-on-dark hover:bg-surface-deeper font-heading text-sm font-bold uppercase tracking-[0.14em]"
+                    buttonClassName="kb-btn-solid w-full sm:w-auto"
                 />
             </div>
         </Reveal>
@@ -55,9 +57,11 @@ export function ContactFormBlock({
     }
 
     return (
-        <section className="border-b-2 border-line bg-bg py-12 md:py-16">
+        <section className="py-16 bg-[#F8FAFC] border-b border-line">
             <Container>
-                <ContactFormContent data={data} headingLevel={headingLevel} />
+                <div className="max-w-2xl mx-auto">
+                    <ContactFormContent data={data} headingLevel={headingLevel} />
+                </div>
             </Container>
         </section>
     );

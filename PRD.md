@@ -101,7 +101,7 @@ Lihat [DESIGN.md](./DESIGN.md). Ringkasnya:
 |---|---|---|
 | Holding | Charcoal + tembaga (mengikuti gambar referensi) | Gelap dan putih bergantian |
 | Korin Berkat | Navy + gold | Putih |
-| Korin Bara | Gold + navy | Putih |
+| Korin Bara | Navy + brass-gold (Bold Horizon, referensi klien) | Putih |
 | Beramal Sukses | Dark water + cerulean | Putih |
 
 ---
@@ -403,6 +403,19 @@ Per perusahaan: logo master (termasuk varian negatif/terang untuk latar gelap), 
 ---
 
 ## 14. Catatan Perubahan (Changelog)
+
+### Versi 1.7 (Revisi 7 — Redesain Tema Korin Bara "Bold Horizon")
+- **Penyelarasan Total Tema Korin Bara Berdasarkan Gambar Referensi Klien (`docs/reference/korin-bara-redesign.png`):**
+  - **Navigasi & Header:** Menghapus rail vertikal kiri 88px dan mobile bottom bar; menggantikannya dengan header horizontal putih sticky (~80px desktop, 64px mobile), logo `on="light"` (44px desktop, 32px mobile), indikator menu aktif (navy bold + underline gold pendek), tombol CTA pill gold "Hubungi Kami →", pengalih bahasa `ID | EN`, dan mobile drawer dari kanan.
+  - **Banner Halaman Dalam:** Banner foto full-width (240–280px desktop) dengan overlay gelap kiri memenuhi syarat kontras teks WCAG AA $\ge 4.5:1$, judul putih `h1`, dan breadcrumb `Beranda › {Judul}`.
+  - **Tipografi & Desain Sistem:** Menggunakan **Plus Jakarta Sans** (400, 500, 600, 700) self-host `@fontsource`, tombol pill radius 9999px, kartu dan foto radius 12px, motif eyebrow (garis gold di kiri teks), dan irisan diagonal gold di sudut kanan bawah footer navy.
+  - **Penyesuaian Tata Letak Halaman:**
+    - *Beranda:* Hero putih dengan latar diagonal flat clip-path, penekanan judul baris kedua (italic emphasis dinamis via CMS `title_emphasis`), foto alat berat menembus tepi kanan dengan potongan diagonal `clip-path`. Strip nilai 4 item (`values_grid` varian `strip`) menimpa batas bawah hero. Section Tentang Perusahaan 2 kolom.
+    - *Tentang Kami:* Profil split dengan bingkai garis gold offset, Visi & Misi 2 kolom dipisah garis vertikal hairline (ikon mata & target, bullet gold).
+    - *Operasi:* Split aktivitas operasional bercentang emas dalam lingkaran + tombol scroll ke `#daftar-operasi` + grid foto 2x2. Direktori lokasi operasi di bawah ditata ulang dengan baris bergaris hairline dan pill badge tipe.
+    - *Produk:* Banner batubara full-width, tata letak 3 kolom (4/4/4): pengantar, foto batubara radius 12, dan kartu "Spesifikasi Umum" 4 baris berpemisah hairline (Kalori, TM, Ash, Sulfur).
+    - *Footer:* Navy tua `#101F38`, logo `on="dark"` 44px tanpa link, tautan menu horizontal, ikon sosial bulat putih, hak cipta dinamis, siluet grafis pegunungan, dan irisan diagonal gold.
+  - **Kepatuhan Aksesibilitas:** Kontras tombol dan teks aksen brass-gold diuji dan disesuaikan menjadi `#8A6212` (rasio kontras 5.55:1 pada putih), seluruh halaman lulus uji otomatis axe-core WCAG 2.2 AA.
 
 ### Versi 1.6 (Revisi 6 — CMS v2: Editor Halaman Per Perusahaan untuk Pengguna Awam)
 - **Satu CMS untuk Semua Perusahaan:** Multi-tenancy Filament difungsikan murni sebagai pemisah konten; satu admin mengelola holding dan ketiga anak usaha tanpa pembatasan per perusahaan.

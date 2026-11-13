@@ -13,6 +13,8 @@ export interface HeaderBlockData {
     logo_alt?: TranslatableString;
     show_company_badge?: boolean;
     show_language_switch?: boolean;
+    cta_label?: TranslatableString;
+    cta_href?: string;
     nav_items?: Array<{
         label: TranslatableString;
         link: string;
@@ -34,6 +36,7 @@ export interface FooterBlockData {
 export interface HeroBlockData {
     eyebrow?: TranslatableString;
     title: TranslatableString;
+    title_emphasis?: TranslatableString;
     description: TranslatableString;
     primary_cta_label?: TranslatableString;
     primary_cta_href?: string;

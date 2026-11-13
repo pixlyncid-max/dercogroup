@@ -1,5 +1,5 @@
 import type { ContactFormBlockData, ContactInfoBlockData } from '@/core';
-import { Container, Section } from '@/ui';
+import { Container } from '@/ui';
 import { ContactFormContent } from './ContactFormBlock';
 import { ContactInfoContent } from './ContactInfoBlock';
 
@@ -9,43 +9,28 @@ export interface KorinBaraContactSplitProps {
     hasHeroH1?: boolean;
 }
 
-/**
- * Korin Bara Contact Page Layout ("Field Rail", DESIGN.md Section 6.4).
- * Form on top of a wide Brass Gold panel, followed by Company Info and Map below.
- */
 export function KorinBaraContactSplit({
     infoData,
     formData,
-    hasHeroH1 = false,
 }: KorinBaraContactSplitProps) {
     return (
-        <>
-            {/* Top: Form on Wide Brass Gold Panel */}
-            <Section tone="default" className="border-b-2 border-line">
-                <Container>
-                    <ContactFormContent
-                        data={{
-                            ...formData,
-                            title: infoData.title || formData.title,
-                            description: infoData.description || formData.description,
-                        }}
-                        headingLevel={hasHeroH1 ? 2 : 1}
-                    />
-                </Container>
-            </Section>
+        <section
+            data-testid="korin-bara-contact"
+            className="py-16 lg:py-24 bg-[#F8FAFC] border-b border-line"
+        >
+            <Container>
+                <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
+                    {/* Left Column: Form inside White Card (7 cols) */}
+                    <div className="lg:col-span-7">
+                        <ContactFormContent data={formData} headingLevel={2} />
+                    </div>
 
-            {/* Bottom: Contact Info & Coordinate Map */}
-            <Section tone="surface" className="border-b-2 border-line">
-                <Container>
-                    <ContactInfoContent
-                        data={{
-                            ...infoData,
-                            title: formData.title || infoData.title,
-                        }}
-                        headingLevel={2}
-                    />
-                </Container>
-            </Section>
-        </>
+                    {/* Right Column: Contact Info, Hours & Map inside White Card (5 cols) */}
+                    <div className="lg:col-span-5">
+                        <ContactInfoContent data={infoData} headingLevel={2} />
+                    </div>
+                </div>
+            </Container>
+        </section>
     );
 }

@@ -1,35 +1,165 @@
 /* resources/css/themes/korin-bara.css */
-@import '@fontsource/barlow-condensed/600.css';
-@import '@fontsource/barlow-condensed/700.css';
-@import '@fontsource/barlow/400.css';
-@import '@fontsource/barlow/500.css';
-@import '@fontsource/barlow/600.css';
-@import '@fontsource/barlow/700.css';
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/400-italic.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource/plus-jakarta-sans/700-italic.css';
 
 [data-theme='korin-bara'] {
     --color-bg: #ffffff;
-    --color-surface: #faf4e4;
-    --color-surface-dark: #13203f;
-    --color-surface-deeper: #0d162c;
-    --color-ink: #13203f;
+    --color-surface: #f8fafc;
+    --color-surface-dark: #101f38;
+    --color-surface-deeper: #091325;
+    --color-ink: #101f38;
     --color-ink-on-dark: #ffffff;
-    --color-muted: #4f566b;
-    --color-muted-on-dark: #d7dce8;
-    --color-accent: #c9962b;
-    --color-accent-strong: #7a5a10;
+    --color-muted: #4b5563;
+    --color-muted-on-dark: #cbd5e1;
+    --color-accent: #8a6212;
+    --color-accent-hover: #72500c;
+    --color-accent-strong: #8a6212;
+    --color-accent-decorative: #c59b27;
     --color-accent-on-dark: #e2b44f;
     --color-on-accent: #ffffff;
-    --color-line: #eadfc6;
-    --font-heading: 'Barlow Condensed', system-ui, sans-serif;
-    --font-body: 'Barlow', system-ui, sans-serif;
-    --radius-card: 0px;
-    --radius-button: 0px;
+    --color-line: #e2e8f0;
+    --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --radius-card: 12px;
+    --radius-button: 9999px;
 }
 
 [data-theme='korin-bara'] h1,
 [data-theme='korin-bara'] h2,
 [data-theme='korin-bara'] h3,
 [data-theme='korin-bara'] h4 {
+    font-family: var(--font-heading);
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+}
+
+/* Eyebrow motif: short gold line on the left + uppercase label */
+[data-theme='korin-bara'] .kb-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    color: var(--color-accent-strong);
+}
+
+[data-theme='korin-bara'] .kb-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 2px;
+    background-color: var(--color-accent-decorative);
+    border-radius: 9999px;
+    flex-shrink: 0;
+}
+
+/* Pill buttons */
+[data-theme='korin-bara'] .kb-btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-accent);
+    color: #ffffff !important;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-theme='korin-bara'] .kb-btn-solid:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='korin-bara'] .kb-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-accent);
+    background-color: transparent;
+    color: var(--color-accent-strong) !important;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-theme='korin-bara'] .kb-btn-outline:hover {
+    background-color: rgba(138, 98, 18, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Offset gold border on images */
+[data-theme='korin-bara'] .kb-offset-border {
+    position: relative;
+}
+
+[data-theme='korin-bara'] .kb-offset-border::after {
+    content: '';
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid var(--color-accent-decorative);
+    border-right: 2px solid var(--color-accent-decorative);
+    border-radius: 0.75rem;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Diagonal clip hero */
+[data-theme='korin-bara'] .kb-hero-bg-diagonal {
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 0% 100%);
+}
+
+@media (max-width: 1023px) {
+    [data-theme='korin-bara'] .kb-hero-bg-diagonal {
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 0% 100%);
+    }
+}
+
+/* Hero image diagonal cut */
+[data-theme='korin-bara'] .kb-hero-image-cut {
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+@media (max-width: 1023px) {
+    [data-theme='korin-bara'] .kb-hero-image-cut {
+        clip-path: polygon(0 8%, 100% 0, 100% 100%, 0% 100%);
+    }
+}
+
+/* Footer diagonal slice */
+[data-theme='korin-bara'] .kb-footer-wedge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 6rem;
+    height: 6rem;
+    background: linear-gradient(135deg, transparent 50%, var(--color-accent-decorative) 50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+@media (min-width: 1024px) {
+    [data-theme='korin-bara'] .kb-footer-wedge {
+        width: 10rem;
+        height: 10rem;
+    }
 }

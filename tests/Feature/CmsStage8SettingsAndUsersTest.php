@@ -17,7 +17,6 @@ use App\Domain\Page\Models\Page;
 use App\Domain\Page\Models\PageBlock;
 use App\Filament\Pages\WebsiteSettings;
 use App\Filament\Resources\CompanyResource;
-use App\Filament\Resources\ContactMessageResource;
 use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -25,7 +24,6 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Password;
 use Livewire\Livewire;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CmsStage8SettingsAndUsersTest extends TestCase
@@ -33,8 +31,11 @@ class CmsStage8SettingsAndUsersTest extends TestCase
     use RefreshDatabase;
 
     private User $superAdmin;
+
     private User $editor;
+
     private Company $holding;
+
     private Company $subsidiary;
 
     protected function setUp(): void
