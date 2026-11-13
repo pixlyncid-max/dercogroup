@@ -5,17 +5,27 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Domain\Company\Models\Company;
+use App\Domain\Page\Blocks\Block;
+use App\Domain\Page\Blocks\BlockRegistry;
 use App\Domain\Page\Enums\BlockType;
+use App\Domain\Page\Enums\PageKey;
+use App\Domain\Page\Models\PageBlock;
 use App\Domain\Page\Schema\SectionSchema;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Pages\PageConfiguration;
 use Filament\Panel;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use Livewire\WithFileUploads;
 
 class EditWebsitePage extends Page
 {
+    use WithFileUploads;
+
     protected string $view = 'filament.pages.edit-website-page';
 
     protected static bool $shouldRegisterNavigation = true;
@@ -23,6 +33,31 @@ class EditWebsitePage extends Page
     public string $pageKey = 'beranda';
 
     public string $locale = 'id';
+
+    public ?int $companyId = null;
+
+    /**
+     * @var array<string, array<string, mixed>>
+     */
+    public array $formData = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    public array $visibility = [];
+
+    /**
+     * Temporary uploaded files keyed by dot path (e.g. "header.logo_path")
+     *
+     * @var array<string, mixed>
+     */
+    public array $tempUploads = [];
+
+    public bool $showPreview = false;
+
+    public string $previewDevice = 'desktop';
+
+    public bool $isSaving = false;
 
     public static function routes(Panel $panel, ?PageConfiguration $configuration = null): void
     {
@@ -52,12 +87,295 @@ class EditWebsitePage extends Page
         }
 
         $this->pageKey = $pageKey;
+        $this->companyId = $tenant->id;
         session(['filament_last_tenant_slug' => $tenant->slug]);
+
+        $this->loadSectionsData($tenant);
+    }
+
+    /**
+     * Load block data and visibility status for each section of this page.
+     */
+    public function loadSectionsData(Company $tenant): void
+    {
+        $sections = $this->getSections();
+        $normalizedKey = SectionSchema::normalizePageKey($this->pageKey);
+        $pageKeyEnum = PageKey::tryFrom($normalizedKey) ?? PageKey::tryFrom($this->pageKey);
+        $page = $tenant->pages()->where('key', $pageKeyEnum ?? $normalizedKey)->first();
+
+        foreach ($sections as $section) {
+            $sectionKey = $section['section_key'];
+            $blockType = $section['block_type'];
+            $blockClass = BlockRegistry::for($blockType);
+
+            if ($section['is_company_scoped']) {
+                $block = PageBlock::query()
+                    ->where('company_id', $tenant->id)
+                    ->where(function ($q) use ($sectionKey, $blockType): void {
+                        $q->where('section_key', $sectionKey)
+                            ->orWhere('type', $blockType);
+                    })
+                    ->first();
+            } else {
+                $block = $page ? $page->blocks()
+                    ->where(function ($q) use ($sectionKey, $blockType): void {
+                        $q->where('section_key', $sectionKey)
+                            ->orWhere('type', $blockType);
+                    })
+                    ->first() : null;
+            }
+
+            $defaultData = $blockClass::defaults();
+            $rawBlockData = $block?->data ?? [];
+
+            $this->formData[$sectionKey] = array_replace_recursive(
+                $defaultData,
+                is_array($rawBlockData) ? $rawBlockData : [],
+            );
+
+            $this->visibility[$sectionKey] = $block?->is_visible ?? true;
+        }
+    }
+
+    /**
+     * Handle temporary file upload automatically via Livewire.
+     */
+    public function updatedTempUploads($value, $key): void
+    {
+        if ($value instanceof UploadedFile) {
+            $path = $value->store('blocks', 'public');
+            Arr::set($this->formData, $key, $path);
+
+            Notification::make()
+                ->title('Foto berhasil diunggah')
+                ->success()
+                ->send();
+        }
+    }
+
+    /**
+     * Remove an image from a section field.
+     */
+    public function removeImage(string $sectionKey, string $fieldName): void
+    {
+        Arr::set($this->formData, "{$sectionKey}.{$fieldName}", null);
+    }
+
+    /**
+     * Add an item to a repeater field with complete default subfield values.
+     */
+    public function addRepeaterItem(string $sectionKey, string $fieldName): void
+    {
+        $section = collect($this->getSections())->firstWhere('section_key', $sectionKey);
+        if (! $section) {
+            return;
+        }
+
+        $blockClass = BlockRegistry::for($section['block_type']);
+        $fieldDef = collect($blockClass::fields())->firstWhere('name', $fieldName);
+        $subFields = $fieldDef['fields'] ?? [];
+
+        $newItem = Block::buildDefaultsFromFields($subFields);
+        $this->formData[$sectionKey][$fieldName][] = $newItem;
+    }
+
+    /**
+     * Remove an item from a repeater field.
+     */
+    public function removeRepeaterItem(string $sectionKey, string $fieldName, int $index): void
+    {
+        if (isset($this->formData[$sectionKey][$fieldName][$index])) {
+            unset($this->formData[$sectionKey][$fieldName][$index]);
+            $this->formData[$sectionKey][$fieldName] = array_values($this->formData[$sectionKey][$fieldName]);
+        }
+    }
+
+    /**
+     * Re-order repeater items (move up/down or drag-drop).
+     */
+    public function moveRepeaterItem(string $sectionKey, string $fieldName, int $fromIndex, int $toIndex): void
+    {
+        $list = $this->formData[$sectionKey][$fieldName] ?? [];
+        if (! isset($list[$fromIndex]) || ! isset($list[$toIndex])) {
+            return;
+        }
+
+        $item = array_splice($list, $fromIndex, 1);
+        array_splice($list, $toIndex, 0, $item);
+        $this->formData[$sectionKey][$fieldName] = array_values($list);
+    }
+
+    /**
+     * Save all sections of this page to database.
+     */
+    public function save(): void
+    {
+        $tenant = Filament::getTenant() ?? ($this->companyId ? Company::find($this->companyId) : null);
+        if (! $tenant instanceof Company) {
+            return;
+        }
+
+        $this->isSaving = true;
+        $sections = $this->getSections();
+        $normalizedKey = SectionSchema::normalizePageKey($this->pageKey);
+        $pageKeyEnum = PageKey::tryFrom($normalizedKey) ?? PageKey::tryFrom($this->pageKey);
+        $page = $tenant->pages()->where('key', $pageKeyEnum ?? $normalizedKey)->first();
+
+        foreach ($sections as $section) {
+            $sectionKey = $section['section_key'];
+            $blockType = $section['block_type'];
+            $data = $this->formData[$sectionKey] ?? [];
+            $isVisible = $this->visibility[$sectionKey] ?? true;
+
+            if ($section['is_company_scoped']) {
+                $block = PageBlock::query()
+                    ->where('company_id', $tenant->id)
+                    ->where(function ($q) use ($sectionKey, $blockType): void {
+                        $q->where('section_key', $sectionKey)
+                            ->orWhere('type', $blockType);
+                    })
+                    ->first();
+
+                if ($block) {
+                    $block->update([
+                        'section_key' => $sectionKey,
+                        'type' => $blockType,
+                        'is_visible' => $isVisible,
+                        'data' => $data,
+                    ]);
+                } else {
+                    PageBlock::query()->create([
+                        'company_id' => $tenant->id,
+                        'section_key' => $sectionKey,
+                        'page_id' => null,
+                        'type' => $blockType,
+                        'is_visible' => $isVisible,
+                        'data' => $data,
+                    ]);
+                }
+            } elseif ($page) {
+                $block = $page->blocks()
+                    ->where(function ($q) use ($sectionKey, $blockType): void {
+                        $q->where('section_key', $sectionKey)
+                            ->orWhere('type', $blockType);
+                    })
+                    ->first();
+
+                if ($block) {
+                    $block->update([
+                        'section_key' => $sectionKey,
+                        'type' => $blockType,
+                        'is_visible' => $isVisible,
+                        'data' => $data,
+                    ]);
+                } else {
+                    $page->blocks()->create([
+                        'company_id' => $tenant->id,
+                        'section_key' => $sectionKey,
+                        'type' => $blockType,
+                        'is_visible' => $isVisible,
+                        'data' => $data,
+                    ]);
+                }
+            }
+        }
+
+        if ($page) {
+            $page->touch();
+        }
+        $tenant->touch();
+
+        $this->isSaving = false;
+
+        Notification::make()
+            ->title('Perubahan berhasil disimpan!')
+            ->body('Seluruh konten website telah diperbarui secara langsung.')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Count empty translatable fields in a given locale for the language badge.
+     */
+    public function getEmptyFieldsCount(string $targetLocale): int
+    {
+        $count = 0;
+        foreach ($this->getSections() as $section) {
+            $key = $section['section_key'];
+            $data = $this->formData[$key] ?? [];
+            $blockClass = BlockRegistry::for($section['block_type']);
+
+            foreach ($blockClass::fields() as $field) {
+                $name = $field['name'];
+                $type = $field['type'] ?? 'text';
+
+                if (in_array($type, ['translatable_text', 'translatable_textarea', 'translatable_richtext'], true)) {
+                    $val = $data[$name][$targetLocale] ?? '';
+                    if (trim((string) $val) === '') {
+                        $count++;
+                    }
+                }
+
+                if ($type === 'image') {
+                    $altVal = $data["{$name}_alt"][$targetLocale] ?? '';
+                    if (trim((string) $altVal) === '') {
+                        $count++;
+                    }
+                }
+
+                if ($type === 'repeater' && is_array($data[$name] ?? null)) {
+                    $subFields = $field['fields'] ?? [];
+                    foreach ($data[$name] as $row) {
+                        foreach ($subFields as $sub) {
+                            $subName = $sub['name'];
+                            $subType = $sub['type'] ?? 'text';
+                            if (in_array($subType, ['translatable_text', 'translatable_textarea'], true)) {
+                                $subVal = $row[$subName][$targetLocale] ?? '';
+                                if (trim((string) $subVal) === '') {
+                                    $count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Resolve public preview URL for the currently edited page.
+     */
+    public function getPublicUrl(): string
+    {
+        $tenant = $this->getActiveCompany();
+        if (! $tenant instanceof Company) {
+            return url('/id');
+        }
+
+        $normalized = SectionSchema::normalizePageKey($this->pageKey);
+        $page = $tenant->pages()->where('key', $normalized)->first();
+
+        if ($normalized === PageKey::Home->value) {
+            return $tenant->isHolding() ? url('/id') : url("/id/bisnis-kami/{$tenant->slug}");
+        }
+
+        if ($page) {
+            $slug = $page->getTranslation('slug', 'id', false) ?: $normalized;
+            if ($tenant->isHolding()) {
+                return url("/id/{$slug}");
+            }
+
+            return url("/id/bisnis-kami/{$tenant->slug}/{$slug}");
+        }
+
+        return url('/id');
     }
 
     public function getTitle(): string
     {
-        $tenant = Filament::getTenant();
+        $tenant = $this->getActiveCompany();
         if ($tenant instanceof Company) {
             $pages = static::getAvailablePagesForCompany($tenant);
 
@@ -69,7 +387,7 @@ class EditWebsitePage extends Page
 
     public function getSubheading(): ?string
     {
-        $tenant = Filament::getTenant();
+        $tenant = $this->getActiveCompany();
         if ($tenant instanceof Company) {
             $pages = static::getAvailablePagesForCompany($tenant);
 
@@ -174,6 +492,20 @@ class EditWebsitePage extends Page
         return $items;
     }
 
+    public function getActiveCompany(): ?Company
+    {
+        $tenant = Filament::getTenant();
+        if ($tenant instanceof Company) {
+            return $tenant;
+        }
+
+        if ($this->companyId) {
+            return Company::find($this->companyId);
+        }
+
+        return null;
+    }
+
     /**
      * @return list<array{
      *     section_key: string,
@@ -187,7 +519,7 @@ class EditWebsitePage extends Page
      */
     public function getSections(): array
     {
-        $tenant = Filament::getTenant();
+        $tenant = $this->getActiveCompany();
         if (! $tenant instanceof Company) {
             return [];
         }

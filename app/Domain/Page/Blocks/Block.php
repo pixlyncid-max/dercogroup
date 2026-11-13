@@ -60,6 +60,16 @@ abstract class Block
     }
 
     /**
+     * Alias for defaultData().
+     *
+     * @return array<string, mixed>
+     */
+    public static function defaults(): array
+    {
+        return static::defaultData();
+    }
+
+    /**
      * Generate TypeScript interface definition for this block type.
      */
     public static function toTypeScript(): string
@@ -308,7 +318,16 @@ abstract class Block
                     $subFields = is_array($field['fields'] ?? null) ? $field['fields'] : [];
                     $repeaterRule = [$required ? 'required' : 'nullable', 'array'];
                     if (isset($field['min'])) {
-                        $repeaterRule[] = 'min:'.(int) $field['min'];
+                        if ($required) {
+                            $repeaterRule[] = 'min:'.(int) $field['min'];
+                        } else {
+                            $minLimit = (int) $field['min'];
+                            $repeaterRule[] = function (string $attribute, mixed $value, Closure $fail) use ($minLimit): void {
+                                if (is_array($value) && count($value) > 0 && count($value) < $minLimit) {
+                                    $fail("The {$attribute} field must have at least {$minLimit} items.");
+                                }
+                            };
+                        }
                     } elseif ($required) {
                         $repeaterRule[] = 'min:1';
                     }
