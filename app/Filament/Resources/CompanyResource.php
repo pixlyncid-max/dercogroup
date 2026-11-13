@@ -27,6 +27,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use UnitEnum;
 
 class CompanyResource extends Resource
@@ -185,7 +186,37 @@ class CompanyResource extends Resource
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->before(function (DeleteBulkAction $action, Collection $records): void {
+                            foreach ($records as $company) {
+                                if ($company->isHolding()) {
+                                    Notification::make()
+                                        ->danger()
+                                        ->title('Holding Utama Tidak Boleh Dihapus')
+                                        ->body('Holding PT Derco Bara Energy adalah entitas utama sistem dan tidak boleh dihapus.')
+                                        ->send();
+                                    $action->halt();
+                                }
+
+                                if ($company->subsidiaries()->exists()) {
+                                    Notification::make()
+                                        ->danger()
+                                        ->title('Perusahaan Memiliki Anak Usaha')
+                                        ->body("Perusahaan {$company->name} memiliki anak usaha yang masih terdaftar.")
+                                        ->send();
+                                    $action->halt();
+                                }
+
+                                if ($company->contactMessages()->exists()) {
+                                    Notification::make()
+                                        ->danger()
+                                        ->title('Perusahaan Memiliki Pesan Masuk')
+                                        ->body("Perusahaan {$company->name} memiliki arsip pesan kontak masuk.")
+                                        ->send();
+                                    $action->halt();
+                                }
+                            }
+                        }),
                 ]),
             ]);
     }

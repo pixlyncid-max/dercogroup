@@ -23,6 +23,7 @@ class ContactMessage extends Model
         'organization',
         'subject',
         'message',
+        'internal_notes',
         'status',
         'ip_address',
     ];

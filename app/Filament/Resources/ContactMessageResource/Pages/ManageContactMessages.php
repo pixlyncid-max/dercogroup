@@ -7,6 +7,7 @@ namespace App\Filament\Resources\ContactMessageResource\Pages;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Filament\Resources\ContactMessageResource;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Resources\Pages\ManageRecords;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -22,7 +23,12 @@ class ManageContactMessages extends ManageRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('gray')
                 ->action(function (): StreamedResponse {
-                    $messages = ContactMessage::query()->with('company')->latest()->get();
+                    $tenant = Filament::getTenant();
+                    $query = ContactMessage::query()->with('company');
+                    if ($tenant) {
+                        $query->where('company_id', $tenant->id);
+                    }
+                    $messages = $query->latest()->get();
 
                     return response()->streamDownload(function () use ($messages): void {
                         $handle = fopen('php://output', 'w');
@@ -41,6 +47,7 @@ class ManageContactMessages extends ManageRecords
                             'Organisasi',
                             'Subjek',
                             'Pesan',
+                            'Catatan Internal',
                             'Status',
                         ]);
 
@@ -56,6 +63,7 @@ class ManageContactMessages extends ManageRecords
                                 $msg->organization,
                                 $msg->subject,
                                 $msg->message,
+                                $msg->internal_notes,
                                 $msg->status->value,
                             ]);
                         }

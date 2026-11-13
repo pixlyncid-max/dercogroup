@@ -60,6 +60,14 @@ class SubmitContactMessage
 
     private function resolveRecipientEmail(Company $company): string
     {
+        $settingRecipient = Setting::getValue('contact_form_recipient', null, $company);
+        if (is_string($settingRecipient) && trim($settingRecipient) !== '') {
+            return trim($settingRecipient);
+        }
+        if (is_array($settingRecipient) && is_string($settingRecipient['value'] ?? null) && trim($settingRecipient['value']) !== '') {
+            return trim($settingRecipient['value']);
+        }
+
         $companyEmail = $company->contacts()
             ->whereNotNull('notify_email')
             ->value('notify_email');

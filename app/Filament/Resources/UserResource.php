@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use App\Models\User;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -18,6 +19,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Password;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -90,7 +93,38 @@ class UserResource extends Resource
                     ->date('d M Y'),
             ])
             ->recordActions([
-                EditAction::make(),
+                Action::make('send_password_reset')
+                    ->label('Reset Sandi')
+                    ->icon('heroicon-o-key')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading('Kirim Email Reset Kata Sandi')
+                    ->modalDescription(fn (User $record): string => "Kirimkan tautan reset kata sandi ke email {$record->email}?")
+                    ->action(function (User $record): void {
+                        Password::broker()->sendResetLink(['email' => $record->email]);
+
+                        Notification::make()
+                            ->success()
+                            ->title('Email Terkirim')
+                            ->body("Tautan reset kata sandi berhasil dikirim ke {$record->email}.")
+                            ->send();
+                    }),
+                EditAction::make()
+                    ->before(function (EditAction $action, User $record, array $data): void {
+                        // Prevent removing Super Admin role if this is the last Super Admin
+                        if ($record->isSuperAdmin() && User::role(User::ROLE_SUPER_ADMIN)->count() <= 1) {
+                            $selectedRoles = $data['roles'] ?? [];
+                            $superAdminRole = \Spatie\Permission\Models\Role::where('name', User::ROLE_SUPER_ADMIN)->first();
+                            if ($superAdminRole && ! in_array($superAdminRole->id, (array) $selectedRoles, false)) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Super Admin Terakhir')
+                                    ->body('Sistem harus mempertahankan minimal satu akun dengan peran Super Admin.')
+                                    ->send();
+                                $action->halt();
+                            }
+                        }
+                    }),
                 DeleteAction::make()
                     ->requiresConfirmation()
                     ->modalHeading('Hapus Pengguna CMS')
@@ -119,7 +153,30 @@ class UserResource extends Resource
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->before(function (DeleteBulkAction $action, Collection $records): void {
+                            $currentUserId = auth()->id();
+                            $hasSelf = $records->contains(fn (User $user): bool => $user->id === $currentUserId);
+                            if ($hasSelf) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Gagal Menghapus')
+                                    ->body('Anda tidak dapat menghapus akun Anda sendiri.')
+                                    ->send();
+                                $action->halt();
+                            }
+
+                            $superAdminCount = User::role(User::ROLE_SUPER_ADMIN)->count();
+                            $deletingSuperAdmins = $records->filter(fn (User $user): bool => $user->isSuperAdmin())->count();
+                            if ($superAdminCount - $deletingSuperAdmins < 1) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Super Admin Terakhir')
+                                    ->body('Sistem harus mempertahankan minimal satu akun dengan peran Super Admin.')
+                                    ->send();
+                                $action->halt();
+                            }
+                        }),
                 ]),
             ]);
     }

@@ -138,15 +138,21 @@ abstract class Block
                 case 'translatable_text':
                 case 'translatable_textarea':
                 case 'translatable_richtext':
+                    $fallbackDefault = (bool) ($field['required'] ?? false) ? (string) ($field['label'] ?? $name) : '';
                     $defaults[$name] = [
-                        'id' => (string) ($field['default_id'] ?? ''),
-                        'en' => (string) ($field['default_en'] ?? ''),
+                        'id' => (string) ($field['default_id'] ?? $fallbackDefault),
+                        'en' => (string) ($field['default_en'] ?? $fallbackDefault),
                     ];
                     break;
 
                 case 'text':
+                    $fallbackText = (bool) ($field['required'] ?? false) ? (string) ($field['label'] ?? $name) : '';
+                    $defaults[$name] = (string) ($field['default_id'] ?? $fallbackText);
+                    break;
+
                 case 'link':
-                    $defaults[$name] = (string) ($field['default_id'] ?? '');
+                    $fallbackLink = (bool) ($field['required'] ?? false) ? 'page:contact' : '';
+                    $defaults[$name] = (string) ($field['default_id'] ?? $fallbackLink);
                     break;
 
                 case 'number':
@@ -171,7 +177,17 @@ abstract class Block
                     break;
 
                 case 'repeater':
-                    $defaults[$name] = [];
+                    /** @var list<array<string, mixed>> $subFields */
+                    $subFields = is_array($field['fields'] ?? null) ? $field['fields'] : [];
+                    $isRequired = (bool) ($field['required'] ?? false);
+                    $minItems = $isRequired ? max((int) ($field['min'] ?? 0), 1) : 0;
+                    $items = [];
+                    if ($minItems > 0 && ! empty($subFields)) {
+                        for ($i = 0; $i < $minItems; $i++) {
+                            $items[] = self::buildDefaultsFromFields($subFields);
+                        }
+                    }
+                    $defaults[$name] = $items;
                     break;
             }
         }

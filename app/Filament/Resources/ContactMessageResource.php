@@ -111,6 +111,11 @@ class ContactMessageResource extends Resource
                             ->rows(5)
                             ->disabled()
                             ->columnSpanFull(),
+                        Textarea::make('internal_notes')
+                            ->label('Catatan Internal (Khusus Tim)')
+                            ->rows(4)
+                            ->placeholder('Tambahkan catatan tindak lanjut internal di sini...')
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
@@ -166,7 +171,7 @@ class ContactMessageResource extends Resource
 
                         return response()->streamDownload(function () use ($messages) {
                             $handle = fopen('php://output', 'w');
-                            fputcsv($handle, ['ID', 'Nama', 'Email', 'Telepon', 'Perusahaan', 'Subjek', 'Pesan', 'Status', 'Tanggal']);
+                            fputcsv($handle, ['ID', 'Nama', 'Email', 'Telepon', 'Perusahaan', 'Subjek', 'Pesan', 'Catatan Internal', 'Status', 'Tanggal']);
                             foreach ($messages as $msg) {
                                 fputcsv($handle, [
                                     $msg->id,
@@ -176,6 +181,7 @@ class ContactMessageResource extends Resource
                                     $msg->organization,
                                     $msg->subject,
                                     $msg->message,
+                                    $msg->internal_notes,
                                     $msg->status instanceof ContactMessageStatus ? $msg->status->value : (string) $msg->status,
                                     $msg->created_at?->format('Y-m-d H:i:s'),
                                 ]);
@@ -187,13 +193,24 @@ class ContactMessageResource extends Resource
                     }),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->before(function (ContactMessage $record): void {
+                        if ($record->status === ContactMessageStatus::New) {
+                            $record->update(['status' => ContactMessageStatus::Read]);
+                        }
+                    }),
                 Action::make('mark_as_read')
                     ->label('Tandai Dibaca')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->visible(fn (ContactMessage $record): bool => $record->status === ContactMessageStatus::New)
                     ->action(fn (ContactMessage $record) => $record->update(['status' => ContactMessageStatus::Read])),
+                Action::make('mark_as_replied')
+                    ->label('Tandai Dibalas')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('info')
+                    ->visible(fn (ContactMessage $record): bool => $record->status !== ContactMessageStatus::Replied)
+                    ->action(fn (ContactMessage $record) => $record->update(['status' => ContactMessageStatus::Replied])),
                 Action::make('mark_as_unread')
                     ->label('Tandai Baru')
                     ->icon('heroicon-o-envelope')
@@ -201,7 +218,7 @@ class ContactMessageResource extends Resource
                     ->visible(fn (ContactMessage $record): bool => $record->status !== ContactMessageStatus::New)
                     ->action(fn (ContactMessage $record) => $record->update(['status' => ContactMessageStatus::New])),
                 EditAction::make()
-                    ->label('Ubah Status'),
+                    ->label('Ubah Status / Catatan'),
                 DeleteAction::make(),
                 RestoreAction::make(),
                 ForceDeleteAction::make(),

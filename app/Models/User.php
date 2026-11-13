@@ -98,4 +98,9 @@ class User extends Authenticatable implements FilamentUser, HasDefaultTenant, Ha
     {
         return $this->hasRole(self::ROLE_SUPER_ADMIN);
     }
+
+    public function isEditor(): bool
+    {
+        return $this->hasRole(self::ROLE_EDITOR);
+    }
 }
