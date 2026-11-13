@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Domain\Company\Models\Company;
+use App\Domain\Media\Actions\ProcessUploadedMediaAction;
 use App\Domain\Page\Blocks\Block;
 use App\Domain\Page\Blocks\BlockRegistry;
 use App\Domain\Page\Enums\BlockType;
@@ -20,6 +21,7 @@ use Filament\Panel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 use Livewire\WithFileUploads;
 
 class EditWebsitePage extends Page
@@ -138,18 +140,30 @@ class EditWebsitePage extends Page
     }
 
     /**
-     * Handle temporary file upload automatically via Livewire.
+     * Handle temporary file upload automatically via Livewire with WebP optimization.
      */
     public function updatedTempUploads($value, $key): void
     {
         if ($value instanceof UploadedFile) {
-            $path = $value->store('blocks', 'public');
-            Arr::set($this->formData, $key, $path);
+            try {
+                $result = app(ProcessUploadedMediaAction::class)->execute($value);
+                Arr::set($this->formData, $key, $result['path']);
 
-            Notification::make()
-                ->title('Foto berhasil diunggah')
-                ->success()
-                ->send();
+                $formatLabel = strtoupper($result['format']);
+                Notification::make()
+                    ->title("Media berhasil diunggah ({$formatLabel})")
+                    ->body('File disimpan dengan optimal untuk performa web.')
+                    ->success()
+                    ->send();
+            } catch (ValidationException $e) {
+                Notification::make()
+                    ->title('Gagal mengunggah file')
+                    ->body($e->getMessage())
+                    ->danger()
+                    ->send();
+
+                throw $e;
+            }
         }
     }
 
@@ -159,6 +173,14 @@ class EditWebsitePage extends Page
     public function removeImage(string $sectionKey, string $fieldName): void
     {
         Arr::set($this->formData, "{$sectionKey}.{$fieldName}", null);
+    }
+
+    /**
+     * Remove an image from a repeater item.
+     */
+    public function removeRepeaterImage(string $sectionKey, string $fieldName, int $index, string $subFieldName): void
+    {
+        Arr::set($this->formData, "{$sectionKey}.{$fieldName}.{$index}.{$subFieldName}", null);
     }
 
     /**
@@ -220,6 +242,13 @@ class EditWebsitePage extends Page
         $normalizedKey = SectionSchema::normalizePageKey($this->pageKey);
         $pageKeyEnum = PageKey::tryFrom($normalizedKey) ?? PageKey::tryFrom($this->pageKey);
         $page = $tenant->pages()->where('key', $pageKeyEnum ?? $normalizedKey)->first();
+
+        // 1. Strictly validate image alt text in both ID and EN before saving (WCAG 2.1 AA & SEO)
+        if (! $this->validateImageAltTexts($sections)) {
+            $this->isSaving = false;
+
+            return;
+        }
 
         foreach ($sections as $section) {
             $sectionKey = $section['section_key'];
@@ -292,6 +321,84 @@ class EditWebsitePage extends Page
             ->body('Seluruh konten website telah diperbarui secara langsung.')
             ->success()
             ->send();
+    }
+
+    /**
+     * Strictly validate that every uploaded image has both ID and EN alt text (WCAG 2.1 AA & SEO).
+     *
+     * @param  list<array<string, mixed>>  $sections
+     */
+    protected function validateImageAltTexts(array $sections): bool
+    {
+        $hasErrors = false;
+
+        foreach ($sections as $section) {
+            $sectionKey = $section['section_key'];
+            $sectionName = $section['name'] ?? $sectionKey;
+            $data = $this->formData[$sectionKey] ?? [];
+            $blockClass = BlockRegistry::for($section['block_type']);
+
+            foreach ($blockClass::fields() as $field) {
+                $name = $field['name'];
+                $type = $field['type'] ?? 'text';
+
+                if ($type === 'image') {
+                    $imgPath = $data[$name] ?? null;
+                    if (is_string($imgPath) && trim($imgPath) !== '') {
+                        $altId = trim((string) ($data["{$name}_alt"]['id'] ?? ''));
+                        $altEn = trim((string) ($data["{$name}_alt"]['en'] ?? ''));
+
+                        if ($altId === '' || $altEn === '') {
+                            $hasErrors = true;
+                            $errorKey = "formData.{$sectionKey}.{$name}_alt";
+                            $errorMsg = "Teks Alt (Bahasa Indonesia dan English) wajib diisi untuk foto pada bagian '{$sectionName}' sebelum disimpan.";
+                            $this->addError($errorKey, $errorMsg);
+                        }
+                    }
+                }
+
+                if ($type === 'repeater' && is_array($data[$name] ?? null)) {
+                    $subFields = $field['fields'] ?? [];
+                    $hasImageSubfield = collect($subFields)->contains(fn ($sub) => ($sub['type'] ?? '') === 'image');
+
+                    if ($hasImageSubfield) {
+                        foreach ($data[$name] as $index => $row) {
+                            foreach ($subFields as $sub) {
+                                if (($sub['type'] ?? '') === 'image') {
+                                    $subName = $sub['name'];
+                                    $subImg = $row[$subName] ?? null;
+
+                                    if (is_string($subImg) && trim($subImg) !== '') {
+                                        $subAltId = trim((string) ($row["{$subName}_alt"]['id'] ?? ''));
+                                        $subAltEn = trim((string) ($row["{$subName}_alt"]['en'] ?? ''));
+
+                                        if ($subAltId === '' || $subAltEn === '') {
+                                            $hasErrors = true;
+                                            $rowNum = $index + 1;
+                                            $errorKey = "formData.{$sectionKey}.{$name}.{$index}.{$subName}_alt";
+                                            $errorMsg = "Teks Alt (Bahasa Indonesia dan English) wajib diisi untuk foto pada item ke-{$rowNum} bagian '{$sectionName}'.";
+                                            $this->addError($errorKey, $errorMsg);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($hasErrors) {
+            Notification::make()
+                ->title('Gagal menyimpan perubahan')
+                ->body('Terdapat foto yang belum dilengkapi Teks Alt (ID & EN).')
+                ->danger()
+                ->send();
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

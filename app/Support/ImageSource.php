@@ -14,21 +14,27 @@ use Illuminate\Support\Facades\Storage;
  *   on disk are emitted as a srcset.
  * - Absolute URLs are passed through unchanged.
  * - Anything else is a CMS upload stored on the "public" disk.
+ * - If path is empty and $allowFallback is true, resolves to the local SVG placeholder.
  */
 final class ImageSource
 {
     /** @var list<int> */
     public const RESPONSIVE_WIDTHS = [640, 1280];
 
+    public const FALLBACK_PLACEHOLDER = '/images/placeholders/placeholder-image.svg';
+
     /**
      * @return array{url: string|null, srcset: string|null}
      */
-    public static function resolve(?string $path): array
+    public static function resolve(?string $path, bool $allowFallback = true): array
     {
         $path = $path !== null ? trim($path) : '';
 
         if ($path === '') {
-            return ['url' => null, 'srcset' => null];
+            return [
+                'url' => $allowFallback ? self::FALLBACK_PLACEHOLDER : null,
+                'srcset' => null,
+            ];
         }
 
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {

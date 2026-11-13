@@ -381,7 +381,7 @@
                                                 <div class="flex items-center justify-between">
                                                     <div>
                                                         <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">{{ $fLabel }}</span>
-                                                        <span class="text-[11px] text-slate-500">Rekomendasi: format WebP, PNG, atau SVG (maks 2MB).</span>
+                                                        <span class="text-[11px] text-slate-500">Rekomendasi: format JPG, PNG, WebP, SVG (maks 5MB). Otomatis dikonversi ke WebP.</span>
                                                     </div>
                                                     @if ($imgVal)
                                                         <button type="button"
@@ -402,7 +402,7 @@
                                                     <div class="flex-1 w-full">
                                                         <input type="file"
                                                                wire:model="tempUploads.{{ $secKey }}.{{ $fName }}"
-                                                               accept="image/*"
+                                                               accept="image/png,image/jpeg,image/webp,image/svg+xml"
                                                                class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer" />
                                                         <span wire:loading wire:target="tempUploads.{{ $secKey }}.{{ $fName }}" class="text-[11px] text-blue-600">
                                                             Mengunggah foto...
@@ -509,6 +509,53 @@
                                                                                        class="sr-only peer">
                                                                                 <div class="w-8 h-4.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-amber-500"></div>
                                                                             </label>
+                                                                        @elseif ($sType === 'image')
+                                                                            @php
+                                                                                $subImgVal = $itemRow[$sName] ?? null;
+                                                                                $subImgUrl = $subImgVal ? \App\Support\ImageSource::resolve($subImgVal)['url'] : null;
+                                                                            @endphp
+                                                                            <div class="col-span-full p-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-800/40 space-y-2">
+                                                                                <div class="flex items-center justify-between">
+                                                                                    <span class="text-[11px] font-semibold text-slate-700 dark:text-slate-200">{{ $sLabel }}</span>
+                                                                                    @if ($subImgVal)
+                                                                                        <button type="button"
+                                                                                                wire:click="removeRepeaterImage('{{ $secKey }}', '{{ $fName }}', {{ $idx }}, '{{ $sName }}')"
+                                                                                                class="text-[10px] font-semibold text-rose-600 hover:text-rose-800">
+                                                                                            Hapus Foto
+                                                                                        </button>
+                                                                                    @endif
+                                                                                </div>
+                                                                                <div class="flex items-center gap-3">
+                                                                                    @if ($subImgUrl)
+                                                                                        <div class="w-12 h-12 rounded-lg border border-slate-300 dark:border-white/20 overflow-hidden bg-white shrink-0 p-0.5 flex items-center justify-center">
+                                                                                            <img src="{{ $subImgUrl }}" alt="Preview" class="w-full h-full object-cover rounded" />
+                                                                                        </div>
+                                                                                    @endif
+                                                                                    <div class="flex-1">
+                                                                                        <input type="file"
+                                                                                               wire:model="tempUploads.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}"
+                                                                                               accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                                                                                               class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                {{-- Alt text for repeater image --}}
+                                                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-200/50">
+                                                                                    <div>
+                                                                                        <label class="text-[10px] font-semibold text-slate-500">🇮🇩 Teks Alt (ID) *</label>
+                                                                                        <input type="text"
+                                                                                               wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}_alt.id"
+                                                                                               placeholder="Deskripsi foto..."
+                                                                                               class="w-full px-2 py-1 rounded text-[11px] bg-white dark:bg-slate-800 border border-slate-200 text-slate-900 dark:text-white" />
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <label class="text-[10px] font-semibold text-slate-500">🇬🇧 Alt Text (EN) *</label>
+                                                                                        <input type="text"
+                                                                                               wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}_alt.en"
+                                                                                               placeholder="Image description..."
+                                                                                               class="w-full px-2 py-1 rounded text-[11px] bg-white dark:bg-slate-800 border border-slate-200 text-slate-900 dark:text-white" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         @endif
                                                                     </div>
                                                                 @endforeach
