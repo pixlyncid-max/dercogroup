@@ -162,7 +162,7 @@ test.describe('PT Korin Bara Energy — Redesign & Public Verification', () => {
 
             // Verify Holding link and Hubungi Kami button in header
             await expect(page.locator('header').getByText('PT Derco Bara Energy')).toBeVisible();
-            await expect(page.locator('header a.kb-btn-solid')).toBeVisible();
+            await expect(page.locator('header').getByRole('link', { name: /Hubungi Kami|Contact Us/i })).toBeVisible();
 
             // Verify inside page banner and breadcrumb on non-home pages
             if (!item.isHome) {

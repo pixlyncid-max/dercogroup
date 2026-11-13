@@ -121,12 +121,12 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                         })}
                     </nav>
 
-                    {/* Right: Holding Link, CTA Pill Button & Language Switch */}
-                    <div className="hidden lg:flex lg:items-center lg:gap-4">
+                    {/* Right: Holding Link, Hubungi Kami & Language Switch */}
+                    <div className="hidden lg:flex lg:items-center lg:gap-6">
                         <Link
                             href={holdingUrl}
                             aria-label={t('back_to_holding')}
-                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-slate-200 bg-slate-50/80 px-4 py-2 text-xs font-semibold text-[#101F38] transition-all hover:border-[#8A6212] hover:bg-amber-50/40 hover:text-[#8A6212] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-[#8A6212] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
                         >
                             <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
                             <span>{t('holding_short')}</span>
@@ -134,7 +134,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
 
                         <Link
                             href={headerCtaHref}
-                            className="kb-btn-solid min-h-[44px]"
+                            className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-[#8A6212] transition-colors hover:text-[#101F38] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
                         >
                             <span>{headerCtaLabel}</span>
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -232,11 +232,11 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                             </nav>
 
                             {/* Drawer Bottom CTA */}
-                            <div className="border-t border-line pt-4 space-y-3">
+                            <div className="border-t border-line pt-4 space-y-2">
                                 <Link
                                     href={headerCtaHref}
                                     onClick={() => setMobileDrawerOpen(false)}
-                                    className="kb-btn-solid w-full min-h-[44px]"
+                                    className="inline-flex min-h-[44px] w-full items-center justify-between rounded-lg px-4 py-3 text-base font-semibold text-[#8A6212] transition-colors hover:bg-slate-50"
                                 >
                                     <span>{headerCtaLabel}</span>
                                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -246,7 +246,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                     href={holdingUrl}
                                     onClick={() => setMobileDrawerOpen(false)}
                                     aria-label={t('back_to_holding')}
-                                    className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-semibold text-[#101F38] transition-colors hover:border-[#8A6212] hover:bg-amber-50/40 hover:text-[#8A6212]"
+                                    className="inline-flex min-h-[44px] w-full items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#8A6212]"
                                 >
                                     <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
                                     <span>{t('back_to_holding')}</span>
