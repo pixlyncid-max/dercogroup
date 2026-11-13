@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useState, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
@@ -13,7 +13,8 @@ export interface KorinBaraLayoutProps {
 export function Layout({ children }: KorinBaraLayoutProps) {
     const { props } = usePage<SharedPageProps>();
     const { locale, t } = useLocale();
-    const { items, contactUrl } = useNavigation();
+    const { items, contactUrl, holdingUrl } = useNavigation();
+    const navItems = items.filter((item) => item.key !== 'contact');
     const prefersReducedMotion = Boolean(useReducedMotion());
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -84,7 +85,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                         aria-label={t('nav.main')}
                         className="hidden lg:flex lg:items-center lg:gap-8"
                     >
-                        {items.map((item) => {
+                        {navItems.map((item) => {
                             // Exact active state check: only one item active at a time
                             const isActive =
                                 item.active ??
@@ -120,8 +121,17 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                         })}
                     </nav>
 
-                    {/* Right: Language Switch & CTA Pill Button */}
-                    <div className="hidden lg:flex lg:items-center lg:gap-5">
+                    {/* Right: Holding Link, CTA Pill Button & Language Switch */}
+                    <div className="hidden lg:flex lg:items-center lg:gap-4">
+                        <Link
+                            href={holdingUrl}
+                            aria-label={t('back_to_holding')}
+                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-slate-200 bg-slate-50/80 px-4 py-2 text-xs font-semibold text-[#101F38] transition-all hover:border-[#8A6212] hover:bg-amber-50/40 hover:text-[#8A6212] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        >
+                            <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
+                            <span>{t('holding_short')}</span>
+                        </Link>
+
                         <Link
                             href={headerCtaHref}
                             className="kb-btn-solid min-h-[44px]"
@@ -129,8 +139,6 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                             <span>{headerCtaLabel}</span>
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
-
-                        <div className="h-6 w-[1px] bg-line" aria-hidden="true" />
 
                         <LanguageSwitch tone="light" />
                     </div>
@@ -195,7 +203,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
 
                             {/* Drawer Nav Items */}
                             <nav className="flex flex-1 flex-col gap-2 py-6">
-                                {items.map((item) => {
+                                {navItems.map((item) => {
                                     const isActive =
                                         item.active ??
                                         (item.href === homeHref
@@ -224,7 +232,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                             </nav>
 
                             {/* Drawer Bottom CTA */}
-                            <div className="border-t border-line pt-4 space-y-4">
+                            <div className="border-t border-line pt-4 space-y-3">
                                 <Link
                                     href={headerCtaHref}
                                     onClick={() => setMobileDrawerOpen(false)}
@@ -232,6 +240,16 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                 >
                                     <span>{headerCtaLabel}</span>
                                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                                </Link>
+
+                                <Link
+                                    href={holdingUrl}
+                                    onClick={() => setMobileDrawerOpen(false)}
+                                    aria-label={t('back_to_holding')}
+                                    className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-semibold text-[#101F38] transition-colors hover:border-[#8A6212] hover:bg-amber-50/40 hover:text-[#8A6212]"
+                                >
+                                    <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
+                                    <span>{t('back_to_holding')}</span>
                                 </Link>
                             </div>
                         </motion.div>

@@ -152,12 +152,17 @@ test.describe('PT Korin Bara Energy — Redesign & Public Verification', () => {
             const mainNav = page.locator('header nav').first();
             await expect(mainNav).toBeVisible();
 
-            // Verify menu links exist in correct order (Beranda, Tentang Kami, Operasi, Produk, Kontak)
+            // Verify menu links exist (Beranda, Tentang Kami, Operasi, Produk - Kontak unified into Hubungi Kami)
             const menuLinks = mainNav.locator('a');
             const menuTexts = await menuLinks.allTextContents();
             expect(menuTexts).toEqual(
-                expect.arrayContaining(['Beranda', 'Tentang Kami', 'Operasi', 'Produk', 'Kontak'])
+                expect.arrayContaining(['Beranda', 'Tentang Kami', 'Operasi', 'Produk'])
             );
+            expect(menuTexts).not.toContain('Kontak');
+
+            // Verify Holding link and Hubungi Kami button in header
+            await expect(page.locator('header').getByText('PT Derco Bara Energy')).toBeVisible();
+            await expect(page.locator('header a.kb-btn-solid')).toBeVisible();
 
             // Verify inside page banner and breadcrumb on non-home pages
             if (!item.isHome) {
