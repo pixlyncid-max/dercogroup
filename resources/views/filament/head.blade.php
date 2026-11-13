@@ -41,6 +41,7 @@
     }
 
     /* Screen reader & Skip to content defensive constraints */
+    .fi-skip-link,
     .fi-skip-to-content,
     .fi-sr-only {
         position: absolute !important;
@@ -52,6 +53,26 @@
         clip: rect(0, 0, 0, 0) !important;
         white-space: nowrap !important;
         border: 0 !important;
+    }
+
+    /* Defensive constraints against unstyled giant icons and avatars */
+    .fi-tenant-avatar,
+    .fi-avatar,
+    .fi-avatar img,
+    .fi-tenant-menu-trigger img {
+        max-width: 2.25rem !important;
+        max-height: 2.25rem !important;
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+        object-fit: contain !important;
+    }
+
+    .fi-tenant-menu-trigger svg,
+    .fi-icon-btn svg,
+    .fi-topbar svg,
+    .fi-sidebar svg {
+        max-width: 1.5rem !important;
+        max-height: 1.5rem !important;
     }
 
     /* Persistent Luxury Corporate Sidebar */

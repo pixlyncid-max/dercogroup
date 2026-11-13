@@ -30,10 +30,10 @@
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # 6. Route requests for static assets inside public/ (build, images, storage)
+    # 6. Route requests for static assets inside public/ (build, images, storage, css, fonts, js)
     # Ensures CSS, JS, fonts, and images are served directly with correct MIME types
     RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(build|images|storage)/(.*)$ public/$1/$2 [L,NC]
+    RewriteRule ^(build|images|storage|css|fonts|js)/(.*)$ public/$1/$2 [L,NC]
 
     # 7. Send all other requests to Front Controller (index.php in root)
     RewriteCond %{REQUEST_FILENAME} !-d
