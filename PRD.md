@@ -1,7 +1,7 @@
 # PRD — Website PT Derco Bara Energy
 
-Versi 1.5 · Product Requirements Document
-Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md) · [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)
+Versi 1.6 · Revisi 6 (CMS v2: Editor Halaman Per Perusahaan untuk Pengguna Awam)
+Dokumen pendamping: [DESIGN.md](./DESIGN.md) · [README.md](./README.md) · [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md) · [docs/CMS-GUIDE.md](./docs/CMS-GUIDE.md)
 
 ---
 
@@ -187,72 +187,54 @@ Fitur visibilitas anak usaha (`draft` / `published`) merupakan kebutuhan inti ar
 
 ---
 
-## 6. CMS Admin
+## 6. CMS Admin v2 (Revisi 6: Editor Halaman untuk Pengguna Awam)
 
 Dibangun dengan Filament di `/admin`, terpisah dari tampilan publik.
 
-### 6.1 Multi-Tenancy & Peran (Revisi 5)
-Sistem CMS menggunakan **Filament Multi-Tenancy** dengan entitas tenant = `Company` (Holding `derco-bara-energy` dan 3 anak perusahaan: `korin-berkat-energy`, `beramal-sukses-sejahtera`, `korin-bara-energy`).
-
-**Prinsip Arsitektur Utama**:
-1. **Satu Admin untuk Semua Entitas**: Tidak ada tabel `company_user` dan tidak ada isolasi akun per anak usaha. Seluruh pengguna CMS (`Super Admin` maupun `Editor`) dapat mengakses dan beralih ke seluruh entitas perusahaan melalui Tenant Switcher di sidebar.
-2. **Tenant Switcher**: Menampilkan logo resmi perusahaan, nama perusahaan, holding di urutan teratas, serta status tayang (Published/Draft). Tenant awal setelah login adalah holding (`derco-bara-energy`).
-3. **Isolasi Konten Otomatis**: Setiap data yang berpemilik `company_id` otomatis ter-scope ke tenant aktif. Akses lintas-tenant via URL/ID secara otomatis mengembalikan HTTP 404.
-4. **Navigasi Adaptif (B4)**: Modul `Produk`, `Operasi`, dan `Sertifikasi` hanya muncul bila perusahaan terkait memiliki halaman yang bersesuaian (`Company::hasPage(PageKey)`). Holding tidak menampilkan Produk/Operasi/Sertifikasi; Korin Berkat tidak menampilkan Sertifikasi.
-5. **Widget Ringkasan Grup (B6)**: Ditampilkan pada dashboard setiap tenant, menyajikan ringkasan 4 perusahaan (status tayang, jumlah pesan masuk baru, halaman draft, dan tombol kelola cepat) yang dieksekusi dalam 1 query kueri tunggal via `GetGroupSummaryAction` tanpa N+1.
-
-| Peran | Hak Akses |
-|---|---|
-| **Super Admin** | Akses penuh tanpa batas (`Gate::before`), mengelola entitas Perusahaan, Pengguna CMS, Pengaturan Sistem, profil & status/tema tenant, serta dapat menghapus Halaman (dengan pengaman holding & self-deletion). |
-| **Editor** | Mengelola dan menerbitkan seluruh konten ter-scope tenant (Halaman, Blok, Produk, Operasi, Statistik, Sertifikasi, Kontak, Pesan Masuk) di semua perusahaan. Dilarang menghapus Halaman, dilarang mengakses modul Perusahaan/Pengguna/Pengaturan Sistem, dan dilarang mengubah status publikasi atau tema di profil tenant. |
+### 6.1 Arsitektur & Prinsip Utama
+1. **Satu CMS untuk Semua Perusahaan**: SATU admin dapat mengelola holding dan ketiga anak usaha tanpa pembatasan akun per perusahaan. Tidak ada tabel `company_user` dan tidak ada isolasi akun.
+2. **Tenancy sebagai Pemisah Konten**: Filament Multi-Tenancy (tenant = `Company`) digunakan secara eksklusif sebagai pemisah konten, bukan pembatas izin akses pengguna.
+3. **Sidebar Halaman Website**:
+   - Sidebar menyajikan halaman website aktual yang dimiliki oleh perusahaan aktif:
+     - **PT Derco Bara Energy**: Beranda (termasuk Header) · Tentang Kami · Bisnis Kami · Kontak · Footer.
+     - **PT Korin Berkat Energy**: Beranda (termasuk Header) · Tentang Kami · Produk · Operasi · Kontak · Footer.
+     - **PT Korin Bara Energy**: Beranda (termasuk Header) · Tentang Kami · Produk · Operasi · Kontak · Footer.
+     - **PT Beramal Sukses Sejahtera**: Beranda (termasuk Header) · Tentang Kami · Produk · Operasi · Kontak · Footer.
+   - Di bawahnya terdapat grup **"Pengaturan"**: Pesan Masuk (dengan lencana jumlah pesan baru), Pengaturan Website, Pengguna (Super Admin), dan Perusahaan (Super Admin).
+   - Tidak ada halaman dasbor terpisah: setelah login, admin langsung mendarat di editor Beranda pada perusahaan terakhir yang dikunjungi (awalnya holding).
+4. **Tata Letak Tetap (Fixed Layout)**: Admin awam mengelola *isi* (konten, foto, teks), bukan susunan makro. Admin berwenang menyembunyikan section tertentu (saklar *toggle*), menambah/menghapus/mengurutkan item di dalam daftar repeater, tetapi tidak dapat menambah atau memindahkan section secara bebas.
+5. **Kontrol Penuh Teks & Foto**: Seluruh teks dan foto yang tampil di website publik (termasuk logo perusahaan di header & footer) dapat diubah langsung dari CMS. Hanya pesan sistem teknis (validasi Laravel, halaman 404/500) yang tetap berada di berkas bahasa.
+6. **Pengalih Bahasa Dwibahasa**: Saklar pil "Indonesia | English" di header aksi melayang dengan lencana penghitung dinamis jumlah kolom pada bahasa alternatif yang masih kosong.
+7. **Simpan Instan & Riwayat Perubahan**: Tombol "Simpan Perubahan" langsung menayangkan konten ke website publik. Dilengkapi pengaman otomatis `ContentRevision` (snapshot formulir dan pemulihan instan hingga 10 versi terakhir per halaman) serta penguncian optimistis (`content_version`) dengan resolusi konflik multi-admin ("Muat Ulang Versi Terbaru" vs "Timpa Konten").
+8. **Modul Dorman & Halaman Mutu Dihapus**: Halaman "Mutu & Kepatuhan" dihapus permanen untuk SEMUA perusahaan. Modul Sertifikasi disembunyikan dari antarmuka CMS dan dicatat sebagai modul dorman (kode tetap ada di backend untuk kebutuhan ekspansi mendatang).
+9. **Peran Global (Berlaku untuk Semua Perusahaan)**:
+   - **Super Admin**: Akses penuh ke seluruh fitur, konten, pengelolaan Pengguna, Perusahaan, status tayang website, tema visual, dan pengaturan sistem.
+   - **Editor**: Mengelola seluruh konten halaman, foto, logo, dan pesan masuk untuk semua perusahaan. Dibatasi dari menu Pengguna, Perusahaan, status tayang, tema, dan pengaturan sistem.
+10. **Aksen Warna Tema Adaptif**: Aksen tombol simpan dan lencana aktif menyesuaikan perusahaan aktif (Derco: Tembaga `#C87A38`; Korin Berkat: Emas `#EDB856`; Korin Bara: Amber `#F59E0B`; Beramal: Cerulean `#0284C7`), dengan sidebar navy `#0F172A` yang konsisten.
 
 ### 6.2 Matriks CRUD per Modul
 | Modul | Lingkup | Buat | Baca | Ubah | Hapus | Pengaman & Keterangan |
 |---|---|---|---|---|---|---|
-| **Perusahaan** | Global (Super Admin) | Ya | Ya | Ya | Ya | Memicu `CreateCompanyPages` saat dibuat. Dilarang hapus holding, anak usaha yang aktif, atau perusahaan dengan data pesan kontak. |
-| **Halaman & Blok** | Tenant | Ya | Ya | Ya | Super Admin | Judul & slug ID/EN, SEO, urutan, toggle tayang. Editor dilarang menghapus halaman. Blok hero mendukung 3-5 slides gambar. |
-| **Produk + Spesifikasi** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Tabel spesifikasi, galeri gambar, toggle tayang, hanya muncul bila perusahaan memiliki halaman Produk. |
-| **Operasi & Lokasi** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Tipe operasi, koordinat latitude/longitude, foto fasilitas. |
-| **Statistik Perusahaan** | Tenant | Ya | Ya | Ya | Ya | Angka, prefix, suffix, satuan, urutan tampil. |
-| **Sertifikasi & Izin** | Tenant (Adaptif) | Ya | Ya | Ya | Ya | Berkas PDF ID & EN, masa berlaku, indikator kedaluwarsa. |
-| **Kontak Perusahaan** | Tenant | Ya | Ya | Ya | Ya | Tipe kantor, alamat, telepon, WhatsApp, email notifikasi form publik. |
-| **Pesan Masuk** | Tenant | Tidak | Ya | Ya | Ya (Soft delete) | Dibuat hanya dari form publik; admin dapat mengubah status (`new/read/replied`) dan catatan internal. |
-| **Pengguna CMS** | Global (Super Admin) | Ya | Ya | Ya | Ya | Kata sandi di-hash, role Spatie. Dilarang menghapus akun sendiri atau Super Admin terakhir. |
-| **Pengaturan Sistem** | Global (Super Admin) | Ya | Ya | Ya | Ya | Pengaturan global dengan fallback per tenant. |
-| **Profil Tenant** | Tenant Profile Page | n/a | Ya | Ya | n/a | Nama, tagline, deskripsi, email notifikasi, SEO default. Status dan tema hanya dapat diubah oleh Super Admin. |
+| **Editor Halaman (Beranda, Profil, dll.)** | Tenant | Skema | Ya | Ya | Nonaktifkan Section | Tata letak tetap. Section dapat dinonaktifkan via saklar visibilitas. Menyimpan memicu snapshot revisi. |
+| **Header & Footer** | Global Tenant | Skema | Ya | Ya | n/a | Header diedit di Beranda; Footer memiliki pseudo-halaman tersendiri. Berlaku lintas halaman pada tenant tersebut. |
+| **Pengaturan Website** | Tenant | n/a | Ya | Ya | n/a | Nama, tagline, deskripsi, email penerima formulir kontak, dan SEO bawaan (Google & pratinjau sosial). Status tayang & tema dikunci untuk Super Admin. |
+| **Pesan Masuk** | Tenant | Form Publik | Ya | Ya | Ya (Soft delete) | Dilengkapi catatan internal, aksi status cepat (*Baru, Dibaca, Dibalas*), ekspor CSV terlingkup, lencana sidebar, dan lonceng top bar. |
+| **Pengguna CMS** | Global (Super Admin) | Ya | Ya | Ya | Ya | Role Super Admin & Editor. Dilindungi dari hapus akun sendiri dan hapus/pencabutan Super Admin terakhir. Reset sandi email. |
+| **Perusahaan** | Global (Super Admin) | Ya | Ya | Ya | Ya | Menambah perusahaan memicu `CreateCompanyPages` dan inisiasi section bawaan skema. Dilarang menghapus holding, perusahaan beranak, atau perusahaan berpesan masuk. |
 
-### 6.3 Kebutuhan CMS (FR-CMS)
+### 6.3 Kebutuhan Fungsional CMS (FR-CMS v2)
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
-| FR-CMS-1 | Login aman dengan pembatasan percobaan; reset kata sandi lewat email | P0 |
-| FR-CMS-2 | Setiap field multibahasa memiliki tab ID/EN dalam satu form | P0 |
-| FR-CMS-3 | Form blok dihasilkan dari **satu definisi skema per tipe blok** yang sama dengan aturan validasi | P0 |
-| FR-CMS-4 | Unggah gambar menghasilkan konversi otomatis (WebP, beberapa ukuran) | P0 |
-| FR-CMS-5 | Wajib mengisi teks alternatif saat mengunggah gambar | P1 |
-| FR-CMS-6 | Tombol "Pratinjau" membuka halaman publik versi draft | P0 |
-| FR-CMS-7 | Jejak audit sederhana (siapa mengubah apa dan kapan) pada perusahaan, halaman, dan sertifikasi | P1 |
-| FR-CMS-8 | Ekspor pesan masuk ke CSV | P1 |
-
-### 6.4 Tipe Blok
-Daftar lengkap dan tampilannya per tema ada di [DESIGN.md](./DESIGN.md), bagian 9: `hero`, `split_content`, `stacked_images`, `color_band`, `mission_list`, `rich_text`, `cta_banner`, `timeline`, `values_grid` (statis); `subsidiary_grid`, `stats`, `product_list`, `operation_list`, `certification_list`, `contact_info`, `contact_form` (dinamis).
-
-### 6.5 Desain Antarmuka CMS Admin (Revisi 4)
-Tampilan CMS admin (/admin) direkayasa ulang mengacu pada foto referensi konsol korporat modern (spesifikasi detail di [docs/CMS-DESIGN.md](./docs/CMS-DESIGN.md)):
-1. **Layout & Sidebar**:
-   - Sidebar Dark Navy (`#111C2E`) berlebar 264px (`16.5rem`) dengan aksen hover emas (`#EDB856`).
-   - Header sidebar menampilkan monogram emas korporat Korin Berkat/Derco.
-   - Footer sidebar memuat siluet grafis pegunungan (`sidebar-mountains.png`), tautan cepat "View Website", dan tombol Logout.
-   - Area konten berlatar sejuk (`#F8FAFC`) dengan kartu permukaan putih radius `1rem` (16px) dan bayangan lembut.
-2. **Halaman Login Khusus**:
-   - Split 50:50 desktop: sisi kiri memuat foto operasional pertambangan dengan filter gelap, logo emas, dan tipografi "Building a Sustainable Future Together (Mining • Trading • Nickel)".
-   - Sisi kanan memuat kartu login putih dengan input bernuansa modern, pemulihan kata sandi (`Forgot Password?`), dan alternatif login SSO.
-3. **Dasbor Khusus dengan Metrik Nyata**:
-   - `DashboardGreetingWidget`: Ucapan waktu nyata sesuai jam (Pagi/Siang/Sore/Malam), nama pengguna login, tanggal lokal dan jam langsung.
-   - `StatsOverviewWidget`: 4 kartu ringkasan berbasis data riil database (Total Pages, Total Products, Total Operations, Total Users) lengkap dengan grafik tren sparkline SVG.
-   - `HeroBannerWidget`: Spanduk operasional pertambangan dengan badge emas dan CTA langsung ke situs publik.
-   - `QuickActionsWidget`: 6 tombol aksi cepat menuju modul-modul CMS utama.
-   - `WebsiteOverviewWidget`: Grafik analitik tren pengunjung 30 hari interaktif dengan indikator pengunjung, durasi sesi, dan bounce rate.
-   - `RecentActivityWidget`: Garis waktu aktivitas audit riil dari database.
+| FR-CMS-1 | Login aman berbasis email/kata sandi; reset kata sandi lewat broker email | P0 |
+| FR-CMS-2 | Pengalih bahasa pil ID/EN di bar aksi atas dengan indikator jumlah kolom kosong | P0 |
+| FR-CMS-3 | Seluruh section dihasilkan dari satu sumber skema (`SectionSchema` & kelas `Block`) terpadu | P0 |
+| FR-CMS-4 | Unggah gambar otomatis dikonversi ke WebP kualitas tinggi (maks 5MB); dokumen PDF maks 10MB | P0 |
+| FR-CMS-5 | Validasi ketat teks alternatif (Alt Text) wajib terisi dalam ID dan EN sebelum gambar disimpan | P0 |
+| FR-CMS-6 | Tombol "Preview Website" membuka drawer iframe responsif live (`?preview=1`) dengan saklar perangkat (Desktop, Tablet, Mobile) | P0 |
+| FR-CMS-7 | Riwayat perubahan otomatis menyimpan snapshot formulir hingga 10 versi terakhir dan dapat dipulihkan instan | P0 |
+| FR-CMS-8 | Penguncian optimistis mendeteksi konflik edit multi-admin dan menyajikan dialog banding versi | P0 |
+| FR-CMS-9 | Seluruh teks publik bebas dari teks tertulis di kode (hardcoded JSX) dan ditegakkan oleh ESLint `react/jsx-no-literals` | P0 |
+| FR-CMS-10 | Uji kegunaan awam menjamin 10 tugas umum dapat diselesaikan dalam $\le 5$ klik dari sidebar | P0 |
 
 ---
 
@@ -421,6 +403,17 @@ Per perusahaan: logo master (termasuk varian negatif/terang untuk latar gelap), 
 ---
 
 ## 14. Catatan Perubahan (Changelog)
+
+### Versi 1.6 (Revisi 6 — CMS v2: Editor Halaman Per Perusahaan untuk Pengguna Awam)
+- **Satu CMS untuk Semua Perusahaan:** Multi-tenancy Filament difungsikan murni sebagai pemisah konten; satu admin mengelola holding dan ketiga anak usaha tanpa pembatasan per perusahaan.
+- **Editor Halaman dengan Tata Letak Tetap:** Admin awam mengelola teks, foto, dan visibilitas section secara stabil tanpa manipulasi drag-drop makro yang rentan merusak tata letak.
+- **Skema Konten Tunggal (`SectionSchema`):** Satu sumber kebenaran backend untuk seluruh section, validasi ketat teks dan Alt text gambar (ID & EN), serta inisiasi bawaan otomatis saat perusahaan baru dibuat.
+- **Frontend Membaca Konten CMS:** Seluruh teks dan foto publik dinamis dari database, penegakan ESLint `react/jsx-no-literals`, dan atribut stabil `id="section-{key}"` serta `data-section="{key}"`.
+- **Pengalih Bahasa Dwibahasa:** Saklar pil `ID` | `EN` di bar aksi atas dengan penghitung dinamis kolom yang belum terisi.
+- **Riwayat Perubahan & Penguncian Optimistis:** Penyimpanan snapshot formulir hingga 10 versi terakhir per halaman dengan pemulihan instan, didukung deteksi konflik edit multi-admin berbasis versi konten (`content_version`).
+- **Pratinjau Responsif Terintegrasi:** Drawer preview live (`?preview=1`) dengan saklar perangkat desktop, tablet, dan ponsel.
+- **Pesan Masuk & Pengaturan Website:** Penambahan catatan internal pada pesan kontak masuk, ekspor CSV terlingkup tenant, halaman Pengaturan Website terpadu, dan proteksi hapus entitas.
+- **Halaman Mutu Dihapus & Modul Sertifikasi Dorman:** Halaman Mutu & Kepatuhan dihapus secara permanen untuk seluruh perusahaan; modul sertifikasi disembunyikan dari antarmuka CMS.
 
 ### Versi 1.4 (Revisi 3 — Integrasi Logo Header dan Footer Seluruh Tema)
 - **Kebutuhan Fungsional FR-BRD:** Penambahan kelompok kebutuhan FR-BRD-1 s.d. FR-BRD-6 untuk logo header dan footer holding serta tiga anak usaha.

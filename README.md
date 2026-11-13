@@ -88,15 +88,17 @@ Buka:
 - Situs publik: <http://localhost:8000> (mengarah ke `/id`)
 - CMS admin: <http://localhost:8000/admin>
 
-### Pengelolaan Multi-Perusahaan (CMS Multi-Tenancy)
-CMS mengimplementasikan Filament Multi-Tenancy dengan `Company` sebagai entitas tenant:
-- **Tenant Switcher**: Terletak di bagian atas sidebar CMS. Menampilkan logo resmi, nama perusahaan, serta lencana status tayang (`Published`/`Draft`). Holding (`derco-bara-energy`) selalu berada di urutan teratas.
-- **Satu Admin untuk Semua**: Seluruh pengguna ber-peran `Super Admin` dan `Editor` dapat berpindah dan mengelola keempat entitas perusahaan tanpa hambatan.
-- **Resource Global vs Ter-scope Tenant**:
-  - *Global (Super Admin saja)*: `Perusahaan`, `Pengguna CMS`, `Pengaturan Sistem`.
-  - *Ter-scope Tenant*: `Halaman & Blok`, `Produk & Spesifikasi`, `Operasi & Lokasi`, `Statistik Perusahaan`, `Sertifikasi & Izin`, `Kontak Perusahaan`, `Pesan Masuk`.
-- **Navigasi Adaptif**: Modul `Produk`, `Operasi`, dan `Sertifikasi` otomatis tersembunyi bila perusahaan terkait tidak memiliki kapabilitas halaman tersebut (mis. Holding tidak menampilkan menu Produk/Operasi/Sertifikasi).
-- **Widget Ringkasan Grup**: Tabel konsolidasi seluruh anak usaha pada dasbor untuk memantau status tayang, pesan baru, dan draft halaman dalam satu kueri efisien tanpa N+1.
+### Pengelolaan Multi-Perusahaan (CMS v2 Multi-Tenancy & Page Editor)
+CMS mengimplementasikan Filament Multi-Tenancy dengan `Company` sebagai entitas tenant dan editor berbasis halaman untuk pengguna awam:
+- **Tenant Switcher**: Terletak di bagian atas sidebar CMS. Menampilkan logo resmi, nama perusahaan, holding di urutan teratas, serta lencana status tayang (`Published`/`Draft`). Berpindah perusahaan dapat dilakukan instan oleh satu admin tanpa keluar akun.
+- **Satu Admin Mengelola Semua**: Seluruh pengguna ber-peran `Super Admin` dan `Editor` dapat mengelola keempat entitas perusahaan. Tenancy difungsikan murni sebagai pemisah konten, bukan pembatas izin akses pengguna.
+- **Sidebar Halaman Website**: Menu samping menampilkan langsung halaman website milik perusahaan yang sedang dibuka (`Beranda`, `Tentang Kami`, `Produk` / `Bisnis Kami`, `Operasi`, `Kontak`, `Footer`) serta grup `Pengaturan` (`Pesan Masuk`, `Pengaturan Website`, `Pengguna`, `Perusahaan`).
+- **Tata Letak Tetap (Fixed Layout)**: Admin awam mengelola teks, foto, dan visibilitas section secara stabil tanpa memanipulasi susunan makro yang berisiko merusak layout responsif.
+- **Skema Konten Tunggal (`SectionSchema`)**: Satu sumber kebenaran backend untuk seluruh section, validasi ketat teks dan Alt text gambar (ID & EN), serta inisiasi bawaan otomatis saat perusahaan baru dibuat.
+- **Frontend Bebas Hardcoded (ESLint & Sentinel)**: Seluruh teks dan foto publik dinamis dari CMS, ditegakkan dengan aturan ketat ESLint `react/jsx-no-literals` dan sentinel Pest test.
+- **Riwayat Perubahan & Penguncian Optimistis**: Snapshot formulir otomatis disimpan hingga 10 versi terakhir dengan pemulihan instan, didukung deteksi konflik multi-admin berbasis versi konten (`content_version`).
+- **Pratinjau Live Responsif**: Drawer pratinjau live (`?preview=1`) dengan saklar perangkat desktop, tablet, dan ponsel.
+- **Panduan Penggunaan Awam**: Panduan langkah-demi-langkah bernomor untuk 10 tugas umum tersedia di [docs/CMS-GUIDE.md](./docs/CMS-GUIDE.md).
 
 ---
 
@@ -500,6 +502,38 @@ Pasang di crontab server (`crontab -e`):
 ---
 
 ## Catatan Rilis & Perubahan (Changelog)
+
+### v2.0.0 (Revisi 6 — CMS v2: Editor Halaman Per Perusahaan untuk Pengguna Awam)
+- **Editor Halaman Per Perusahaan untuk Pengguna Awam:**
+  - Satu panel CMS melayani seluruh 4 entitas perusahaan; satu admin mengelola holding dan ketiga anak usaha tanpa pembatasan per entitas.
+  - Sidebar menyajikan halaman website sungguhan (`Beranda`, `Tentang Kami`, `Produk`/`Bisnis Kami`, `Operasi`, `Kontak`, `Footer`) menggantikan tabel data generik.
+  - Alur login langsung mendarat pada halaman Beranda perusahaan terakhir yang dikunjungi (awalnya holding).
+  - Tata letak halaman tetap (*fixed layout*): admin awam mengelola teks, foto, dan visibilitas section secara aman tanpa manipulasi susunan makro yang rentan merusak layout.
+- **Skema Konten Tunggal Backend (`SectionSchema`):**
+  - Satu definisi skema tunggal di backend yang otomatis menghasilkan form Filament, validasi ketat teks dan Alt text (ID & EN), tipe TypeScript frontend, dan data bawaan.
+  - Menginisiasi otomatis seluruh halaman dan blok bawaan dari skema saat entitas perusahaan baru dibuat (`CreateCompanyPages`).
+- **Frontend Membaca Konten CMS (Bebas Teks Tertulis di Kode):**
+  - 100% teks dan gambar publik ditarik secara dinamis dari database CMS.
+  - Ditegakkan secara otomatis oleh aturan ESLint `react/jsx-no-literals` dan sentinel tests Pest.
+  - Atribut section stabil (`id="section-{key}"` dan `data-section="{key}"`) serta fallback placeholder SVG terpadu.
+- **Header, Logo, dan Media:**
+  - Kartu Header pada Beranda mengelola logo perusahaan secara terpusat, langsung menyinkronkan logo header publik, logo footer, favicon, dan avatar tenant switcher.
+  - Konversi otomatis media unggahan ke WebP kualitas tinggi (maksimal 5MB) dan dokumen PDF (maksimal 10MB).
+  - Validasi wajib teks alternatif (Alt Text) dwibahasa (ID & EN) sebelum gambar dapat disimpan.
+- **Riwayat Perubahan, Penguncian Optimistis, & Pratinjau:**
+  - Tabel `content_revisions` menyimpan snapshot formulir `{ formData, visibility }` hingga 10 versi terakhir per halaman dengan pemulihan instan.
+  - Penguncian optimistis berbasis versi konten (`content_version`) mendeteksi konflik edit multi-admin dengan dialog banding versi ("Muat Ulang Versi Terbaru" vs "Timpa Konten").
+  - Drawer pratinjau responsif live (`?preview=1`) dengan saklar perangkat desktop, tablet, dan ponsel.
+- **Pesan Masuk & Pengaturan Website:**
+  - Tambahan catatan internal tim (`internal_notes`) dan aksi status cepat (*Baru, Dibaca, Dibalas*) pada pesan kontak masuk.
+  - Ekspor CSV pesan masuk terlingkup (*scoped*) ke perusahaan aktif.
+  - Halaman Pengaturan Website terpadu (identitas, email kontak, dan SEO Google/sosial), dengan penguncian status tayang dan tema khusus Super Admin.
+  - Proteksi hapus perusahaan (holding, perusahaan beranak, dan perusahaan berpesan masuk dicegah dihapus).
+- **Penghapusan Halaman Mutu & Modul Sertifikasi Dorman:**
+  - Halaman "Mutu & Kepatuhan" dihapus permanen untuk seluruh 4 entitas perusahaan; modul Sertifikasi disembunyikan dari antarmuka CMS sebagai modul dorman.
+- **Pengujian & Verifikasi Menyeluruh:**
+  - Lolos uji kegunaan 10 tugas umum awam (seluruhnya dapat diselesaikan dalam $\le 3$ klik dari sidebar, jauh di bawah batas $\le 5$ klik).
+  - 135 Pest tests lolos 100% (1,873 assertions), TypeScript green, ESLint green.
 
 ### v1.6.0 (Revisi 5 — Multi-Tenancy Perusahaan, Pengelolaan Satu Admin, & CRUD Aktif)
 - **Filament Multi-Tenancy (Tenant = `Company`):**

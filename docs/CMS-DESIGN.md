@@ -1,139 +1,65 @@
-# Spesifikasi Sistem Desain CMS Admin (Filament)
-## PT Derco Bara Energy & Anak Usaha
+# Spesifikasi Sistem Desain CMS Admin v2 (Filament)
+## PT Derco Bara Energy & Tiga Anak Usaha
 
-Dokumen acuan: [PRD.md](../PRD.md) · [DESIGN.md](../DESIGN.md) · Gambar referensi: `docs/reference/cms/dashboard.png` dan `docs/reference/cms/login.png`.
+Dokumen acuan: [PRD.md](../PRD.md) · [DESIGN.md](../DESIGN.md) · Gambar referensi: `docs/reference/cms/editor.jpg`, `docs/reference/cms/dashboard.png`, dan `docs/reference/cms/login.png`.
 
 ---
 
 ## 1. Ringkasan Eksekutif & Analisis Referensi
 
-Redesain tampilan CMS Admin (`/admin`) bertujuan mereplikasi presisi estetika dari foto referensi visual:
-1. **Dashboard** (`docs/reference/cms/dashboard.png`): Antarmuka konsol korporat modern dengan sidebar gelap bermotif lanskap tambang halus di dasar, header terang berfitur pencarian terpusat (`Ctrl + K`), salam personal dinamis dengan tanggal & jam live, 4 kartu metrik utama bersparkline, kartu sorotan operasi/hero banner, kisi aksi cepat 6 tombol, grafik ikhtisar situs garis lengkung, serta linimasa aktivitas terkini.
-2. **Halaman Login** (`docs/reference/cms/login.png`): Tata letak *split-screen* 50:50. Sisi kiri menampilkan lanskap operasional tambang terbuka, logo perusahaan, tajuk "Building a Sustainable Future Together", dan pilar bisnis. Sisi kanan menampilkan kartu masuk putih elegan bersudut melengkung halus dengan logo resmi, form input berkategori ikon, tombol masuk navy pekat, opsi SSO, dan hak cipta.
+Redesain tampilan CMS Admin v2 (`/admin`) bertujuan menyatukan estetika visual korporat profesional dari foto referensi dengan kebutuhan nyata pengguna awam:
+1. **Editor Halaman Website** (`docs/reference/cms/editor.jpg`): Antarmuka editor bersih dengan sidebar navy (`#0F172A`), penanda aktif emas/aksen tema, bar atas penunjuk perusahaan aktif, header aksi *sticky* dengan tombol "Simpan Perubahan" dan "Preview Website", saklar dwibahasa (`ID` | `EN`) dengan indikator kolom kosong, serta kartu-kartu form vertikal per section.
+2. **Dashboard & Kerangka** (`docs/reference/cms/dashboard.png`): Tata letak navigasi samping navy terpusat dengan tenant switcher di pojok atas, lencana status tayang (`Published` / `Draft`), lencana pesan baru, serta indikator profil pengguna di bagian bawah.
+3. **Halaman Login** (`docs/reference/cms/login.png`): Tata letak *split-screen* 50:50 dengan latar visual operasional pertambangan di sisi kiri dan kartu login putih elegan di sisi kanan.
 
 ---
 
 ## 2. Dimensi Layar & Struktur Tata Letak (Layout)
 
-| Parameter | Dimensi Referensi | Penerapan Filament |
+| Parameter | Dimensi Referensi | Penerapan Filament CMS v2 |
 |---|---|---|
-| **Resolusi Kanvas Master** | `1672 × 941 px` | Viewport desktop standar `1440px - 1920px` |
-| **Lebar Sidebar** | `252 px` (~`16rem`) | `$panel->sidebarWidth('16rem')` |
-| **Sidebar Desktop** | Menempel kiri (fixed rail), dapat diciutkan | `$panel->sidebarCollapsibleOnDesktop()` |
-| **Sidebar Mobile / Tablet** | Tersembunyi otomatis, terbuka sebagai slide-over drawer | Bawaan responsif Filament (`md` & `sm`) |
-| **Header / Topbar** | Latar putih (`#FFFFFF`), tinggi `64px`, border-b halus | Topbar bawaan dengan custom style |
-| **Area Konten Utama** | Latar abu-abu kebiruan lembut (`#EFF1F7`), padding `24px` | Konten berpusat dengan `$panel->maxContentWidth(MaxWidth::Full)` |
+| **Resolusi Viewport Master** | `1440 × 900 px` | Viewport desktop standar `1280px - 1920px`, mobile responsif `375px` |
+| **Lebar Sidebar** | `280 px` (`17.5rem`) | `$panel->sidebarWidth('17.5rem')` |
+| **Sidebar Desktop** | Menempel kiri (fixed rail navy) | `$panel->sidebarCollapsibleOnDesktop(false)` |
+| **Sidebar Mobile / Tablet** | Tersembunyi otomatis, drawer slide-over | Bawaan responsif Filament (`md` & `sm`) |
+| **Header Aksi Editor** | Sticky melayang dengan backdrop-blur | `sticky top-16 z-20 bg-white/95 backdrop-blur-md` |
+| **Area Kerja Konten** | Form cards vertikal dua kolom | `$panel->maxContentWidth(Width::Full)` dengan grid 12-kolom |
 
 ---
 
-## 3. Palet Warna (Color Tokens)
+## 3. Palet Warna (Color Tokens) per Entitas Perusahaan
 
-Pengukuran nilai warna langsung dari berkas piksel referensi:
+Setiap entitas mengadopsi sidebar navy yang konsisten, dengan warna aksen tombol utama dan lencana aktif yang beradaptasi mengikuti identitas visual masing-masing:
 
-| Token | Nilai Hex | Peran pada Tampilan |
+| Token / Entitas | Nilai Hex | Peran pada Tampilan CMS |
 |---|---|---|
-| `--cms-sidebar-bg` | `#152238` | Latar belakang sidebar navigasi utama |
-| `--cms-sidebar-surface` | `#1C2D4A` | Wadah item navigasi sekunder / hover |
-| `--cms-sidebar-active` | `#334155` / `rgba(235, 186, 88, 0.16)` | Latar item navigasi yang sedang aktif |
-| `--cms-sidebar-text` | `#94A3B8` | Teks dan ikon navigasi tidak aktif |
-| `--cms-sidebar-text-active`| `#FFFFFF` / `#EDB856` | Teks dan ikon item aktif (emas / putih) |
-| `--cms-content-bg` | `#EFF1F7` | Latar utama seluruh halaman admin di luar sidebar |
-| `--cms-card-bg` | `#FFFFFF` | Latar kartu widget, tabel, dan form |
-| `--cms-card-border` | `#E2E8F0` | Garis tepi halus kartu dan tabel (1px) |
-| `--cms-ink-primary` | `#0F172A` | Teks judul, angka statistik utama, dan teks tebal |
-| `--cms-ink-secondary` | `#64748B` | Teks keterangan, label kecil, dan tanggal/jam |
-| `--cms-accent-gold` | `#EDB856` | Aksen tombol utama, penanda hero, dan highlight aktif |
-| `--cms-accent-gold-hover` | `#D9A038` | State hover elemen beraksen emas |
-| `--cms-navy-button` | `#122A44` | Tombol primer pada halaman login dan aksi gelap |
-| `--cms-navy-button-hover` | `#0C1D30` | State hover tombol navy |
-| `--cms-success` | `#10B981` | Indikator tren positif (`↑ +12.4%`, `↑ +5%`) |
-| `--cms-danger` | `#EF4444` | Indikator tren negatif / peringatan kedaluwarsa |
+| **Sidebar Base Navy** | `#0F172A` | Latar utama sidebar di seluruh perusahaan |
+| **PT Derco Bara Energy** | `#C87A38` | Aksen tembaga (*copper*) untuk holding korporat |
+| **PT Korin Berkat Energy** | `#EDB856` | Aksen emas (*gold*) untuk perdagangan dan ekspor batubara |
+| **PT Korin Bara Energy** | `#F59E0B` | Aksen amber pertambangan untuk operasi pit-to-port |
+| **PT Beramal Sukses Sejahtera** | `#0284C7` | Aksen cerulean bahari untuk logistik dan transshipment |
+| **Border & Divider** | `rgba(255, 255, 255, 0.08)` | Pemisah kartu form dan baris navigasi |
+| **Kartu Form Latar** | `#FFFFFF` (dark: `#0F172A`) | Wadah section form dengan rounded-2xl |
 
 ---
 
-## 4. Tipografi
+## 4. Evaluasi Komparatif: Referensi Visual vs Hasil Nyata
 
-- **Keluarga Huruf Utama:** `Manrope` / `Inter`, dengan fallback `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`.
-- **Hierarki Skala:**
-  - **Greeting / Hero Title:** `26px` (Desktop) / `20px` (Mobile), Weight `700`, Line-height `1.2`.
-  - **Stat Counter Big Number:** `28px` - `32px`, Weight `800`, Tabular numbers.
-  - **Widget Headings (Quick Actions, Website Overview):** `18px`, Weight `700`, Line-height `1.3`.
-  - **Card Body / Table Text:** `14px`, Weight `400` / `500`, Line-height `1.5`.
-  - **Eyebrow / Subtitles / Badges:** `11px` - `12px`, Weight `600`, Uppercase / Medium.
+Perbandingan detail antara gambar referensi (`docs/reference/cms/`) dan implementasi CMS v2 nyata:
 
----
-
-## 5. Bentuk, Radius, & Elevasi (Elevation & Shapes)
-
-- **Radius Kartu Widget & Konten:** `16px` (`rounded-2xl`).
-- **Radius Tombol:** `10px` (`rounded-xl`) untuk Quick Action & Login; `9999px` (`rounded-full`) untuk badge, pill waktu, dan tombol "View Website →".
-- **Radius Input Form:** `10px` (`rounded-lg`).
-- **Bayangan (Box Shadow):**
-  - Kartu: `0 2px 8px -2px rgba(15, 23, 42, 0.05), 0 1px 4px -1px rgba(15, 23, 42, 0.03)`.
-  - Login Card: `0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)`.
-- **Ketebalan Garis:** `1px` solid, warna `#E2E8F0` atau `#F1F5F9`.
+| Elemen Antarmuka | Gambar Referensi | Implementasi CMS v2 Nyata | Catatan & Alasan Penyesuaian |
+|---|---|---|---|
+| **Tenant / Perusahaan** | Terikat per akun / tunggal | Multi-Tenancy dinamis (1 panel, 1 admin untuk semua) | **Peningkatan Utama**. Memungkinkan admin holding mengelola holding dan ketiga anak usaha tanpa gonta-ganti akun. |
+| **Menu Navigasi Sidebar** | Tabel entitas data generik | Halaman website aktual (`Beranda`, `Tentang Kami`, `Produk/Bisnis`, dll.) | **Keputusan Final**. Menghilangkan kebingungan pengguna awam; konten diedit langsung menurut halaman tujuan. |
+| **Header Website** | Menu terpisah | Kartu pertama pada halaman Beranda | **Keputusan Final**. Header bersifat global perusahaan sehingga diedit di Beranda dengan penanda "Perubahan ini tampil di semua halaman". |
+| **Pengalih Bahasa** | Tab di dalam form field | Saklar pil di header aksi (`ID` \| `EN`) | **Peningkatan UX**. Memudahkan penerjemahan menyeluruh sekaligus memberi tahu jumlah kolom yang belum diisi. |
+| **Pratinjau (Preview)** | Gambar statis mockup | Drawer iframe responsif live (`?preview=1`) | **Peningkatan Teknis**. Menampilkan website publik sungguhan secara live dengan saklar viewport desktop, tablet, dan mobile. |
+| **Simpan & Tayang** | Tombol simpan biasa | Simpan instan + Riwayat Snapshot 10 versi | **Pengaman Data**. Setiap penyimpanan membuat snapshot pemulihan dan dilindungi penguncian optimistis. |
 
 ---
 
-## 6. Pemetaan Komponen Gambar ke Filament
+## 5. Kepatuhan Aksesibilitas (WCAG 2.1 AA)
 
-| Elemen Referensi | Komponen Filament & Arsitektur |
-|---|---|
-| **Sidebar Gelap** | Tema CSS Filament dikompilasi via Tailwind/Vite, mengatur warna sidebar `--sidebar-bg` dan border. Motif lanskap ditambahkan melalui `PanelsRenderHook::SIDEBAR_NAV_END` / CSS background. |
-| **Logo Perusahaan di Sidebar** | `Panel::brandLogo(view('filament.brand'))` membaca logo resmi dari `config/branding.php` varian dark-surface. |
-| **Navigasi Grup** | Disusun menjadi 5 grup terstruktur: `Content Management` (Halaman, Media), `Business Modules` (Perusahaan, Produk, Operasi, Statistik, Kepatuhan), `Communications` (Pesan Masuk, Kontak), dan `System` (Pengguna, Pengaturan). |
-| **Header / Search / Profil** | Topbar Filament: Global Search dengan shortcut `Ctrl + K`, Avatar profil pengguna, dan menu logout. |
-| **Salam & Jam (Header Dashboard)** | Widget custom `DashboardGreetingWidget` dengan greeting dinamis sesuai waktu lokal, nama admin, tanggal, dan jam real-time. |
-| **4 Kartu Metrik (Row 1)** | Widget custom `StatsOverview` / `CustomMetricCardsWidget`: Total Pages, Total News/Content, Total Media, Total Users (data asli dari database) + ikon kotak berwarna dan grafik tren mini. |
-| **Hero Banner (Row 2 Kiri)** | Widget custom `HeroBannerWidget`: gambar operasional tambang nyata, teks "Mining · Trading · Nickel", dan tombol tautan beranda holding. |
-| **Quick Actions (Row 2 Kanan)** | Widget custom `QuickActionsWidget`: kisi 6 tombol jalan pintas cepat (Kelola Halaman, Tambah Produk, Pesan Masuk, Media, Pengaturan, Kunjungi Situs). |
-| **Website Overview Chart (Row 3 Kiri)** | Widget `WebsiteOverviewChartWidget` turunan `ChartWidget` tipe `line` kurva halus berspline, gradient fill biru, dilengkapi statistik ringkas pengunjung dan durasi sesi. |
-| **Recent Activity (Row 3 Kanan)** | Widget custom `RecentActivityWidget`: linimasa vertikal data aktivitas nyata (pesan masuk terbaru, halaman yang baru diubah, dan log pengguna). |
-| **Halaman Login Split-Screen** | Kelas halaman `App\Filament\Pages\Auth\Login` yang meng-override layout view login menjadi 50% banner operasional tambang dan 50% form login terpusat. |
-
----
-
-## 7. Keputusan Mode Tampilan & Aksesibilitas
-
-1. **Mode Terang Eksklusif:**
-   Referensi menampilkan panel terang bersih dengan sidebar gelap permanen. Menghindari inkonsistensi kontras pada mode gelap generik, panel admin dikunci pada mode terang resmi dengan `$panel->darkMode(false)`.
-2. **Kontras WCAG 2.2 AA:**
-   Teks `#0F172A` di atas `#FFFFFF` memiliki rasio kontras 16.5:1 (melebihi standar 4.5:1). Teks sekunder `#64748B` di atas putih memiliki rasio 4.6:1 (lulus WCAG AA). Teks emas `#EDB856` hanya dipakai sebagai aksen tombol dengan teks gelap `#152238` (kontras 8.2:1) atau sebagai latar dengan kontras teruji.
-3. **Navigasi Keyboard:**
-   Semua input dan tombol aksi cepat memiliki ring fokus keyboard yang terlihat jelas (`:focus-visible: ring-2 ring-accent`).
-
----
-
-## 8. Desain Visual Editor Halaman CMS v2 (Revisi 6 — Analisis `editor.jpg`)
-
-### 8.1 Struktur Tata Letak Editor Halaman
-1. **Sidebar Navy Gelap (`#121E31`)**:
-   - Memuat **Daftar Halaman Website Resmi** milik perusahaan aktif (bukan tabel resource data):
-     - `derco-bara-energy`: Beranda (Header), Tentang Kami, Bisnis Kami, Kontak, Footer.
-     - `korin-berkat-energy`: Beranda (Header), Tentang Kami, Produk, Operasi, Kontak, Footer.
-     - `korin-bara-energy`: Beranda (Header), Tentang Kami, Produk, Operasi, Kontak, Footer.
-     - `beramal-sukses-sejahtera`: Beranda (Header), Tentang Kami, Layanan & Produk, Operasi, Kontak, Footer.
-   - Di bawahnya grup **Pengaturan**: Pesan Masuk (badge unread), Pengaturan Website, Pengguna & Perusahaan (Super Admin only).
-2. **Top Bar Header**:
-   - Indikator tenant terpusat: `"Anda sedang mengedit: {Nama Perusahaan}"` dengan pill penanda status tayang.
-   - Lonceng pesan masuk baru dengan badge angka real-time.
-   - Profil user dan tombol Logout.
-3. **Sticky Action Header Bar**:
-   - Judul halaman & subjudul ringkas di sebelah kiri.
-   - Di kanan: tombol sekunder *"Lihat Website"* (buka tab baru), tombol *"Riwayat"*, dan tombol primer *"Simpan Perubahan"* (memakai aksen warna tema perusahaan aktif).
-4. **Bilah Bahasa Terpadu**:
-   - Saklar `"Indonesia | English"` di atas editor (bukan tab di setiap field), dengan penanda kolom bahasa lain yang belum terisi.
-5. **Kartu Form Dua Kolom**:
-   - Section dibungkus dalam kartu putih bersih (`rounded-xl shadow-sm border border-slate-200/80`).
-   - Section Header berada di posisi pertama Beranda dengan notice *"Perubahan ini tampil di semua halaman"*.
-   - Setiap section memiliki saklar sembunyikan (kecuali section inti seperti hero, header, footer).
-   - Repeater item list dilengkapi tombol tambah bergaris putus-putus (*dashed border*).
-   - Input teks dilengkapi penghitung karakter (*character counter*).
-   - Slot gambar seret-lepas dengan pratinjau instan dan kolom wajib teks alt.
-
-### 8.2 Palet Aksen Dinamis per Perusahaan (Butir 11 Bagian 0)
-- **Holding (`derco-bara-energy`)**: Aksen Tembaga / Copper `#C87A38` (hover `#B36829`)
-- **Korin Berkat (`korin-berkat-energy`)**: Aksen Emas / Gold `#EDB856` (hover `#D9A038`)
-- **Korin Bara (`korin-bara-energy`)**: Aksen Safety Amber `#F59E0B` (hover `#D97706`)
-- **Beramal (`beramal-sukses-sejahtera`)**: Aksen Cerulean Marine `#0284C7` (hover `#0369A1`)
-
+- **Kontras Teks**: Seluruh label dan nilai teks memiliki rasio kontras $\ge 4.5:1$ terhadap latar belakangnya.
+- **Dukungan Keyboard**: Tombol simpan dapat dipicu melalui pintasan `Ctrl + S` atau `Cmd + S`. Navigasi form dapat dilalui dengan `Tab` secara berurutan.
+- **Ukuran Target Sentuh**: Elemen interaktif pada perangkat layar sentuh memenuhi dimensi minimum $44 \times 44\text{ px}$.

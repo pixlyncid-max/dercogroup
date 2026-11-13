@@ -87,3 +87,4 @@ class ContentRevision extends Model
         return $revision;
     }
 }
+

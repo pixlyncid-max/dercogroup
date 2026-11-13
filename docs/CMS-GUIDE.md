@@ -1,253 +1,84 @@
-# Panduan Pengguna CMS Admin (CMS User Guide)
+# Panduan Penggunaan CMS Website
 ## PT Derco Bara Energy & Anak Usaha
 
-Dokumen ini adalah panduan operasional bagi administrator (**Super Admin** dan **Editor Konten**) untuk mengelola konten, media, produk, perizinan, dan pesan masuk pada situs web **PT Derco Bara Energy** dan ketiga anak usahanya.
+Panduan ringkas ini disusun dalam bahasa sehari-hari untuk membantu staf dan pengelola (*admin*) memperbarui isi website dengan mudah, cepat, dan aman.
 
 ---
 
-## 1. Akses & Masuk ke Sistem (Login)
-
-Buka peramban (*browser*) dan akses URL CMS:
-```
-https://derco-bara-energy.co.id/admin
-```
-
-```
-+--------------------------------------------------------------+
-|                    PT DERCO BARA ENERGY                      |
-|                         PANEL ADMIN                          |
-|                                                              |
-|   Email         : [ admin@derco-bara-energy.co.id          ] |
-|   Kata Sandi    : [ ******************                     ] |
-|   [x] Ingat Saya                                             |
-|                                                              |
-|                   [   MASUK KE DASHBOARD   ]                 |
-+--------------------------------------------------------------+
-```
-
-### Peran Pengguna (Roles):
-- **Super Admin**: Memiliki akses penuh terhadap seluruh perusahaan, pengaturan umum sistem, manajemen pengguna CMS, serta penayangan status perusahaan (*Draft/Published*).
-- **Editor**: Dapat mengedit teks halaman, menambah spesifikasi produk, mengunggah foto/sertifikat, dan merespons pesan masuk kontak.
+## Navigasi Dasar
+- **Berpindah Perusahaan**: Klik nama perusahaan atau logo di pojok kiri atas menu samping. Pilih perusahaan yang ingin Anda kelola (**PT Derco Bara Energy**, **PT Korin Berkat Energy**, **PT Korin Bara Energy**, atau **PT Beramal Sukses Sejahtera**).
+- **Menyimpan Perubahan**: Tekan tombol oranye/emas **"Simpan Perubahan"** di bagian atas layar, atau gunakan tombol cepat keyboard **Ctrl + S** (di Windows) / **Cmd + S** (di Mac).
+- **Melihat Hasil Tampilan**: Tekan tombol **"Preview Website"** untuk melihat pratinjau tampilan komputer, tablet, dan ponsel, atau klik **"Lihat Website"** untuk membuka website di tab baru.
 
 ---
 
-## 2. Navigasi Panel Admin
+## 10 Panduan Tugas Umum
 
-Setelah berhasil masuk, Anda akan melihat tampilan dashboard dengan menu samping (*sidebar*):
+### 1. Mengubah Judul Banner Utama (Hero)
+1. Pada menu samping kiri, klik **Beranda**.
+2. Gulir ke kartu **Banner Utama (Hero)**.
+3. Ketikkan judul baru pada kolom **Judul Utama**.
+4. Klik tombol **Simpan Perubahan** di pojok kanan atas.
 
-```
-+------------------+------------------------------------------------------+
-| DERCO CMS        |  [ID | EN]  Pencarian Global        (Profil) [Keluar] |
-+------------------+------------------------------------------------------+
-| NAVIGASI UTAMA   |                                                      |
-|                  |  Ringkasan Sistem                                    |
-| [o] Dashboard    |  +------------------+ +------------------+           |
-|                  |  | Total Perusahaan | | Pesan Baru       |           |
-| KONTEN KORPORAT  |  | 4 (1 Draft)      | | 3 Belum Dibaca   |           |
-| [ ] Perusahaan   |  +------------------+ +------------------+           |
-| [ ] Halaman      |                                                      |
-| [ ] Blok Halaman |  Aktivitas Terbaru                                   |
-|                  |  - Form kontak masuk dari PT Kaltim Power Coal       |
-| OPERASI & PRODUK |  - Pembaruan dokumen RKL-RPL Semester I              |
-| [ ] Produk       |                                                      |
-| [ ] Operasi      |                                                      |
-| [ ] Sertifikasi  |                                                      |
-|                  |                                                      |
-| KOMUNIKASI       |                                                      |
-| [ ] Pesan Masuk  |                                                      |
-| [ ] Kontak Resmi |                                                      |
-|                  |                                                      |
-| PENGATURAN       |                                                      |
-| [ ] Pengguna     |                                                      |
-| [ ] Setelan SEO  |                                                      |
-+------------------+------------------------------------------------------+
-```
+### 2. Mengganti Foto Banner atau Section
+1. Buka halaman yang memuat foto yang ingin diganti (misal: klik **Beranda** atau **Tentang Kami**).
+2. Temukan bagian yang memiliki foto.
+3. Klik tombol **Pilih File / Choose File**, lalu pilih foto dari komputer Anda (format JPG, PNG, atau WebP, maksimal 5 MB).
+4. Masukkan penjelasan singkat foto pada kolom **Teks Alt** (untuk kenyamanan pengunjung disabilitas dan SEO).
+5. Klik **Simpan Perubahan**. Sistem otomatis mengompres foto menjadi WebP berkecepatan tinggi.
 
----
+### 3. Mengganti Logo Perusahaan
+1. Klik **Beranda** pada menu samping kiri.
+2. Di kartu paling atas berjudul **Header Website (Logo & Menu)**, klik **Pilih File** pada kolom **Logo Perusahaan**.
+3. Pilih file logo perusahaan Anda.
+4. Pastikan kolom **Teks Alt** terisi nama logo perusahaan (misal: *"Logo Resmi PT Korin Berkat Energy"*).
+5. Klik **Simpan Perubahan**. Logo di bagian atas website, footer, dan menu admin otomatis diperbarui.
 
-## 3. Mengedit Teks Dwibahasa (Indonesia & Inggris)
+### 4. Mengubah Nomor Telepon & Informasi Kontak
+1. Klik menu **Kontak** di menu samping kiri.
+2. Pada kartu **Informasi Kontak**, ubah nomor pada kolom **Nomor Telepon**.
+3. Klik tombol **Simpan Perubahan**. Nomor telepon baru langsung tayang di halaman Kontak dan bagian bawah (*Footer*) website.
 
-Sistem menggunakan standar antarmuka dwibahasa tab paralel. Setiap kolom teks menyediakan dua bahasa:
+### 5. Menambah Produk Baru Beserta Spesifikasi
+1. Klik menu **Produk** di menu samping kiri.
+2. Pada kartu **Katalog Produk**, klik tombol **+ Tambah Item Katalog**.
+3. Masukkan **Nama Produk** (Bahasa Indonesia dan English) serta spesifikasi teknisnya (seperti nilai kalori GAR, kelembapan, kadar abu, dll.).
+4. Unggah foto produk jika tersedia.
+5. Klik tombol **Simpan Perubahan**.
 
-```
-Judul Halaman:
-+------------------------+------------------------+
-| [x] Bahasa Indonesia   | [ ] English            |
-+------------------------+------------------------+
-| Energi & Logistik Pertambangan Terintegrasi     |
-+-------------------------------------------------+
-```
-```
-+------------------------+------------------------+
-| [ ] Bahasa Indonesia   | [x] English            |
-+------------------------+------------------------+
-| Integrated Mining Energy & Logistics            |
-+-------------------------------------------------+
-```
+### 6. Menyembunyikan atau Menampilkan Bagian Website
+1. Buka halaman yang memuat bagian tersebut (misal: **Beranda**).
+2. Temukan kartu bagian yang ingin Anda sembunyikan.
+3. Geser saklar **Tampilkan Bagian Ini di Website** ke posisi nonaktif (abu-abu).
+4. Klik tombol **Simpan Perubahan**. Bagian tersebut tidak akan muncul lagi di website publik sampai Anda mengaktifkannya kembali.
 
-> **Aturan Bahasa:**
-> - Pastikan kedua tab (Indonesia dan English) terisi dengan baik.
-> - Jika tab English dikosongkan, sistem web publik secara otomatis menggunakan teks Bahasa Indonesia sebagai *fallback* agar tampilan halaman tidak kosong.
+### 7. Mengatur Urutan Daftar Menu atau Keunggulan
+1. Buka halaman terkait (misal: kartu **Header** di Beranda untuk menu navigasi).
+2. Temukan item yang ingin dipindahkan.
+3. Klik tombol panah **Naik / Turun** pada baris item tersebut untuk memindahkannya ke urutan yang diinginkan.
+4. Klik tombol **Simpan Perubahan**.
 
----
+### 8. Mengubah Teks Hak Cipta & Deskripsi Footer
+1. Klik menu **Footer** di menu samping kiri (di bawah Kontak).
+2. Ubah kalimat hak cipta pada kolom **Teks Hak Cipta** (misal: *"© 2026 PT Korin Berkat Energy. Seluruh hak cipta dilindungi."*).
+3. Anda juga dapat memperbarui kalimat ringkasan profil di kolom **Deskripsi Singkat**.
+4. Klik tombol **Simpan Perubahan**. Teks footer baru otomatis tampil di semua halaman website.
 
-## 4. Mengedit Halaman & Blok Konten (Page Blocks)
+### 9. Mengisi Teks Versi Bahasa Inggris (English)
+1. Buka halaman mana saja yang ingin Anda terjemahkan.
+2. Di bagian atas layar di bawah tombol simpan, klik tombol **🇬🇧 English**. (Angka kuning menunjukkan berapa kolom yang masih kosong).
+3. Formulir akan otomatis berganti menampilkan isian Bahasa Inggris.
+4. Isi judul dan teks dalam Bahasa Inggris.
+5. Klik tombol **Simpan Perubahan**.
 
-Situs dibangun menggunakan arsitektur blok modular. Setiap halaman terdiri dari susunan blok vertikal yang dapat disesuaikan urutannya.
-
-### Langkah Mengedit Blok:
-1. Buka menu **Halaman** di sidebar.
-2. Pilih halaman yang ingin disunting (misal: *Beranda — PT Derco Bara Energy*).
-3. Klik tombol **Ubah (Edit)**.
-4. Gulir ke bagian **Daftar Blok Halaman**:
-
-```
-+--------------------------------------------------------------------+
-| BLOK HALAMAN                                      [ + Tambah Blok ]|
-+--------------------------------------------------------------------+
-| [::] 1. Hero Banner                                   [Edit] [Hapus]
-|      Tipe: hero | Status: Aktif | Urutan: 1                        |
-|                                                                    |
-| [::] 2. Ringkasan Bisnis Grup                         [Edit] [Hapus]
-|      Tipe: subsidiary_grid | Status: Aktif | Urutan: 2             |
-|                                                                    |
-| [::] 3. Statistik Operasional                         [Edit] [Hapus]
-|      Tipe: stats | Status: Aktif | Urutan: 3                       |
-+--------------------------------------------------------------------+
-```
-
-### Mengubah Urutan Blok:
-- Arahkan kursor pada ikon pegangan `[::]` di sisi kiri blok, lalu seret (*drag & drop*) ke posisi yang diinginkan.
-- Atau ubah angka pada kolom `Urutan (Sort Order)` secara manual.
-
-### Tipe Blok Utama yang Tersedia:
-- **Hero**: Spanduk utama paling atas dengan judul, subjudul, tombol CTA, dan gambar latar belakang.
-- **Split Content**: Tata letak dua kolom (teks penjelasan di satu sisi dan foto/media di sisi lain).
-- **Subsidiary Grid**: Kartu pratinjau anak-anak usaha grup (otomatis hanya menampilkan perusahaan berstatus *Published*).
-- **Stats**: Deretan angka capaian dan statistik operasional.
-- **Values Grid**: Kotak tata nilai atau pilar keunggulan perusahaan.
-- **Contact Info & Form**: Informasi kontak resmi dan formulir pengiriman pesan.
+### 10. Mengembalikan Halaman ke Versi Sebelumnya (Riwayat)
+1. Buka halaman yang ingin dipulihkan (misal: **Beranda**).
+2. Klik tombol **Riwayat** di bilah atas samping tombol Preview.
+3. Kotak riwayat akan terbuka menampilkan 10 versi terakhir lengkap dengan nama pengubah dan tanggalnya.
+4. Klik tombol **Pulihkan Versi Ini** pada versi tanggal yang Anda inginkan.
+5. Seluruh isian halaman akan kembali seperti tanggal tersebut, dan otomatis tersimpan.
 
 ---
 
-## 5. Mengunggah & Mengatur Media Gambar
-
-1. Pada blok atau produk yang memiliki kolom **Unggah Gambar**, klik tombol **Pilih Berkas** atau seret berkas langsung ke area unggah.
-2. **Kriteria Gambar yang Dianjurkan:**
-   - Format: `.webp`, `.jpg`, atau `.png`.
-   - Ukuran foto hero: minimal `1920 × 1080` piksel, rasio `16:9`.
-   - Ukuran foto kartu: minimal `800 × 600` piksel, rasio `4:3`.
-   - Ukuran berkas: di bawah 1,5 MB per gambar (sistem akan otomatis mengompresi gambar untuk performa web cepat).
-3. **Penting — Teks Alternatif Gambar (*Alt Text*):**
-   - Selalu isi teks alt dalam ID dan EN (misal: *Ekskavator hidrolik memuat batubara di pit tambang*).
-   - Teks alt penting untuk keterbacaan pembaca tunanetra (*screen reader*) dan nilai SEO Google.
-
----
-
-## 6. Mengelola Produk & Spesifikasi Batubara
-
-Khusus untuk anak usaha dagang (**PT Korin Berkat Energy**) dan tambang (**PT Korin Bara Energy**):
-
-1. Masuk ke menu **Produk**.
-2. Klik tombol **Buat Produk Baru** atau pilih produk yang ada.
-3. Masukkan:
-   - Nama Produk (ID/EN)
-   - Kategori & Ringkasan Singkat (ID/EN)
-   - Foto Produk Batubara
-4. Pada tabel **Spesifikasi Teknis Batubara**, klik **Tambah Baris Spesifikasi**:
-
-```
-+--------+--------------------+---------+--------+-----------+
-| Kode   | Label Parameter    | Nilai   | Satuan | Highlight |
-+--------+--------------------+---------+--------+-----------+
-| GAR    | Gross Calorific    | 4.200   | kcal/kg|   [ x ]   |
-| TM     | Total Moisture     | 34.0    | %      |   [ x ]   |
-| ASH    | Ash Content        | 6.0     | %      |   [   ]   |
-| TS     | Total Sulfur       | 0.2     | %      |   [ x ]   |
-+--------+--------------------+---------+--------+-----------+
-```
-> Centang **Highlight** untuk parameter utama yang ingin ditampilkan menonjol di kartu pratinjau produk pada halaman publik.
-
----
-
-## 7. Mengelola Sertifikat & Berkas PDF Legalitas
-
-1. Buka menu **Sertifikasi**.
-2. Klik **Tambah Sertifikat**.
-3. Pilih Kategori:
-   - `Izin Usaha` (*Permit*)
-   - `Standar Manajemen` (*Quality/Safety Standard, mis. ISO*)
-   - `Laporan Kepatuhan` (*Compliance Report, mis. RKL-RPL*)
-4. Masukkan Nomor Sertifikat, Instansi Penerbit, Tanggal Terbit, dan Tanggal Kedaluwarsa.
-5. Unggah berkas dokumen:
-   - **Salinan PDF Bahasa Indonesia**
-   - **Salinan PDF Bahasa Inggris** (jika ada dokumen terjemahan resmi)
-6. Sertifikat yang kedaluwarsa akan ditandai dengan badge peringatan kuning di CMS dan secara otomatis diperbarui keterangannya di halaman publik.
-
----
-
-## 8. Membaca & Membalas Pesan Kontak Masuk
-
-Setiap pesan yang dikirim pengunjung melalui formulir kontak web publik akan:
-1. Dikirim via email otomatis ke alamat tujuan perusahaan (`contact_default_email`).
-2. Disimpan secara aman di database CMS admin.
-
-### Melihat Pesan:
-1. Buka menu **Pesan Masuk** di sidebar.
-2. Pesan baru yang belum dibaca akan memiliki tanda indikator oranye.
-3. Klik pada baris pesan untuk membuka detail lengkap:
-   - Nama Pengirim & Nama Perusahaan Pengirim
-   - Alamat Email & Nomor Telepon / WhatsApp
-   - Subjek Permintaan (*Kemitraan, Pasokan Batubara, Logistik, Umum*)
-   - Isi Pesan Lengkap
-   - Waktu Pengiriman & Alamat IP
-4. Ubah status pesan menjadi **Sudah Dibaca** atau **Sudah Ditindaklanjuti** untuk dokumentasi tim administrasi.
-
----
-
-## 9. Menayangkan PT Korin Bara Energy (Publikasi 1-Klik)
-
-Saat ini **PT Korin Bara Energy** berada dalam status `Draft` sesuai arahan proyek (disiapkan penuh tetapi disembunyikan dari publik).
-
-### Cara Melakukan Pratinjau (*Admin Preview*):
-1. Pastikan Anda telah login ke CMS.
-2. Buka tab baru di browser dan akses halaman Beranda Korin Bara:
-   `https://derco-bara-energy.co.id/id/bisnis-kami/korin-bara-energy`
-3. Anda akan melihat pita pratinjau berwarna amber di bagian atas:
-   `[ MODE PRATINJAU DRAFT: Halaman ini hanya terlihat oleh administrator dan tidak terindeks publik ]`
-
-### Cara Menayangkan Secara Resmi (*Go Live*):
-1. Masuk ke CMS Admin -> menu **Perusahaan**.
-2. Klik **PT Korin Bara Energy**.
-3. Pada opsi **Status Publikasi**, ubah dari `Draft` menjadi `Published`:
-
-```
-Status Publikasi:
-( ) Draft (Disembunyikan dari Publik)
-(*) Published (Tayang untuk Publik)
-```
-
-4. Klik tombol **Simpan Perubahan** (*Save*).
-5. **Dampak Langsung:**
-   - PT Korin Bara Energy seketika muncul di kartu unit usaha pada Beranda Holding.
-   - Menu navigasi anak usaha otomatis bertambah.
-   - URL `/id/bisnis-kami/korin-bara-energy/*` dan `/en/our-business/korin-bara-energy/*` langsung dapat diakses bebas oleh seluruh pengunjung umum.
-   - Peta situs `sitemap.xml` otomatis memperbarui seluruh halaman Korin Bara untuk diindeks oleh Google.
-
----
-
-## 10. Pengaturan SEO Global
-
-Buka menu **Setelan SEO** di sidebar untuk memperbarui:
-- **Default Meta Title**: Judul yang muncul di tab browser dan hasil pencarian Google.
-- **Default Meta Description**: Deskripsi rangkuman situs di Google Search.
-- **Google Search Console / Analytics Code**: Masukkan ID pelacakan (misal: `G-XXXXXXXXXX`) tanpa perlu mengubah kode sumber program.
-
----
-
-## 11. Bantuan & Dukungan Teknis
-
-Jika mengalami kendala operasional atau memerlukan penambahan fitur:
-- Email Tim Pengembang: `tech-support@derco-bara-energy.co.id`
-- Dokumentasi Teknis Sistem: Lihat berkas `README.md` pada repositori proyek.
-
+## Bantuan Tambahan
+Jika Anda mengalami kendala atau membutuhkan akun baru untuk tim kerja Anda, silakan hubungi **Super Admin IT** melalui menu **Pengaturan > Pengguna**.
