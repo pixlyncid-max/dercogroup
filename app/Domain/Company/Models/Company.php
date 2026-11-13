@@ -8,6 +8,7 @@ use App\Domain\Company\Actions\ResolveCompanyLogo;
 use App\Domain\Company\Enums\CompanyStatus;
 use App\Domain\Company\Enums\CompanyTheme;
 use App\Domain\Compliance\Models\Certification;
+use App\Domain\Contact\Enums\ContactMessageStatus;
 use App\Domain\Contact\Models\CompanyContact;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Domain\Operation\Models\Operation;
@@ -101,7 +102,12 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
             ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 ml-1.5">Published</span>'
             : '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 ml-1.5">Draft</span>';
 
-        return str('<span>'.$this->name.'</span> '.$statusBadge)->toHtmlString();
+        $unreadCount = $this->contactMessages()->where('status', ContactMessageStatus::New)->count();
+        $unreadBadge = $unreadCount > 0
+            ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white ml-1.5" title="'.$unreadCount.' pesan baru">'.$unreadCount.'</span>'
+            : '';
+
+        return str('<span>'.$this->name.'</span> '.$statusBadge.$unreadBadge)->toHtmlString();
     }
 
     public function getFilamentAvatarUrl(): ?string

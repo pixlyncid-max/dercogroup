@@ -28,13 +28,15 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sistem & Hak Akses';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
-    protected static ?string $modelLabel = 'Pengguna CMS';
+    protected static ?string $navigationLabel = 'Pengguna';
 
-    protected static ?string $pluralModelLabel = 'Pengguna CMS';
+    protected static ?string $modelLabel = 'Pengguna';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $pluralModelLabel = 'Pengguna';
+
+    protected static ?int $navigationSort = 3;
 
     public static function canAccess(): bool
     {

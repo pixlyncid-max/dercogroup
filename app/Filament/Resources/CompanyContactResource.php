@@ -30,6 +30,13 @@ class CompanyContactResource extends Resource
 {
     protected static ?string $model = CompanyContact::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-phone';
 
     protected static string|UnitEnum|null $navigationGroup = 'Komunikasi & Pesan';

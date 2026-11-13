@@ -8,6 +8,7 @@ use App\Domain\Contact\Enums\ContactMessageStatus;
 use App\Domain\Contact\Models\ContactMessage;
 use App\Filament\Resources\ContactMessageResource\Pages\ManageContactMessages;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -16,6 +17,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -38,13 +40,34 @@ class ContactMessageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-inbox';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Komunikasi & Pesan';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
+
+    protected static ?string $navigationLabel = 'Pesan Masuk';
 
     protected static ?string $modelLabel = 'Pesan Masuk';
 
     protected static ?string $pluralModelLabel = 'Pesan Masuk';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $tenant = Filament::getTenant();
+        if (! $tenant) {
+            return null;
+        }
+
+        $count = ContactMessage::where('company_id', $tenant->id)
+            ->where('status', ContactMessageStatus::New)
+            ->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function canCreate(): bool
     {
@@ -129,9 +152,56 @@ class ContactMessageResource extends Resource
                     ->options(ContactMessageStatus::options()),
                 TrashedFilter::make(),
             ])
+            ->headerActions([
+                Action::make('export_csv')
+                    ->label('Ekspor CSV')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function () {
+                        $tenant = Filament::getTenant();
+                        $query = ContactMessage::query();
+                        if ($tenant) {
+                            $query->where('company_id', $tenant->id);
+                        }
+                        $messages = $query->latest()->get();
+
+                        return response()->streamDownload(function () use ($messages) {
+                            $handle = fopen('php://output', 'w');
+                            fputcsv($handle, ['ID', 'Nama', 'Email', 'Telepon', 'Perusahaan', 'Subjek', 'Pesan', 'Status', 'Tanggal']);
+                            foreach ($messages as $msg) {
+                                fputcsv($handle, [
+                                    $msg->id,
+                                    $msg->name,
+                                    $msg->email,
+                                    $msg->phone,
+                                    $msg->organization,
+                                    $msg->subject,
+                                    $msg->message,
+                                    $msg->status instanceof ContactMessageStatus ? $msg->status->value : (string) $msg->status,
+                                    $msg->created_at?->format('Y-m-d H:i:s'),
+                                ]);
+                            }
+                            fclose($handle);
+                        }, 'pesan-masuk-'.now()->format('Ymd-His').'.csv', [
+                            'Content-Type' => 'text/csv; charset=UTF-8',
+                        ]);
+                    }),
+            ])
             ->recordActions([
+                ViewAction::make(),
+                Action::make('mark_as_read')
+                    ->label('Tandai Dibaca')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn (ContactMessage $record): bool => $record->status === ContactMessageStatus::New)
+                    ->action(fn (ContactMessage $record) => $record->update(['status' => ContactMessageStatus::Read])),
+                Action::make('mark_as_unread')
+                    ->label('Tandai Baru')
+                    ->icon('heroicon-o-envelope')
+                    ->color('gray')
+                    ->visible(fn (ContactMessage $record): bool => $record->status !== ContactMessageStatus::New)
+                    ->action(fn (ContactMessage $record) => $record->update(['status' => ContactMessageStatus::New])),
                 EditAction::make()
-                    ->label('Tinjau & Tanggapi'),
+                    ->label('Ubah Status'),
                 DeleteAction::make(),
                 RestoreAction::make(),
                 ForceDeleteAction::make(),

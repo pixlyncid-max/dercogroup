@@ -80,6 +80,14 @@ class User extends Authenticatable implements FilamentUser, HasDefaultTenant, Ha
 
     public function getDefaultTenant(Panel $panel): ?Model
     {
+        $lastTenantSlug = session('filament_last_tenant_slug');
+        if ($lastTenantSlug) {
+            $lastCompany = Company::where('slug', $lastTenantSlug)->first();
+            if ($lastCompany) {
+                return $lastCompany;
+            }
+        }
+
         return Company::query()
             ->orderByRaw('parent_id IS NOT NULL') // Holding first
             ->orderBy('sort_order')

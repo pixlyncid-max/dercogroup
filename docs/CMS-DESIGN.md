@@ -102,3 +102,38 @@ Pengukuran nilai warna langsung dari berkas piksel referensi:
 3. **Navigasi Keyboard:**
    Semua input dan tombol aksi cepat memiliki ring fokus keyboard yang terlihat jelas (`:focus-visible: ring-2 ring-accent`).
 
+---
+
+## 8. Desain Visual Editor Halaman CMS v2 (Revisi 6 — Analisis `editor.jpg`)
+
+### 8.1 Struktur Tata Letak Editor Halaman
+1. **Sidebar Navy Gelap (`#121E31`)**:
+   - Memuat **Daftar Halaman Website Resmi** milik perusahaan aktif (bukan tabel resource data):
+     - `derco-bara-energy`: Beranda (Header), Tentang Kami, Bisnis Kami, Kontak, Footer.
+     - `korin-berkat-energy`: Beranda (Header), Tentang Kami, Produk, Operasi, Kontak, Footer.
+     - `korin-bara-energy`: Beranda (Header), Tentang Kami, Produk, Operasi, Kontak, Footer.
+     - `beramal-sukses-sejahtera`: Beranda (Header), Tentang Kami, Layanan & Produk, Operasi, Kontak, Footer.
+   - Di bawahnya grup **Pengaturan**: Pesan Masuk (badge unread), Pengaturan Website, Pengguna & Perusahaan (Super Admin only).
+2. **Top Bar Header**:
+   - Indikator tenant terpusat: `"Anda sedang mengedit: {Nama Perusahaan}"` dengan pill penanda status tayang.
+   - Lonceng pesan masuk baru dengan badge angka real-time.
+   - Profil user dan tombol Logout.
+3. **Sticky Action Header Bar**:
+   - Judul halaman & subjudul ringkas di sebelah kiri.
+   - Di kanan: tombol sekunder *"Lihat Website"* (buka tab baru), tombol *"Riwayat"*, dan tombol primer *"Simpan Perubahan"* (memakai aksen warna tema perusahaan aktif).
+4. **Bilah Bahasa Terpadu**:
+   - Saklar `"Indonesia | English"` di atas editor (bukan tab di setiap field), dengan penanda kolom bahasa lain yang belum terisi.
+5. **Kartu Form Dua Kolom**:
+   - Section dibungkus dalam kartu putih bersih (`rounded-xl shadow-sm border border-slate-200/80`).
+   - Section Header berada di posisi pertama Beranda dengan notice *"Perubahan ini tampil di semua halaman"*.
+   - Setiap section memiliki saklar sembunyikan (kecuali section inti seperti hero, header, footer).
+   - Repeater item list dilengkapi tombol tambah bergaris putus-putus (*dashed border*).
+   - Input teks dilengkapi penghitung karakter (*character counter*).
+   - Slot gambar seret-lepas dengan pratinjau instan dan kolom wajib teks alt.
+
+### 8.2 Palet Aksen Dinamis per Perusahaan (Butir 11 Bagian 0)
+- **Holding (`derco-bara-energy`)**: Aksen Tembaga / Copper `#C87A38` (hover `#B36829`)
+- **Korin Berkat (`korin-berkat-energy`)**: Aksen Emas / Gold `#EDB856` (hover `#D9A038`)
+- **Korin Bara (`korin-bara-energy`)**: Aksen Safety Amber `#F59E0B` (hover `#D97706`)
+- **Beramal (`beramal-sukses-sejahtera`)**: Aksen Cerulean Marine `#0284C7` (hover `#0369A1`)
+

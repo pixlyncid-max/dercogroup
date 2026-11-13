@@ -9,6 +9,8 @@ use App\Filament\Resources\SettingResource\Pages\ManageSettings;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -23,13 +25,15 @@ class SettingResource extends Resource
 
     protected static bool $isScopedToTenant = false;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sistem & Hak Akses';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
 
-    protected static ?string $modelLabel = 'Pengaturan Sistem';
+    protected static ?string $navigationLabel = 'Pengaturan Website';
 
-    protected static ?string $pluralModelLabel = 'Pengaturan Sistem';
+    protected static ?string $modelLabel = 'Pengaturan Website';
+
+    protected static ?string $pluralModelLabel = 'Pengaturan Website';
 
     protected static ?int $navigationSort = 2;
 
@@ -42,6 +46,8 @@ class SettingResource extends Resource
     {
         return $schema
             ->components([
+                Hidden::make('company_id')
+                    ->default(fn () => Filament::getTenant()?->id),
                 TextInput::make('key')
                     ->label('Kunci Pengaturan')
                     ->required()

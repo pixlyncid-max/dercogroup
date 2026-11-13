@@ -34,6 +34,13 @@ class OperationResource extends Resource
 
     protected static ?string $model = Operation::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
     protected static string|UnitEnum|null $navigationGroup = 'Konten Operasional';

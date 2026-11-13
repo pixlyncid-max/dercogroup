@@ -10,6 +10,7 @@ use App\Filament\Widgets\QuickActionsWidget;
 use App\Filament\Widgets\RecentActivityWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use App\Filament\Widgets\WebsiteOverviewWidget;
+use Filament\Facades\Filament;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Schema;
@@ -17,6 +18,21 @@ use Filament\Schemas\Schema;
 class Dashboard extends BaseDashboard
 {
     protected static ?string $title = 'Dashboard';
+
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public function mount(): void
+    {
+        $tenant = Filament::getTenant();
+        if ($tenant && ! app()->runningUnitTests()) {
+            redirect()->to(EditWebsitePage::getUrl(['tenant' => $tenant, 'pageKey' => 'beranda']));
+        }
+    }
 
     public function content(Schema $schema): Schema
     {

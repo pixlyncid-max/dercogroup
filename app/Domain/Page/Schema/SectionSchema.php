@@ -17,6 +17,23 @@ use App\Domain\Page\Enums\PageKey;
 class SectionSchema
 {
     /**
+     * Normalize localized or alias page keys to Canonical PageKey values.
+     */
+    public static function normalizePageKey(string $key): string
+    {
+        return match ($key) {
+            'beranda', 'home' => PageKey::Home->value,
+            'tentang-kami', 'about' => PageKey::About->value,
+            'bisnis-kami', 'business' => PageKey::Business->value,
+            'produk', 'products' => PageKey::Products->value,
+            'operasi', 'operations' => PageKey::Operations->value,
+            'kontak', 'contact' => PageKey::Contact->value,
+            'footer' => 'footer',
+            default => $key,
+        };
+    }
+
+    /**
      * Map of ordered sections per theme and page key.
      * Includes Header at top of Beranda and dedicated Footer pseudo-page.
      *
@@ -32,6 +49,8 @@ class SectionSchema
      */
     public static function getSectionsForPage(CompanyTheme $theme, string $pageKey): array
     {
+        $pageKey = self::normalizePageKey($pageKey);
+
         // 1. Footer pseudo-page
         if ($pageKey === 'footer') {
             return [

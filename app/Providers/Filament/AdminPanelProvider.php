@@ -16,6 +16,7 @@ use App\Filament\Widgets\RecentActivityWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use App\Filament\Widgets\WebsiteOverviewWidget;
 use App\Support\FilamentThemeResolver;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -50,19 +51,26 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Derco Bara Energy CMS')
             ->brandLogo(fn () => view('filament.brand'))
             ->brandLogoHeight('2.25rem')
+            ->homeUrl(fn () => Filament::getTenant() ? route('filament.admin.pages.halaman', ['tenant' => Filament::getTenant(), 'pageKey' => 'beranda']) : '/admin')
             ->sidebarWidth('17.5rem')
             ->sidebarCollapsibleOnDesktop(false)
             ->collapsibleNavigationGroups(false)
             ->navigationGroups([
-                NavigationGroup::make('Komunikasi & Pesan')->collapsible(false),
-                NavigationGroup::make('Struktur & Halaman')->collapsible(false),
-                NavigationGroup::make('Konten Operasional')->collapsible(false),
-                NavigationGroup::make('Sistem & Hak Akses')->collapsible(false),
+                NavigationGroup::make('Halaman Website')->collapsible(false),
+                NavigationGroup::make('Pengaturan')->collapsible(false),
             ])
             ->maxContentWidth(Width::Full)
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn () => view('filament.head'),
+            )
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_START,
+                fn () => view('filament.topbar-indicator'),
+            )
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn () => view('filament.topbar-notifications'),
             )
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_FOOTER,

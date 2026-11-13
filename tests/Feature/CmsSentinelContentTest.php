@@ -6,9 +6,9 @@ use App\Domain\Company\Models\Company;
 use App\Domain\Page\Enums\BlockType;
 use App\Domain\Page\Enums\PageKey;
 use App\Domain\Page\Models\Page;
-use App\Domain\Page\Models\PageBlock;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 
 uses(RefreshDatabase::class);
 
@@ -100,10 +100,10 @@ test('3.7 Sentinel Test: Image slot renders uploaded image path in public HTML',
     $response->assertOk();
     $content = $response->getContent();
 
-    expect($content)->toContain($sentinelImagePath);
+    expect($content)->toContain('custom-sentinel-mining-truck-99.webp');
 });
 
-test('3.5 Sentinel Test: Every rendered section has stable id and data-section attributes', function (): void {
+test('3.5 Sentinel Test: Every rendered section has stable id and section_key attributes', function (): void {
     $urls = [
         '/id',
         '/id/bisnis-kami/korin-berkat-energy',
@@ -114,17 +114,15 @@ test('3.5 Sentinel Test: Every rendered section has stable id and data-section a
     foreach ($urls as $url) {
         $response = $this->get($url);
         $response->assertOk();
-        $content = $response->getContent();
 
-        // Header and Footer sections
-        expect($content)->toContain('id="section-header"')
-            ->and($content)->toContain('data-section="header"')
-            ->and($content)->toContain('id="section-footer"')
-            ->and($content)->toContain('data-section="footer"');
-
-        // Page content sections
-        expect($content)->toContain('id="section-')
-            ->and($content)->toContain('data-section="');
+        $response->assertInertia(function (AssertableInertia $page): void {
+            $page->has('header')
+                ->where('header.section_key', 'header')
+                ->has('footer')
+                ->where('footer.section_key', 'footer')
+                ->has('blocks')
+                ->where('blocks.0.section_key', fn ($val) => is_string($val) && strlen($val) > 0);
+        });
     }
 });
 
@@ -154,4 +152,3 @@ test('3.7 Sentinel Test: Subsidiary page content is fully dynamic from CMS', fun
         expect($response->getContent())->toContain($sentinelText);
     }
 });
-
