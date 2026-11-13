@@ -38,6 +38,7 @@ class Page extends Model
         'show_in_nav',
         'sort_order',
         'is_published',
+        'content_version',
     ];
 
     protected static function booted(): void
@@ -76,6 +77,7 @@ class Page extends Model
             'show_in_nav' => 'boolean',
             'sort_order' => 'integer',
             'is_published' => 'boolean',
+            'content_version' => 'integer',
         ];
     }
 

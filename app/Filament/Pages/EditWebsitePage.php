@@ -10,8 +10,10 @@ use App\Domain\Page\Blocks\Block;
 use App\Domain\Page\Blocks\BlockRegistry;
 use App\Domain\Page\Enums\BlockType;
 use App\Domain\Page\Enums\PageKey;
+use App\Domain\Page\Models\ContentRevision;
 use App\Domain\Page\Models\PageBlock;
 use App\Domain\Page\Schema\SectionSchema;
+use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Filament\Notifications\Notification;
@@ -60,6 +62,21 @@ class EditWebsitePage extends Page
     public string $previewDevice = 'desktop';
 
     public bool $isSaving = false;
+
+    public int $loadedVersion = 1;
+
+    public bool $showHistoryModal = false;
+
+    public bool $showPreviewModal = false;
+
+    public ?int $selectedRevisionId = null;
+
+    public bool $showConflictModal = false;
+
+    /**
+     * @var array{editor_name?: string, updated_at?: string, version?: int}
+     */
+    public array $conflictInfo = [];
 
     public static function routes(Panel $panel, ?PageConfiguration $configuration = null): void
     {
@@ -136,6 +153,12 @@ class EditWebsitePage extends Page
             );
 
             $this->visibility[$sectionKey] = $block?->is_visible ?? true;
+        }
+
+        if ($page) {
+            $this->loadedVersion = (int) ($page->content_version ?? 1);
+        } else {
+            $this->loadedVersion = (int) ($tenant->content_version ?? 1);
         }
     }
 
@@ -232,20 +255,59 @@ class EditWebsitePage extends Page
      */
     public function save(): void
     {
-        $tenant = Filament::getTenant() ?? ($this->companyId ? Company::find($this->companyId) : null);
+        $tenant = $this->getActiveCompany();
         if (! $tenant instanceof Company) {
             return;
         }
 
         $this->isSaving = true;
         $sections = $this->getSections();
-        $normalizedKey = SectionSchema::normalizePageKey($this->pageKey);
-        $pageKeyEnum = PageKey::tryFrom($normalizedKey) ?? PageKey::tryFrom($this->pageKey);
-        $page = $tenant->pages()->where('key', $pageKeyEnum ?? $normalizedKey)->first();
 
         // 1. Strictly validate image alt text in both ID and EN before saving (WCAG 2.1 AA & SEO)
         if (! $this->validateImageAltTexts($sections)) {
             $this->isSaving = false;
+
+            return;
+        }
+
+        $this->performSave($tenant, 'Pembaruan konten halaman', force: false);
+    }
+
+    /**
+     * Core saving routine with optimistic concurrency checking and revision snapshotting.
+     */
+    public function performSave(Company $tenant, ?string $summary = null, bool $force = false): void
+    {
+        $this->isSaving = true;
+        $sections = $this->getSections();
+        $normalizedKey = SectionSchema::normalizePageKey($this->pageKey);
+        $pageKeyEnum = PageKey::tryFrom($normalizedKey) ?? PageKey::tryFrom($this->pageKey);
+        $page = $tenant->pages()->where('key', $pageKeyEnum ?? $normalizedKey)->first();
+
+        $currentDbVersion = $page ? (int) ($page->content_version ?? 1) : (int) ($tenant->content_version ?? 1);
+
+        // Optimistic concurrency locking check
+        if (! $force && $currentDbVersion > $this->loadedVersion) {
+            $latestRev = ContentRevision::query()
+                ->where('company_id', $tenant->id)
+                ->where('page_key', $this->pageKey)
+                ->with('user')
+                ->latest('id')
+                ->first();
+
+            $this->conflictInfo = [
+                'editor_name' => $latestRev?->user?->name ?? 'Admin lain',
+                'updated_at' => $latestRev?->created_at?->diffForHumans() ?? 'baru saja',
+                'version' => $currentDbVersion,
+            ];
+            $this->showConflictModal = true;
+            $this->isSaving = false;
+
+            Notification::make()
+                ->title('Konflik Perubahan Terdeteksi')
+                ->body("Halaman ini telah diubah oleh {$this->conflictInfo['editor_name']} ({$this->conflictInfo['updated_at']}).")
+                ->warning()
+                ->send();
 
             return;
         }
@@ -309,16 +371,137 @@ class EditWebsitePage extends Page
             }
         }
 
+        // Increment version
+        $nextVersion = max($currentDbVersion, $this->loadedVersion) + 1;
         if ($page) {
+            $page->update(['content_version' => $nextVersion]);
             $page->touch();
+        } else {
+            $tenant->update(['content_version' => $nextVersion]);
         }
         $tenant->touch();
+        $this->loadedVersion = $nextVersion;
+
+        // Record revision snapshot (max 10 versions auto-enforced)
+        $user = auth()->user();
+        ContentRevision::recordSnapshot(
+            company: $tenant,
+            pageKey: $this->pageKey,
+            user: $user instanceof User ? $user : null,
+            version: $nextVersion,
+            snapshot: [
+                'formData' => $this->formData,
+                'visibility' => $this->visibility,
+            ],
+            summary: $summary ?? 'Pembaruan konten halaman'
+        );
 
         $this->isSaving = false;
+        $this->showConflictModal = false;
 
         Notification::make()
             ->title('Perubahan berhasil disimpan!')
             ->body('Seluruh konten website telah diperbarui secara langsung.')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Concurrency resolution: Reload the latest version from server.
+     */
+    public function reloadLatest(): void
+    {
+        $tenant = $this->getActiveCompany();
+        if ($tenant) {
+            $this->loadSectionsData($tenant);
+        }
+        $this->showConflictModal = false;
+
+        Notification::make()
+            ->title('Versi Terbaru Dimuat')
+            ->body('Isi formulir telah diselaraskan dengan data terbaru di database.')
+            ->info()
+            ->send();
+    }
+
+    /**
+     * Concurrency resolution: Force save current form data over server version.
+     */
+    public function forceSave(): void
+    {
+        $tenant = $this->getActiveCompany();
+        if (! $tenant) {
+            return;
+        }
+
+        $this->performSave($tenant, 'Ditulis paksa menimpa versi sebelumnya', force: true);
+    }
+
+    public function openHistory(): void
+    {
+        $this->showHistoryModal = true;
+    }
+
+    public function closeHistory(): void
+    {
+        $this->showHistoryModal = false;
+        $this->showPreviewModal = false;
+        $this->selectedRevisionId = null;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection<int, ContentRevision>
+     */
+    public function getRevisions()
+    {
+        $tenant = $this->getActiveCompany();
+        if (! $tenant) {
+            return collect();
+        }
+
+        return ContentRevision::query()
+            ->where('company_id', $tenant->id)
+            ->where('page_key', $this->pageKey)
+            ->with('user')
+            ->orderByDesc('id')
+            ->take(ContentRevision::MAX_REVISIONS_PER_PAGE)
+            ->get();
+    }
+
+    public function previewRevision(int $revisionId): void
+    {
+        $this->selectedRevisionId = $revisionId;
+        $this->showPreviewModal = true;
+    }
+
+    public function restoreRevision(int $revisionId): void
+    {
+        $tenant = $this->getActiveCompany();
+        if (! $tenant) {
+            return;
+        }
+
+        $revision = ContentRevision::query()
+            ->where('company_id', $tenant->id)
+            ->where('page_key', $this->pageKey)
+            ->findOrFail($revisionId);
+
+        $snapshot = $revision->snapshot;
+        if (isset($snapshot['formData']) && is_array($snapshot['formData'])) {
+            $this->formData = $snapshot['formData'];
+        }
+        if (isset($snapshot['visibility']) && is_array($snapshot['visibility'])) {
+            $this->visibility = $snapshot['visibility'];
+        }
+
+        $restoreSummary = 'Dipulihkan dari versi ' . $revision->created_at->format('d M Y H:i');
+        $this->performSave($tenant, $restoreSummary, force: true);
+
+        $this->closeHistory();
+
+        Notification::make()
+            ->title('Versi Berhasil Dipulihkan!')
+            ->body("Konten halaman telah dikembalikan ke arsip versi {$revision->created_at->format('d M Y H:i')}.")
             ->success()
             ->send();
     }

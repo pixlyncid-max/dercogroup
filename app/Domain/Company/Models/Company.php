@@ -61,6 +61,7 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
         'logo_alt',
         'sort_order',
         'status',
+        'content_version',
     ];
 
     /**
@@ -72,6 +73,7 @@ class Company extends Model implements HasAvatar, HasMedia, HasName
             'theme' => CompanyTheme::class,
             'status' => CompanyStatus::class,
             'sort_order' => 'integer',
+            'content_version' => 'integer',
         ];
     }
 

@@ -155,3 +155,4 @@ class ProcessUploadedMediaAction
         return $file->store('blocks', 'public');
     }
 }
+
