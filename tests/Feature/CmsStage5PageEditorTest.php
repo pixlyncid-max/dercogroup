@@ -146,3 +146,38 @@ test('5.4: Image upload stores file in storage and updates formData path', funct
         ->call('removeImage', 'home_hero', 'image')
         ->assertSet('formData.home_hero.image', null);
 });
+
+test('5.5: Updating Indonesian text isolates from English and does not overwrite English', function (): void {
+    $this->actingAs($this->superAdmin);
+    Filament::setCurrentPanel(Filament::getPanel('admin'));
+    Filament::setTenant($this->holding);
+
+    $originalBlock = PageBlock::query()
+        ->where('company_id', $this->holding->id)
+        ->where(fn ($q) => $q->where('section_key', 'home_hero')->orWhere('type', \App\Domain\Page\Enums\BlockType::Hero))
+        ->firstOrFail();
+
+    $originalEnTitle = $originalBlock->data['title']['en'] ?? 'Original EN Title';
+
+    $component = Livewire::test(EditWebsitePage::class, ['pageKey' => 'beranda']);
+
+    // Update only Indonesian
+    $component->set('formData.home_hero.title.id', 'Judul Baru Bahasa Indonesia Saja')
+        ->set('locale', 'en')
+        ->assertSet('locale', 'en');
+
+    // English value must remain isolated and untouched
+    $currentEnTitle = $component->get('formData.home_hero.title.en');
+    expect($currentEnTitle)->toBe($originalEnTitle)
+        ->and($currentEnTitle)->not->toBe('Judul Baru Bahasa Indonesia Saja');
+
+    $component->call('save')->assertHasNoErrors();
+
+    $reloadedBlock = PageBlock::query()
+        ->where('company_id', $this->holding->id)
+        ->where('section_key', 'home_hero')
+        ->firstOrFail();
+
+    expect($reloadedBlock->data['title']['id'])->toBe('Judul Baru Bahasa Indonesia Saja')
+        ->and($reloadedBlock->data['title']['en'])->toBe($originalEnTitle);
+});

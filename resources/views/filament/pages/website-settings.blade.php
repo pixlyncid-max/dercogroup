@@ -122,7 +122,7 @@
                         @error('name') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
-                    <div x-data="{ count: $wire.entangle('tagline.{{ $locale }}').defer ? ($wire.entangle('tagline.{{ $locale }}').defer.length || 0) : 0 }">
+                    <div wire:key="wrapper-tagline-{{ $locale }}" x-data="{ count: $wire.entangle('tagline.{{ $locale }}').defer ? ($wire.entangle('tagline.{{ $locale }}').defer.length || 0) : 0 }">
                         <div class="flex items-center justify-between mb-1">
                             <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
                                 Tagline Singkat ({{ strtoupper($locale) }})
@@ -130,21 +130,23 @@
                             <span class="text-[11px] text-slate-400 font-mono" x-text="`${count}/255`"></span>
                         </div>
                         <input type="text"
-                               wire:model.defer="tagline.{{ $locale }}"
+                               wire:key="input-tagline-{{ $locale }}"
+                               wire:model="tagline.{{ $locale }}"
                                x-on:input="count = $el.value.length"
                                maxlength="255"
                                placeholder="{{ $locale === 'id' ? 'Contoh: Mitra Terpercaya Solusi Energi dan Batubara' : 'Example: Trusted Partner in Energy & Coal Solutions' }}"
                                class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-colors" />
                     </div>
 
-                    <div x-data="{ count: $wire.entangle('about_short.{{ $locale }}').defer ? ($wire.entangle('about_short.{{ $locale }}').defer.length || 0) : 0 }">
+                    <div wire:key="wrapper-about_short-{{ $locale }}" x-data="{ count: $wire.entangle('about_short.{{ $locale }}').defer ? ($wire.entangle('about_short.{{ $locale }}').defer.length || 0) : 0 }">
                         <div class="flex items-center justify-between mb-1">
                             <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
                                 Ringkasan Tentang Perusahaan ({{ strtoupper($locale) }})
                             </label>
                             <span class="text-[11px] text-slate-400 font-mono" x-text="`${count}/1000`"></span>
                         </div>
-                        <textarea wire:model.defer="about_short.{{ $locale }}"
+                        <textarea wire:key="textarea-about_short-{{ $locale }}"
+                                  wire:model="about_short.{{ $locale }}"
                                   x-on:input="count = $el.value.length"
                                   rows="3"
                                   maxlength="1000"
@@ -195,7 +197,7 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div x-data="{ count: $wire.entangle('seo_title.{{ $locale }}').defer ? ($wire.entangle('seo_title.{{ $locale }}').defer.length || 0) : 0 }">
+                    <div wire:key="wrapper-seo_title-{{ $locale }}" x-data="{ count: $wire.entangle('seo_title.{{ $locale }}').defer ? ($wire.entangle('seo_title.{{ $locale }}').defer.length || 0) : 0 }">
                         <div class="flex items-center justify-between mb-1">
                             <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
                                 Judul di Google / Meta Title ({{ strtoupper($locale) }})
@@ -203,7 +205,8 @@
                             <span class="text-[11px] text-slate-400 font-mono" x-text="`${count}/100`"></span>
                         </div>
                         <input type="text"
-                               wire:model.defer="seo_title.{{ $locale }}"
+                               wire:key="input-seo_title-{{ $locale }}"
+                               wire:model="seo_title.{{ $locale }}"
                                x-on:input="count = $el.value.length"
                                maxlength="100"
                                placeholder="Contoh: PT Korin Berkat Energy | Solusi Energi Terintegrasi"
@@ -211,14 +214,15 @@
                         <p class="text-[11px] text-slate-400 mt-1">Disarankan 50–60 karakter agar tidak terpotong di hasil pencarian Google.</p>
                     </div>
 
-                    <div x-data="{ count: $wire.entangle('seo_description.{{ $locale }}').defer ? ($wire.entangle('seo_description.{{ $locale }}').defer.length || 0) : 0 }">
+                    <div wire:key="wrapper-seo_description-{{ $locale }}" x-data="{ count: $wire.entangle('seo_description.{{ $locale }}').defer ? ($wire.entangle('seo_description.{{ $locale }}').defer.length || 0) : 0 }">
                         <div class="flex items-center justify-between mb-1">
                             <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
                                 Deskripsi di Google / Meta Description ({{ strtoupper($locale) }})
                             </label>
                             <span class="text-[11px] text-slate-400 font-mono" x-text="`${count}/255`"></span>
                         </div>
-                        <textarea wire:model.defer="seo_description.{{ $locale }}"
+                        <textarea wire:key="textarea-seo_description-{{ $locale }}"
+                                  wire:model="seo_description.{{ $locale }}"
                                   x-on:input="count = $el.value.length"
                                   rows="2"
                                   maxlength="255"

@@ -304,7 +304,7 @@
                                     <div class="{{ $isFullWidth ? 'md:col-span-2' : 'md:col-span-1' }} space-y-2">
                                         {{-- 1. Translatable Short Text --}}
                                         @if (in_array($fType, ['translatable_text', 'text'], true))
-                                            <div class="space-y-1.5" x-data="{ len: 0 }">
+                                            <div class="space-y-1.5" wire:key="field-wrapper-{{ $secKey }}-{{ $fName }}-{{ $locale }}" x-data="{ len: 0 }">
                                                 <div class="flex items-center justify-between">
                                                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-200">
                                                         {{ $fLabel }}
@@ -313,7 +313,8 @@
                                                     <span class="text-[10px] text-slate-400 font-mono" x-text="len + ' kar'"></span>
                                                 </div>
                                                 <input type="text"
-                                                       wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $locale }}"
+                                                       wire:key="input-{{ $secKey }}-{{ $fName }}-{{ $locale }}"
+                                                       wire:model="formData.{{ $secKey }}.{{ $fName }}.{{ $locale }}"
                                                        x-init="len = $el.value.length"
                                                        @input="len = $el.value.length"
                                                        placeholder="Ketik {{ strtolower($fLabel) }} ({{ strtoupper($locale) }})..."
@@ -325,7 +326,7 @@
 
                                         {{-- 2. Translatable Long Textarea / Richtext --}}
                                         @elseif (in_array($fType, ['translatable_textarea', 'translatable_richtext'], true))
-                                            <div class="space-y-1.5" x-data="{ len: 0 }">
+                                            <div class="space-y-1.5" wire:key="field-wrapper-{{ $secKey }}-{{ $fName }}-{{ $locale }}" x-data="{ len: 0 }">
                                                 <div class="flex items-center justify-between">
                                                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-200">
                                                         {{ $fLabel }}
@@ -334,7 +335,8 @@
                                                     <span class="text-[10px] text-slate-400 font-mono" x-text="len + ' kar'"></span>
                                                 </div>
                                                 <textarea rows="3"
-                                                          wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $locale }}"
+                                                          wire:key="textarea-{{ $secKey }}-{{ $fName }}-{{ $locale }}"
+                                                          wire:model="formData.{{ $secKey }}.{{ $fName }}.{{ $locale }}"
                                                           x-init="len = $el.value.length"
                                                           @input="len = $el.value.length"
                                                           placeholder="Tulis deskripsi atau isi teks {{ strtolower($fLabel) }}..."
@@ -470,7 +472,7 @@
 
                                                 <div class="space-y-3">
                                                     @foreach ($items as $idx => $itemRow)
-                                                        <div wire:key="rep-{{ $secKey }}-{{ $fName }}-{{ $idx }}"
+                                                        <div wire:key="rep-{{ $secKey }}-{{ $fName }}-{{ $idx }}-{{ $locale }}"
                                                              class="p-4 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/40 dark:bg-slate-800/20 space-y-3">
                                                             <div class="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-white/5">
                                                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300">
@@ -508,13 +510,20 @@
                                                                         $sType = $sub['type'] ?? 'text';
                                                                         $sLabel = $sub['label'] ?? ucfirst($sName);
                                                                     @endphp
-                                                                    <div class="space-y-1">
+                                                                    <div class="space-y-1" wire:key="rep-sub-wrapper-{{ $secKey }}-{{ $fName }}-{{ $idx }}-{{ $sName }}-{{ $locale }}">
                                                                         <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">{{ $sLabel }}</label>
                                                                         @if (in_array($sType, ['translatable_text', 'text'], true))
                                                                             <input type="text"
-                                                                                   wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}.{{ $locale }}"
+                                                                                   wire:key="rep-input-{{ $secKey }}-{{ $fName }}-{{ $idx }}-{{ $sName }}-{{ $locale }}"
+                                                                                   wire:model="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}.{{ $locale }}"
                                                                                    placeholder="{{ $sLabel }}..."
                                                                                    class="w-full px-3 py-1.5 rounded-lg text-xs bg-white dark:bg-slate-800 border border-slate-200 text-slate-900 dark:text-white" />
+                                                                        @elseif (in_array($sType, ['translatable_textarea', 'translatable_richtext'], true))
+                                                                            <textarea rows="2"
+                                                                                      wire:key="rep-textarea-{{ $secKey }}-{{ $fName }}-{{ $idx }}-{{ $sName }}-{{ $locale }}"
+                                                                                      wire:model="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}.{{ $locale }}"
+                                                                                      placeholder="{{ $sLabel }}..."
+                                                                                      class="w-full px-3 py-1.5 rounded-lg text-xs bg-white dark:bg-slate-800 border border-slate-200 text-slate-900 dark:text-white"></textarea>
                                                                         @elseif ($sType === 'link')
                                                                             <input type="text"
                                                                                    wire:model.defer="formData.{{ $secKey }}.{{ $fName }}.{{ $idx }}.{{ $sName }}"
