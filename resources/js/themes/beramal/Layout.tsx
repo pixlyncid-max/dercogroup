@@ -121,13 +121,25 @@ export function Layout({ children }: BeramalLayoutProps) {
                                     href={item.href}
                                     aria-current={item.active ? 'page' : undefined}
                                     className={[
-                                        'inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                        'relative inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
                                         item.active
-                                            ? 'bg-surface-dark text-ink-on-dark'
+                                            ? 'text-ink-on-dark'
                                             : 'text-muted hover:bg-surface hover:text-ink',
                                     ].join(' ')}
                                 >
-                                    {item.label}
+                                    {item.active ? (
+                                        <motion.span
+                                            layoutId="beramal-nav-active-pill"
+                                            aria-hidden="true"
+                                            transition={{
+                                                type: 'spring',
+                                                stiffness: 380,
+                                                damping: 32,
+                                            }}
+                                            className="absolute inset-0 rounded-full bg-surface-dark"
+                                        />
+                                    ) : null}
+                                    <span className="relative z-10">{item.label}</span>
                                 </Link>
                             ))}
                         </nav>

@@ -44,7 +44,7 @@ export function useSmoothScroll(
 
         if (!reduced) {
             lenis = new Lenis({
-                duration: 1.1,
+                duration: 1.15,
                 easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 orientation: 'vertical',
                 gestureOrientation: 'vertical',
@@ -100,9 +100,12 @@ export function useSmoothScroll(
 }
 
 /**
- * Shared page-level GSAP ScrollTrigger effects for every page in Holding & all Subsidiaries:
- * - Subtle section vertical glide on scroll for sections below the fold
- * - Automatic ScrollTrigger refresh on Inertia route changes
+ * Shared page-level GSAP ScrollTrigger choreography applied automatically across
+ * ALL pages of Holding (PT Derco Bara Energy) and all Subsidiaries:
+ * - Subtle parallax on first-fold full-bleed hero/banner backdrop photos
+ * - Smooth vertical glide + fade reveal on below-the-fold sections
+ * - Automatic staggered card reveal for article grids without explicit `[data-gsap-item]`
+ * - Automatic ScrollTrigger refresh on Inertia route transitions
  */
 export function usePageGsapEffects(
     mainRef: RefObject<HTMLElement | null>,
@@ -117,6 +120,29 @@ export function usePageGsapEffects(
 
         const container = mainRef.current;
         const ctx = gsap.context(() => {
+            // 1. Subtle parallax on full-bleed first-section hero backdrops (if not manually handled)
+            const firstSection = container.querySelector(':scope > section');
+            if (firstSection && !firstSection.querySelector('[data-gsap-item]')) {
+                const heroBackdrop = firstSection.querySelector(':scope > div.absolute');
+                if (heroBackdrop) {
+                    gsap.fromTo(
+                        heroBackdrop,
+                        { yPercent: -4 },
+                        {
+                            yPercent: 6,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: firstSection,
+                                start: 'top top',
+                                end: 'bottom top',
+                                scrub: true,
+                            },
+                        },
+                    );
+                }
+            }
+
+            // 2. Smooth scroll entrance for sections below the fold
             const sections = Array.from(container.querySelectorAll(':scope > section'));
             sections.slice(1).forEach((section) => {
                 if (section.hasAttribute('data-gsap-skip')) {
@@ -125,19 +151,44 @@ export function usePageGsapEffects(
 
                 gsap.fromTo(
                     section,
-                    { y: 18 },
+                    { y: 26, opacity: 0.01 },
                     {
                         y: 0,
-                        duration: 0.65,
-                        ease: 'power2.out',
-                        clearProps: 'transform',
+                        opacity: 1,
+                        duration: 0.7,
+                        ease: 'power3.out',
+                        clearProps: 'transform,opacity',
                         scrollTrigger: {
                             trigger: section,
-                            start: 'top 90%',
+                            start: 'top 88%',
                             once: true,
                         },
                     },
                 );
+
+                // 3. Staggered reveal on card grids inside each section (when not already using data-gsap-item)
+                const cards = Array.from(section.querySelectorAll('article')).filter(
+                    (el) => !el.hasAttribute('data-gsap-item'),
+                );
+                if (cards.length >= 2) {
+                    gsap.fromTo(
+                        cards,
+                        { y: 22, scale: 0.985 },
+                        {
+                            y: 0,
+                            scale: 1,
+                            duration: 0.6,
+                            stagger: 0.08,
+                            ease: 'power3.out',
+                            clearProps: 'transform',
+                            scrollTrigger: {
+                                trigger: cards[0],
+                                start: 'top 88%',
+                                once: true,
+                            },
+                        },
+                    );
+                }
             });
         }, container);
 

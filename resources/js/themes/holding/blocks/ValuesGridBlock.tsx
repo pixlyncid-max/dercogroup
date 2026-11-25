@@ -38,7 +38,9 @@ export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
                         <motion.article
                             key={idx}
                             variants={itemVariants}
-                            className="flex flex-col justify-between rounded-[var(--radius-card)] border border-ink-on-dark/12 bg-surface-deeper/70 p-6 md:p-8"
+                            whileHover={prefersReducedMotion ? undefined : { y: -5 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                            className="flex flex-col justify-between rounded-[var(--radius-card)] border border-ink-on-dark/12 bg-surface-deeper/70 p-6 transition-colors hover:border-accent/50 md:p-8"
                         >
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">

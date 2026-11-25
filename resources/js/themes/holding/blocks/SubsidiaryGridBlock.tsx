@@ -55,9 +55,11 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                             ].join(' ')}
                         >
                             {subsidiaries.map((sub) => (
-                                <div
+                                <motion.article
                                     key={sub.slug}
-                                    className="flex flex-col justify-between rounded-[var(--radius-card)] border border-line bg-bg p-6 shadow-sm"
+                                    whileHover={prefersReducedMotion ? undefined : { y: -5 }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                                    className="flex flex-col justify-between rounded-[var(--radius-card)] border border-line bg-bg p-6 shadow-sm transition-shadow hover:border-accent/60 hover:shadow-md"
                                 >
                                     <div className="space-y-3">
                                         <span className="inline-block h-[2px] w-8 bg-accent" />
@@ -78,7 +80,7 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                                             </a>
                                         </div>
                                     ) : null}
-                                </div>
+                                </motion.article>
                             ))}
                         </div>
                     </div>
