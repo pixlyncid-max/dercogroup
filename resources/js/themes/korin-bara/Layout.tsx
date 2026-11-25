@@ -1,8 +1,9 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
+import { usePageGsapEffects, useSmoothScroll } from '@/motion/gsapLenis';
 import { Container, LanguageSwitch, Logo } from '@/ui';
 import { PageBanner } from './PageBanner';
 
@@ -17,6 +18,12 @@ export function Layout({ children }: KorinBaraLayoutProps) {
     const navItems = items.filter((item) => item.key !== 'contact');
     const prefersReducedMotion = Boolean(useReducedMotion());
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+    const progressBarRef = useRef<HTMLDivElement | null>(null);
+    const mainRef = useRef<HTMLElement | null>(null);
+    const pageKey = `${props.company?.slug ?? 'korin-bara'}-${props.page?.key ?? 'home'}-${locale}`;
+
+    useSmoothScroll(progressBarRef, pageKey);
+    usePageGsapEffects(mainRef, pageKey);
 
     const company = props.company;
     const isHomePage = props.page?.key === 'home' || !props.page?.key;
@@ -57,6 +64,11 @@ export function Layout({ children }: KorinBaraLayoutProps) {
 
             {/* Horizontal White Sticky Header (height ~80px) */}
             <header className="sticky top-0 z-40 h-20 w-full border-b border-line bg-white/95 backdrop-blur-md transition-shadow duration-200">
+                <div
+                    ref={progressBarRef}
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-[2.5px] origin-left scale-x-0 bg-accent"
+                />
                 <Container className="flex h-full items-center justify-between gap-4">
                     {/* Left: Brand Logo */}
                     <div className="flex items-center">
@@ -106,8 +118,14 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                                 >
                                     <span>{item.label}</span>
                                     {isActive ? (
-                                        <span
+                                        <motion.span
+                                            layoutId="kb-nav-active-underline"
                                             aria-hidden="true"
+                                            transition={{
+                                                type: 'spring',
+                                                stiffness: 380,
+                                                damping: 32,
+                                            }}
                                             className="absolute bottom-2 left-0 right-0 h-[2px] rounded-full bg-accent"
                                         />
                                     ) : (
@@ -263,7 +281,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
             ) : null}
 
             {/* Main Content */}
-            <main id="main-content" className="flex-1">
+            <main ref={mainRef} id="main-content" className="flex-1">
                 {children}
             </main>
 

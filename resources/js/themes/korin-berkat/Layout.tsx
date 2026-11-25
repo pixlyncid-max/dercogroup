@@ -5,7 +5,7 @@ import { useRef, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
 import { resolvePreset } from '@/motion/presets';
 import { Container, LanguageSwitch, Logo } from '@/ui';
-import { useKorinBerkatSmoothScroll } from './useKorinBerkatMotion';
+import { useKorinBerkatSmoothScroll, usePageGsapEffects } from './useKorinBerkatMotion';
 
 export interface KorinBerkatLayoutProps {
     children: ReactNode;
@@ -27,8 +27,11 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
         useNavigation();
     const prefersReducedMotion = Boolean(useReducedMotion());
     const progressBarRef = useRef<HTMLDivElement | null>(null);
+    const mainRef = useRef<HTMLElement | null>(null);
+    const pageKey = `${props.company?.slug ?? 'korin-berkat'}-${props.page?.key ?? 'home'}-${locale}`;
 
-    useKorinBerkatSmoothScroll(progressBarRef);
+    useKorinBerkatSmoothScroll(progressBarRef, pageKey);
+    usePageGsapEffects(mainRef, pageKey);
 
     const company = props.company;
     const contacts = props.contacts ?? company?.contacts ?? [];
@@ -73,7 +76,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                 {/* Top Subtle Utility Bar: Parent Holding Back-Link & Phone */}
                 <div className="border-b border-white/10 bg-[#07101f]">
                     <Container className="flex min-h-9 items-center justify-between gap-4 py-0.5">
-                        <Link
+                        <a
                             href={holdingUrl}
                             className="inline-flex min-h-[44px] items-center gap-2 text-[11px] font-semibold tracking-[0.04em] text-slate-300 transition-colors hover:text-accent-on-dark"
                         >
@@ -82,7 +85,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                 aria-hidden="true"
                             />
                             <span>{t('holding_short')}</span>
-                        </Link>
+                        </a>
 
                         {primaryContact?.phone ? (
                             <a
@@ -254,7 +257,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                 </AnimatePresence>
             </header>
 
-            <main id="main-content" className="flex-1">
+            <main ref={mainRef} id="main-content" className="flex-1">
                 {children}
             </main>
 

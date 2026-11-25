@@ -1,8 +1,9 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, ArrowUpRight, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
+import { usePageGsapEffects, useSmoothScroll } from '@/motion/gsapLenis';
 import { resolvePreset } from '@/motion/presets';
 import { Container, LanguageSwitch, Logo } from '@/ui';
 import { WaveDivider } from './WaveDivider';
@@ -29,6 +30,12 @@ export function Layout({ children }: BeramalLayoutProps) {
         toggleMobileMenu,
     } = useNavigation();
     const prefersReducedMotion = Boolean(useReducedMotion());
+    const progressBarRef = useRef<HTMLDivElement | null>(null);
+    const mainRef = useRef<HTMLElement | null>(null);
+    const pageKey = `${props.company?.slug ?? 'beramal'}-${props.page?.key ?? 'home'}-${locale}`;
+
+    useSmoothScroll(progressBarRef, pageKey);
+    usePageGsapEffects(mainRef, pageKey);
 
     const company = props.company;
     const contacts = props.contacts ?? company?.contacts ?? [];
@@ -61,6 +68,13 @@ export function Layout({ children }: BeramalLayoutProps) {
                     {t('preview_banner')}
                 </div>
             ) : null}
+
+            {/* Fixed Top GSAP Scroll Progress Bar */}
+            <div
+                ref={progressBarRef}
+                aria-hidden="true"
+                className="fixed inset-x-0 top-0 z-50 h-[2.5px] origin-left scale-x-0 bg-accent"
+            />
 
             {/* Floating Pill Header suspended 16px (top-4) from the top */}
             <header id="section-header" data-section="header" className="sticky top-4 z-40 px-4 sm:px-6 lg:px-8 pt-4">
@@ -220,7 +234,7 @@ export function Layout({ children }: BeramalLayoutProps) {
                 </div>
             </header>
 
-            <main id="main-content" className="flex-1">
+            <main ref={mainRef} id="main-content" className="flex-1">
                 {children}
             </main>
 

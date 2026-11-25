@@ -1,8 +1,9 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { usePage } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useLocale, useNavigation, type SharedPageProps } from '@/core';
+import { usePageGsapEffects, useSmoothScroll } from '@/motion/gsapLenis';
 import { DURATION, EASE_OUT } from '@/motion/presets';
 import { Container, LanguageSwitch, Logo } from '@/ui';
 
@@ -16,6 +17,12 @@ export function Layout({ children }: HoldingLayoutProps) {
     const { items, holdingUrl, isSticky, isMobileMenuOpen, openMobileMenu, closeMobileMenu } =
         useNavigation();
     const prefersReducedMotion = Boolean(useReducedMotion());
+    const progressBarRef = useRef<HTMLDivElement | null>(null);
+    const mainRef = useRef<HTMLElement | null>(null);
+    const pageKey = `${props.company?.slug ?? 'holding'}-${props.page?.key ?? 'home'}-${props.locale ?? 'id'}`;
+
+    useSmoothScroll(progressBarRef, pageKey);
+    usePageGsapEffects(mainRef, pageKey);
 
     const company = props.company;
     const subsidiaries = props.subsidiaries ?? [];
@@ -52,6 +59,11 @@ export function Layout({ children }: HoldingLayoutProps) {
                     isSticky ? 'min-h-[60px] shadow-md' : 'min-h-[80px]',
                 ].join(' ')}
             >
+                <div
+                    ref={progressBarRef}
+                    aria-hidden="true"
+                    className="h-[2.5px] w-full origin-left scale-x-0 bg-accent"
+                />
                 <Container
                     size="wide"
                     className={[
@@ -84,13 +96,25 @@ export function Layout({ children }: HoldingLayoutProps) {
                                 href={item.href}
                                 aria-current={item.active ? 'page' : undefined}
                                 className={[
-                                    'inline-flex min-h-[44px] items-center border-b-2 text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                    'relative inline-flex min-h-[44px] items-center text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
                                     item.active
-                                        ? 'border-accent text-accent-on-dark'
-                                        : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
+                                        ? 'text-accent-on-dark'
+                                        : 'text-ink-on-dark/80 hover:text-ink-on-dark',
                                 ].join(' ')}
                             >
-                                {item.label}
+                                <span>{item.label}</span>
+                                {item.active ? (
+                                    <motion.span
+                                        layoutId="holding-nav-active-underline"
+                                        aria-hidden="true"
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 380,
+                                            damping: 32,
+                                        }}
+                                        className="absolute inset-x-0 bottom-0 h-[2px] bg-accent"
+                                    />
+                                ) : null}
                             </a>
                         ))}
                     </nav>
@@ -195,7 +219,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                 ) : null}
             </AnimatePresence>
 
-            <main id="main-content" className="flex-1">
+            <main ref={mainRef} id="main-content" className="flex-1">
                 {children}
             </main>
 
