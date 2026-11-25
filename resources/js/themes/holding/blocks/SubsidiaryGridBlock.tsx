@@ -226,9 +226,9 @@ export function SubsidiaryGridBlock({ data }: SubsidiaryGridBlockProps) {
                         <motion.article
                             key={sub.slug}
                             variants={itemVariants}
-                            whileHover={prefersReducedMotion ? undefined : { y: -4 }}
-                            transition={{ duration: 0.2 }}
-                            className="group flex flex-col justify-between overflow-hidden rounded-[var(--radius-card)] border border-ink-on-dark/15 bg-surface-deeper p-6 md:p-7 text-left shadow-md transition-shadow hover:shadow-xl"
+                            whileHover={prefersReducedMotion ? undefined : { y: -8 }}
+                            transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+                            className="group flex flex-col justify-between overflow-hidden rounded-[var(--radius-card)] border border-ink-on-dark/15 bg-surface-deeper p-6 md:p-7 text-left shadow-md transition-colors hover:border-accent/50 hover:shadow-2xl"
                         >
                             <div>
                                 <a

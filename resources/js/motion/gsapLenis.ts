@@ -261,6 +261,69 @@ export function useGsapStagger(
 }
 
 /**
+ * Continuous scroll-scrubbed float/parallax on any element (`scrub: 1.1`)
+ * so scrolling up and down feels fluid and alive instead of stiff.
+ */
+export function useGsapScrollFloat(
+    triggerRef: RefObject<HTMLElement | null>,
+    targetRef: RefObject<HTMLElement | null>,
+    options?: {
+        fromY?: number;
+        toY?: number;
+        fromX?: number;
+        toX?: number;
+        scale?: number;
+        scrub?: number | boolean;
+    },
+): void {
+    const fromY = options?.fromY ?? 24;
+    const toY = options?.toY ?? -24;
+    const fromX = options?.fromX ?? 0;
+    const toX = options?.toX ?? 0;
+    const scale = options?.scale ?? 1;
+    const scrub = options?.scrub ?? 1.1;
+
+    useEffect(() => {
+        if (
+            typeof window === 'undefined' ||
+            !triggerRef.current ||
+            !targetRef.current ||
+            prefersReducedMotion()
+        ) {
+            return;
+        }
+
+        ensureGsapRegistered();
+
+        const trigger = triggerRef.current;
+        const target = targetRef.current;
+
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                target,
+                { y: fromY, x: fromX, scale },
+                {
+                    y: toY,
+                    x: toX,
+                    scale,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub,
+                    },
+                },
+            );
+        }, trigger);
+
+        return () => {
+            ctx.revert();
+        };
+    }, [triggerRef, targetRef, fromY, toY, fromX, toX, scale, scrub]);
+}
+
+/**
  * Subtle GSAP ScrollTrigger parallax on a hero/banner background image.
  */
 export function useGsapParallax(

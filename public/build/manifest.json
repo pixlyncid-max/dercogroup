@@ -1,11 +1,11 @@
 {
-  "_theme-holding-DL-y58kH.js": {
-    "file": "assets/theme-holding-DL-y58kH.js",
+  "_theme-holding-C5OGrfCM.js": {
+    "file": "assets/theme-holding-C5OGrfCM.js",
     "name": "theme-holding",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ]
   },
@@ -16,8 +16,8 @@
       "_vendor-react-Cl5OSeng.js"
     ]
   },
-  "_vendor-motion-DABDzLRY.js": {
-    "file": "assets/vendor-motion-DABDzLRY.js",
+  "_vendor-motion-CFgCXzNT.js": {
+    "file": "assets/vendor-motion-CFgCXzNT.js",
     "name": "vendor-motion",
     "imports": [
       "_vendor-react-Cl5OSeng.js"
@@ -244,7 +244,7 @@
     "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-m-6xtfbS.css",
+    "file": "assets/app-vfXrVs_K.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -262,18 +262,18 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-2miOifCa.js",
+    "file": "assets/app-RTg6PuYh.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_theme-holding-C5OGrfCM.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ],
     "dynamicImports": [
-      "_theme-holding-DL-y58kH.js",
+      "_theme-holding-C5OGrfCM.js",
       "resources/js/themes/korin-berkat/index.ts",
       "resources/js/themes/korin-bara/index.ts",
       "resources/js/themes/beramal/index.ts",
@@ -282,7 +282,7 @@
       "resources/js/pages/ThemedPage.tsx"
     ],
     "css": [
-      "assets/app-m-6xtfbS.css"
+      "assets/app-vfXrVs_K.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -342,19 +342,19 @@
     ]
   },
   "resources/js/pages/Error.tsx": {
-    "file": "assets/Error-CzJK1ZVy.js",
+    "file": "assets/Error-CRSH5P1t.js",
     "name": "Error",
     "src": "resources/js/pages/Error.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
+      "_theme-holding-C5OGrfCM.js",
       "resources/js/app.tsx",
       "_vendor-icons-CSNjD-oD.js",
-      "_vendor-motion-DABDzLRY.js"
+      "_vendor-motion-CFgCXzNT.js"
     ],
     "css": [
-      "assets/app-m-6xtfbS.css"
+      "assets/app-vfXrVs_K.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -414,31 +414,31 @@
     ]
   },
   "resources/js/pages/Home.tsx": {
-    "file": "assets/Home-BGXFwGaV.js",
+    "file": "assets/Home-DLsdq7Kh.js",
     "name": "Home",
     "src": "resources/js/pages/Home.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_theme-holding-C5OGrfCM.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ]
   },
   "resources/js/pages/ThemedPage.tsx": {
-    "file": "assets/ThemedPage-CLjvtoru.js",
+    "file": "assets/ThemedPage-Cw7YDu07.js",
     "name": "ThemedPage",
     "src": "resources/js/pages/ThemedPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_vendor-motion-DABDzLRY.js",
-      "_theme-holding-DL-y58kH.js",
+      "_vendor-motion-CFgCXzNT.js",
+      "_theme-holding-C5OGrfCM.js",
       "resources/js/app.tsx",
       "_vendor-icons-CSNjD-oD.js"
     ],
     "css": [
-      "assets/app-m-6xtfbS.css"
+      "assets/app-vfXrVs_K.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -498,38 +498,38 @@
     ]
   },
   "resources/js/themes/beramal/index.ts": {
-    "file": "assets/theme-beramal-D_vcekLq.js",
+    "file": "assets/theme-beramal-DN4Q-3Bq.js",
     "name": "theme-beramal",
     "src": "resources/js/themes/beramal/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_theme-holding-C5OGrfCM.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ]
   },
   "resources/js/themes/korin-bara/index.ts": {
-    "file": "assets/theme-korin-bara-14yfzfg9.js",
+    "file": "assets/theme-korin-bara-DOiQJ19Q.js",
     "name": "theme-korin-bara",
     "src": "resources/js/themes/korin-bara/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_theme-holding-C5OGrfCM.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ]
   },
   "resources/js/themes/korin-berkat/index.ts": {
-    "file": "assets/theme-korin-berkat-18CcHmnf.js",
+    "file": "assets/theme-korin-berkat-Cb6Fxhwd.js",
     "name": "theme-korin-berkat",
     "src": "resources/js/themes/korin-berkat/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-DL-y58kH.js",
-      "_vendor-motion-DABDzLRY.js",
+      "_theme-holding-C5OGrfCM.js",
+      "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-CSNjD-oD.js"
     ]
   }

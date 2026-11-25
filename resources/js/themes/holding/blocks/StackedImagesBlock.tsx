@@ -1,6 +1,9 @@
 import { usePage } from '@inertiajs/react';
+import { motion, useReducedMotion } from 'motion/react';
+import { useRef } from 'react';
 import type { SharedPageProps, StackedImagesBlockData } from '@/core';
-import { Button, Container, Heading, Reveal, Section } from '@/ui';
+import { useGsapScrollFloat, useGsapStagger } from '@/motion/gsapLenis';
+import { Button, Container, Heading, Section } from '@/ui';
 import { EyebrowLine } from '../EyebrowLine';
 import { StackedImages } from '../StackedImages';
 
@@ -10,8 +13,16 @@ export interface StackedImagesBlockProps {
 
 export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
     const { props } = usePage<SharedPageProps>();
+    const prefersReducedMotion = Boolean(useReducedMotion());
     const isHome = props.page?.key === 'home';
     const isMirrored = Boolean(data.mirrored);
+
+    const gridRef = useRef<HTMLDivElement | null>(null);
+    const imagesFloatRef = useRef<HTMLDivElement | null>(null);
+    const copyRef = useRef<HTMLDivElement | null>(null);
+
+    useGsapScrollFloat(gridRef, imagesFloatRef, { fromY: 22, toY: -22, scrub: 1.15 });
+    useGsapStagger(copyRef, { y: 26, stagger: 0.09, duration: 0.7 });
 
     return (
         <Section
@@ -23,8 +34,11 @@ export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
             }
         >
             <Container className="relative z-[var(--z-index-sticky)]">
-                <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
-                    <div className="lg:col-span-6">
+                <div
+                    ref={gridRef}
+                    className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12"
+                >
+                    <div ref={imagesFloatRef} className="lg:col-span-6 will-change-transform">
                         <StackedImages
                             primarySrc={data.primary_image}
                             primarySrcSet={data.primary_image_srcset}
@@ -36,8 +50,8 @@ export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
                         />
                     </div>
 
-                    <Reveal
-                        preset="fadeUp"
+                    <div
+                        ref={copyRef}
                         className={['lg:col-span-6 space-y-6 lg:pl-6', isMirrored ? '' : 'lg:pt-20']
                             .filter(Boolean)
                             .join(' ')}
@@ -47,25 +61,42 @@ export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
                         ) : (
                             <>
                                 {data.eyebrow ? (
-                                    <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
+                                    <div data-gsap-item>
+                                        <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine>
+                                    </div>
                                 ) : null}
 
-                                <Heading level={2} size="h2">
-                                    {data.title}
-                                </Heading>
+                                <div data-gsap-item>
+                                    <Heading level={2} size="h2">
+                                        {data.title}
+                                    </Heading>
+                                </div>
                             </>
                         )}
 
-                        <p className="max-w-[60ch] text-base font-bold leading-7 text-ink">
+                        <p
+                            data-gsap-item
+                            className="max-w-[60ch] text-base font-bold leading-7 text-ink"
+                        >
                             {data.lead}
                         </p>
 
                         {data.body ? (
-                            <p className="max-w-[62ch] text-sm leading-7 text-muted">{data.body}</p>
+                            <p
+                                data-gsap-item
+                                className="max-w-[62ch] text-sm leading-7 text-muted"
+                            >
+                                {data.body}
+                            </p>
                         ) : null}
 
                         {data.cta_label && data.cta_href ? (
-                            <div className="pt-2">
+                            <motion.div
+                                data-gsap-item
+                                whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+                                transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                                className="inline-block pt-2"
+                            >
                                 <Button
                                     variant="solid"
                                     size="md"
@@ -74,9 +105,9 @@ export function StackedImagesBlock({ data }: StackedImagesBlockProps) {
                                 >
                                     {data.cta_label}
                                 </Button>
-                            </div>
+                            </motion.div>
                         ) : null}
-                    </Reveal>
+                    </div>
                 </div>
             </Container>
         </Section>
