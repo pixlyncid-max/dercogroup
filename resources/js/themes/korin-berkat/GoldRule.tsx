@@ -8,14 +8,14 @@ export interface GoldRuleProps {
 }
 
 /**
- * Animated horizontal gold rule for the "Editorial Index" theme (DESIGN.md 5.5).
+ * Animated horizontal gold rule for PT Korin Berkat Energy.
  */
 export function GoldRule({ className = '', thick = false, tone = 'light' }: GoldRuleProps) {
     const prefersReducedMotion = Boolean(useReducedMotion());
     const variants = resolvePreset('scaleX', prefersReducedMotion);
 
-    const heightClass = thick ? 'h-0.5' : 'h-px';
-    const colorClass = tone === 'dark' ? 'bg-accent-on-dark' : 'bg-accent-strong';
+    const heightClass = thick ? 'h-[3px]' : 'h-[2px]';
+    const colorClass = tone === 'dark' ? 'bg-accent-on-dark' : 'bg-accent';
 
     return (
         <motion.div
@@ -24,7 +24,7 @@ export function GoldRule({ className = '', thick = false, tone = 'light' }: Gold
             whileInView="visible"
             viewport={VIEWPORT_ONCE}
             variants={variants}
-            className={` origin-left ${heightClass} ${colorClass} ${className}`.trim()}
+            className={`origin-left rounded-full ${heightClass} ${colorClass} ${className}`.trim()}
         />
     );
 }

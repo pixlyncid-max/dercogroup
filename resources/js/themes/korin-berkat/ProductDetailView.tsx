@@ -82,10 +82,10 @@ export function ProductDetailView({
                                         <a
                                             href={product.document_url}
                                             download
-                                            className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-[var(--radius-button)] bg-surface-dark px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink-on-dark transition-colors hover:bg-surface-deeper"
+                                            className="kbe-btn-gold px-6 py-3"
                                         >
                                             <Download
-                                                className="h-4 w-4 text-accent-on-dark"
+                                                className="h-4 w-4"
                                                 aria-hidden="true"
                                             />
                                             <span>{t('products.download_spec')}</span>

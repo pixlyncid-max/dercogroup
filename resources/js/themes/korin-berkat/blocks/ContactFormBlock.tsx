@@ -11,18 +11,18 @@ export function ContactFormContent({ data }: { data: ContactFormBlockData }) {
     return (
         <Reveal
             preset="fadeUp"
-            className="rounded-[var(--radius-card)] border border-line bg-surface p-6 md:p-8 lg:p-10 border-t-4 border-t-ink"
+            className="rounded-[var(--radius-card)] border border-line bg-surface p-6 shadow-sm md:p-8 lg:p-10"
         >
-            <div className="space-y-3 border-b border-line pb-6">
+            <div className="space-y-2.5 border-b border-line pb-6">
                 {data.eyebrow ? (
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-strong">
                         {data.eyebrow}
                     </p>
                 ) : null}
-                <GoldRule className="w-12" />
-                <Heading level={2} size="h3">
+                <Heading level={2} size="h3" className="font-bold text-ink">
                     {data.title}
                 </Heading>
+                <GoldRule className="w-12" />
                 {data.description ? (
                     <p className="text-sm leading-6 text-muted">{data.description}</p>
                 ) : null}
@@ -30,7 +30,7 @@ export function ContactFormContent({ data }: { data: ContactFormBlockData }) {
 
             <ContactFormBody
                 submitLabel={data.submit_label}
-                buttonClassName="bg-surface-dark text-ink-on-dark hover:bg-surface-deeper text-xs font-semibold uppercase tracking-[0.12em]"
+                buttonClassName="w-full justify-center bg-[#eab338] text-[#0b172a] hover:bg-[#d49b22] font-bold text-sm tracking-wide rounded-[var(--radius-button)] shadow-sm"
             />
         </Reveal>
     );

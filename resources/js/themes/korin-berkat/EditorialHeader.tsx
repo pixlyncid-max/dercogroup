@@ -24,11 +24,11 @@ export function EditorialHeader({
     const isDark = tone === 'dark';
 
     const eyebrowNode = (
-        <div className="flex items-center gap-3">
+        <div className="inline-flex items-center gap-2.5">
             {indexLabel ? (
                 <span
-                    className={`font-heading text-sm font-semibold tracking-[0.08em] ${
-                        isDark ? 'text-accent-on-dark' : 'text-ink'
+                    className={`font-heading text-xs font-bold tracking-[0.12em] ${
+                        isDark ? 'text-accent-on-dark' : 'text-accent-strong'
                     }`}
                 >
                     {indexLabel}
@@ -36,20 +36,26 @@ export function EditorialHeader({
             ) : null}
             {eyebrow ? (
                 <span
-                    className={`text-xs font-semibold uppercase tracking-[0.14em] ${
-                        isDark ? 'text-accent-on-dark' : 'text-ink'
+                    className={`text-xs font-bold uppercase tracking-[0.16em] ${
+                        isDark ? 'text-accent-on-dark' : 'text-accent-strong'
                     }`}
                 >
                     {eyebrow}
                 </span>
             ) : null}
+            <span
+                aria-hidden="true"
+                className={`inline-block h-[2px] w-8 rounded-full ${
+                    isDark ? 'bg-accent-on-dark/80' : 'bg-accent'
+                }`}
+            />
         </div>
     );
 
     return (
         <SectionHeader
             eyebrow={eyebrowNode}
-            accentNode={<GoldRule tone={tone} thick className="w-16" />}
+            accentNode={<GoldRule tone={tone} thick className="w-14" />}
             title={title}
             description={description}
             level={level}

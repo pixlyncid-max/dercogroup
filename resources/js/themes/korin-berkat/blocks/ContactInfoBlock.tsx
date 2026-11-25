@@ -1,8 +1,10 @@
 import { usePage } from '@inertiajs/react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { useRef } from 'react';
 import { useLocale, type ContactInfoBlockData, type SharedPageProps } from '@/core';
-import { Container, Heading, Reveal, Section } from '@/ui';
+import { Container, Heading, Section } from '@/ui';
 import { GoldRule } from '../GoldRule';
+import { useGsapStagger } from '../useKorinBerkatMotion';
 
 export interface ContactInfoBlockProps {
     data: ContactInfoBlockData;
@@ -19,105 +21,113 @@ export function ContactInfoContent({
 }) {
     const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    useGsapStagger(containerRef, { y: 20, stagger: 0.08, duration: 0.6 });
+
     const contacts = props.contacts ?? props.company?.contacts ?? [];
     const primaryContact = contacts[0];
 
     return (
-        <Reveal preset="fadeUp" className="space-y-8">
-            <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                    <span className="font-heading text-xs font-semibold tracking-[0.12em] text-accent-strong">
-                        06
-                    </span>
-                    {data.eyebrow ? (
-                        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ink">
+        <div ref={containerRef} className="space-y-8">
+            <div data-gsap-item className="space-y-3.5">
+                {data.eyebrow ? (
+                    <div className="inline-flex items-center gap-3">
+                        <span className="text-xs font-bold uppercase tracking-[0.16em] text-accent-strong">
                             {data.eyebrow}
                         </span>
-                    ) : null}
-                </div>
-                <GoldRule thick className="w-16" />
-                <Heading level={headingLevel} size="h2">
+                        <span
+                            aria-hidden="true"
+                            className="inline-block h-[2px] w-10 rounded-full bg-accent"
+                        />
+                    </div>
+                ) : null}
+                <Heading level={headingLevel} size="h2" className="font-bold tracking-tight text-ink">
                     {data.title}
                 </Heading>
+                <GoldRule thick className="w-14" />
                 {data.description ? (
-                    <p className="max-w-[54ch] text-base leading-7 text-muted">
+                    <p className="max-w-[52ch] text-base leading-7 text-muted">
                         {data.description}
                     </p>
                 ) : null}
             </div>
 
             {primaryContact ? (
-                <dl className="divide-y divide-line border-y border-line">
-                    <div className="py-5 space-y-1">
-                        <dt className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink">
-                            <MapPin
-                                className="h-4 w-4 shrink-0 text-accent-strong"
-                                aria-hidden="true"
-                            />
-                            <span>{t('contact.address_label')}</span>
-                        </dt>
-                        <dd className="pl-6.5 text-sm leading-6 text-muted">
-                            {primaryContact.address}
-                        </dd>
-                    </div>
-
-                    {primaryContact.phone ? (
-                        <div className="py-5 space-y-1">
-                            <dt className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink">
-                                <Phone
-                                    className="h-4 w-4 shrink-0 text-accent-strong"
-                                    aria-hidden="true"
-                                />
-                                <span>{t('contact.phone_label')}</span>
-                            </dt>
-                            <dd className="pl-6.5 font-heading text-lg font-semibold text-ink">
-                                <a
-                                    href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
-                                    className="hover:underline"
-                                >
-                                    {primaryContact.phone}
-                                </a>
-                            </dd>
+                <ul className="divide-y divide-line border-t border-line">
+                    <li data-gsap-item className="flex items-start gap-4 py-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100/80 text-accent-strong">
+                            <MapPin className="h-5 w-5" aria-hidden="true" />
                         </div>
-                    ) : null}
+                        <div className="space-y-1">
+                            <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink">
+                                {t('contact.address_label')}
+                            </p>
+                            <p className="text-sm leading-6 text-muted">
+                                {primaryContact.address}
+                            </p>
+                        </div>
+                    </li>
 
                     {primaryContact.email ? (
-                        <div className="py-5 space-y-1">
-                            <dt className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink">
-                                <Mail
-                                    className="h-4 w-4 shrink-0 text-accent-strong"
-                                    aria-hidden="true"
-                                />
-                                <span>{t('contact.email_label')}</span>
-                            </dt>
-                            <dd className="pl-6.5 text-sm font-semibold text-ink">
-                                <a
-                                    href={`mailto:${primaryContact.email}`}
-                                    className="hover:underline"
-                                >
-                                    {primaryContact.email}
-                                </a>
-                            </dd>
-                        </div>
+                        <li data-gsap-item className="flex items-start gap-4 py-5">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100/80 text-accent-strong">
+                                <Mail className="h-5 w-5" aria-hidden="true" />
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink">
+                                    {t('contact.email_label')}
+                                </p>
+                                <p className="text-sm font-semibold text-ink">
+                                    <a
+                                        href={`mailto:${primaryContact.email}`}
+                                        className="transition-colors hover:text-accent-strong hover:underline"
+                                    >
+                                        {primaryContact.email}
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
+                    ) : null}
+
+                    {primaryContact.phone ? (
+                        <li data-gsap-item className="flex items-start gap-4 py-5">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100/80 text-accent-strong">
+                                <Phone className="h-5 w-5" aria-hidden="true" />
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink">
+                                    {t('contact.phone_label')}
+                                </p>
+                                <p className="font-heading text-lg font-bold text-ink">
+                                    <a
+                                        href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
+                                        className="transition-colors hover:text-accent-strong hover:underline"
+                                    >
+                                        {primaryContact.phone}
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
                     ) : null}
 
                     {primaryContact.operating_hours ? (
-                        <div className="py-5 space-y-1">
-                            <dt className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink">
-                                <Clock
-                                    className="h-4 w-4 shrink-0 text-accent-strong"
-                                    aria-hidden="true"
-                                />
-                                <span>{t('contact.hours_label')}</span>
-                            </dt>
-                            <dd className="pl-6.5 text-sm leading-6 text-muted">
-                                {primaryContact.operating_hours}
-                            </dd>
-                        </div>
+                        <li data-gsap-item className="flex items-start gap-4 py-5">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100/80 text-accent-strong">
+                                <Clock className="h-5 w-5" aria-hidden="true" />
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink">
+                                    {t('contact.hours_label')}
+                                </p>
+                                <p className="text-sm leading-6 text-muted">
+                                    {primaryContact.operating_hours}
+                                </p>
+                            </div>
+                        </li>
                     ) : null}
-                </dl>
+                </ul>
             ) : null}
-        </Reveal>
+        </div>
     );
 }
 

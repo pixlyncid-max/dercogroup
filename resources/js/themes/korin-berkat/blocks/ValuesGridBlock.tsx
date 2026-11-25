@@ -1,59 +1,82 @@
+import { Award, Handshake, ShieldCheck, Users } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
+import { useRef } from 'react';
 import type { ValuesGridBlockData } from '@/core';
-import { Container, Heading, Reveal, Section } from '@/ui';
+import { Container, Heading, Section } from '@/ui';
 import { EditorialHeader } from '../EditorialHeader';
+import { useGsapStagger } from '../useKorinBerkatMotion';
 
 export interface ValuesGridBlockProps {
     data: ValuesGridBlockData;
 }
 
+const VALUE_ICONS = [Handshake, ShieldCheck, Award, Users];
+
 /**
- * Korin Berkat Editorial Values List (DESIGN.md Section 5.4 & Revision 2 B3).
- * Rendered as an editorial numbered list with hairline dividers, gold numbering,
- * bold titles, and factual 1-sentence descriptions (no icon card-boxes).
+ * PT Korin Berkat Energy Core Values Grid.
+ * Light-slate section with warm gold square icon badges, numbered titles (01..04),
+ * GSAP staggered scroll reveals, and Motion spring hover lift.
  */
 export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
+    const prefersReducedMotion = Boolean(useReducedMotion());
+    const gridRef = useRef<HTMLDivElement | null>(null);
+    useGsapStagger(gridRef, { y: 24, stagger: 0.08, duration: 0.65 });
+
     const items = data.items ?? [];
 
     return (
         <Section tone="surface" className="border-b border-line">
             <Container>
-                <EditorialHeader
-                    eyebrow={data.eyebrow}
-                    title={data.title}
-                    description={data.description}
-                />
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start">
+                    {/* Left 4 Cols: Editorial Header */}
+                    <div className="lg:col-span-4">
+                        <EditorialHeader
+                            eyebrow={data.eyebrow}
+                            title={data.title}
+                            description={data.description}
+                        />
+                    </div>
 
-                <div className="mt-12 divide-y divide-line border-y border-line">
-                    {items.map((item, idx) => (
-                        <Reveal key={idx} preset="fadeUp">
-                            <div className="grid grid-cols-1 gap-4 py-8 lg:grid-cols-12 lg:items-baseline lg:gap-8 lg:py-10">
-                                {/* Number with Gold Accent */}
-                                <div className="lg:col-span-2">
-                                    <span className="font-heading text-2xl lg:text-3xl font-semibold tracking-tight text-accent-strong">
-                                        {String(idx + 1).padStart(2, '0')}
-                                    </span>
-                                </div>
+                    {/* Right 8 Cols: 2x2 Rounded White Value Cards with Gold Icon Badges */}
+                    <div
+                        ref={gridRef}
+                        className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-8"
+                    >
+                        {items.map((item, idx) => {
+                            const IconComponent = VALUE_ICONS[idx % VALUE_ICONS.length];
 
-                                {/* Bold Title */}
-                                <div className="lg:col-span-4">
-                                    <Heading
-                                        level={3}
-                                        size="h3"
-                                        className="font-heading text-lg lg:text-xl font-semibold tracking-tight text-ink"
-                                    >
-                                        {item.title}
-                                    </Heading>
-                                </div>
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    data-gsap-item
+                                    whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                                    className="group flex items-start gap-4 rounded-[var(--radius-card)] border border-line bg-bg p-6 shadow-sm transition-shadow hover:border-accent/70 hover:shadow-md"
+                                >
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                        <IconComponent className="h-6 w-6" aria-hidden="true" />
+                                    </div>
 
-                                {/* Factual 1-sentence description */}
-                                <div className="lg:col-span-6">
-                                    <p className="text-sm lg:text-base leading-relaxed text-muted">
-                                        {item.description}
-                                    </p>
-                                </div>
-                            </div>
-                        </Reveal>
-                    ))}
+                                    <div className="min-w-0 space-y-1.5">
+                                        <Heading
+                                            level={3}
+                                            size="h3"
+                                            className="font-heading text-base font-bold tracking-tight text-ink sm:text-lg"
+                                        >
+                                            <span className="mr-1.5 text-accent-strong">
+                                                {`${String(idx + 1).padStart(2, '0')}.`}
+                                            </span>
+                                            {item.title}
+                                        </Heading>
+
+                                        <p className="text-sm leading-relaxed text-muted">
+                                            {item.description}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
             </Container>
         </Section>

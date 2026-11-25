@@ -1,103 +1,192 @@
 import { usePage } from '@inertiajs/react';
+import { motion, useReducedMotion } from 'motion/react';
+import { useRef } from 'react';
 import {
     useLocale,
     type ProductData,
     type ProductListBlockData,
     type SharedPageProps,
 } from '@/core';
-import { Container, Heading, Reveal, Section } from '@/ui';
-import { EditorialHeader } from '../EditorialHeader';
+import { Container, Heading, Section } from '@/ui';
+import { GoldRule } from '../GoldRule';
+import { useGsapParallax, useGsapStagger } from '../useKorinBerkatMotion';
 
 export interface ProductListBlockProps {
     data: ProductListBlockData;
     isFirstBlock?: boolean;
 }
 
+const PRODUCT_FALLBACK_IMAGES = [
+    '/images/placeholders/coal-stockpile-1280.webp',
+    '/images/placeholders/crushing-plant-1280.webp',
+    '/images/placeholders/barge-jetty-1280.webp',
+];
+
 /**
- * Korin Berkat Product List (DESIGN.md Section 5.4 & Revision 2 B2/B4).
- * - On Home: section title is visually hidden (<h2 className="sr-only">), no download buttons or arrow links.
- * - On Products Page: editorial 2-column layout displaying FULL technical specification tables directly.
+ * PT Korin Berkat Energy Product Portfolio & Technical Specifications.
+ * - On Home: preserves sr-only section heading, no download buttons or arrow-right icons;
+ *   renders dark-navy executive cards with top coal imagery, gold accent bottom bar & corner wedge.
+ * - On Products Page: dark-navy coal hero banner + dark-navy product cards + full technical
+ *   specification tables directly visible with dark-navy table headers and alternating rows.
  */
 export function ProductListBlock({ data, isFirstBlock = false }: ProductListBlockProps) {
     const { props } = usePage<SharedPageProps>();
     const { t } = useLocale();
-    const allProducts: ProductData[] = props.products ?? [];
+    const prefersReducedMotion = Boolean(useReducedMotion());
+    const bannerRef = useRef<HTMLDivElement | null>(null);
+    const bannerBgRef = useRef<HTMLDivElement | null>(null);
+    const gridRef = useRef<HTMLDivElement | null>(null);
 
+    useGsapParallax(bannerRef, bannerBgRef, 12);
+    useGsapStagger(gridRef, { y: 26, stagger: 0.09, duration: 0.65 });
+
+    const allProducts: ProductData[] = props.products ?? [];
     const isHomePage = props.page?.key === 'home';
     const limit = isHomePage && data.limit && data.limit > 0 ? data.limit : allProducts.length;
     const products = allProducts.slice(0, limit);
 
     return (
-        <Section tone="default" className="border-b border-line">
-            <Container>
-                {isHomePage ? (
-                    <h2 className="sr-only">{data.title}</h2>
-                ) : (
-                    <EditorialHeader
-                        indexLabel="01"
-                        eyebrow={data.eyebrow}
-                        title={data.title}
-                        description={data.description}
-                        level={isFirstBlock ? 1 : 2}
+        <>
+            {/* Dark Navy Coal Banner on Full Products Page */}
+            {!isHomePage ? (
+                <div
+                    ref={bannerRef}
+                    className="relative overflow-hidden bg-surface-dark text-ink-on-dark border-b border-white/10"
+                >
+                    <div
+                        ref={bannerBgRef}
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 z-0 will-change-transform"
+                    >
+                        <img
+                            src="/images/placeholders/coal-stockpile-1280.webp"
+                            alt=""
+                            className="h-full w-full object-cover object-center opacity-50"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#081222]/95 via-[#0B172A]/82 to-[#0B172A]/45" />
+                    </div>
+                    <div
+                        aria-hidden="true"
+                        className="kbe-diagonal-wedge-left pointer-events-none absolute bottom-0 left-0 z-10 h-14 w-12 opacity-90"
                     />
-                )}
+                    <Container className="relative z-10 py-14 sm:py-16 lg:py-20">
+                        <div className="flex items-stretch gap-5 max-w-3xl">
+                            <span
+                                aria-hidden="true"
+                                className="w-1 shrink-0 rounded-full bg-accent"
+                            />
+                            <div className="space-y-3">
+                                {data.eyebrow ? (
+                                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent-on-dark">
+                                        {data.eyebrow}
+                                    </p>
+                                ) : null}
+                                <Heading
+                                    level={isFirstBlock ? 1 : 2}
+                                    size="h2"
+                                    className="font-bold tracking-tight text-white sm:text-4xl lg:text-5xl"
+                                >
+                                    {data.title}
+                                </Heading>
+                                {data.description ? (
+                                    <p className="max-w-[58ch] text-base leading-7 text-slate-200">
+                                        {data.description}
+                                    </p>
+                                ) : null}
+                            </div>
+                        </div>
+                    </Container>
+                </div>
+            ) : null}
 
-                {isHomePage ? (
-                    /* Home Page: Editorial product summary strip with no arrows or download buttons */
-                    <div className="divide-y divide-line border-y border-line">
-                        {products.map((product, idx) => {
-                            const highlightSpecs = product.specs
-                                .filter((spec) => spec.is_highlight)
-                                .slice(0, 3);
-                            const inlineSpecs =
-                                highlightSpecs.length > 0
-                                    ? highlightSpecs
-                                    : product.specs.slice(0, 3);
+            <Section tone={isHomePage ? 'default' : 'surface'} className="border-b border-line">
+                <Container>
+                    {isHomePage ? <h2 className="sr-only">{data.title}</h2> : null}
 
-                            return (
-                                <Reveal key={product.id} preset="fadeUp">
-                                    <div className="grid grid-cols-1 gap-6 py-8 lg:grid-cols-12 lg:items-center lg:gap-8">
-                                        {/* Index 01..03 */}
-                                        <div className="lg:col-span-1">
-                                            <span className="font-heading text-xl font-semibold text-accent-strong">
+                    {isHomePage ? (
+                        /* Home Page: Dark-Navy Executive Product Cards (no download or arrow-right icons) */
+                        <div ref={gridRef} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                            {products.map((product, idx) => {
+                                const highlightSpecs = product.specs
+                                    .filter((spec) => spec.is_highlight)
+                                    .slice(0, 3);
+                                const inlineSpecs =
+                                    highlightSpecs.length > 0
+                                        ? highlightSpecs
+                                        : product.specs.slice(0, 3);
+                                const cardImage =
+                                    product.image_url &&
+                                    !product.image_url.includes('placeholder-image.svg')
+                                        ? product.image_url
+                                        : PRODUCT_FALLBACK_IMAGES[
+                                              idx % PRODUCT_FALLBACK_IMAGES.length
+                                          ];
+
+                                return (
+                                    <motion.article
+                                        key={product.id}
+                                        data-gsap-item
+                                        whileHover={prefersReducedMotion ? undefined : { y: -6 }}
+                                        transition={{
+                                            type: 'spring',
+                                            stiffness: 280,
+                                            damping: 22,
+                                        }}
+                                        className="group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-white/10 border-b-4 border-b-accent bg-surface-dark text-ink-on-dark shadow-lg"
+                                    >
+                                        <div
+                                            aria-hidden="true"
+                                            className="kbe-card-corner-gold pointer-events-none absolute right-0 bottom-0 z-10 h-10 w-10 opacity-90"
+                                        />
+
+                                        {/* Top Coal Visual */}
+                                        <div className="relative h-44 overflow-hidden bg-surface-deeper">
+                                            <img
+                                                src={cardImage}
+                                                alt={product.image_alt || product.name}
+                                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#0b172a] via-[#0b172a]/20 to-transparent" />
+                                            <span className="absolute top-3.5 left-4 rounded-md bg-surface-dark/85 px-2.5 py-1 font-heading text-xs font-bold tracking-[0.1em] text-accent-on-dark backdrop-blur-xs">
                                                 {String(idx + 1).padStart(2, '0')}
                                             </span>
                                         </div>
 
-                                        {/* Product Name, Category & Summary */}
-                                        <div className="lg:col-span-6 space-y-2">
-                                            {product.category_label ? (
-                                                <span className="inline-block rounded-[var(--radius-button)] bg-surface px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-strong">
-                                                    {product.category_label}
-                                                </span>
-                                            ) : null}
-                                            <Heading
-                                                level={3}
-                                                size="h3"
-                                                className="font-heading text-lg font-semibold tracking-tight text-ink"
-                                            >
-                                                {product.name}
-                                            </Heading>
-                                            <p className="text-sm leading-relaxed text-muted">
-                                                {product.summary}
-                                            </p>
-                                        </div>
+                                        {/* Card Body */}
+                                        <div className="flex flex-1 flex-col justify-between p-6 space-y-5">
+                                            <div className="space-y-2.5">
+                                                {product.category_label ? (
+                                                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-accent-on-dark">
+                                                        {product.category_label}
+                                                    </p>
+                                                ) : null}
+                                                <Heading
+                                                    level={3}
+                                                    size="h3"
+                                                    className="font-heading text-xl font-bold tracking-tight text-white"
+                                                >
+                                                    {product.name}
+                                                </Heading>
+                                                <p className="text-sm leading-6 text-slate-300">
+                                                    {product.summary}
+                                                </p>
+                                            </div>
 
-                                        {/* 3 Inline Highlight Specs */}
-                                        <div className="lg:col-span-5">
-                                            <dl className="grid grid-cols-3 gap-3 rounded-[var(--radius-card)] border border-line bg-surface p-3.5 sm:gap-4 sm:p-4">
+                                            {/* 3 Inline Highlight Specs */}
+                                            <dl className="grid grid-cols-3 gap-2.5 rounded-lg border border-white/10 bg-white/5 p-3">
                                                 {inlineSpecs.map((spec) => (
                                                     <div
                                                         key={spec.id}
-                                                        className="border-l-2 border-accent pl-3 first:border-l-0 first:pl-0"
+                                                        className="border-l border-accent/40 pl-2.5 first:border-l-0 first:pl-0"
                                                     >
-                                                        <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                                                        <dt className="truncate text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">
                                                             {spec.code || spec.label}
                                                         </dt>
-                                                        <dd className="mt-1 font-heading text-base font-semibold text-ink sm:text-lg tabular-nums">
+                                                        <dd className="mt-0.5 font-heading text-sm font-bold text-white tabular-nums">
                                                             {spec.value}
                                                             {spec.unit ? (
-                                                                <span className="ml-1 font-body text-xs font-normal text-muted">
+                                                                <span className="ml-0.5 font-body text-[10px] font-normal text-accent-on-dark">
                                                                     {spec.unit}
                                                                 </span>
                                                             ) : null}
@@ -106,69 +195,115 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                                 ))}
                                             </dl>
                                         </div>
-                                    </div>
-                                </Reveal>
-                            );
-                        })}
-                    </div>
-                ) : (
-                    /* Products Page: 2-column Editorial Layout with FULL specification table */
-                    <div className="mt-12 divide-y divide-line border-y border-line">
-                        {products.map((product) => (
-                            <Reveal key={product.id} preset="fadeUp">
-                                <div className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-12 lg:gap-12 lg:py-12">
-                                    {/* Left Column (4/12): Name, Category & Summary */}
-                                    <div className="lg:col-span-4 space-y-3">
-                                        {product.category_label ? (
-                                            <span className="inline-block rounded-[var(--radius-button)] bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-accent-strong">
-                                                {product.category_label}
-                                            </span>
-                                        ) : null}
-                                        <Heading
-                                            level={2}
-                                            size="h3"
-                                            className="font-heading text-xl lg:text-2xl font-semibold tracking-tight text-ink"
-                                        >
-                                            {product.name}
-                                        </Heading>
-                                        <p className="text-sm leading-relaxed text-muted">
-                                            {product.summary}
-                                        </p>
-                                    </div>
+                                    </motion.article>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        /* Products Page: Dark-Navy Portfolio Summary + Full Technical Specification Tables */
+                        <div ref={gridRef} className="space-y-12">
+                            {products.map((product, idx) => {
+                                const cardImage =
+                                    product.image_url &&
+                                    !product.image_url.includes('placeholder-image.svg')
+                                        ? product.image_url
+                                        : PRODUCT_FALLBACK_IMAGES[
+                                              idx % PRODUCT_FALLBACK_IMAGES.length
+                                          ];
 
-                                    {/* Right Column (8/12): FULL Specifications Table */}
-                                    <div className="lg:col-span-8">
-                                        <div className="border-b-2 border-ink pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted flex justify-between">
-                                            <span>{t('products.specifications')}</span>
-                                            <span>{t('products.parameter_value')}</span>
-                                        </div>
-                                        <div className="divide-y divide-line border-b border-line">
-                                            {product.specs.map((spec) => (
-                                                <div
-                                                    key={spec.id}
-                                                    className="flex items-center justify-between py-3 text-sm"
+                                return (
+                                    <div
+                                        key={product.id}
+                                        data-gsap-item
+                                        className="grid grid-cols-1 gap-8 rounded-[var(--radius-card)] border border-line bg-bg p-6 shadow-sm sm:p-8 lg:grid-cols-12 lg:items-start lg:gap-10"
+                                    >
+                                        {/* Left 5 Cols: Dark-Navy Product Card */}
+                                        <motion.div
+                                            whileHover={
+                                                prefersReducedMotion ? undefined : { y: -3 }
+                                            }
+                                            transition={{
+                                                type: 'spring',
+                                                stiffness: 280,
+                                                damping: 22,
+                                            }}
+                                            className="relative overflow-hidden rounded-[var(--radius-card)] border-b-4 border-b-accent bg-surface-dark text-ink-on-dark shadow-md lg:col-span-5"
+                                        >
+                                            <div
+                                                aria-hidden="true"
+                                                className="kbe-card-corner-gold pointer-events-none absolute right-0 bottom-0 z-10 h-10 w-10 opacity-90"
+                                            />
+                                            <div className="relative h-48 overflow-hidden">
+                                                <img
+                                                    src={cardImage}
+                                                    alt={product.image_alt || product.name}
+                                                    className="h-full w-full object-cover"
+                                                    loading="lazy"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-[#0b172a] via-[#0b172a]/20 to-transparent" />
+                                            </div>
+                                            <div className="p-6 space-y-3">
+                                                {product.category_label ? (
+                                                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-accent-on-dark">
+                                                        {product.category_label}
+                                                    </p>
+                                                ) : null}
+                                                <Heading
+                                                    level={2}
+                                                    size="h3"
+                                                    className="font-heading text-xl font-bold text-white lg:text-2xl"
                                                 >
-                                                    <span className="font-medium text-muted">
-                                                        {spec.label || spec.code}
-                                                    </span>
-                                                    <span className="font-heading font-semibold text-ink tabular-nums">
-                                                        {spec.value}
-                                                        {spec.unit ? (
-                                                            <span className="ml-1 font-body text-xs font-normal text-muted">
-                                                                {spec.unit}
-                                                            </span>
-                                                        ) : null}
+                                                    {product.name}
+                                                </Heading>
+                                                <GoldRule tone="dark" className="w-12" />
+                                                <p className="text-sm leading-6 text-slate-300">
+                                                    {product.summary}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+
+                                        {/* Right 7 Cols: Full Technical Specifications Table */}
+                                        <div className="lg:col-span-7">
+                                            <div className="overflow-hidden rounded-[var(--radius-card)] border border-line bg-bg shadow-xs">
+                                                <div className="flex items-center justify-between bg-surface-deeper px-5 py-3.5 text-xs font-bold uppercase tracking-[0.12em] text-white">
+                                                    <span>{t('products.specifications')}</span>
+                                                    <span className="text-accent-on-dark">
+                                                        {t('products.parameter_value')}
                                                     </span>
                                                 </div>
-                                            ))}
+                                                <div className="divide-y divide-line">
+                                                    {product.specs.map((spec, specIdx) => (
+                                                        <div
+                                                            key={spec.id}
+                                                            className={`flex items-center justify-between gap-4 px-5 py-3.5 text-sm transition-colors hover:bg-amber-50/40 ${
+                                                                specIdx % 2 === 1
+                                                                    ? 'bg-surface/70'
+                                                                    : 'bg-bg'
+                                                            }`}
+                                                        >
+                                                            <span className="font-semibold text-ink/90">
+                                                                {spec.label || spec.code}
+                                                            </span>
+                                                            <span className="font-heading font-bold text-ink tabular-nums">
+                                                                {spec.value}
+                                                                {spec.unit ? (
+                                                                    <span className="ml-1 font-body text-xs font-medium text-muted">
+                                                                        {spec.unit}
+                                                                    </span>
+                                                                ) : null}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Reveal>
-                        ))}
-                    </div>
-                )}
-            </Container>
-        </Section>
+                                );
+                            })}
+                        </div>
+                    )}
+                </Container>
+            </Section>
+        </>
     );
 }
