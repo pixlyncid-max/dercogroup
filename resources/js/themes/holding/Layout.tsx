@@ -51,107 +51,109 @@ export function Layout({ children }: HoldingLayoutProps) {
                 </div>
             ) : null}
 
+            {/* Fixed Top GSAP Scroll Progress Bar */}
+            <div
+                ref={progressBarRef}
+                aria-hidden="true"
+                className="fixed inset-x-0 top-0 z-50 h-[2.5px] origin-left scale-x-0 bg-accent"
+            />
+
             <header
                 id="section-header"
                 data-section="header"
-                className={[
-                    'sticky top-0 z-[var(--z-index-overlay)] bg-surface-dark text-ink-on-dark border-b border-ink-on-dark/10 transition-[min-height,box-shadow] duration-[var(--duration-base)]',
-                    isSticky ? 'min-h-[60px] shadow-md' : 'min-h-[80px]',
-                ].join(' ')}
+                className="sticky top-3 z-[var(--z-index-overlay)] px-4 pt-3 pb-1 sm:top-4 sm:px-6 sm:pt-4 lg:px-8 pointer-events-none"
             >
-                <div
-                    ref={progressBarRef}
-                    aria-hidden="true"
-                    className="h-[2.5px] w-full origin-left scale-x-0 bg-accent"
-                />
-                <Container
-                    size="wide"
-                    className={[
-                        'flex items-center justify-between gap-6 transition-[min-height] duration-[var(--duration-base)]',
-                        isSticky ? 'min-h-[60px]' : 'min-h-[80px]',
-                    ].join(' ')}
-                >
-                    <a
-                        href={holdingUrl}
-                        aria-label={
-                            props.locale === 'en'
-                                ? `${company?.name ?? 'PT Derco Bara Energy'}, Home`
-                                : `${company?.name ?? 'PT Derco Bara Energy'}, Beranda`
-                        }
-                        className="inline-flex min-h-[44px] items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
+                    <div
+                        className={[
+                            'flex items-center justify-between gap-4 rounded-full border border-ink-on-dark/15 bg-surface-dark/95 px-5 text-ink-on-dark backdrop-blur-md transition-[min-height,box-shadow] duration-[var(--duration-base)] sm:px-7',
+                            isSticky
+                                ? 'min-h-[60px] shadow-2xl'
+                                : 'min-h-[68px] shadow-xl',
+                        ].join(' ')}
                     >
-                        <Logo
-                            company={company}
-                            on="dark"
-                            size={isSticky ? 36 : 48}
-                            priority={true}
-                            className="transition-all duration-300 motion-reduce:transition-none"
-                        />
-                    </a>
-
-                    <nav aria-label={t('nav.main')} className="hidden lg:flex items-center gap-7">
-                        {middleNavItems.map((item) => (
-                            <a
-                                key={item.key}
-                                href={item.href}
-                                aria-current={item.active ? 'page' : undefined}
-                                className={[
-                                    'relative inline-flex min-h-[44px] items-center text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-                                    item.active
-                                        ? 'text-accent-on-dark'
-                                        : 'text-ink-on-dark/80 hover:text-ink-on-dark',
-                                ].join(' ')}
-                            >
-                                <span>{item.label}</span>
-                                {item.active ? (
-                                    <motion.span
-                                        layoutId="holding-nav-active-underline"
-                                        aria-hidden="true"
-                                        transition={{
-                                            type: 'spring',
-                                            stiffness: 380,
-                                            damping: 32,
-                                        }}
-                                        className="absolute inset-x-0 bottom-0 h-[2px] bg-accent"
-                                    />
-                                ) : null}
-                            </a>
-                        ))}
-                    </nav>
-
-                    <div className="hidden lg:flex items-center gap-6">
-                        <LanguageSwitch />
-                        {contactNavItem ? (
-                            <a
-                                key={contactNavItem.key}
-                                href={contactNavItem.href}
-                                aria-current={contactNavItem.active ? 'page' : undefined}
-                                className={[
-                                    'inline-flex min-h-[44px] items-center border-b-2 text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-                                    contactNavItem.active
-                                        ? 'border-accent text-accent-on-dark'
-                                        : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
-                                ].join(' ')}
-                            >
-                                {contactNavItem.label}
-                            </a>
-                        ) : null}
-                    </div>
-
-                    <div className="flex items-center gap-2 lg:hidden">
-                        <LanguageSwitch />
-                        <button
-                            type="button"
-                            onClick={openMobileMenu}
-                            aria-expanded={isMobileMenuOpen}
-                            aria-controls="holding-mobile-menu"
-                            aria-label={t('nav.open_menu')}
-                            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-button)] text-ink-on-dark hover:bg-ink-on-dark/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        <a
+                            href={holdingUrl}
+                            aria-label={
+                                props.locale === 'en'
+                                    ? `${company?.name ?? 'PT Derco Bara Energy'}, Home`
+                                    : `${company?.name ?? 'PT Derco Bara Energy'}, Beranda`
+                            }
+                            className="inline-flex min-h-[44px] items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                         >
-                            <Menu className="h-5 w-5" aria-hidden="true" />
-                        </button>
+                            <Logo
+                                company={company}
+                                on="dark"
+                                size={isSticky ? 34 : 40}
+                                priority={true}
+                                className="transition-all duration-300 motion-reduce:transition-none"
+                            />
+                        </a>
+
+                        <nav aria-label={t('nav.main')} className="hidden lg:flex items-center gap-7">
+                            {middleNavItems.map((item) => (
+                                <a
+                                    key={item.key}
+                                    href={item.href}
+                                    aria-current={item.active ? 'page' : undefined}
+                                    className={[
+                                        'relative inline-flex min-h-[44px] items-center text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                        item.active
+                                            ? 'text-accent-on-dark'
+                                            : 'text-ink-on-dark/80 hover:text-ink-on-dark',
+                                    ].join(' ')}
+                                >
+                                    <span>{item.label}</span>
+                                    {item.active ? (
+                                        <motion.span
+                                            layoutId="holding-nav-active-underline"
+                                            aria-hidden="true"
+                                            transition={{
+                                                type: 'spring',
+                                                stiffness: 380,
+                                                damping: 32,
+                                            }}
+                                            className="absolute inset-x-0 bottom-1.5 h-[2px] rounded-full bg-accent"
+                                        />
+                                    ) : null}
+                                </a>
+                            ))}
+                        </nav>
+
+                        <div className="hidden lg:flex items-center gap-5">
+                            <LanguageSwitch />
+                            {contactNavItem ? (
+                                <a
+                                    key={contactNavItem.key}
+                                    href={contactNavItem.href}
+                                    aria-current={contactNavItem.active ? 'page' : undefined}
+                                    className={[
+                                        'inline-flex min-h-[44px] items-center border-b-2 text-xs font-bold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                        contactNavItem.active
+                                            ? 'border-accent text-accent-on-dark'
+                                            : 'border-transparent text-ink-on-dark/80 hover:text-ink-on-dark',
+                                    ].join(' ')}
+                                >
+                                    {contactNavItem.label}
+                                </a>
+                            ) : null}
+                        </div>
+
+                        <div className="flex items-center gap-2 lg:hidden">
+                            <LanguageSwitch />
+                            <button
+                                type="button"
+                                onClick={openMobileMenu}
+                                aria-expanded={isMobileMenuOpen}
+                                aria-controls="holding-mobile-menu"
+                                aria-label={t('nav.open_menu')}
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-ink-on-dark hover:bg-ink-on-dark/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <Menu className="h-5 w-5" aria-hidden="true" />
+                            </button>
+                        </div>
                     </div>
-                </Container>
+                </div>
             </header>
 
             <AnimatePresence>

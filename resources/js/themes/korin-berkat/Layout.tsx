@@ -61,62 +61,52 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                 </div>
             ) : null}
 
+            {/* Fixed Top GSAP Scroll Progress Bar */}
+            <div
+                ref={progressBarRef}
+                aria-hidden="true"
+                className="fixed inset-x-0 top-0 z-50 h-[2.5px] origin-left scale-x-0 bg-gradient-to-r from-[#d49b22] via-[#f0b941] to-[#eab338]"
+            />
+
+            {/* Floating Pill Executive Dark Navy Header */}
             <header
                 id="section-header"
                 data-section="header"
-                className="sticky top-0 z-40 bg-surface-dark/95 text-ink-on-dark backdrop-blur-md shadow-[0_6px_24px_-8px_rgba(0,0,0,0.45)]"
+                className="sticky top-3 z-40 px-4 pt-3 pb-1 sm:top-4 sm:px-6 sm:pt-4 lg:px-8 pointer-events-none"
             >
-                {/* GSAP Scroll Progress Bar */}
-                <div
-                    ref={progressBarRef}
-                    aria-hidden="true"
-                    className="h-[2.5px] w-full origin-left scale-x-0 bg-gradient-to-r from-[#d49b22] via-[#f0b941] to-[#eab338]"
-                />
-
-                {/* Top Subtle Utility Bar: Parent Holding Back-Link & Phone */}
-                <div className="border-b border-white/10 bg-[#07101f]">
-                    <Container className="flex min-h-9 items-center justify-between gap-4 py-0.5">
-                        <a
-                            href={holdingUrl}
-                            className="inline-flex min-h-[44px] items-center gap-2 text-[11px] font-semibold tracking-[0.04em] text-slate-300 transition-colors hover:text-accent-on-dark"
-                        >
-                            <ArrowLeft
-                                className="h-3.5 w-3.5 text-accent-on-dark"
-                                aria-hidden="true"
-                            />
-                            <span>{t('holding_short')}</span>
-                        </a>
-
-                        {primaryContact?.phone ? (
-                            <a
-                                href={`tel:${primaryContact.phone.replaceAll(/\s+/g, '')}`}
-                                className="hidden sm:inline-flex min-h-[36px] items-center gap-1.5 text-[11px] font-medium text-slate-300 transition-colors hover:text-white"
+                <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
+                    <div className="flex min-h-[68px] items-center justify-between gap-3 rounded-full border border-white/15 bg-surface-dark/95 px-4 py-2 text-ink-on-dark shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-6">
+                        {/* Left: Brand Logo + Compact Holding Back-Link */}
+                        <div className="flex items-center gap-3 min-w-0">
+                            <Link
+                                href={homeHref}
+                                aria-label={
+                                    locale === 'en'
+                                        ? `${company?.name ?? 'PT Korin Berkat Energy'}, Home`
+                                        : `${company?.name ?? 'PT Korin Berkat Energy'}, Beranda`
+                                }
+                                className="group inline-flex shrink-0 items-center gap-2.5 rounded-full py-1 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                             >
-                                <Phone className="h-3 w-3 text-accent-on-dark" aria-hidden="true" />
-                                <span>{primaryContact.phone}</span>
+                                <Logo company={company} on="dark" size={36} priority={true} />
+                            </Link>
+
+                            <a
+                                href={holdingUrl}
+                                aria-label={t('back_to_holding')}
+                                className="hidden md:inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-semibold tracking-[0.03em] text-slate-300 transition-colors hover:border-accent/60 hover:bg-white/10 hover:text-accent-on-dark"
+                            >
+                                <ArrowLeft
+                                    className="h-3.5 w-3.5 text-accent-on-dark"
+                                    aria-hidden="true"
+                                />
+                                <span className="hidden 2xl:inline">{t('holding_short')}</span>
                             </a>
-                        ) : null}
-                    </Container>
-                </div>
+                        </div>
 
-                {/* Main Executive Dark Navy Navigation Bar */}
-                <div className="border-b border-white/10">
-                    <Container className="flex h-[74px] items-center justify-between gap-4 lg:gap-6">
-                        <Link
-                            href={homeHref}
-                            aria-label={
-                                locale === 'en'
-                                    ? `${company?.name ?? 'PT Korin Berkat Energy'}, Home`
-                                    : `${company?.name ?? 'PT Korin Berkat Energy'}, Beranda`
-                            }
-                            className="group inline-flex shrink-0 items-center gap-3 py-1.5 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                        >
-                            <Logo company={company} on="dark" size={40} priority={true} />
-                        </Link>
-
+                        {/* Center: Numbered Editorial Menu */}
                         <nav
                             aria-label={t('nav.main')}
-                            className="hidden xl:flex xl:items-center xl:gap-6"
+                            className="hidden xl:flex xl:items-center xl:gap-5"
                         >
                             {items.map((item, idx) => {
                                 const indexCode = formatEditorialIndex(idx);
@@ -126,18 +116,16 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                         key={item.key}
                                         href={item.href}
                                         aria-current={item.active ? 'page' : undefined}
-                                        className={`group relative inline-flex min-h-11 items-center gap-1.5 py-2 text-[13px] transition-colors ${
-                                            item.active
-                                                ? 'font-bold text-accent-on-dark'
-                                                : 'font-medium text-slate-200 hover:text-white'
-                                        }`}
+                                        className={`group relative inline-flex min-h-11 items-center gap-1.5 py-2 text-[13px] transition-colors ${item.active
+                                            ? 'font-bold text-accent-on-dark'
+                                            : 'font-medium text-slate-200 hover:text-white'
+                                            }`}
                                     >
                                         <span
-                                            className={`font-heading text-[10px] font-bold tracking-[0.08em] ${
-                                                item.active
-                                                    ? 'text-accent-on-dark'
-                                                    : 'text-slate-400 group-hover:text-accent-on-dark'
-                                            }`}
+                                            className={`font-heading text-[10px] font-bold tracking-[0.08em] ${item.active
+                                                ? 'text-accent-on-dark'
+                                                : 'text-slate-400 group-hover:text-accent-on-dark'
+                                                }`}
                                         >
                                             {indexCode}
                                         </span>
@@ -164,13 +152,12 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                             })}
                         </nav>
 
-                        {/* Right: Language Switch + Gold CTA Button */}
-                        <div className="hidden xl:flex xl:items-center xl:gap-4">
-                            <div className="h-5 w-px bg-white/15" aria-hidden="true" />
+                        {/* Right: Language Switch + Gold Pill CTA */}
+                        <div className="hidden xl:flex xl:items-center xl:gap-3.5">
                             <LanguageSwitch tone="dark" />
                             <Link
                                 href={contactUrl}
-                                className="kbe-btn-gold min-h-[40px] px-4 py-2 text-xs"
+                                className="kbe-btn-gold min-h-[40px] !rounded-full px-4 py-2 text-xs"
                             >
                                 <span>{t('contact_us')}</span>
                                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -178,7 +165,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                         </div>
 
                         {/* Mobile Controls */}
-                        <div className="flex items-center gap-2.5 xl:hidden">
+                        <div className="flex items-center gap-2 xl:hidden">
                             <LanguageSwitch tone="dark" />
                             <button
                                 type="button"
@@ -188,7 +175,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                 aria-label={
                                     isMobileMenuOpen ? t('nav.close_menu') : t('nav.open_menu')
                                 }
-                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-button)] border border-white/15 bg-white/5 text-white transition-colors hover:border-accent hover:bg-white/10"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-accent hover:bg-white/10"
                             >
                                 {isMobileMenuOpen ? (
                                     <X className="h-5 w-5" aria-hidden="true" />
@@ -197,21 +184,19 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                 )}
                             </button>
                         </div>
-                    </Container>
-                </div>
+                    </div>
 
-                {/* Mobile Drawer */}
-                <AnimatePresence>
-                    {isMobileMenuOpen ? (
-                        <motion.div
-                            id="korin-berkat-mobile-nav"
-                            initial="hidden"
-                            animate="visible"
-                            exit="hidden"
-                            variants={resolvePreset('fadeIn', prefersReducedMotion)}
-                            className="border-b border-white/10 bg-surface-dark xl:hidden"
-                        >
-                            <Container className="py-5 space-y-4">
+                    {/* Floating Mobile Drawer */}
+                    <AnimatePresence>
+                        {isMobileMenuOpen ? (
+                            <motion.div
+                                id="korin-berkat-mobile-nav"
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                variants={resolvePreset('fadeIn', prefersReducedMotion)}
+                                className="mt-3 rounded-3xl border border-white/15 bg-surface-dark/98 p-5 text-ink-on-dark shadow-2xl backdrop-blur-md xl:hidden"
+                            >
                                 <nav aria-label={t('nav.main')} className="divide-y divide-white/10">
                                     {items.map((item, idx) => (
                                         <Link
@@ -219,11 +204,10 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                             href={item.href}
                                             onClick={closeMobileMenu}
                                             aria-current={item.active ? 'page' : undefined}
-                                            className={`flex min-h-11 items-center justify-between py-3 text-sm transition-colors ${
-                                                item.active
-                                                    ? 'font-bold text-accent-on-dark'
-                                                    : 'font-medium text-slate-200 hover:text-white'
-                                            }`}
+                                            className={`flex min-h-11 items-center justify-between py-3 text-sm transition-colors ${item.active
+                                                ? 'font-bold text-accent-on-dark'
+                                                : 'font-medium text-slate-200 hover:text-white'
+                                                }`}
                                         >
                                             <span className="inline-flex items-center gap-3">
                                                 <span className="font-heading text-xs font-bold text-accent-on-dark">
@@ -241,20 +225,28 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                                     ))}
                                 </nav>
 
-                                <div className="pt-2">
+                                <div className="mt-4 space-y-2.5 border-t border-white/10 pt-4">
                                     <Link
                                         href={contactUrl}
                                         onClick={closeMobileMenu}
-                                        className="kbe-btn-gold w-full justify-center"
+                                        className="kbe-btn-gold w-full justify-center !rounded-full"
                                     >
                                         <span>{t('contact_us')}</span>
                                         <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                                     </Link>
+                                    <a
+                                        href={holdingUrl}
+                                        onClick={closeMobileMenu}
+                                        className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-accent hover:text-accent-on-dark"
+                                    >
+                                        <ArrowLeft className="h-3.5 w-3.5 text-accent-on-dark" aria-hidden="true" />
+                                        <span>{t('back_to_holding')}</span>
+                                    </a>
                                 </div>
-                            </Container>
-                        </motion.div>
-                    ) : null}
-                </AnimatePresence>
+                            </motion.div>
+                        ) : null}
+                    </AnimatePresence>
+                </div>
             </header>
 
             <main ref={mainRef} id="main-content" className="flex-1">

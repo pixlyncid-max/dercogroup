@@ -62,119 +62,123 @@ export function Layout({ children }: KorinBaraLayoutProps) {
                 {t('skip_to_content')}
             </a>
 
-            {/* Horizontal White Sticky Header (height ~80px) */}
-            <header className="sticky top-0 z-40 h-20 w-full border-b border-line bg-white/95 backdrop-blur-md transition-shadow duration-200">
-                <div
-                    ref={progressBarRef}
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-[2.5px] origin-left scale-x-0 bg-accent"
-                />
-                <Container className="flex h-full items-center justify-between gap-4">
-                    {/* Left: Brand Logo */}
-                    <div className="flex items-center">
-                        <Link
-                            href={homeHref}
-                            aria-label={
-                                locale === 'en'
-                                    ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
-                                    : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
-                            }
-                            className="inline-flex min-h-[44px] items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-lg"
+            {/* Fixed Top GSAP Scroll Progress Bar */}
+            <div
+                ref={progressBarRef}
+                aria-hidden="true"
+                className="fixed inset-x-0 top-0 z-50 h-[2.5px] origin-left scale-x-0 bg-accent"
+            />
+
+            {/* Floating Pill White Header */}
+            <header className="sticky top-3 z-40 px-4 pt-3 pb-1 sm:top-4 sm:px-6 sm:pt-4 lg:px-8 pointer-events-none">
+                <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
+                    <div className="flex min-h-[68px] items-center justify-between gap-4 rounded-full border border-line bg-white/95 px-5 py-2 shadow-lg backdrop-blur-md transition-shadow duration-200 sm:px-7">
+                        {/* Left: Brand Logo */}
+                        <div className="flex items-center">
+                            <Link
+                                href={homeHref}
+                                aria-label={
+                                    locale === 'en'
+                                        ? `${company?.name ?? 'PT Korin Bara Energy'}, Home`
+                                        : `${company?.name ?? 'PT Korin Bara Energy'}, Beranda`
+                                }
+                                className="inline-flex min-h-[44px] items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <Logo
+                                    company={company}
+                                    on="light"
+                                    compact={false}
+                                    size={40}
+                                    priority={true}
+                                    className="h-10 w-auto max-w-[180px] shrink-0"
+                                />
+                            </Link>
+                        </div>
+
+                        {/* Center: Desktop Horizontal Navigation */}
+                        <nav
+                            aria-label={t('nav.main')}
+                            className="hidden lg:flex lg:items-center lg:gap-7"
                         >
-                            <Logo
-                                company={company}
-                                on="light"
-                                compact={false}
-                                size={44}
-                                priority={true}
-                                className="h-11 w-auto max-w-[200px] shrink-0"
-                            />
-                        </Link>
+                            {navItems.map((item) => {
+                                // Exact active state check: only one item active at a time
+                                const isActive =
+                                    item.active ??
+                                    (item.href === homeHref
+                                        ? currentPath === homeHref || currentPath === `${homeHref}/`
+                                        : currentPath.startsWith(item.href));
+
+                                return (
+                                    <Link
+                                        key={item.key}
+                                        href={item.href}
+                                        aria-current={isActive ? 'page' : undefined}
+                                        className={`group relative inline-flex min-h-[44px] items-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md ${
+                                            isActive
+                                                ? 'font-bold text-ink'
+                                                : 'font-medium text-slate-600 hover:text-ink'
+                                        }`}
+                                    >
+                                        <span>{item.label}</span>
+                                        {isActive ? (
+                                            <motion.span
+                                                layoutId="kb-nav-active-underline"
+                                                aria-hidden="true"
+                                                transition={{
+                                                    type: 'spring',
+                                                    stiffness: 380,
+                                                    damping: 32,
+                                                }}
+                                                className="absolute bottom-2 left-0 right-0 h-[2px] rounded-full bg-accent"
+                                            />
+                                        ) : (
+                                            <span
+                                                aria-hidden="true"
+                                                className="absolute bottom-2 left-0 right-0 h-[2px] scale-x-0 rounded-full bg-accent/50 transition-transform duration-150 group-hover:scale-x-100"
+                                            />
+                                        )}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
+
+                        {/* Right: Holding Link, Hubungi Kami & Language Switch */}
+                        <div className="hidden lg:flex lg:items-center lg:gap-5">
+                            <Link
+                                href={holdingUrl}
+                                aria-label={t('back_to_holding')}
+                                className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-[#8A6212] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
+                            >
+                                <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
+                                <span>{t('holding_short')}</span>
+                            </Link>
+
+                            <Link
+                                href={headerCtaHref}
+                                className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-[#8A6212] transition-colors hover:text-[#101F38] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
+                            >
+                                <span>{headerCtaLabel}</span>
+                                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                            </Link>
+
+                            <LanguageSwitch tone="light" />
+                        </div>
+
+                        {/* Mobile Hamburger Button */}
+                        <div className="flex items-center gap-3 lg:hidden">
+                            <LanguageSwitch tone="light" />
+                            <button
+                                type="button"
+                                onClick={() => setMobileDrawerOpen(true)}
+                                aria-expanded={mobileDrawerOpen}
+                                aria-label={t('nav.toggle_menu')}
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-line bg-surface p-2.5 text-ink transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <Menu className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                        </div>
                     </div>
-
-                    {/* Center: Desktop Horizontal Navigation */}
-                    <nav
-                        aria-label={t('nav.main')}
-                        className="hidden lg:flex lg:items-center lg:gap-8"
-                    >
-                        {navItems.map((item) => {
-                            // Exact active state check: only one item active at a time
-                            const isActive =
-                                item.active ??
-                                (item.href === homeHref
-                                    ? currentPath === homeHref || currentPath === `${homeHref}/`
-                                    : currentPath.startsWith(item.href));
-
-                            return (
-                                <Link
-                                    key={item.key}
-                                    href={item.href}
-                                    aria-current={isActive ? 'page' : undefined}
-                                    className={`group relative inline-flex min-h-[44px] items-center text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md ${
-                                        isActive
-                                            ? 'font-bold text-ink'
-                                            : 'font-medium text-slate-600 hover:text-ink'
-                                    }`}
-                                >
-                                    <span>{item.label}</span>
-                                    {isActive ? (
-                                        <motion.span
-                                            layoutId="kb-nav-active-underline"
-                                            aria-hidden="true"
-                                            transition={{
-                                                type: 'spring',
-                                                stiffness: 380,
-                                                damping: 32,
-                                            }}
-                                            className="absolute bottom-2 left-0 right-0 h-[2px] rounded-full bg-accent"
-                                        />
-                                    ) : (
-                                        <span
-                                            aria-hidden="true"
-                                            className="absolute bottom-2 left-0 right-0 h-[2px] scale-x-0 rounded-full bg-accent/50 transition-transform duration-150 group-hover:scale-x-100"
-                                        />
-                                    )}
-                                </Link>
-                            );
-                        })}
-                    </nav>
-
-                    {/* Right: Holding Link, Hubungi Kami & Language Switch */}
-                    <div className="hidden lg:flex lg:items-center lg:gap-6">
-                        <Link
-                            href={holdingUrl}
-                            aria-label={t('back_to_holding')}
-                            className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-semibold text-slate-600 transition-colors hover:text-[#8A6212] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
-                        >
-                            <ArrowLeft className="h-3.5 w-3.5 text-[#8A6212]" aria-hidden="true" />
-                            <span>{t('holding_short')}</span>
-                        </Link>
-
-                        <Link
-                            href={headerCtaHref}
-                            className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-[#8A6212] transition-colors hover:text-[#101F38] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:rounded-md"
-                        >
-                            <span>{headerCtaLabel}</span>
-                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                        </Link>
-
-                        <LanguageSwitch tone="light" />
-                    </div>
-
-                    {/* Mobile Hamburger Button */}
-                    <div className="flex items-center gap-3 lg:hidden">
-                        <LanguageSwitch tone="light" />
-                        <button
-                            type="button"
-                            onClick={() => setMobileDrawerOpen(true)}
-                            aria-expanded={mobileDrawerOpen}
-                            aria-label={t('nav.toggle_menu')}
-                            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-line bg-surface p-2.5 text-ink transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                        >
-                            <Menu className="h-6 w-6" aria-hidden="true" />
-                        </button>
-                    </div>
-                </Container>
+                </div>
             </header>
 
             {/* Mobile Drawer */}
