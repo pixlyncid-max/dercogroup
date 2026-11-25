@@ -259,72 +259,72 @@ class DatabaseSeeder extends Seeder
         $operations = $company->slug === 'beramal-sukses-sejahtera'
             ? [
                 [
-                    'type' => OperationType::Facility,
+                    'type' => OperationType::Mine,
                     'name' => [
-                        'id' => 'Pusat Koordinasi & Fasilitas Operasional Terpadu [PLACEHOLDER]',
-                        'en' => 'Integrated Operational Facility & Coordination Hub [PLACEHOLDER]',
+                        'id' => 'Blok Penambangan Nikel Laterit (Pit Saprolit & Limonit)',
+                        'en' => 'Nickel Laterite Mining Block (Saprolite & Limonite Pit)',
                     ],
                     'location_label' => [
-                        'id' => 'Koridor Operasional Utama, Kalimantan Timur [PLACEHOLDER]',
-                        'en' => 'Primary Operational Corridor, East Kalimantan [PLACEHOLDER]',
+                        'id' => 'Koridor Tambang Nikel, Sulawesi Tenggara',
+                        'en' => 'Nickel Mining Corridor, Southeast Sulawesi',
                     ],
                     'description' => [
-                        'id' => 'Pusat pengendalian jadwal layanan lapangan, kesiapan peralatan pendukung, dan pemantauan standar keselamatan kerja harian. [PLACEHOLDER]',
-                        'en' => 'Centralized control hub for field service scheduling, support equipment readiness, and daily occupational safety monitoring. [PLACEHOLDER]',
+                        'id' => 'Penambangan selektif lapisan limonit dan saprolit dengan pengawasan geologi (grade control), pengelolaan jalan tambang, serta pengendalian air limpasan pit.',
+                        'en' => 'Selective mining of limonite and saprolite horizons with geological grade control, pit haul-road maintenance, and surface runoff management.',
                     ],
-                    'latitude' => -0.4512000,
-                    'longitude' => 117.0145000,
-                ],
-                [
-                    'type' => OperationType::Port,
-                    'name' => [
-                        'id' => 'Fasilitas Sandar & Layanan Simpul Maritim [PLACEHOLDER]',
-                        'en' => 'Berthing Facility & Maritime Node Services [PLACEHOLDER]',
-                    ],
-                    'location_label' => [
-                        'id' => 'Alur Pelayaran Sungai Mahakam, Kalimantan Timur [PLACEHOLDER]',
-                        'en' => 'Mahakam River Navigation Channel, East Kalimantan [PLACEHOLDER]',
-                    ],
-                    'description' => [
-                        'id' => 'Pengelolaan sandar armada air, pengaturan antrean dermaga, dan pencatatan waktu layanan terukur selama 24 jam. [PLACEHOLDER]',
-                        'en' => 'Berth slot management, dock queue coordination, and measured 24-hour turnaround logging for waterborne fleets. [PLACEHOLDER]',
-                    ],
-                    'latitude' => -0.5689000,
-                    'longitude' => 117.2130000,
+                    'latitude' => -3.4820000,
+                    'longitude' => 122.1450000,
                 ],
                 [
                     'type' => OperationType::Stockpile,
                     'name' => [
-                        'id' => 'Area Penyangga Logistik & Penyimpanan Terkelola [PLACEHOLDER]',
-                        'en' => 'Managed Logistics Buffer & Storage Yard [PLACEHOLDER]',
+                        'id' => 'Stockpile ETO/EFO & Area Blending Bijih Nikel',
+                        'en' => 'ETO/EFO Stockpile & Nickel Ore Blending Yard',
                     ],
                     'location_label' => [
-                        'id' => 'Simpul Distribusi Regional, Kalimantan Timur [PLACEHOLDER]',
-                        'en' => 'Regional Distribution Node, East Kalimantan [PLACEHOLDER]',
+                        'id' => 'Zona Penumpukan Antara & Akhir, Sulawesi Tenggara',
+                        'en' => 'Intermediate & Final Ore Staging Zone, Southeast Sulawesi',
                     ],
                     'description' => [
-                        'id' => 'Fasilitas penataan material dan inventaris operasional dengan sistem pencatatan keluar-masuk terverifikasi. [PLACEHOLDER]',
-                        'en' => 'Structured material staging and operational inventory yard equipped with verified inbound-outbound logging. [PLACEHOLDER]',
+                        'id' => 'Penataan tumpukan Exportable Transit Ore (ETO) dan Exportable Final Ore (EFO) berdasarkan rentang kadar Ni, pencampuran terkontrol, serta proteksi kadar air (MC).',
+                        'en' => 'Grade-segregated Exportable Transit Ore (ETO) and Exportable Final Ore (EFO) stacking, controlled blending, and moisture content (MC) protection.',
                     ],
-                    'latitude' => -0.5112000,
-                    'longitude' => 117.1045000,
+                    'latitude' => -3.5240000,
+                    'longitude' => 122.2180000,
                 ],
                 [
-                    'type' => OperationType::Fleet,
+                    'type' => OperationType::Facility,
                     'name' => [
-                        'id' => 'Unit Armada Pendukung & Mobilitas Lapangan [PLACEHOLDER]',
-                        'en' => 'Support Fleet & Field Mobility Unit [PLACEHOLDER]',
+                        'id' => 'Laboratorium Preparasi Sampel & Kendali Kadar XRF',
+                        'en' => 'Sample Preparation & XRF Grade Control Laboratory',
                     ],
                     'location_label' => [
-                        'id' => 'Jaringan Layanan Kalimantan – Jawa [PLACEHOLDER]',
-                        'en' => 'Kalimantan – Java Service Network [PLACEHOLDER]',
+                        'id' => 'Pusat Kendali Mutu Site, Sulawesi Tenggara',
+                        'en' => 'Site Quality Control Center, Southeast Sulawesi',
                     ],
                     'description' => [
-                        'id' => 'Pengoperasian dan pemeliharaan berkala unit armada pendukung guna menjamin ketepatan jadwal layanan mitra. [PLACEHOLDER]',
-                        'en' => 'Scheduled operation and preventive maintenance of support fleet units ensuring partner SLA punctuality. [PLACEHOLDER]',
+                        'id' => 'Fasilitas preparasi sampel bijih, uji kadar air (moisture content), serta analisis kimia Ni, Fe, SiO2, dan MgO sebelum persetujuan pengapalan.',
+                        'en' => 'Ore sample preparation, moisture content testing, and Ni, Fe, SiO2, and MgO chemical assay prior to shipment clearance.',
                     ],
-                    'latitude' => -0.6010000,
-                    'longitude' => 117.3020000,
+                    'latitude' => -3.5390000,
+                    'longitude' => 122.2460000,
+                ],
+                [
+                    'type' => OperationType::Port,
+                    'name' => [
+                        'id' => 'Terminal Khusus Jetty & Pemuatan Tongkang Nikel',
+                        'en' => 'Dedicated Nickel Jetty & Barge Loading Terminal',
+                    ],
+                    'location_label' => [
+                        'id' => 'Pesisir Teluk, Sulawesi Tenggara',
+                        'en' => 'Coastal Bay Terminal, Southeast Sulawesi',
+                    ],
+                    'description' => [
+                        'id' => 'Pengelolaan sandar tongkang, pemuatan bijih nikel dengan pengawasan surveyor independen, draft survey, dan pengiriman langsung menuju smelter domestik.',
+                        'en' => 'Barge berthing management, nickel ore loading under independent surveyor supervision, draft surveys, and direct dispatch to domestic smelters.',
+                    ],
+                    'latitude' => -3.5715000,
+                    'longitude' => 122.2940000,
                 ],
             ]
             : [
@@ -1302,14 +1302,16 @@ class DatabaseSeeder extends Seeder
             $operations->blocks()->delete();
 
             $this->createBlock($operations, 1, BlockType::OperationList, [
-                'eyebrow' => ['id' => 'INFRASTRUKTUR LAPANGAN', 'en' => 'FIELD INFRASTRUCTURE'],
+                'eyebrow' => $isBeramal
+                    ? ['id' => 'OPERASI PERTAMBANGAN NIKEL', 'en' => 'NICKEL MINING OPERATIONS']
+                    : ['id' => 'INFRASTRUKTUR LAPANGAN', 'en' => 'FIELD INFRASTRUCTURE'],
                 'title' => $isBeramal
-                    ? ['id' => "Alur Kerja & Fasilitas {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Workflow & Facilities [PLACEHOLDER]"]
+                    ? ['id' => "Alur Kerja & Fasilitas {$company->name}", 'en' => "{$company->name} Workflow & Facilities"]
                     : ['id' => "Jaringan Operasi {$company->name} [PLACEHOLDER]", 'en' => "{$company->name} Operational Network [PLACEHOLDER]"],
                 'description' => $isBeramal
                     ? [
-                        'id' => 'Tahapan koordinasi operasional terukur beserta jaringan fasilitas pendukung di koridor layanan utama. [PLACEHOLDER]',
-                        'en' => 'Measured operational coordination workflow alongside support facility nodes across the primary service corridor. [PLACEHOLDER]',
+                        'id' => 'Rantai operasi pertambangan nikel laterit terpadu mulai dari pemetaan kadar pit, stockpile ETO/EFO, pengujian laboratorium XRF, hingga pemuatan tongkang menuju smelter.',
+                        'en' => 'Integrated nickel laterite mining operations spanning pit grade control, ETO/EFO stockpiles, XRF laboratory verification, and barge loading to smelters.',
                     ]
                     : [
                         'id' => 'Rantai operasional terpadu mulai dari area penambangan, fasilitas pengolahan, stockpile, hingga pelabuhan muat tongkang. [PLACEHOLDER]',

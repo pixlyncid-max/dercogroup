@@ -1,5 +1,5 @@
 import { animate } from 'animejs';
-import { useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { Heading, Reveal, ThemeIcon } from '@/ui';
 
@@ -122,12 +122,14 @@ export function WorkflowStepper({ steps, cardTone = 'bg' }: WorkflowStepperProps
                             </div>
 
                             {/* Rounded 24px Step Card */}
-                            <div
-                                className={`flex flex-1 flex-col justify-between rounded-[var(--radius-card)] border border-line ${cardBgClass} p-6 shadow-sm space-y-3`}
+                            <motion.div
+                                whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                                className={`flex flex-1 flex-col justify-between rounded-[var(--radius-card)] border border-line ${cardBgClass} p-6 shadow-sm transition-shadow hover:shadow-md space-y-3`}
                             >
                                 <div className="space-y-2.5">
                                     {step.iconName ? (
-                                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface text-ink">
+                                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface text-accent-strong">
                                             <ThemeIcon name={step.iconName} className="h-5 w-5" />
                                         </span>
                                     ) : null}
@@ -138,7 +140,7 @@ export function WorkflowStepper({ steps, cardTone = 'bg' }: WorkflowStepperProps
                                         {step.description}
                                     </p>
                                 </div>
-                            </div>
+                            </motion.div>
                         </Reveal>
                     </li>
                 ))}
