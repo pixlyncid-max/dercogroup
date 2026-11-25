@@ -15,15 +15,15 @@ export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
     const itemVariants = resolvePreset('fadeUp', prefersReducedMotion);
 
     return (
-        <Section tone="surface" className="border-t border-line">
+        <Section tone="dark" className="border-t border-ink-on-dark/10">
             <Container>
                 <Reveal preset="fadeUp" className="max-w-[640px] space-y-4">
-                    {data.eyebrow ? <EyebrowLine tone="light">{data.eyebrow}</EyebrowLine> : null}
-                    <Heading level={2} size="h2">
+                    {data.eyebrow ? <EyebrowLine tone="dark">{data.eyebrow}</EyebrowLine> : null}
+                    <Heading level={2} size="h2" className="text-ink-on-dark">
                         {data.title}
                     </Heading>
                     {data.description ? (
-                        <p className="text-base leading-7 text-muted">{data.description}</p>
+                        <p className="text-base leading-7 text-muted-on-dark">{data.description}</p>
                     ) : null}
                 </Reveal>
 
@@ -38,21 +38,23 @@ export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
                         <motion.article
                             key={idx}
                             variants={itemVariants}
-                            className="flex flex-col justify-between rounded-[var(--radius-card)] border border-line bg-bg p-6 md:p-8"
+                            className="flex flex-col justify-between rounded-[var(--radius-card)] border border-ink-on-dark/12 bg-surface-deeper/70 p-6 md:p-8"
                         >
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-button)] border border-accent/40 text-accent-strong">
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-button)] border border-accent/40 text-accent-on-dark">
                                         <HoldingIcon name={item.icon_name} className="h-5 w-5" />
                                     </span>
-                                    <span className="text-xs font-bold text-muted">
+                                    <span className="text-xs font-bold text-accent-on-dark">
                                         {`0${idx + 1}`}
                                     </span>
                                 </div>
-                                <Heading level={3} size="h3">
+                                <Heading level={3} size="h3" className="text-ink-on-dark">
                                     {item.title}
                                 </Heading>
-                                <p className="text-sm leading-6 text-muted">{item.description}</p>
+                                <p className="text-sm leading-6 text-muted-on-dark">
+                                    {item.description}
+                                </p>
                             </div>
                         </motion.article>
                     ))}

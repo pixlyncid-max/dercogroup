@@ -14,7 +14,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
     const isHome = props.page?.key === 'home';
 
     return (
-        <Section tone="default">
+        <Section tone="surface" className="border-t border-line">
             <Container>
                 <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
                     <div className="lg:col-span-6">
