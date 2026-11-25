@@ -51,7 +51,7 @@ export function SplitContentBlock({ data, isFirstBlock = false }: SplitContentBl
                         aria-hidden="true"
                         className="kbe-diagonal-wedge-left pointer-events-none absolute bottom-0 left-0 z-10 h-14 w-12 opacity-90"
                     />
-                    <Container className="relative z-10 py-14 sm:py-16 lg:py-20">
+                    <Container className="relative z-10 pt-28 pb-14 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-20">
                         <div className="flex items-stretch gap-5 max-w-3xl">
                             <span
                                 aria-hidden="true"

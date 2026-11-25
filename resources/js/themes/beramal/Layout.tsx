@@ -76,9 +76,13 @@ export function Layout({ children }: BeramalLayoutProps) {
                 className="fixed inset-x-0 top-0 z-50 h-[2.5px] origin-left scale-x-0 bg-accent"
             />
 
-            {/* Floating Pill Header suspended 16px (top-4) from the top */}
-            <header id="section-header" data-section="header" className="sticky top-4 z-40 px-4 sm:px-6 lg:px-8 pt-4">
-                <div className="mx-auto max-w-[var(--container-wide)]">
+            {/* Floating Pill Header suspended 16px from the top */}
+            <header
+                id="section-header"
+                data-section="header"
+                className="fixed inset-x-0 top-3 z-40 px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none"
+            >
+                <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
                     <div
                         className={[
                             'flex min-h-16 items-center justify-between gap-3 rounded-full border border-line px-4 py-2 shadow-md transition-colors duration-300 sm:px-6',
@@ -234,7 +238,7 @@ export function Layout({ children }: BeramalLayoutProps) {
                 </div>
             </header>
 
-            <main ref={mainRef} id="main-content" className="flex-1">
+            <main ref={mainRef} id="main-content" className="flex-1 pt-24 sm:pt-28">
                 {children}
             </main>
 

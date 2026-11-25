@@ -70,7 +70,7 @@ export function Layout({ children }: KorinBaraLayoutProps) {
             />
 
             {/* Floating Pill White Header */}
-            <header className="sticky top-3 z-40 px-4 pt-3 pb-1 sm:top-4 sm:px-6 sm:pt-4 lg:px-8 pointer-events-none">
+            <header className="fixed inset-x-0 top-3 z-40 px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none">
                 <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
                     <div className="flex min-h-[68px] items-center justify-between gap-4 rounded-full border border-line bg-white/95 px-5 py-2 shadow-lg backdrop-blur-md transition-shadow duration-200 sm:px-7">
                         {/* Left: Brand Logo */}

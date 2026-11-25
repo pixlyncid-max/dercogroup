@@ -21,7 +21,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                     />
                 </div>
 
-                <Container size="wide" className="relative z-20 py-20 md:py-28 lg:py-32">
+                <Container size="wide" className="relative z-20 pt-28 pb-20 md:pt-36 md:pb-28 lg:pt-40 lg:pb-32">
                     <Reveal preset="fadeUp" className="max-w-[760px] space-y-6">
                         {data.eyebrow ? (
                             <EyebrowLine tone="dark" withRule={false}>
@@ -67,7 +67,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
 
     if (!hasHeroImage) {
         return (
-            <section className="bg-surface-dark text-ink-on-dark border-b border-ink-on-dark/10 py-14 md:py-20">
+            <section className="bg-surface-dark text-ink-on-dark border-b border-ink-on-dark/10 pt-28 pb-14 md:pt-36 md:pb-20">
                 <Container>
                     <Reveal preset="fadeUp" className="max-w-[720px] space-y-5">
                         {data.eyebrow ? (
@@ -88,7 +88,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
     }
 
     return (
-        <section className="relative bg-surface-dark text-ink-on-dark pt-10 pb-12 lg:pt-16 lg:pb-20 overflow-x-clip">
+        <section className="relative bg-surface-dark text-ink-on-dark pt-28 pb-12 lg:pt-32 lg:pb-20 overflow-x-clip">
             <Container size="wide">
                 <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
                     <Reveal

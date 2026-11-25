@@ -49,7 +49,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
     return (
         <section
             data-testid="korin-bara-hero"
-            className="relative overflow-hidden bg-white pt-8 pb-20 lg:pt-14 lg:pb-28"
+            className="relative overflow-hidden bg-white pt-28 pb-20 lg:pt-32 lg:pb-28"
         >
             {/* Flat semi-transparent diagonal shape behind left/center content */}
             <div

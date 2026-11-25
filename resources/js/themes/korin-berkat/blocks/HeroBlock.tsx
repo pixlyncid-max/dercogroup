@@ -60,7 +60,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                 className="kbe-diagonal-wedge-left pointer-events-none absolute bottom-0 left-0 z-10 h-16 w-12 opacity-95 sm:h-20 sm:w-16"
             />
 
-            <Container className="relative z-10 py-16 sm:py-20 lg:py-24">
+            <Container className="relative z-10 pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24">
                 <div
                     ref={contentRef}
                     className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12"

@@ -34,7 +34,7 @@ export function PageBanner({ title, image, imageAlt }: PageBannerProps) {
     return (
         <section
             data-testid="korin-bara-page-banner"
-            className="relative h-[180px] sm:h-[220px] lg:h-[260px] w-full overflow-hidden bg-surface-dark"
+            className="relative h-[240px] sm:h-[280px] lg:h-[310px] pt-20 w-full overflow-hidden bg-surface-dark"
         >
             {/* Background Image */}
             <div className="absolute inset-0">

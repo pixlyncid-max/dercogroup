@@ -32,7 +32,7 @@ export function ProductDetailView({
     return (
         <>
             {/* Editorial Split Header */}
-            <Section tone="default" className="border-b border-line">
+            <Section tone="default" className="border-b border-line pt-28 sm:pt-32">
                 <Container>
                     <Reveal preset="fadeUp" className="space-y-8">
                         <div>

@@ -61,7 +61,7 @@ export function Layout({ children }: HoldingLayoutProps) {
             <header
                 id="section-header"
                 data-section="header"
-                className="sticky top-3 z-[var(--z-index-overlay)] px-4 pt-3 pb-1 sm:top-4 sm:px-6 sm:pt-4 lg:px-8 pointer-events-none"
+                className="fixed inset-x-0 top-3 z-[var(--z-index-overlay)] px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none"
             >
                 <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
                     <div
@@ -221,7 +221,11 @@ export function Layout({ children }: HoldingLayoutProps) {
                 ) : null}
             </AnimatePresence>
 
-            <main ref={mainRef} id="main-content" className="flex-1">
+            <main
+                ref={mainRef}
+                id="main-content"
+                className={`flex-1 ${props.page?.key === 'contact' ? 'pt-24 sm:pt-28' : ''}`.trim()}
+            >
                 {children}
             </main>
 
