@@ -14,7 +14,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
         return (
             <section className="relative min-h-[480px] md:min-h-[560px] lg:min-h-[620px] flex items-center overflow-hidden bg-surface-dark text-ink-on-dark">
                 {/* Full-bleed background carousel with dark overlay for WCAG AA contrast */}
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0" data-gsap-no-parallax>
                     <HeroCarousel
                         slides={data.slides!}
                         overlayClassName="bg-gradient-to-r from-surface-deeper/95 via-surface-deeper/85 to-surface-deeper/70"

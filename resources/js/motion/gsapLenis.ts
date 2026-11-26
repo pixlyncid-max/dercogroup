@@ -124,12 +124,17 @@ export function usePageGsapEffects(
             const firstSection = container.querySelector(':scope > section');
             if (firstSection && !firstSection.querySelector('[data-gsap-item]')) {
                 const heroBackdrop = firstSection.querySelector(':scope > div.absolute');
-                if (heroBackdrop) {
+                if (
+                    heroBackdrop &&
+                    !heroBackdrop.hasAttribute('data-gsap-no-parallax') &&
+                    !heroBackdrop.querySelector('[role="tablist"]')
+                ) {
                     gsap.fromTo(
                         heroBackdrop,
-                        { yPercent: -4 },
+                        { yPercent: -4, scale: 1.12 },
                         {
-                            yPercent: 6,
+                            yPercent: 4,
+                            scale: 1.12,
                             ease: 'none',
                             scrollTrigger: {
                                 trigger: firstSection,
