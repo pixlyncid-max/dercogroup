@@ -49,6 +49,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                     alt=""
                     className="h-full w-full object-cover object-center opacity-55"
                     loading="eager"
+                    fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#081222]/95 via-[#0B172A]/82 to-[#0B172A]/50" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#081222]/90 via-transparent to-[#081222]/40" />
@@ -127,7 +128,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                             data-gsap-item
                             whileHover={prefersReducedMotion ? undefined : { y: -4 }}
                             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                            className="relative overflow-hidden rounded-[var(--radius-card)] border border-white/15 border-t-4 border-t-accent bg-[#0b172a]/85 p-7 text-ink-on-dark shadow-2xl backdrop-blur-md sm:p-8 lg:col-span-5"
+                            className="relative overflow-hidden rounded-[var(--radius-card)] border border-white/15 border-t-4 border-t-accent bg-[#0b172a]/95 p-7 text-ink-on-dark shadow-xl sm:p-8 lg:col-span-5"
                         >
                             <div
                                 aria-hidden="true"
@@ -135,13 +136,13 @@ export function HeroBlock({ data }: HeroBlockProps) {
                             />
 
                             <div className="flex items-center justify-between border-b border-white/15 pb-4">
-                                <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent-on-dark">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-accent-on-dark">
                                     {locale === 'en'
                                         ? 'KEY OPERATIONAL FIGURES'
                                         : 'DATA KUNCI OPERASIONAL'}
                                 </span>
-                                <span className="font-heading text-xs font-semibold text-slate-300">
-                                    {`01 — 0${stats.length}`}
+                                <span className="font-heading text-xs font-semibold tabular-nums text-slate-300">
+                                    {`01 / 0${stats.length}`}
                                 </span>
                             </div>
 

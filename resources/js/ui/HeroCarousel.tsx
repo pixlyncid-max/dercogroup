@@ -151,7 +151,7 @@ export function HeroCarousel({
                                 onClick={() => setCurrentIndex(idx)}
                                 aria-label={`Slide ${idx + 1}`}
                                 className={[
-                                    'h-3 rounded-full transition-all duration-[var(--duration-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                                    'h-3 rounded-full transition-[width,background-color,opacity] duration-[var(--duration-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
                                     isActive
                                         ? 'w-8 bg-accent'
                                         : 'w-3 bg-ink-on-dark/40 hover:bg-ink-on-dark/70',

@@ -86,7 +86,7 @@ export function Layout({ children }: HoldingLayoutProps) {
                                 on="dark"
                                 size={isSticky ? 34 : 40}
                                 priority={true}
-                                className="transition-all duration-300 motion-reduce:transition-none"
+                                className="transition-[transform,opacity] duration-300 motion-reduce:transition-none"
                             />
                         </a>
 

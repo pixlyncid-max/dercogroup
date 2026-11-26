@@ -48,11 +48,7 @@ export function ProductDetailView({
                             {/* Left 7 Cols: Service/Product Narrative & CTA Pills */}
                             <div className="lg:col-span-7 space-y-6">
                                 {product.category_label ? (
-                                    <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-xs font-bold text-ink">
-                                        <span
-                                            aria-hidden="true"
-                                            className="h-2 w-2 rounded-full bg-accent"
-                                        />
+                                    <div className="inline-flex items-center rounded-full border border-line bg-surface px-4 py-1.5 text-xs font-semibold text-ink">
                                         <span>{product.category_label}</span>
                                     </div>
                                 ) : null}
@@ -162,11 +158,7 @@ export function ProductDetailView({
                     <Reveal preset="fadeUp" className="space-y-6">
                         <div className="flex flex-wrap items-end justify-between gap-4">
                             <div className="space-y-2">
-                                <span className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-4 py-1 text-xs font-bold uppercase tracking-[0.1em] text-ink">
-                                    <span
-                                        aria-hidden="true"
-                                        className="h-2 w-2 rounded-full bg-accent"
-                                    />
+                                <span className="inline-flex items-center rounded-full border border-line bg-bg px-4 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-ink">
                                     <span>{t('products.standard_badge')}</span>
                                 </span>
                                 <Heading level={2} size="h2">
@@ -213,16 +205,16 @@ export function ProductDetailView({
                                             className="transition-colors hover:bg-surface/40"
                                         >
                                             <td className="py-4 px-6 font-heading font-bold text-accent-strong">
-                                                {spec.code || '—'}
+                                                {spec.code || '-'}
                                             </td>
                                             <td className="py-4 px-6 font-medium text-ink">
                                                 {spec.label}
                                             </td>
-                                            <td className="py-4 px-6 font-heading text-lg font-bold text-ink">
+                                            <td className="py-4 px-6 font-heading text-lg font-bold tabular-nums text-ink">
                                                 {spec.value}
                                             </td>
                                             <td className="py-4 px-6 text-muted">
-                                                {spec.unit || '—'}
+                                                {spec.unit || '-'}
                                             </td>
                                             <td className="py-4 px-6">
                                                 <span

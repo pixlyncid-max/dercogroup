@@ -341,12 +341,8 @@ export function Layout({ children }: BeramalLayoutProps) {
                                     <li key={item.key}>
                                         <Link
                                             href={item.href}
-                                            className="inline-flex min-h-[44px] items-center gap-2 text-muted-on-dark transition-colors hover:text-ink-on-dark"
+                                            className="inline-flex min-h-[44px] items-center text-muted-on-dark transition-colors hover:text-ink-on-dark"
                                         >
-                                            <span
-                                                aria-hidden="true"
-                                                className="h-1.5 w-1.5 rounded-full bg-accent-on-dark"
-                                            />
                                             <span>{item.label}</span>
                                         </Link>
                                     </li>

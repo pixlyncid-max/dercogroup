@@ -17,10 +17,9 @@ export function ContactFormContent({ data }: { data: ContactFormBlockData }) {
         >
             <div className="space-y-3 border-b border-line pb-6 text-center">
                 {data.eyebrow ? (
-                    <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1 text-xs font-bold uppercase tracking-[0.1em] text-ink">
-                        <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
-                        <span>{data.eyebrow}</span>
-                    </div>
+                    <p className="inline-flex items-center rounded-full border border-line bg-surface px-4 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-ink">
+                        {data.eyebrow}
+                    </p>
                 ) : null}
                 <Heading level={2} size="h3">
                     {data.title}

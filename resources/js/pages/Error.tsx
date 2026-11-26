@@ -45,11 +45,11 @@ export default function Error({ status = 404 }: ErrorPageProps) {
 
     const title = is404
         ? isEn
-            ? 'Page Not Found — 404'
-            : 'Halaman Tidak Ditemukan — 404'
+            ? 'Page Not Found (404)'
+            : 'Halaman Tidak Ditemukan (404)'
         : isEn
-          ? 'Internal Server Error — 500'
-          : 'Terjadi Gangguan Sistem — 500';
+          ? 'Internal Server Error (500)'
+          : 'Terjadi Gangguan Sistem (500)';
 
     const headline = is404
         ? isEn
@@ -79,7 +79,7 @@ export default function Error({ status = 404 }: ErrorPageProps) {
             <Section tone="surface" className="min-h-[70vh] flex items-center justify-center py-20">
                 <Container size="narrow" className="text-center">
                     <Reveal preset="fadeUp" className="space-y-6">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-[0.14em] text-accent-strong">
+                        <div className="inline-flex items-center rounded-md border border-line bg-bg px-3.5 py-1 text-xs font-mono font-semibold tracking-[0.06em] text-accent-strong">
                             <span>HTTP {errorStatus}</span>
                         </div>
 

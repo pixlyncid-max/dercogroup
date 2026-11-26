@@ -285,8 +285,8 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
 
                                         <div className="flex flex-1 flex-col p-5 space-y-2.5">
                                             <div className="flex flex-wrap items-center justify-between gap-2">
-                                                <span className="font-heading text-[11px] font-bold uppercase tracking-[0.12em] text-accent-strong">
-                                                    {`${String(idx + 1).padStart(2, '0')} — ${op.type_label}`}
+                                                <span className="font-heading text-[11px] font-bold uppercase tracking-[0.1em] text-accent-strong">
+                                                    {`${String(idx + 1).padStart(2, '0')} · ${op.type_label}`}
                                                 </span>
                                                 <span className="text-[11px] font-medium text-muted">
                                                     {op.location_label}
@@ -344,7 +344,7 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
                                     <li
                                         key={step.code}
                                         data-gsap-item
-                                        className="relative flex flex-col items-center rounded-[var(--radius-card)] border border-white/10 bg-white/[0.03] p-6 text-center backdrop-blur-xs transition-colors hover:border-accent/50 hover:bg-white/[0.06]"
+                                        className="relative flex flex-col items-center rounded-[var(--radius-card)] border border-white/10 bg-white/[0.04] p-6 text-center transition-colors hover:border-accent/50 hover:bg-white/[0.07]"
                                     >
                                         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent bg-surface-dark text-accent-on-dark shadow-lg">
                                             <StepIcon className="h-7 w-7" aria-hidden="true" />

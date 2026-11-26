@@ -26,13 +26,9 @@ export function HeroBlock({ data }: HeroBlockProps) {
                     {/* Left 7 Columns: Calm Typography & Cerulean Pill Actions */}
                     <Reveal preset="fadeUp" className="space-y-7 lg:col-span-7 lg:pr-6">
                         {data.eyebrow ? (
-                            <div className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-4 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-ink">
-                                <span
-                                    aria-hidden="true"
-                                    className="h-2 w-2 rounded-full bg-accent"
-                                />
-                                <span>{data.eyebrow}</span>
-                            </div>
+                            <p className="inline-flex items-center rounded-full border border-line bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-ink">
+                                {data.eyebrow}
+                            </p>
                         ) : null}
 
                         <Heading level={1} size="display">

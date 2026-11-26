@@ -75,7 +75,7 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                 className="fixed inset-x-0 top-3 z-40 px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none"
             >
                 <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
-                    <div className="flex min-h-[68px] items-center justify-between gap-3 rounded-full border border-white/15 bg-surface-dark/95 px-4 py-2 text-ink-on-dark shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-6">
+                    <div className="flex min-h-[68px] items-center justify-between gap-3 rounded-full border border-white/15 bg-surface-dark/95 px-4 py-2 text-ink-on-dark shadow-lg backdrop-blur-md sm:px-6">
                         {/* Left: Brand Logo + Compact Holding Back-Link */}
                         <div className="flex items-center gap-3 min-w-0">
                             <Link

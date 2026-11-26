@@ -37,7 +37,7 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
     const resolvedTitle =
         isFirstBlock && cmsPageTitle
             ? data.title && !data.title.toLowerCase().includes(cmsPageTitle.toLowerCase())
-                ? `${cmsPageTitle} — ${data.title}`
+                ? `${cmsPageTitle}: ${data.title}`
                 : data.title || cmsPageTitle
             : data.title;
 
@@ -155,7 +155,7 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                             <a
                                                 href={product.document_url}
                                                 download
-                                                aria-label={`${t('download_pdf')} — ${product.name}`}
+                                                aria-label={`${t('download_pdf')}: ${product.name}`}
                                                 className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-surface"
                                             >
                                                 <Download className="h-4 w-4" aria-hidden="true" />

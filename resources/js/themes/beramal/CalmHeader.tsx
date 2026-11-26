@@ -30,9 +30,8 @@ export function CalmHeader({
             <Reveal preset="fadeUp" className="mx-auto max-w-[680px] text-center space-y-4">
                 {eyebrow ? (
                     <div
-                        className={`inline-flex items-center gap-2 rounded-full border border-line ${pillBgClass} px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-ink`}
+                        className={`inline-flex items-center rounded-full border border-line ${pillBgClass} px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-ink`}
                     >
-                        <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
                         <span>{eyebrow}</span>
                     </div>
                 ) : null}
@@ -60,9 +59,8 @@ export function CalmHeader({
             <div className="max-w-[680px] space-y-4">
                 {eyebrow ? (
                     <div
-                        className={`inline-flex items-center gap-2 rounded-full border border-line ${pillBgClass} px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-ink`}
+                        className={`inline-flex items-center rounded-full border border-line ${pillBgClass} px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-ink`}
                     >
-                        <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
                         <span>{eyebrow}</span>
                     </div>
                 ) : null}

@@ -53,7 +53,7 @@ export function ValuesGridBlock({ data }: ValuesGridBlockProps) {
                                     transition={{ type: 'spring', stiffness: 300, damping: 24 }}
                                     className="group flex items-start gap-4 rounded-[var(--radius-card)] border border-line bg-bg p-6 shadow-sm transition-shadow hover:border-accent/70 hover:shadow-md"
                                 >
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent text-on-accent shadow-sm">
                                         <IconComponent className="h-6 w-6" aria-hidden="true" />
                                     </div>
 

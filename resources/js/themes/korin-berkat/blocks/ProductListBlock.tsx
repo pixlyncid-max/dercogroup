@@ -148,7 +148,7 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                                 loading="lazy"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-[#0b172a] via-[#0b172a]/20 to-transparent" />
-                                            <span className="absolute top-3.5 left-4 rounded-md bg-surface-dark/85 px-2.5 py-1 font-heading text-xs font-bold tracking-[0.1em] text-accent-on-dark backdrop-blur-xs">
+                                            <span className="absolute top-3.5 left-4 rounded-md bg-surface-dark/95 px-2.5 py-1 font-heading text-xs font-bold tabular-nums tracking-[0.08em] text-accent-on-dark">
                                                 {String(idx + 1).padStart(2, '0')}
                                             </span>
                                         </div>

@@ -20,7 +20,7 @@ return [
     'visit_website' => 'Kunjungi Situs',
     'send_message' => 'Kirim Pesan',
     'download_pdf' => 'Unduh PDF',
-    'preview_banner' => 'Pratinjau — Halaman ini berstatus draft dan belum ditayangkan ke publik.',
+    'preview_banner' => 'Pratinjau: Halaman ini berstatus draft dan belum ditayangkan ke publik.',
     'language' => 'Bahasa',
     'nav' => [
         'main' => 'Navigasi utama',

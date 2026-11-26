@@ -105,7 +105,7 @@ export function MiningLocationsSection() {
                                         <Compass className="h-3.5 w-3.5" aria-hidden="true" />
                                         <span>{primaryMine.type_label}</span>
                                     </span>
-                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-deeper/85 px-3 py-1 text-[11px] font-semibold text-accent-on-dark backdrop-blur-sm">
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-deeper/95 px-3 py-1 text-[11px] font-semibold text-accent-on-dark">
                                         <span>
                                             {t('operations.nickel.home_locations_region_badge')}
                                         </span>
@@ -133,7 +133,7 @@ export function MiningLocationsSection() {
                                     </div>
 
                                     {primaryMine.latitude != null &&
-                                    primaryMine.longitude != null ? (
+                                        primaryMine.longitude != null ? (
                                         <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-deeper px-3 py-1 font-mono text-[11px] text-accent-on-dark">
                                             <Navigation className="h-3 w-3" aria-hidden="true" />
                                             <span>

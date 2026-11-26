@@ -202,16 +202,16 @@ export function ProductDetailView({
                                             className="transition-colors hover:bg-surface/60"
                                         >
                                             <td className="py-4 px-5 font-heading font-semibold text-accent-strong">
-                                                {spec.code || '—'}
+                                                {spec.code || '-'}
                                             </td>
                                             <td className="py-4 px-5 font-medium text-ink">
                                                 {spec.label}
                                             </td>
-                                            <td className="py-4 px-5 font-heading text-lg font-semibold text-ink">
+                                            <td className="py-4 px-5 font-heading text-lg font-semibold tabular-nums text-ink">
                                                 {spec.value}
                                             </td>
                                             <td className="py-4 px-5 text-muted">
-                                                {spec.unit || '—'}
+                                                {spec.unit || '-'}
                                             </td>
                                             <td className="py-4 px-5">
                                                 <span

@@ -129,15 +129,15 @@ export function ProductDetailView({
                                 {product.specs.map((spec) => (
                                     <tr key={spec.id} className="hover:bg-slate-50 transition-colors">
                                         <td className="py-3.5 px-5 font-mono text-sm font-bold text-[#8A6212]">
-                                            {spec.code || '—'}
+                                            {spec.code || '-'}
                                         </td>
                                         <td className="py-3.5 px-5 font-medium text-slate-800">
                                             {spec.label}
                                         </td>
-                                        <td className="py-3.5 px-5 font-heading text-base font-bold text-[#101F38]">
+                                        <td className="py-3.5 px-5 font-heading text-base font-bold tabular-nums text-[#101F38]">
                                             {spec.value}
                                         </td>
-                                        <td className="py-3.5 px-5 text-slate-500">{spec.unit || '—'}</td>
+                                        <td className="py-3.5 px-5 text-slate-500">{spec.unit || '-'}</td>
                                     </tr>
                                 ))}
                             </tbody>

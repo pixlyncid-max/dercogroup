@@ -92,7 +92,7 @@ export const Logo: React.FC<LogoProps> = ({
                 aspectRatio,
                 objectFit: 'contain',
             }}
-            className={`max-w-full block select-none pointer-events-none transition-all duration-200 ${imgClassName}`}
+            className={`max-w-full block select-none pointer-events-none transition-opacity duration-200 ${imgClassName}`}
         />
     );
 

@@ -20,7 +20,7 @@ return [
     'visit_website' => 'Visit Website',
     'send_message' => 'Send Message',
     'download_pdf' => 'Download PDF',
-    'preview_banner' => 'Preview Mode — This page is in draft status and hidden from the public.',
+    'preview_banner' => 'Preview Mode: This page is in draft status and hidden from the public.',
     'language' => 'Language',
     'nav' => [
         'main' => 'Primary navigation',

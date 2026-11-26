@@ -167,11 +167,7 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
                                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                                 </Link>
                             ) : (
-                                <span className="inline-flex items-center gap-2 rounded-full bg-surface-dark px-4 py-2 text-xs font-semibold text-ink-on-dark shadow-sm">
-                                    <span
-                                        aria-hidden="true"
-                                        className="h-2 w-2 rounded-full bg-accent-on-dark"
-                                    />
+                                <span className="inline-flex items-center rounded-full bg-surface-dark px-4 py-2 text-xs font-semibold text-ink-on-dark shadow-sm">
                                     <span>{t('operations.nickel.badge')}</span>
                                 </span>
                             )
@@ -283,7 +279,7 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
                                             />
 
                                             <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-                                                <span className="inline-flex items-center gap-2 rounded-full bg-bg/95 px-3.5 py-1 text-xs font-bold text-ink shadow-sm backdrop-blur-sm">
+                                                <span className="inline-flex items-center gap-2 rounded-full bg-bg px-3.5 py-1 text-xs font-bold text-ink shadow-sm">
                                                     <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent font-heading text-[11px] text-on-accent">
                                                         {String(idx + 1).padStart(2, '0')}
                                                     </span>
@@ -292,7 +288,7 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
                                             </div>
 
                                             {op.latitude != null && op.longitude != null ? (
-                                                <span className="absolute bottom-3.5 right-4 inline-flex items-center gap-1.5 rounded-full bg-surface-deeper/90 px-3 py-1 font-mono text-[11px] text-ink-on-dark backdrop-blur-sm">
+                                                <span className="absolute bottom-3.5 right-4 inline-flex items-center gap-1.5 rounded-full bg-surface-deeper/95 px-3 py-1 font-mono text-[11px] text-ink-on-dark">
                                                     <Navigation
                                                         className="h-3 w-3 text-accent-on-dark"
                                                         aria-hidden="true"

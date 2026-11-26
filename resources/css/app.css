@@ -91,6 +91,24 @@
     font-family: var(--font-body);
 }
 
+@layer base {
+    a[href],
+    button:not(:disabled),
+    summary,
+    select:not(:disabled),
+    label[for],
+    [role='button']:not([aria-disabled='true']),
+    [role='tab']:not([aria-disabled='true']) {
+        cursor: pointer;
+    }
+
+    button:disabled,
+    select:disabled,
+    [aria-disabled='true'] {
+        cursor: not-allowed;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
