@@ -61,7 +61,7 @@ export function Layout({ children }: HoldingLayoutProps) {
             <header
                 id="section-header"
                 data-section="header"
-                className="fixed inset-x-0 top-3 z-[var(--z-index-overlay)] px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none"
+                className="fixed inset-x-0 top-3 z-40 px-4 sm:top-4 sm:px-6 lg:px-8 pointer-events-none"
             >
                 <div className="mx-auto max-w-[var(--container-wide)] pointer-events-auto">
                     <div
@@ -158,7 +158,7 @@ export function Layout({ children }: HoldingLayoutProps) {
 
             <AnimatePresence>
                 {isMobileMenuOpen ? (
-                    <div className="fixed inset-0 z-[var(--z-index-modal)] lg:hidden">
+                    <div className="fixed inset-0 z-50 lg:hidden">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
