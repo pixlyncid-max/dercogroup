@@ -35,46 +35,46 @@
          class="space-y-6">
 
         {{-- Sticky Header Bar --}}
-        <div class="sticky top-16 z-20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 md:px-6 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-white/10 shadow-sm transition-all">
+        <div class="sticky top-16 z-20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 md:px-6 rounded-xl bg-white border border-slate-200 shadow-xs">
             <div class="flex items-center gap-3.5 min-w-0">
-                <div class="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-white shadow shrink-0"
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-white shrink-0"
                      style="background-color: {{ $accentColor }};">
-                    <x-filament::icon icon="heroicon-o-wrench-screwdriver" class="w-6 h-6 text-white" />
+                    <x-filament::icon icon="heroicon-o-wrench-screwdriver" class="w-5 h-5 text-white" />
                 </div>
                 <div class="min-w-0">
                     <div class="flex items-center gap-2">
-                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate">
+                        <h1 class="text-lg font-semibold text-slate-900 tracking-tight truncate">
                             Pengaturan Website
                         </h1>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
                             {{ $tenant?->name }}
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
-                        Kelola identitas dasar perusahaan, email kontak, dan SEO bawaan mesin pencari
+                    <p class="text-xs text-slate-500 truncate">
+                        Atur nama perusahaan, email penerima kontak, dan deskripsi pencarian Google
                     </p>
                 </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-3 shrink-0">
-                {{-- Language Switcher Pill Bar --}}
-                <div class="inline-flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                {{-- Language Switcher Bar --}}
+                <div class="inline-flex items-center p-1 rounded-lg bg-slate-100 border border-slate-200">
                     <button type="button"
                             wire:click="setLocale('id')"
-                            class="relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all {{ $locale === 'id' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900' }}">
-                        <span>🇮🇩 Indonesia</span>
+                            class="relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors {{ $locale === 'id' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        <span>Bahasa Indonesia</span>
                         @if ($locale !== 'id' && $emptyId > 0)
-                            <span class="inline-flex items-center justify-center px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500 text-white" title="{{ $emptyId }} kolom belum diisi">
+                            <span class="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500 text-white" title="{{ $emptyId }} kolom belum diisi">
                                 {{ $emptyId }}
                             </span>
                         @endif
                     </button>
                     <button type="button"
                             wire:click="setLocale('en')"
-                            class="relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all {{ $locale === 'en' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900' }}">
-                        <span>🇬🇧 English</span>
+                            class="relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors {{ $locale === 'en' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                        <span>English</span>
                         @if ($locale !== 'en' && $emptyEn > 0)
-                            <span class="inline-flex items-center justify-center px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500 text-white" title="{{ $emptyEn }} kolom belum diisi">
+                            <span class="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500 text-white" title="{{ $emptyEn }} kolom belum diisi">
                                 {{ $emptyEn }}
                             </span>
                         @endif
@@ -85,7 +85,7 @@
                 <button type="button"
                         wire:click="save"
                         wire:loading.attr="disabled"
-                        class="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white shadow hover:shadow-md transition-all active:scale-[0.98] disabled:opacity-50"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                         style="background-color: {{ $accentColor }};">
                     <x-filament::icon icon="heroicon-o-check" class="w-4 h-4" />
                     <span wire:loading.remove wire:target="save">Simpan Pengaturan</span>

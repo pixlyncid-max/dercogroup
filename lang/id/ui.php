@@ -196,6 +196,16 @@ return [
         'success_body' => 'Terima kasih. Tim komersial dan kepatuhan kami telah menerima pesan Anda dan akan menanggapi pada jam kerja operasional.',
         'send_another' => 'Kirim Pesan Lain',
     ],
+    'hero' => [
+        'key_figures_heading' => 'DATA KUNCI OPERASIONAL',
+        'beramal_status_label' => 'Standar Layanan & Fasilitas Terpadu',
+        'beramal_status_badge' => '24/7',
+        'beramal_footer_cta_heading' => 'Siap mengoordinasikan layanan operasional dan fasilitas?',
+    ],
+    'mission' => [
+        'vision_heading' => 'Visi Perusahaan',
+        'governance_heading' => 'Tata Kelola & Kepemilikan Grup',
+    ],
     'foundation' => [
         'eyebrow' => 'GRUP PERTAMBANGAN & INFRASTRUKTUR ENERGI',
         'title' => 'PT Derco Bara Energy',

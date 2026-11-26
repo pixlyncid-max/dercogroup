@@ -87,6 +87,11 @@ export function MiningLocationsSection() {
                                 <img
                                     src={
                                         primaryMine.image_url ||
+                                        props.siteMedia?.[
+                                            `operation_fallback_${primaryMine.type}` as keyof NonNullable<
+                                                SharedPageProps['siteMedia']
+                                            >
+                                        ] ||
                                         FALLBACK_IMAGES[primaryMine.type] ||
                                         FALLBACK_IMAGES.mine
                                     }

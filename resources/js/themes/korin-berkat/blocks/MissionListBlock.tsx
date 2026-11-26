@@ -17,7 +17,7 @@ export interface MissionListBlockProps {
  * Right: Clean numbered "Our Mission" cards with gold Target icon badges & Motion hover.
  */
 export function MissionListBlock({ data }: MissionListBlockProps) {
-    const { locale } = useLocale();
+    const { t } = useLocale();
     const prefersReducedMotion = Boolean(useReducedMotion());
     const gridRef = useRef<HTMLDivElement | null>(null);
     useGsapStagger(gridRef, { y: 24, stagger: 0.09, duration: 0.65 });
@@ -51,7 +51,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                                     <Eye className="h-6 w-6" aria-hidden="true" />
                                 </div>
                                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-on-dark">
-                                    {locale === 'en' ? 'OUR VISION' : 'VISI PERUSAHAAN'}
+                                    {t('mission.vision_heading')}
                                 </p>
                                 <GoldRule tone="dark" className="w-12" />
                                 <p className="font-heading text-xl font-semibold leading-8 text-white">
@@ -63,9 +63,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                         {data.body ? (
                             <div className="space-y-2 border-t border-white/15 pt-5">
                                 <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent-on-dark">
-                                    {locale === 'en'
-                                        ? 'GROUP GOVERNANCE & OWNERSHIP'
-                                        : 'TATA KELOLA & KEPEMILIKAN GRUP'}
+                                    {t('mission.governance_heading')}
                                 </p>
                                 <p className="text-sm leading-6 text-slate-300">{data.body}</p>
                             </div>

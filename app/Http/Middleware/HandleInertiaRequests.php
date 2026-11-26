@@ -6,11 +6,11 @@ namespace App\Http\Middleware;
 
 use App\Domain\Company\Models\Company;
 use App\Domain\Company\Resources\CompanyResource;
+use App\Domain\Company\Services\SiteCustomizationService;
 use App\Domain\Page\Actions\BuildNavigationAction;
 use App\Domain\Page\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Lang;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -38,13 +38,16 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $locale = App::getLocale();
-        $translations = Lang::get('ui', [], $locale);
 
         /** @var Company|null $company */
         $company = $request->attributes->get('company');
         /** @var Page|null $currentPage */
         $currentPage = $request->attributes->get('currentPage');
         $allowDraftPreview = (bool) $request->attributes->get('allowDraftPreview', false);
+
+        $customizationService = app(SiteCustomizationService::class);
+        $translations = $customizationService->resolveTranslations($company, $locale);
+        $siteMedia = $customizationService->resolveSiteMedia($company);
 
         if ($company instanceof Company) {
             $company->loadMissing('contacts');
@@ -82,7 +85,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'locale' => $locale,
             'locales' => SetLocale::SUPPORTED_LOCALES,
-            'translations' => is_array($translations) ? $translations : [],
+            'translations' => $translations,
+            'siteMedia' => $siteMedia,
             'isPreview' => $allowDraftPreview,
             'company' => $companyPayload,
             'navigation' => $navigationPayload,

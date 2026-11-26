@@ -196,6 +196,16 @@ return [
         'success_body' => 'Thank you. Our commercial and compliance team has received your message and will respond during regular operating hours.',
         'send_another' => 'Send Another Message',
     ],
+    'hero' => [
+        'key_figures_heading' => 'KEY OPERATIONAL FIGURES',
+        'beramal_status_label' => 'Integrated Operational & Facility SLA',
+        'beramal_status_badge' => '24/7',
+        'beramal_footer_cta_heading' => 'Ready to coordinate operational and facility services?',
+    ],
+    'mission' => [
+        'vision_heading' => 'Corporate Vision',
+        'governance_heading' => 'Group Governance & Ownership',
+    ],
     'foundation' => [
         'eyebrow' => 'MINING & ENERGY INFRASTRUCTURE GROUP',
         'title' => 'PT Derco Bara Energy',

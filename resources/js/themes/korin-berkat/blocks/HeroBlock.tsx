@@ -137,9 +137,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
 
                             <div className="flex items-center justify-between border-b border-white/15 pb-4">
                                 <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-accent-on-dark">
-                                    {locale === 'en'
-                                        ? 'KEY OPERATIONAL FIGURES'
-                                        : 'DATA KUNCI OPERASIONAL'}
+                                    {t('hero.key_figures_heading')}
                                 </span>
                                 <span className="font-heading text-xs font-semibold tabular-nums text-slate-300">
                                     {`01 / 0${stats.length}`}

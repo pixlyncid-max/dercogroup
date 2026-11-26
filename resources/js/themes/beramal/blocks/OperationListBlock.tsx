@@ -253,8 +253,15 @@ export function OperationListBlock({ data, isFirstBlock = false }: OperationList
                             className="grid grid-cols-1 gap-6 md:grid-cols-2"
                         >
                             {operations.map((op, idx) => {
+                                const cmsFallbackKey =
+                                    `operation_fallback_${op.type}` as keyof NonNullable<
+                                        SharedPageProps['siteMedia']
+                                    >;
                                 const imageSrc =
-                                    op.image_url || FALLBACK_IMAGES[op.type] || FALLBACK_IMAGES.mine;
+                                    op.image_url ||
+                                    props.siteMedia?.[cmsFallbackKey] ||
+                                    FALLBACK_IMAGES[op.type] ||
+                                    FALLBACK_IMAGES.mine;
 
                                 return (
                                     <motion.article

@@ -292,9 +292,7 @@ export function Layout({ children }: BeramalLayoutProps) {
                                 {company?.name ?? 'PT Beramal Sukses Sejahtera'}
                             </p>
                             <p className="font-heading text-xl font-bold text-ink-on-dark sm:text-2xl">
-                                {locale === 'en'
-                                    ? 'Ready to coordinate operational and facility services?'
-                                    : 'Siap mengoordinasikan layanan operasional dan fasilitas?'}
+                                {t('hero.beramal_footer_cta_heading')}
                             </p>
                         </div>
 

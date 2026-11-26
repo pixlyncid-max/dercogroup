@@ -351,10 +351,26 @@ export type TranslationTree = {
     [key: string]: string | TranslationTree;
 };
 
+export type SiteMediaMap = Partial<
+    Record<
+        | 'hero_fallback'
+        | 'product_fallback_1'
+        | 'product_fallback_2'
+        | 'product_fallback_3'
+        | 'operation_fallback_mine'
+        | 'operation_fallback_stockpile'
+        | 'operation_fallback_facility'
+        | 'operation_fallback_port'
+        | 'operation_fallback_fleet',
+        string
+    >
+>;
+
 export interface SharedPageProps {
     locale: Locale;
     locales: Locale[];
     translations: TranslationTree;
+    siteMedia?: SiteMediaMap;
     company: SharedCompany;
     navigation: SharedNavigation;
     contactSubmitUrl?: string;

@@ -126,11 +126,17 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                     sulfurSpec && !hasSulfur
                                         ? [...baseSpecs.slice(0, 3), sulfurSpec]
                                         : baseSpecs;
+                                const cmsProductFallbacks = [
+                                    props.siteMedia?.product_fallback_1,
+                                    props.siteMedia?.product_fallback_2,
+                                    props.siteMedia?.product_fallback_3,
+                                ];
                                 const cardImage =
                                     product.image_url &&
                                     !product.image_url.includes('placeholder-image.svg')
                                         ? product.image_url
-                                        : PRODUCT_FALLBACK_IMAGES[
+                                        : cmsProductFallbacks[idx % cmsProductFallbacks.length] ||
+                                          PRODUCT_FALLBACK_IMAGES[
                                               idx % PRODUCT_FALLBACK_IMAGES.length
                                           ];
 
@@ -224,11 +230,17 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                         /* Products Page: Dark-Navy Portfolio Summary + Full Technical Specification Tables */
                         <div ref={gridRef} className="space-y-12">
                             {products.map((product, idx) => {
+                                const cmsProductFallbacks = [
+                                    props.siteMedia?.product_fallback_1,
+                                    props.siteMedia?.product_fallback_2,
+                                    props.siteMedia?.product_fallback_3,
+                                ];
                                 const cardImage =
                                     product.image_url &&
                                     !product.image_url.includes('placeholder-image.svg')
                                         ? product.image_url
-                                        : PRODUCT_FALLBACK_IMAGES[
+                                        : cmsProductFallbacks[idx % cmsProductFallbacks.length] ||
+                                          PRODUCT_FALLBACK_IMAGES[
                                               idx % PRODUCT_FALLBACK_IMAGES.length
                                           ];
 

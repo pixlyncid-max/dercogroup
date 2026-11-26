@@ -12,7 +12,7 @@ export interface MissionListBlockProps {
  * Right: Stack of rounded Mist capsules with numbered Cerulean badges.
  */
 export function MissionListBlock({ data }: MissionListBlockProps) {
-    const { locale } = useLocale();
+    const { t } = useLocale();
     const items = data.items ?? [];
 
     return (
@@ -48,7 +48,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                         {data.vision ? (
                             <div className="relative space-y-3">
                                 <span className="inline-flex items-center rounded-full border border-accent-on-dark/30 bg-accent-on-dark/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-accent-on-dark">
-                                    {locale === 'en' ? 'Corporate Vision' : 'Visi Perusahaan'}
+                                    {t('mission.vision_heading')}
                                 </span>
                                 <p className="font-heading text-xl font-medium leading-8 text-ink-on-dark">
                                     {data.vision}
@@ -59,9 +59,7 @@ export function MissionListBlock({ data }: MissionListBlockProps) {
                         {data.body ? (
                             <div className="relative border-t border-ink-on-dark/15 pt-5 space-y-2">
                                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent-on-dark">
-                                    {locale === 'en'
-                                        ? 'Group Governance & Ownership'
-                                        : 'Tata Kelola & Kepemilikan Grup'}
+                                    {t('mission.governance_heading')}
                                 </p>
                                 <p className="text-sm leading-6 text-muted-on-dark">{data.body}</p>
                             </div>

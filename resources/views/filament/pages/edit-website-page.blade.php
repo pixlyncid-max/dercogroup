@@ -39,48 +39,48 @@
          class="space-y-6">
 
         {{-- 5.1 Sticky Action Header Bar --}}
-        <div class="sticky top-16 z-20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 md:px-6 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-white/10 shadow-sm transition-all">
+        <div class="sticky top-16 z-20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 md:px-6 rounded-xl bg-white border border-slate-200 shadow-xs">
             <div class="flex items-center gap-3.5 min-w-0">
-                <div class="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-white shadow shrink-0"
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-white shrink-0"
                      style="background-color: {{ $accentColor }};">
-                    <x-filament::icon icon="heroicon-o-document-text" class="w-6 h-6 text-white" />
+                    <x-filament::icon icon="heroicon-o-document-text" class="w-5 h-5 text-white" />
                 </div>
                 <div class="min-w-0">
                     <div class="flex items-center gap-2">
-                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate">
+                        <h1 class="text-lg font-semibold text-slate-900 tracking-tight truncate">
                             {{ $this->getTitle() }}
                         </h1>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300 shrink-0">
-                            {{ count($sections) }} Section
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600 shrink-0 tabular-nums">
+                            {{ count($sections) }} bagian
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+                    <p class="text-xs text-slate-500 truncate">
                         {{ $this->getSubheading() }}
                     </p>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
                 {{-- Status Simpan Indicator --}}
-                <div class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs text-slate-500 font-medium">
+                <div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-slate-500 font-medium">
                     <span wire:loading.remove wire:target="save">
                         <template x-if="!unsaved">
-                            <span class="inline-flex items-center gap-1.5 text-emerald-600 font-semibold">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <span class="inline-flex items-center gap-1.5 text-emerald-700 font-medium">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span>Tersimpan</span>
                             </span>
                         </template>
                         <template x-if="unsaved">
-                            <span class="inline-flex items-center gap-1.5 text-amber-600 font-semibold">
-                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                                <span>Ada perubahan</span>
+                            <span class="inline-flex items-center gap-1.5 text-amber-700 font-medium">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                <span>Belum disimpan</span>
                             </span>
                         </template>
                     </span>
-                    <span wire:loading wire:target="save" class="inline-flex items-center gap-1.5 text-blue-600 font-semibold">
-                        <svg class="animate-spin w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24">
+                    <span wire:loading wire:target="save" class="inline-flex items-center gap-1.5 text-slate-600 font-medium">
+                        <svg class="animate-spin w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -91,17 +91,17 @@
                 {{-- Toggle Preview Website Button --}}
                 <button type="button"
                         @click="previewOpen = !previewOpen"
-                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:bg-slate-50 transition shadow-sm cursor-pointer">
-                    <x-filament::icon icon="heroicon-o-device-phone-mobile" class="w-4 h-4 text-slate-400" />
-                    <span x-text="previewOpen ? 'Tutup Preview' : 'Preview Website'"></span>
+                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                    <x-filament::icon icon="heroicon-o-device-phone-mobile" class="w-4 h-4 text-slate-500" />
+                    <span x-text="previewOpen ? 'Tutup Pratinjau' : 'Pratinjau'"></span>
                 </button>
 
                 {{-- Riwayat Perubahan Button --}}
                 <button type="button"
                         wire:click="openHistory"
-                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:bg-slate-50 transition shadow-sm cursor-pointer"
+                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
                         title="Lihat riwayat versi dan pulihkan perubahan">
-                    <x-filament::icon icon="heroicon-o-clock" class="w-4 h-4 text-slate-400" />
+                    <x-filament::icon icon="heroicon-o-clock" class="w-4 h-4 text-slate-500" />
                     <span>Riwayat</span>
                 </button>
 
@@ -109,8 +109,8 @@
                 <a href="{{ $publicUrl }}"
                    target="_blank"
                    rel="noopener noreferrer"
-                   class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 hover:bg-slate-50 transition shadow-sm">
-                    <x-filament::icon icon="heroicon-o-arrow-top-right-on-square" class="w-4 h-4 text-slate-400" />
+                   class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <x-filament::icon icon="heroicon-o-arrow-top-right-on-square" class="w-4 h-4 text-slate-500" />
                     <span>Lihat Website</span>
                 </a>
 
@@ -119,7 +119,7 @@
                         wire:click="save"
                         wire:loading.attr="disabled"
                         @click="unsaved = false"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all shadow-md cursor-pointer hover:shadow-lg disabled:opacity-50"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer disabled:opacity-50"
                         style="background-color: {{ $accentColor }};">
                     <svg wire:loading.remove wire:target="save" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />

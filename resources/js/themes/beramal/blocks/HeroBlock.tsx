@@ -14,7 +14,7 @@ export interface HeroBlockProps {
  */
 export function HeroBlock({ data }: HeroBlockProps) {
     const { props } = usePage<SharedPageProps>();
-    const { locale } = useLocale();
+    const { t } = useLocale();
     const heroImage = data.image ?? props.company?.featured_image_url ?? null;
     const heroAlt =
         data.image_alt || props.company?.featured_image_alt || props.company?.name || data.title;
@@ -107,13 +107,11 @@ export function HeroBlock({ data }: HeroBlockProps) {
                                             <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                                         </span>
                                         <span className="text-xs font-bold text-ink">
-                                            {locale === 'en'
-                                                ? 'Integrated Operational & Facility SLA'
-                                                : 'Standar Layanan & Fasilitas Terpadu'}
+                                            {t('hero.beramal_status_label')}
                                         </span>
                                     </div>
                                     <span className="rounded-full bg-surface px-3 py-1 font-heading text-xs font-bold text-ink">
-                                        24/7
+                                        {t('hero.beramal_status_badge')}
                                     </span>
                                 </div>
                             </div>
