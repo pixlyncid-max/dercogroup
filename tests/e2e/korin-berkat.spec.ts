@@ -17,11 +17,11 @@ test.describe('PT Korin Berkat Energy — Revision 2 Editorial Theme', () => {
         await expect(page.locator('[data-theme="korin-berkat"]')).toBeVisible();
         await expect(page.locator('h1')).toContainText('PT Korin Berkat Energy');
 
-        // 1. Verify numbered navigation items 01..05 in header (06 does NOT exist)
+        // 1. Verify numbered navigation items 01..04 in center nav (Kontak moved to right-side Hubungi Kami text link)
         const mainNav = page.getByRole('navigation', { name: /Navigasi utama/i }).first();
         await expect(mainNav).toContainText('01');
-        await expect(mainNav).toContainText('05');
-        await expect(mainNav).not.toContainText('06');
+        await expect(mainNav).toContainText('04');
+        await expect(mainNav).not.toContainText('05');
         await expect(mainNav).not.toContainText('Mutu & Kepatuhan');
 
         // 2. Beranda: Verify section titles after hero are visually hidden (sr-only)
@@ -68,8 +68,8 @@ test.describe('PT Korin Berkat Energy — Revision 2 Editorial Theme', () => {
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/korin-berkat-energy\/operasi$/);
         await expect(page.locator('h1')).toContainText('Jaringan Operasi PT Korin Berkat Energy');
 
-        // 6. Visit 05 Kontak
-        await mainNav.getByRole('link', { name: /Kontak/i }).click();
+        // 6. Visit Hubungi Kami via right-side text link
+        await page.locator('header').getByRole('link', { name: /Hubungi Kami/i }).first().click();
         await expect(page).toHaveURL(/\/id\/bisnis-kami\/korin-berkat-energy\/kontak$/);
         await expect(page.locator('h1')).toContainText('Kontak PT Korin Berkat Energy');
 
@@ -84,8 +84,8 @@ test.describe('PT Korin Berkat Energy — Revision 2 Editorial Theme', () => {
         await page.goto('/en/our-business/korin-berkat-energy');
         const enNav = page.getByRole('navigation', { name: /Primary navigation/i }).first();
         await expect(enNav).toContainText('01');
-        await expect(enNav).toContainText('05');
-        await expect(enNav).not.toContainText('06');
+        await expect(enNav).toContainText('04');
+        await expect(enNav).not.toContainText('05');
         await expect(enNav).not.toContainText('Compliance');
 
         // Back link to Holding in top thin navy bar

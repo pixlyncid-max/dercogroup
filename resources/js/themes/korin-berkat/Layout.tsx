@@ -39,6 +39,9 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
     const isPreview = Boolean(props.isPreview);
 
     const homeHref = items[0]?.href ?? `/${locale}`;
+    const contactItem = items.find((item) => item.key === 'contact');
+    const centerNavItems = items.filter((item) => item.key !== 'contact');
+    const isContactActive = Boolean(contactItem?.active);
 
     return (
         <div
@@ -108,145 +111,161 @@ export function Layout({ children }: KorinBerkatLayoutProps) {
                             aria-label={t('nav.main')}
                             className="hidden xl:flex xl:items-center xl:gap-5"
                         >
-                            {items.map((item, idx) => {
-                                const indexCode = formatEditorialIndex(idx);
+                                {
+                                    centerNavItems.map((item, idx) => {
+                                        const indexCode = formatEditorialIndex(idx);
 
-                                return (
-                                    <Link
-                                        key={item.key}
-                                        href={item.href}
-                                        aria-current={item.active ? 'page' : undefined}
-                                        className={`group relative inline-flex min-h-11 items-center gap-1.5 py-2 text-[13px] transition-colors ${item.active
-                                            ? 'font-bold text-accent-on-dark'
-                                            : 'font-medium text-slate-200 hover:text-white'
-                                            }`}
-                                    >
-                                        <span
-                                            className={`font-heading text-[10px] font-bold tracking-[0.08em] ${item.active
-                                                ? 'text-accent-on-dark'
-                                                : 'text-slate-400 group-hover:text-accent-on-dark'
-                                                }`}
-                                        >
-                                            {indexCode}
-                                        </span>
-                                        <span>{item.label}</span>
-                                        {item.active ? (
-                                            <motion.span
-                                                layoutId="kbe-nav-active-underline"
-                                                aria-hidden="true"
-                                                transition={{
-                                                    type: 'spring',
-                                                    stiffness: 380,
-                                                    damping: 32,
-                                                }}
-                                                className="absolute inset-x-0 bottom-1 h-[2px] rounded-full bg-accent"
-                                            />
-                                        ) : (
-                                            <span
-                                                aria-hidden="true"
-                                                className="absolute inset-x-0 bottom-1 h-[2px] scale-x-0 rounded-full bg-accent/60 transition-transform duration-200 group-hover:scale-x-100"
-                                            />
-                                        )}
-                                    </Link>
-                                );
-                            })}
-                        </nav>
-
-                        {/* Right: Language Switch + Gold Pill CTA */}
-                        <div className="hidden xl:flex xl:items-center xl:gap-3.5">
-                            <LanguageSwitch tone="dark" />
-                            <Link
-                                href={contactUrl}
-                                className="kbe-btn-gold min-h-[40px] !rounded-full px-4 py-2 text-xs"
-                            >
-                                <span>{t('contact_us')}</span>
-                                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                            </Link>
-                        </div>
-
-                        {/* Mobile Controls */}
-                        <div className="flex items-center gap-2 xl:hidden">
-                            <LanguageSwitch tone="dark" />
-                            <button
-                                type="button"
-                                onClick={toggleMobileMenu}
-                                aria-expanded={isMobileMenuOpen}
-                                aria-controls="korin-berkat-mobile-nav"
-                                aria-label={
-                                    isMobileMenuOpen ? t('nav.close_menu') : t('nav.open_menu')
-                                }
-                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-accent hover:bg-white/10"
-                            >
-                                {isMobileMenuOpen ? (
-                                    <X className="h-5 w-5" aria-hidden="true" />
-                                ) : (
-                                    <Menu className="h-5 w-5" aria-hidden="true" />
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Floating Mobile Drawer */}
-                    <AnimatePresence>
-                        {isMobileMenuOpen ? (
-                            <motion.div
-                                id="korin-berkat-mobile-nav"
-                                initial="hidden"
-                                animate="visible"
-                                exit="hidden"
-                                variants={resolvePreset('fadeIn', prefersReducedMotion)}
-                                className="mt-3 rounded-3xl border border-white/15 bg-surface-dark/98 p-5 text-ink-on-dark shadow-2xl backdrop-blur-md xl:hidden"
-                            >
-                                <nav aria-label={t('nav.main')} className="divide-y divide-white/10">
-                                    {items.map((item, idx) => (
-                                        <Link
-                                            key={item.key}
-                                            href={item.href}
-                                            onClick={closeMobileMenu}
-                                            aria-current={item.active ? 'page' : undefined}
-                                            className={`flex min-h-11 items-center justify-between py-3 text-sm transition-colors ${item.active
-                                                ? 'font-bold text-accent-on-dark'
-                                                : 'font-medium text-slate-200 hover:text-white'
-                                                }`}
-                                        >
-                                            <span className="inline-flex items-center gap-3">
-                                                <span className="font-heading text-xs font-bold text-accent-on-dark">
-                                                    {formatEditorialIndex(idx)}
+                                        return (
+                                            <Link
+                                                key={item.key}
+                                                href={item.href}
+                                                aria-current={item.active ? 'page' : undefined}
+                                                className={`group relative inline-flex min-h-11 items-center gap-1.5 py-2 text-[13px] transition-colors ${item.active
+                                                    ? 'font-bold text-accent-on-dark'
+                                                    : 'font-medium text-slate-200 hover:text-white'
+                                                    }`}
+                                            >
+                                                <span
+                                                    className={`font-heading text-[10px] font-bold tracking-[0.08em] ${item.active
+                                                        ? 'text-accent-on-dark'
+                                                        : 'text-slate-400 group-hover:text-accent-on-dark'
+                                                        }`}
+                                                >
+                                                    {indexCode}
                                                 </span>
                                                 <span>{item.label}</span>
-                                            </span>
-                                            {item.active ? (
-                                                <span
-                                                    aria-hidden="true"
-                                                    className="h-2 w-2 rounded-full bg-accent"
-                                                />
-                                            ) : null}
-                                        </Link>
-                                    ))}
+                                                {item.active ? (
+                                                    <motion.span
+                                                        layoutId="kbe-nav-active-underline"
+                                                        aria-hidden="true"
+                                                        transition={{
+                                                            type: 'spring',
+                                                            stiffness: 380,
+                                                            damping: 32,
+                                                        }}
+                                                        className="absolute inset-x-0 bottom-1 h-[2px] rounded-full bg-accent"
+                                                    />
+                                                ) : (
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className="absolute inset-x-0 bottom-1 h-[2px] scale-x-0 rounded-full bg-accent/60 transition-transform duration-200 group-hover:scale-x-100"
+                                                    />
+                                                )}
+                                            </Link>
+                                        );
+                                    })
+                                }
+                        </nav>
+
+                            {/* Right: Language Switch + Clean Contact Text Link */}
+                            <div className="hidden xl:flex xl:items-center xl:gap-5">
+                                <LanguageSwitch tone="dark" />
+                                <Link
+                                    href={contactUrl}
+                                    aria-current={isContactActive ? 'page' : undefined}
+                                    className={`relative inline-flex min-h-11 items-center py-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${isContactActive
+                                            ? 'font-bold text-accent-on-dark'
+                                            : 'font-semibold text-slate-200 hover:text-white'
+                                        }`}
+                                >
+                                    <span>{t('contact_us')}</span>
+                                    {isContactActive ? (
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute inset-x-0 bottom-1 h-[2px] rounded-full bg-accent"
+                                        />
+                                    ) : null}
+                                </Link>
+                            </div>
+
+                            {/* Mobile Controls */}
+                            <div className="flex items-center gap-2 xl:hidden">
+                                <LanguageSwitch tone="dark" />
+                                <button
+                                    type="button"
+                                    onClick={toggleMobileMenu}
+                                    aria-expanded={isMobileMenuOpen}
+                                    aria-controls="korin-berkat-mobile-nav"
+                                    aria-label={
+                                        isMobileMenuOpen ? t('nav.close_menu') : t('nav.open_menu')
+                                    }
+                                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-accent hover:bg-white/10"
+                                >
+                                    {isMobileMenuOpen ? (
+                                        <X className="h-5 w-5" aria-hidden="true" />
+                                    ) : (
+                                        <Menu className="h-5 w-5" aria-hidden="true" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Floating Mobile Drawer */}
+                        <AnimatePresence>
+                            {isMobileMenuOpen ? (
+                                <motion.div
+                                    id="korin-berkat-mobile-nav"
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                    variants={resolvePreset('fadeIn', prefersReducedMotion)}
+                                    className="mt-3 rounded-3xl border border-white/15 bg-surface-dark/98 p-5 text-ink-on-dark shadow-2xl backdrop-blur-md xl:hidden"
+                                >
+                                    <nav aria-label={t('nav.main')} className="divide-y divide-white/10">
+                                            {
+                                                centerNavItems.map((item, idx) => (
+                                                    <Link
+                                                        key={item.key}
+                                                        href={item.href}
+                                                        onClick={closeMobileMenu}
+                                                        aria-current={item.active ? 'page' : undefined}
+                                                        className={`flex min-h-11 items-center justify-between py-3 text-sm transition-colors ${item.active
+                                                            ? 'font-bold text-accent-on-dark'
+                                                            : 'font-medium text-slate-200 hover:text-white'
+                                                            }`}
+                                                    >
+                                                        <span className="inline-flex items-center gap-3">
+                                                            <span className="font-heading text-xs font-bold text-accent-on-dark">
+                                                                {formatEditorialIndex(idx)}
+                                                            </span>
+                                                            <span>{item.label}</span>
+                                                        </span>
+                                                        {item.active ? (
+                                                            <span
+                                                                aria-hidden="true"
+                                                                className="h-2 w-2 rounded-full bg-accent"
+                                                            />
+                                                        ) : null}
+                                                    </Link>
+                                                ))
+                                            }
                                 </nav>
 
-                                <div className="mt-4 space-y-2.5 border-t border-white/10 pt-4">
-                                    <Link
-                                        href={contactUrl}
-                                        onClick={closeMobileMenu}
-                                        className="kbe-btn-gold w-full justify-center !rounded-full"
-                                    >
-                                        <span>{t('contact_us')}</span>
-                                        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                                    </Link>
-                                    <a
-                                        href={holdingUrl}
-                                        onClick={closeMobileMenu}
-                                        className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-accent hover:text-accent-on-dark"
-                                    >
-                                        <ArrowLeft className="h-3.5 w-3.5 text-accent-on-dark" aria-hidden="true" />
-                                        <span>{t('back_to_holding')}</span>
-                                    </a>
-                                </div>
-                            </motion.div>
-                        ) : null}
-                    </AnimatePresence>
-                </div>
+                                    <div className="mt-4 space-y-2.5 border-t border-white/10 pt-4">
+                                        <Link
+                                            href={contactUrl}
+                                            onClick={closeMobileMenu}
+                                            aria-current={isContactActive ? 'page' : undefined}
+                                            className={`inline-flex min-h-[44px] w-full items-center justify-center rounded-xl px-4 py-2 text-sm transition-colors ${isContactActive
+                                                    ? 'font-bold text-accent-on-dark'
+                                                    : 'font-semibold text-slate-200 hover:bg-white/5 hover:text-white'
+                                                }`}
+                                        >
+                                            <span>{t('contact_us')}</span>
+                                        </Link>
+                                        <a
+                                            href={holdingUrl}
+                                            onClick={closeMobileMenu}
+                                            className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 transition-colors hover:border-accent hover:text-accent-on-dark"
+                                        >
+                                            <ArrowLeft className="h-3.5 w-3.5 text-accent-on-dark" aria-hidden="true" />
+                                            <span>{t('back_to_holding')}</span>
+                                        </a>
+                                    </div>
+                                </motion.div>
+                            ) : null}
+                        </AnimatePresence>
+                    </div>
             </header>
 
             <main ref={mainRef} id="main-content" className="flex-1">
