@@ -1249,15 +1249,86 @@ class DatabaseSeeder extends Seeder
                     ],
                     'icon_name' => 'shield',
                 ],
+            ] : ($isBeramal ? [
+                [
+                    'title' => [
+                        'id' => 'Fokus pada nikel berkualitas tinggi',
+                        'en' => 'Focusing on high-quality nickel',
+                    ],
+                    'description' => [
+                        'id' => 'Memprioritaskan bijih nikel yang memenuhi spesifikasi pelanggan dan smelter.',
+                        'en' => 'Prioritizing ore that meets customer and smelter specifications.',
+                    ],
+                    'icon_name' => 'gem',
+                ],
+                [
+                    'title' => [
+                        'id' => 'Menjaga dan meningkatkan hubungan pelanggan',
+                        'en' => 'Maintaining and enhancing customer relationship',
+                    ],
+                    'description' => [
+                        'id' => 'Membangun kemitraan jangka panjang dengan pembeli di seluruh Sulawesi.',
+                        'en' => 'Building long-term partnerships with buyers across Sulawesi.',
+                    ],
+                    'icon_name' => 'handshake',
+                ],
+                [
+                    'title' => [
+                        'id' => 'Perluasan jaringan distribusi pasar',
+                        'en' => 'Expansion of market distribution network',
+                    ],
+                    'description' => [
+                        'id' => 'Menjangkau lebih banyak pelanggan domestik melalui cakupan distribusi yang lebih luas.',
+                        'en' => 'Reaching more domestic customers through a wider distribution reach.',
+                    ],
+                    'icon_name' => 'network',
+                ],
+                [
+                    'title' => [
+                        'id' => 'Meningkatkan efisiensi operasional',
+                        'en' => 'Enhancing operational efficiency',
+                    ],
+                    'description' => [
+                        'id' => 'Menyederhanakan proses dan logistik agar biaya tetap kompetitif.',
+                        'en' => 'Streamlining processes and logistics to keep costs competitive.',
+                    ],
+                    'icon_name' => 'trending-up',
+                ],
+                [
+                    'title' => [
+                        'id' => 'Peningkatan kualitas SDM yang berdaya saing',
+                        'en' => 'Improvement of human resources quality with competitive edge',
+                    ],
+                    'description' => [
+                        'id' => 'Mengembangkan tenaga profesional terampil yang menjadi keunggulan perusahaan.',
+                        'en' => 'Developing skilled professionals who set us apart.',
+                    ],
+                    'icon_name' => 'graduation-cap',
+                ],
+                [
+                    'title' => [
+                        'id' => 'Ekspansi lini bisnis ke sektor pasar yang lebih luas',
+                        'en' => 'Business line expansion to broaden market sectors',
+                    ],
+                    'description' => [
+                        'id' => 'Mengembangkan bisnis di luar bijih nikel menuju mineral lain dan segmen pasar baru.',
+                        'en' => 'Extending beyond nickel ore into other minerals and market segments.',
+                    ],
+                    'icon_name' => 'bar-chart-3',
+                ],
             ] : [
                 ['title' => ['id' => 'Kontrol Kualitas Berlapis [PLACEHOLDER]', 'en' => 'Multi-Stage Quality Control [PLACEHOLDER]'], 'description' => ['id' => 'Pengambilan sampel berkala dari pit hingga pemuatan tongkang. [PLACEHOLDER]', 'en' => 'Periodic sampling from pit face through barge loading. [PLACEHOLDER]'], 'icon_name' => 'check-circle-2'],
                 ['title' => ['id' => 'Transparansi Dokumen [PLACEHOLDER]', 'en' => 'Document Transparency [PLACEHOLDER]'], 'description' => ['id' => 'Setiap pengiriman dilengkapi LHV, SKAB, dan COA resmi. [PLACEHOLDER]', 'en' => 'Every shipment is accompanied by official LHV, SKAB, and COA records. [PLACEHOLDER]'], 'icon_name' => 'file-check'],
                 ['title' => ['id' => 'Keselamatan Kerja (K3) [PLACEHOLDER]', 'en' => 'Occupational Safety (HSE) [PLACEHOLDER]'], 'description' => ['id' => 'Penerapan prosedur keselamatan operasional tanpa kompromi di seluruh fasilitas. [PLACEHOLDER]', 'en' => 'Uncompromising safety procedures enforced across all operational facilities. [PLACEHOLDER]'], 'icon_name' => 'shield'],
-            ];
+            ]);
 
             $this->createBlock($about, $sortOrder++, BlockType::ValuesGrid, [
-                'eyebrow' => $isKorinBerkat ? ['id' => 'PRINSIP KORPORASI', 'en' => 'CORPORATE PRINCIPLES'] : ['id' => 'STANDAR KERJA', 'en' => 'OPERATING STANDARDS'],
-                'title' => $isKorinBerkat ? ['id' => 'Nilai Perusahaan [PLACEHOLDER]', 'en' => 'Our Values [PLACEHOLDER]'] : ['id' => 'Prinsip Pelaksanaan Operasional [PLACEHOLDER]', 'en' => 'Operational Execution Principles [PLACEHOLDER]'],
+                'eyebrow' => $isKorinBerkat
+                    ? ['id' => 'PRINSIP KORPORASI', 'en' => 'CORPORATE PRINCIPLES']
+                    : ($isBeramal ? ['id' => 'STRATEGI BISNIS', 'en' => 'BUSINESS STRATEGY'] : ['id' => 'STANDAR KERJA', 'en' => 'OPERATING STANDARDS']),
+                'title' => $isKorinBerkat
+                    ? ['id' => 'Nilai Perusahaan [PLACEHOLDER]', 'en' => 'Our Values [PLACEHOLDER]']
+                    : ($isBeramal ? ['id' => 'Strategi Bisnis', 'en' => 'Business Strategy'] : ['id' => 'Prinsip Pelaksanaan Operasional [PLACEHOLDER]', 'en' => 'Operational Execution Principles [PLACEHOLDER]']),
                 'items' => $valuesItems,
             ]);
         }
