@@ -107,13 +107,25 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                         /* Home Page: Dark-Navy Executive Product Cards (no download or arrow-right icons) */
                         <div ref={gridRef} className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                             {products.map((product, idx) => {
-                                const highlightSpecs = product.specs
-                                    .filter((spec) => spec.is_highlight)
-                                    .slice(0, 3);
-                                const inlineSpecs =
+                                const highlightSpecs = product.specs.filter(
+                                    (spec) => spec.is_highlight,
+                                );
+                                const baseSpecs =
                                     highlightSpecs.length > 0
-                                        ? highlightSpecs
-                                        : product.specs.slice(0, 3);
+                                        ? highlightSpecs.slice(0, 4)
+                                        : product.specs.slice(0, 4);
+                                const sulfurSpec = product.specs.find(
+                                    (spec) =>
+                                        spec.code?.toUpperCase() === 'TS' ||
+                                        /sulfur/i.test(spec.label),
+                                );
+                                const hasSulfur = sulfurSpec
+                                    ? baseSpecs.some((spec) => spec.id === sulfurSpec.id)
+                                    : true;
+                                const inlineSpecs =
+                                    sulfurSpec && !hasSulfur
+                                        ? [...baseSpecs.slice(0, 3), sulfurSpec]
+                                        : baseSpecs;
                                 const cardImage =
                                     product.image_url &&
                                     !product.image_url.includes('placeholder-image.svg')
@@ -173,26 +185,35 @@ export function ProductListBlock({ data, isFirstBlock = false }: ProductListBloc
                                                 </p>
                                             </div>
 
-                                            {/* 3 Inline Highlight Specs */}
-                                            <dl className="grid grid-cols-3 gap-2.5 rounded-lg border border-white/10 bg-white/5 p-3">
-                                                {inlineSpecs.map((spec) => (
-                                                    <div
-                                                        key={spec.id}
-                                                        className="border-l border-accent/40 pl-2.5 first:border-l-0 first:pl-0"
-                                                    >
-                                                        <dt className="truncate text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">
-                                                            {spec.code || spec.label}
-                                                        </dt>
-                                                        <dd className="mt-0.5 font-heading text-sm font-bold text-white tabular-nums">
-                                                            {spec.value}
-                                                            {spec.unit ? (
-                                                                <span className="ml-0.5 font-body text-[10px] font-normal text-accent-on-dark">
-                                                                    {spec.unit}
-                                                                </span>
-                                                            ) : null}
-                                                        </dd>
-                                                    </div>
-                                                ))}
+                                            {/* Inline Highlight Specs (CV, TM, ASH, SULFUR) */}
+                                            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-lg border border-white/10 bg-white/5 p-3.5">
+                                                {inlineSpecs.map((spec) => {
+                                                    const isSulfur =
+                                                        spec.code?.toUpperCase() === 'TS' ||
+                                                        /sulfur/i.test(spec.label);
+                                                    const specHeading = isSulfur
+                                                        ? 'SULFUR'
+                                                        : spec.code || spec.label;
+
+                                                    return (
+                                                        <div
+                                                            key={spec.id}
+                                                            className="border-l-2 border-accent/45 pl-2.5"
+                                                        >
+                                                            <dt className="truncate text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">
+                                                                {specHeading}
+                                                            </dt>
+                                                            <dd className="mt-0.5 font-heading text-sm font-bold text-white tabular-nums">
+                                                                {spec.value}
+                                                                {spec.unit ? (
+                                                                    <span className="ml-0.5 font-body text-[10px] font-normal text-accent-on-dark">
+                                                                        {spec.unit}
+                                                                    </span>
+                                                                ) : null}
+                                                            </dd>
+                                                        </div>
+                                                    );
+                                                })}
                                             </dl>
                                         </div>
                                     </motion.article>
