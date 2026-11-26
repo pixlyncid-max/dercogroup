@@ -130,6 +130,11 @@ return [
             'interactive_hint' => 'Select a facility node to inspect location details',
             'stage_label' => 'Operational Node',
             'active_status' => 'Active Operation',
+            'home_locations_eyebrow' => 'NICKEL MINING LOCATIONS',
+            'home_locations_heading' => 'Nickel Laterite Mining Sites & Operational Facilities',
+            'home_locations_description' => 'Active laterite nickel mining pits, ETO/EFO stockpiles, XRF grade-control laboratory, and barge-loading jetty along the Southeast Sulawesi corridor.',
+            'home_locations_cta' => 'Explore Full Operations',
+            'home_locations_region_badge' => 'Southeast Sulawesi Nickel Corridor',
             'params' => [
                 'ore_type' => [
                     'label' => 'Ore Horizon Profile',

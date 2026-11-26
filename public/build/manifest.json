@@ -244,7 +244,7 @@
     "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-COtsWCQe.css",
+    "file": "assets/app-BVTb8aXW.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -262,7 +262,7 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-rCofwSBE.js",
+    "file": "assets/app-ClSmuN8V.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
@@ -282,7 +282,7 @@
       "resources/js/pages/ThemedPage.tsx"
     ],
     "css": [
-      "assets/app-COtsWCQe.css"
+      "assets/app-BVTb8aXW.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -342,7 +342,7 @@
     ]
   },
   "resources/js/pages/Error.tsx": {
-    "file": "assets/Error-CR_QguIk.js",
+    "file": "assets/Error-DB300hVA.js",
     "name": "Error",
     "src": "resources/js/pages/Error.tsx",
     "isDynamicEntry": true,
@@ -354,7 +354,7 @@
       "_vendor-motion-CFgCXzNT.js"
     ],
     "css": [
-      "assets/app-COtsWCQe.css"
+      "assets/app-BVTb8aXW.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -426,7 +426,7 @@
     ]
   },
   "resources/js/pages/ThemedPage.tsx": {
-    "file": "assets/ThemedPage-BWNSJW1s.js",
+    "file": "assets/ThemedPage-DSWwXr1F.js",
     "name": "ThemedPage",
     "src": "resources/js/pages/ThemedPage.tsx",
     "isDynamicEntry": true,
@@ -438,7 +438,7 @@
       "_vendor-icons-BCHobqn_.js"
     ],
     "css": [
-      "assets/app-COtsWCQe.css"
+      "assets/app-BVTb8aXW.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -498,7 +498,7 @@
     ]
   },
   "resources/js/themes/beramal/index.ts": {
-    "file": "assets/theme-beramal-B5q3EWRb.js",
+    "file": "assets/theme-beramal-D67-9xzL.js",
     "name": "theme-beramal",
     "src": "resources/js/themes/beramal/index.ts",
     "isDynamicEntry": true,

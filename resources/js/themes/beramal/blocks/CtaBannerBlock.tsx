@@ -1,6 +1,8 @@
+import { usePage } from '@inertiajs/react';
 import { ArrowRight, Phone } from 'lucide-react';
-import type { CtaBannerBlockData } from '@/core';
+import type { CtaBannerBlockData, SharedPageProps } from '@/core';
 import { Button, Container, Heading, Reveal, Section } from '@/ui';
+import { MiningLocationsSection } from '../MiningLocationsSection';
 
 export interface CtaBannerBlockProps {
     data: CtaBannerBlockData;
@@ -9,10 +11,16 @@ export interface CtaBannerBlockProps {
 /**
  * Beramal Dark Water Rounded CTA Banner ("Calm Flow", DESIGN.md Section 7.4).
  * Enclosed 24px-rounded Dark Water card with thin wave pattern and Cerulean pill button.
+ * On Beranda, precedes the CTA with the Nickel Mining Locations showcase section.
  */
 export function CtaBannerBlock({ data }: CtaBannerBlockProps) {
+    const { props } = usePage<SharedPageProps>();
+    const isHomePage = props.page?.key === 'home';
+
     return (
-        <Section tone="default">
+        <>
+            {isHomePage ? <MiningLocationsSection /> : null}
+            <Section tone="default">
             <Container>
                 <Reveal
                     preset="fadeUp"
@@ -80,5 +88,6 @@ export function CtaBannerBlock({ data }: CtaBannerBlockProps) {
                 </Reveal>
             </Container>
         </Section>
+        </>
     );
 }

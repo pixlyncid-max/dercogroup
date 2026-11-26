@@ -130,6 +130,11 @@ return [
             'interactive_hint' => 'Pilih titik fasilitas untuk meninjau detail lokasi',
             'stage_label' => 'Titik Operasi',
             'active_status' => 'Operasional Aktif',
+            'home_locations_eyebrow' => 'LOKASI PENAMBANGAN NIKEL',
+            'home_locations_heading' => 'Lokasi Penambangan & Fasilitas Operasi Nikel Laterit',
+            'home_locations_description' => 'Titik penambangan bijih nikel laterit, stockpile ETO/EFO, laboratorium XRF, dan terminal jetty pemuatan tongkang di koridor Sulawesi Tenggara.',
+            'home_locations_cta' => 'Lihat Alur Operasi Lengkap',
+            'home_locations_region_badge' => 'Koridor Nikel Sulawesi Tenggara',
             'params' => [
                 'ore_type' => [
                     'label' => 'Profil Lapisan Bijih',
