@@ -41,11 +41,15 @@ final class ImageSource
             return ['url' => $path, 'srcset' => null];
         }
 
+        if (str_starts_with($path, '/storage/')) {
+            return ['url' => '/media/'.ltrim(substr($path, 9), '/'), 'srcset' => null];
+        }
+
         if (str_starts_with($path, '/')) {
             return ['url' => $path, 'srcset' => self::publicSrcset($path)];
         }
 
-        return ['url' => '/storage/'.ltrim($path, '/'), 'srcset' => null];
+        return ['url' => '/media/'.ltrim($path, '/'), 'srcset' => null];
     }
 
     private static function publicSrcset(string $path): ?string

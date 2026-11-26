@@ -144,9 +144,11 @@ class SiteCustomizationService
             }
 
             if (str_starts_with($rawPath, 'http://') || str_starts_with($rawPath, 'https://') || str_starts_with($rawPath, '/')) {
-                $resolved[$slot] = $rawPath;
+                $resolved[$slot] = str_starts_with($rawPath, '/storage/')
+                    ? '/media/'.ltrim(substr($rawPath, 9), '/')
+                    : $rawPath;
             } else {
-                $resolved[$slot] = '/storage/'.ltrim($rawPath, '/');
+                $resolved[$slot] = '/media/'.ltrim($rawPath, '/');
             }
         }
 

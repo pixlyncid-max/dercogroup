@@ -239,7 +239,7 @@ class ManageSiteTextsAndMedia extends Page
                 return $path;
             }
 
-            return '/storage/'.ltrim($path, '/');
+            return '/media/'.ltrim($path, '/');
         }
 
         $slots = SiteCustomizationService::mediaSlots();

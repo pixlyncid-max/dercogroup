@@ -73,3 +73,11 @@ it('shares tenant-scoped siteMedia overrides to Inertia public pages', function 
             ->where('siteMedia.operation_fallback_mine', '/images/placeholders/aerial-pit-1280.webp')
         );
 });
+
+it('serves public storage files via /media route without requiring public/storage symlink', function (): void {
+    $this->get('/media/documents/sertifikat-kepatuhan-id.pdf')
+        ->assertOk();
+
+    $this->get('/media/../.env')
+        ->assertNotFound();
+});

@@ -12,9 +12,27 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [HomeController::class, 'redirectRoot'])->name('root');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Public storage media route for shared hosting (works on Hostinger without public/storage symlink)
+Route::get('/media/{path}', function (string $path) {
+    $cleanPath = ltrim(str_replace('\\', '/', $path), '/');
+    if ($cleanPath === '' || str_contains($cleanPath, '..')) {
+        abort(404);
+    }
+
+    $disk = Storage::disk('public');
+    if (! $disk->exists($cleanPath)) {
+        abort(404);
+    }
+
+    return response()->file($disk->path($cleanPath), [
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('media.public');
 
 Route::get('/artisan-setup', function (Request $request) {
     $expectedToken = config('app.key');
