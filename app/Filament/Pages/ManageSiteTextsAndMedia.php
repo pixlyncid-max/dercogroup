@@ -239,7 +239,7 @@ class ManageSiteTextsAndMedia extends Page
                 return $path;
             }
 
-            return Storage::disk('public')->url($path);
+            return '/storage/'.ltrim($path, '/');
         }
 
         $slots = SiteCustomizationService::mediaSlots();
@@ -284,21 +284,15 @@ class ManageSiteTextsAndMedia extends Page
         foreach (array_keys(SiteCustomizationService::mediaSlots()) as $slot) {
             $upload = $this->tempMediaUploads[$slot] ?? null;
             if ($upload instanceof UploadedFile) {
-                $result = $mediaAction->execute(
-                    file: $upload,
-                    directory: "site-media/{$company->slug}",
-                    maxKilobytes: 5120,
-                    convertToWebp: true,
-                );
-
-                if ($result['status'] === 'success') {
+                try {
+                    $result = $mediaAction->execute($upload);
                     $this->mediaPaths[$slot] = $result['path'];
                     $this->tempMediaUploads[$slot] = null;
-                } else {
+                } catch (\Illuminate\Validation\ValidationException $e) {
                     Notification::make()
                         ->danger()
                         ->title("Gagal Mengunggah Gambar ({$slot})")
-                        ->body($result['message'])
+                        ->body($e->getMessage())
                         ->send();
 
                     return;

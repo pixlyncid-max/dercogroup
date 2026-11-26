@@ -45,7 +45,7 @@ final class ImageSource
             return ['url' => $path, 'srcset' => self::publicSrcset($path)];
         }
 
-        return ['url' => Storage::disk('public')->url($path), 'srcset' => null];
+        return ['url' => '/storage/'.ltrim($path, '/'), 'srcset' => null];
     }
 
     private static function publicSrcset(string $path): ?string

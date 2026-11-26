@@ -146,7 +146,7 @@ class SiteCustomizationService
             if (str_starts_with($rawPath, 'http://') || str_starts_with($rawPath, 'https://') || str_starts_with($rawPath, '/')) {
                 $resolved[$slot] = $rawPath;
             } else {
-                $resolved[$slot] = Storage::disk('public')->url($rawPath);
+                $resolved[$slot] = '/storage/'.ltrim($rawPath, '/');
             }
         }
 

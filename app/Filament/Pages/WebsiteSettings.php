@@ -205,21 +205,15 @@ class WebsiteSettings extends Page
 
         // Handle OG Image upload
         if ($this->tempOgImage instanceof UploadedFile) {
-            $result = app(ProcessUploadedMediaAction::class)->execute(
-                file: $this->tempOgImage,
-                directory: 'seo',
-                maxKilobytes: 5120, // 5MB
-                convertToWebp: true,
-            );
-
-            if ($result['status'] === 'success') {
+            try {
+                $result = app(ProcessUploadedMediaAction::class)->execute($this->tempOgImage);
                 $this->seo_og_image = $result['path'];
                 $this->tempOgImage = null;
-            } else {
+            } catch (\Illuminate\Validation\ValidationException $e) {
                 Notification::make()
                     ->danger()
                     ->title('Gagal Mengunggah Gambar Pratinjau')
-                    ->body($result['message'])
+                    ->body($e->getMessage())
                     ->send();
 
                 return;
