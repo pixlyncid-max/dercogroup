@@ -1,6 +1,6 @@
 {
-  "_theme-holding-CCp4NJgg.js": {
-    "file": "assets/theme-holding-CCp4NJgg.js",
+  "_theme-holding-CeY4-25Y.js": {
+    "file": "assets/theme-holding-CeY4-25Y.js",
     "name": "theme-holding",
     "isDynamicEntry": true,
     "imports": [
@@ -244,7 +244,7 @@
     "src": "node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-vietnamese-700-normal.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CUD9GDso.css",
+    "file": "assets/app-BpPRbDw7.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -262,18 +262,18 @@
     ]
   },
   "resources/js/app.tsx": {
-    "file": "assets/app-uMN5iig1.js",
+    "file": "assets/app-CUHrUfdQ.js",
     "name": "app",
     "src": "resources/js/app.tsx",
     "isEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-BCHobqn_.js"
     ],
     "dynamicImports": [
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "resources/js/themes/korin-berkat/index.ts",
       "resources/js/themes/korin-bara/index.ts",
       "resources/js/themes/beramal/index.ts",
@@ -282,7 +282,7 @@
       "resources/js/pages/ThemedPage.tsx"
     ],
     "css": [
-      "assets/app-CUD9GDso.css"
+      "assets/app-BpPRbDw7.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -342,19 +342,19 @@
     ]
   },
   "resources/js/pages/Error.tsx": {
-    "file": "assets/Error-DUZ0masm.js",
+    "file": "assets/Error-ChuYg-lD.js",
     "name": "Error",
     "src": "resources/js/pages/Error.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "resources/js/app.tsx",
       "_vendor-icons-BCHobqn_.js",
       "_vendor-motion-CFgCXzNT.js"
     ],
     "css": [
-      "assets/app-CUD9GDso.css"
+      "assets/app-BpPRbDw7.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -414,31 +414,31 @@
     ]
   },
   "resources/js/pages/Home.tsx": {
-    "file": "assets/Home-t29c-tah.js",
+    "file": "assets/Home-BCfOypRX.js",
     "name": "Home",
     "src": "resources/js/pages/Home.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-BCHobqn_.js"
     ]
   },
   "resources/js/pages/ThemedPage.tsx": {
-    "file": "assets/ThemedPage-CcJTtCXC.js",
+    "file": "assets/ThemedPage-B2ERz-oJ.js",
     "name": "ThemedPage",
     "src": "resources/js/pages/ThemedPage.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
       "_vendor-motion-CFgCXzNT.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "resources/js/app.tsx",
       "_vendor-icons-BCHobqn_.js"
     ],
     "css": [
-      "assets/app-CUD9GDso.css"
+      "assets/app-BpPRbDw7.css"
     ],
     "assets": [
       "assets/manrope-cyrillic-ext-wght-normal-C8S-KRRz.woff2",
@@ -498,37 +498,37 @@
     ]
   },
   "resources/js/themes/beramal/index.ts": {
-    "file": "assets/theme-beramal-CX92oQvT.js",
+    "file": "assets/theme-beramal-LUCFBkuj.js",
     "name": "theme-beramal",
     "src": "resources/js/themes/beramal/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-BCHobqn_.js"
     ]
   },
   "resources/js/themes/korin-bara/index.ts": {
-    "file": "assets/theme-korin-bara-CjsWvZDz.js",
+    "file": "assets/theme-korin-bara-CDscOD1L.js",
     "name": "theme-korin-bara",
     "src": "resources/js/themes/korin-bara/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-BCHobqn_.js"
     ]
   },
   "resources/js/themes/korin-berkat/index.ts": {
-    "file": "assets/theme-korin-berkat-1Ivgb4zj.js",
+    "file": "assets/theme-korin-berkat-xV7ysbNa.js",
     "name": "theme-korin-berkat",
     "src": "resources/js/themes/korin-berkat/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-Cl5OSeng.js",
-      "_theme-holding-CCp4NJgg.js",
+      "_theme-holding-CeY4-25Y.js",
       "_vendor-motion-CFgCXzNT.js",
       "_vendor-icons-BCHobqn_.js"
     ]

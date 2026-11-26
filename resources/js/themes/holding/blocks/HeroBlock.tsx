@@ -144,7 +144,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
                             ratio="4/3"
                             priority
                             sizes="(max-width: 1024px) 100vw, 55vw"
-                            wrapperClassName="shadow-md border-0"
+                            wrapperClassName="!bg-transparent !border-0 shadow-none"
                         />
                     </Reveal>
                 </div>
